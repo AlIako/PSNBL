@@ -1,0 +1,66 @@
+#ifndef ONLINE_H_INCLUDED
+#define ONLINE_H_INCLUDED
+#include <fstream>
+#include <iostream>
+#include "Client.h"
+#include "Server.h"
+
+using namespace std;
+
+class Online
+{
+    public:
+    Online();
+
+    void ini();
+    void readMultiplayerFile();
+
+    void update();
+
+    void close();
+
+
+    ~Online();
+
+
+    vector<Personnage*>* playerList;
+
+
+
+    private:
+
+    SOCKET newsockfd;
+
+    int m_port;
+    string m_ip;
+
+
+
+
+
+    bool m_server;//false for client
+    bool m_threadsOn;
+
+    //threads serv
+    pthread_t handleConnectionsPThread;
+    thread_params paramsHandleConnectionsThread;
+
+    pthread_t serverReceivePThread;
+    thread_params paramsServerReceiveThread;
+    pthread_t serverSendPThread;
+    thread_params paramsServerSendThread;
+
+    //threads client
+    pthread_t clientConnectThreadPThread;
+    thread_params paramsClientConnectThreadThread;
+
+    pthread_t clientReceivePThread;
+    thread_params paramsHandleClientReceiveThread;
+    pthread_t clientSendPThread;
+    thread_params paramsHandleClientSendThread;
+
+    bool m_connectionEstablished;
+
+};
+
+#endif // ONLINE_H_INCLUDED
