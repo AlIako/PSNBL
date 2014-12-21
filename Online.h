@@ -4,6 +4,7 @@
 #include <iostream>
 #include "Client.h"
 #include "Server.h"
+#define RECEIVE_SOCKET_HANDLE_PER_FRAME 10
 
 using namespace std;
 
@@ -17,17 +18,24 @@ class Online
 
     void update();
 
+    void sendSocket(infosSocket s);
+    void sendSocketReplace(infosSocket s);
+
+    infosSocket getNextSocket();
+    infosSocket getNextSocketRemove();
+
     void close();
-
-
     ~Online();
+
+
 
 
     vector<Personnage*>* playerList;
 
-
-
     private:
+
+    std::vector<infosSocket> socketsReceived;
+    std::vector<infosSocket> socketsToSend;
 
     SOCKET newsockfd;
 

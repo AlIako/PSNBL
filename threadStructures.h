@@ -41,7 +41,9 @@ struct thread_params
     bool* connectionEstablished;
     int port;
     string ip;
-    vector<Personnage*>* playerList;
+
+    std::vector<infosSocket>* socketsReceived;
+    std::vector<infosSocket>* socketsToSend;
 
     int *newsockfd;
     int portno, clilen, n;

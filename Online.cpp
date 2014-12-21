@@ -8,7 +8,56 @@ Online::Online()
     m_connectionEstablished=false;
 }
 
+//add socket to send to the list
+void Online::sendSocket(infosSocket s)
+{
+    socketsToSend.push_back(s);
+}
 
+
+//if socket already in list, just replace it
+void Online::sendSocketReplace(infosSocket s)
+{
+    //check if already in list
+    bool socketFound=false;
+    for(unsigned int i=0;i<socketsToSend.size();i++)
+    {
+        if(socketsToSend[i].type==s.type)
+        {
+            socketFound=true;
+            socketsToSend[i]=s;
+        }
+    }
+
+    //if not in list, add to list
+    if(!socketFound)
+        sendSocket(s);
+}
+
+//get next socket from the list
+infosSocket Online::getNextSocket()
+{
+    infosSocket s;
+    s.type=-1;
+    if(socketsReceived.size()<=0)
+        return s;
+
+    return socketsReceived[0];
+}
+
+//get next socket from the list and remove it
+infosSocket Online::getNextSocketRemove()
+{
+    infosSocket s=getNextSocket();
+
+    for(int i=0;i<(int)socketsReceived.size()-1;i++)
+        socketsReceived[0]=socketsReceived[1];
+    if(socketsReceived.size()>0)
+        socketsReceived.pop_back();
+
+
+    return s;
+}
 
 void Online::ini()
 {
@@ -19,7 +68,8 @@ void Online::ini()
     {
         paramsHandleConnectionsThread.threadOn=&m_threadsOn;
         paramsHandleConnectionsThread.connectionEstablished=&m_connectionEstablished;
-        paramsHandleConnectionsThread.playerList=playerList;
+        paramsHandleConnectionsThread.socketsReceived=&socketsReceived;
+        paramsHandleConnectionsThread.socketsToSend=&socketsToSend;
         paramsHandleConnectionsThread.port=m_port;
         paramsHandleConnectionsThread.ip=m_ip;
         paramsHandleConnectionsThread.newsockfd=new int;

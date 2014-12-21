@@ -53,21 +53,6 @@ void* clientConnectThread(void* data)
         cerr << "Connection succesful!"<<endl;
     }
 
-/*
-    char buffer[80];
-    memset(buffer, 0, sizeof(buffer)); //Clear the buffer
-    params->n = recv (*params->newsockfd, buffer, sizeof(buffer)-1, 0);
-    //params->n = read(*(params->newsockfd),params->buffer,255);
-    if (params->n < 0)
-        cerr<<"ERROR reading from socket: "<<WSAGetLastError()<<endl;
-    cerr<<"(client)message received: "<<params->buffer<<endl;
-*/
-
-    //connect to server
-    /*while(params!=NULL && *(params->connectionEstablished)==false)
-    {
-
-    }*/
 
     delete tempIp;
     cerr << "End client connection thread"<<endl;
@@ -87,19 +72,16 @@ void* clientReceiveThread(void* data)
         memset(buffer, 0, sizeof(buffer)); //Clear the buffer
 
         infosSocket infosRecu;
-        //recvfrom(params->sock,(char*)&infosRecu,sizeof(infosRecu),0,(SOCKADDR*)params->sin,&params->crecsize);
         params->n = recv (*params->newsockfd, (char*)&infosRecu,sizeof(infosRecu), 0);
-        //params->n = read(*(params->newsockfd),params->buffer,255);
         if (params->n < 0)
             cerr<<"ERROR reading from socket: "<<WSAGetLastError()<<endl;
 
-
-        //handle socket received
-        if(infosRecu.type==1)//position from player
+        //add received socket to queue
+        if(infosRecu.type!=-1)
         {
-            (*params->playerList)[1]->setPos(infosRecu.variable[0],infosRecu.variable[1]);
-            (*params->playerList)[1]->setAngle(infosRecu.variable[2]);
+            (*params->socketsReceived).push_back(infosRecu);
         }
+
         SDL_Delay(WAIT_RECEIVE);
     }
     cerr << "End client receive thread"<<endl;
@@ -108,30 +90,28 @@ void* clientReceiveThread(void* data)
 
 void* clientSendThread(void* data)
 {
-    thread_params* params;
-    params=(thread_params*)data;
-
-    string tempString="hello yourself!";
+    thread_params* params=(thread_params*)data;
 
     infosSocket infosS;
 
     while(params!=NULL && *(params->threadOn))
     {
-        //position values
-        infosS.type=1;
-        infosS.variable[0]=(*params->playerList)[0]->getX();
-        infosS.variable[1]=(*params->playerList)[0]->getY();
-        infosS.variable[2]=(*params->playerList)[0]->getAngle();
-
-        //send socket
-        //params->n = send(*params->newsockfd, "hehehe",6, 0);
-        //params->n = write(*(params->newsockfd),"hehehe",6);
-        params->n = sendto(*params->newsockfd,(char*)&infosS, sizeof(infosS),0,(struct sockaddr *) &(params->cli_addr), (params->clilen));
-
-        if (params->n < 0)
-            cerr<<"ERROR writing to socket: "<<WSAGetLastError()<<endl;
-
-
+        //if there is something to send
+        if((*params->socketsToSend).size()>0)
+        {
+            //take first element of queue
+            infosS=(*params->socketsToSend)[0];
+            //send
+            params->n = sendto(*params->newsockfd,(char*)&infosS, sizeof(infosS),0,(struct sockaddr *) &(params->cli_addr), (params->clilen));
+            //check any error
+            if (params->n < 0)
+                cerr<<"ERROR writing to socket: "<<WSAGetLastError()<<endl;
+            //update queue
+            for(unsigned int i=0;i<(*params->socketsToSend).size()-1;i++)
+                (*params->socketsToSend)[0]=(*params->socketsToSend)[1];
+            if((*params->socketsToSend).size()>0)
+                (*params->socketsToSend).pop_back();
+        }
 
         SDL_Delay(WAIT_SEND);
     }
