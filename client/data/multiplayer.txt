@@ -1,4 +1,0 @@
-mode: client
-name: LinkoClient
-ip: 127.0.0.1
-port: 25
