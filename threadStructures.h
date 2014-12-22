@@ -30,7 +30,7 @@ using namespace std;
 struct infosSocket
 {
     char type;
-    float variable[25];
+    float variable[10];
     char text[TEXT_SIZE];
 };
 

@@ -17,6 +17,7 @@ class Texture
     void bind(bool force=false);
     string getChemin();
     void cleanBorders();
+    void setGtext(Gtexture* gt) {gtext=gt;}
 
     private:
     Gtexture *gtext;

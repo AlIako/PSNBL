@@ -6,6 +6,8 @@
 #include "Video.h"
 #include "Online.h"
 #include "Map.h"
+#include "Camera.h"
+#include "GTime.h"
 
 class Game
 {
@@ -18,6 +20,8 @@ class Game
 
     void play();
     void updateMultiplayer();
+
+    void updateTimes();
 
 
 
@@ -34,7 +38,13 @@ class Game
     Video m_video;
     Online m_online;
     Map m_map;
-    vector<Personnage*> playerList;
+    vector<Player*> playerList;
+    Camera m_camera;
+
+    GTime since_last_frame;
+    double ft;//function time
+
+    bool grabCursor;
 };
 
 

@@ -34,7 +34,7 @@ void Texture::choseType(string c)
 }
 void Texture::bind(bool force)
 {
-    if((gtext->getLastBind()!=this || gtext->getLastBind()==NULL || force))
+    if(gtext!=NULL && (gtext->getLastBind()!=this || gtext->getLastBind()==NULL || force))
     {
         glBindTexture(GL_TEXTURE_2D,m_id);
         gtext->setLastBind(this);

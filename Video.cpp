@@ -33,6 +33,8 @@ void Video::ini()
 
   	glEnable(GL_DEPTH_TEST); 	// Active le test de profondeur
 
+    SDL_ShowCursor(SDL_DISABLE);//no cursor
+    SDL_WM_GrabInput(SDL_GRAB_ON);
 
 }
 

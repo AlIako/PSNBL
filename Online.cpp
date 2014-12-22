@@ -137,7 +137,7 @@ void Online::update()
 
 void Online::readMultiplayerFile()
 {
-    ifstream file("data/multiplayer.txt", ios::in);
+    ifstream file("config.ini", ios::in);
 
     if(file)
     {

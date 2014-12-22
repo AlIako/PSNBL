@@ -15,57 +15,57 @@ void Gtexture::loadAll()
     DIR *dir;
     struct dirent *lecture;
     std::string en_cours="";
-    dir = opendir("data/textures");
+    dir = opendir("../data/textures");
     while ((lecture = readdir(dir)))
     {
         if(strstr(lecture->d_name,".JPEG")!=NULL || strstr(lecture->d_name,".JPG")!=NULL ||
         strstr(lecture->d_name,".jpg")!=NULL || strstr(lecture->d_name,".png")!=NULL)
         {
-            en_cours="data/textures/";
+            en_cours="../data/textures/";
             en_cours+=lecture->d_name;
             addTexture(en_cours);
         }
     }
 
-    dir = opendir("data/textures/objs");
+    dir = opendir("../data/textures/objs");
     while ((lecture = readdir(dir)))
     {
         if(strstr(lecture->d_name,".png")!=NULL)
         {
-            en_cours="data/textures/objs/";
+            en_cours="../data/textures/objs/";
             en_cours+=lecture->d_name;
             addTexture(en_cours);
         }
     }
 
-    dir = opendir("data/textures/mode");
+    dir = opendir("../data/textures/mode");
     while ((lecture = readdir(dir)))
     {
         if(strstr(lecture->d_name,".png")!=NULL)
         {
-            en_cours="data/textures/mode/";
+            en_cours="../data/textures/mode/";
             en_cours+=lecture->d_name;
             addTexture(en_cours);
         }
     }
 
-    dir = opendir("data/textures/terrain");
+    dir = opendir("../data/textures/terrain");
     while ((lecture = readdir(dir)))
     {
         if(strstr(lecture->d_name,".png")!=NULL)
         {
-            en_cours="data/textures/terrain/";
+            en_cours="../data/textures/terrain/";
             en_cours+=lecture->d_name;
             addTexture(en_cours);
         }
     }
 
-    dir = opendir("data/textures/signes");
+    dir = opendir("../data/textures/signes");
     while ((lecture = readdir(dir)))
     {
         if(strstr(lecture->d_name,".png")!=NULL)
         {
-            en_cours="data/textures/signes/";
+            en_cours="../data/textures/signes/";
             en_cours+=lecture->d_name;
             addTexture(en_cours);
         }
@@ -88,6 +88,7 @@ void Gtexture::addTexture(string c)
     if(!deja_la)
     {
         m_textures.push_back(new Texture(c));
+        m_textures[m_textures.size()-1]->setGtext(this);
     }
 }
 

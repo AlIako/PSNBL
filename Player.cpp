@@ -1,55 +1,54 @@
-#include "Personnage.h"
+#include "Player.h"
 
-Personnage::Personnage()
+
+
+
+Player::Player()
 {
-    loadSprite();
-    m_position.X=0.5;
-    m_position.Y=0.5;
-    m_rotation.Z=90;
-    calculDirector();
+    m_texture=NULL;
+    m_position.X=0;
+    m_position.Y=0;
+    m_position.Z=20;
 
-
-    speed=5;
-
-
+    m_rotation.Z=0;
 
     m_pressed[UP]=false;
     m_pressed[DOWN]=false;
     m_pressed[LEFT]=false;
     m_pressed[RIGHT]=false;
-}
 
-void Personnage::ini()
-{
-
+    m_speed=0.5;
 }
 
 
-void Personnage::loadSprite()
+
+
+
+void Player::ini()
 {
     if(gtext!=NULL)
     {
-        gtext->addTexture("data/char1.png");
-        m_texture=gtext->getTexture("data/char1.png");
+        gtext->addTexture("../data/textures/char1.png");
+        m_texture=gtext->getTexture("../data/textures/char1.png");
     }
 }
 
-
-void Personnage::draw()
+void Player::draw()
 {
+
     glColor3ub(255,255,255);
 
 
 
     glPushMatrix();
-    glTranslated(m_position.X,m_position.Y,-700);
+    glTranslated(m_position.X,m_position.Y,m_position.Z-5);
     glRotated(m_rotation.Z,0,0,1);
     if(m_texture!=NULL)
         m_texture->bind();
 
-    double m_lx=40;
-    double m_ly=40;
-    double m_lz=40;
+    double m_lx=1;
+    double m_ly=1;
+    double m_lz=1;
 
     glBegin(GL_QUADS);
     glTexCoord2d(0,1);     glVertex3d(m_lx,m_ly,m_lz);
@@ -86,53 +85,40 @@ void Personnage::draw()
 
     glTranslated(-m_position.X,-m_position.Y,0);
     glPopMatrix();
-
 }
 
-
-void Personnage::pressKey(DIRECTION k, bool pressed)
+void Player::pressKey(DIRECTION k, bool pressed)
 {
     m_pressed[k]=pressed;
+    cerr<<"press key"<<endl;
 }
 
-void Personnage::handlePressedKeys()
+void Player::move()
 {
+    m_direction.write();
     if(m_pressed[UP])
-        move(1);
+    {
+        m_position.X+=m_speed*m_direction.X;
+        m_position.Y+=m_speed*m_direction.Y;
+        m_position.Z+=m_speed*m_direction.Z;
+    }
     if(m_pressed[DOWN])
-        move(-1);
-
-
+    {
+        m_position.X-=m_speed*m_direction.X;
+        m_position.Y-=m_speed*m_direction.Y;
+        m_position.Z-=m_speed*m_direction.Z;
+    }
     if(m_pressed[RIGHT])
-        addAngle(-3);
+    {
+        m_position.X+=m_direction.Y*m_speed;
+        m_position.Y-=m_direction.X*m_speed;
+    }
     if(m_pressed[LEFT])
-        addAngle(3);
+    {
+        m_position.X-=m_direction.Y*m_speed;
+        m_position.Y+=m_direction.X*m_speed;
+
+    }
 }
 
 
-void Personnage::move(int step)
-{
-    m_position.X+=speed*step*m_dx;
-    m_position.Y+=speed*step*m_dy;
-}
-
-
-
-void Personnage::calculDirector()
-{
-
-    double rad=m_rotation.Z*3.14/180;
-    m_dx=cos(rad);
-    m_dy=sin(rad);
-}
-void Personnage::addAngle(int a)
-{
-    m_rotation.Z+=a;
-
-    calculDirector();
-}
-
-Personnage::~Personnage()
-{
-    //dtor
-}

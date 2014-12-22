@@ -20,29 +20,30 @@ void Map::ini()
     m_objects.push_back(new Block());
     m_objects[ind]->gtext=gtext;
     m_objects[ind]->ini();
-    m_objects[ind]->setPos(Vector3D(MAPSIZE,2,WALL_HEIGHT));
+    m_objects[ind]->setPos(Vector3D(2,MAPSIZE,WALL_HEIGHT));
     m_objects[ind]->setSize(Vector3D(MAPSIZE,2,WALL_HEIGHT));
 
     ind=m_objects.size();
     m_objects.push_back(new Block());
     m_objects[ind]->gtext=gtext;
     m_objects[ind]->ini();
-    m_objects[ind]->setPos(Vector3D(-MAPSIZE,2,WALL_HEIGHT));
-    m_objects[ind]->setSize(Vector3D(-MAPSIZE,2,WALL_HEIGHT));
-
-    ind=m_objects.size();
-    m_objects.push_back(new Block());
-    m_objects[ind]->gtext=gtext;
-    m_objects[ind]->ini();
-    m_objects[ind]->setPos(Vector3D(2,MAPSIZE,WALL_HEIGHT));
+    m_objects[ind]->setPos(Vector3D(MAPSIZE,2,WALL_HEIGHT));
     m_objects[ind]->setSize(Vector3D(2,MAPSIZE,WALL_HEIGHT));
 
     ind=m_objects.size();
     m_objects.push_back(new Block());
     m_objects[ind]->gtext=gtext;
     m_objects[ind]->ini();
-    m_objects[ind]->setPos(Vector3D(2,-MAPSIZE,WALL_HEIGHT));
+    m_objects[ind]->setPos(Vector3D(-MAPSIZE,2,WALL_HEIGHT));
     m_objects[ind]->setSize(Vector3D(2,-MAPSIZE,WALL_HEIGHT));
+
+    ind=m_objects.size();
+    m_objects.push_back(new Block());
+    m_objects[ind]->gtext=gtext;
+    m_objects[ind]->ini();
+    m_objects[ind]->ini();
+    m_objects[ind]->setPos(Vector3D(2,-MAPSIZE,WALL_HEIGHT));
+    m_objects[ind]->setSize(Vector3D(-MAPSIZE,2,WALL_HEIGHT));
 
     //floor
     ind=m_objects.size();

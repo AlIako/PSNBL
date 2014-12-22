@@ -12,8 +12,8 @@ void Block::ini()
     m_type="block";
     if(gtext!=NULL)
     {
-        gtext->addTexture("data/rock.png");
-        m_texture=gtext->getTexture("data/rock.png");
+        gtext->addTexture("../data/textures/rock.png");
+        m_texture=gtext->getTexture("../data/textures/rock.png");
     }
 
     Object::ini();
@@ -22,8 +22,8 @@ void Block::ini()
 
 void Block::draw()
 {
-    Vector3D m_taille=m_size;
-    double mosaic=2;
+    const Vector3D m_taille=m_size;
+    const double mosaic=2;
 
     glColor3ub(255,255,255);
 
