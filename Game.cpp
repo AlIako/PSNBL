@@ -12,9 +12,10 @@ void Game::ini()
     playerList.push_back(new Personnage());
     playerList.push_back(new Personnage());
 
-
-    m_online.playerList=&playerList;
     m_online.ini();
+
+    m_map.gtext=gtext;
+    m_map.ini();
 }
 
 void Game::play()
@@ -86,6 +87,13 @@ void Game::play()
         //draw
         m_video.beforeDraw();
 
+        Vector3D m_position=Vector3D(-10,-10,20);
+        Vector3D m_target=Vector3D(10,10,10);
+        gluLookAt(m_position.X,m_position.Y,m_position.Z,
+        m_target.X,m_target.Y,m_target.Z,
+        0,0,1);
+
+        m_map.draw();
         for(unsigned int i=0;i<playerList.size();i++)
         {
             playerList[i]->draw();
@@ -111,9 +119,9 @@ void Game::updateMultiplayer()
 
     //send player position and angle
     s.type=1;
-    s.variable[0]=playerList[0]->getX();
-    s.variable[1]=playerList[0]->getY();
-    s.variable[2]=playerList[0]->getAngle();
+    s.variable[0]=playerList[0]->getPos().X;
+    s.variable[1]=playerList[0]->getPos().Y;
+    s.variable[2]=playerList[0]->getRot().Z;
 
     m_online.sendSocketReplace(s);//add socket to queue
 
@@ -127,8 +135,8 @@ void Game::updateMultiplayer()
             //player position and angle
             if(s.type==1)
             {
-                playerList[1]->setPos(s.variable[0],s.variable[1]);
-                playerList[1]->setAngle(s.variable[2]);
+                playerList[1]->setPos(Vector3D(s.variable[0],s.variable[1],0));
+                playerList[1]->setRot(Vector3D(0,0,s.variable[2]));
             }
         }
     }

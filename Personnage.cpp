@@ -3,9 +3,9 @@
 Personnage::Personnage()
 {
     loadSprite();
-    m_x=0.5;
-    m_y=0.5;
-    m_angle=90;
+    m_position.X=0.5;
+    m_position.Y=0.5;
+    m_rotation.Z=90;
     calculDirector();
 
 
@@ -19,9 +19,19 @@ Personnage::Personnage()
     m_pressed[RIGHT]=false;
 }
 
+void Personnage::ini()
+{
+
+}
+
+
 void Personnage::loadSprite()
 {
-    m_texture=loadTexture("data/char1.png");
+    if(gtext!=NULL)
+    {
+        gtext->addTexture("data/char1.png");
+        m_texture=gtext->getTexture("data/char1.png");
+    }
 }
 
 
@@ -32,9 +42,10 @@ void Personnage::draw()
 
 
     glPushMatrix();
-    glTranslated(m_x,m_y,-700);
-    glRotated(m_angle,0,0,1);
-    glBindTexture(GL_TEXTURE_2D,m_texture);
+    glTranslated(m_position.X,m_position.Y,-700);
+    glRotated(m_rotation.Z,0,0,1);
+    if(m_texture!=NULL)
+        m_texture->bind();
 
     double m_lx=40;
     double m_ly=40;
@@ -73,7 +84,7 @@ void Personnage::draw()
 
     glEnd();
 
-    glTranslated(-m_x,-m_y,0);
+    glTranslated(-m_position.X,-m_position.Y,0);
     glPopMatrix();
 
 }
@@ -101,8 +112,8 @@ void Personnage::handlePressedKeys()
 
 void Personnage::move(int step)
 {
-    m_x+=speed*step*m_dx;
-    m_y+=speed*step*m_dy;
+    m_position.X+=speed*step*m_dx;
+    m_position.Y+=speed*step*m_dy;
 }
 
 
@@ -110,13 +121,13 @@ void Personnage::move(int step)
 void Personnage::calculDirector()
 {
 
-    double rad=m_angle*3.14/180;
+    double rad=m_rotation.Z*3.14/180;
     m_dx=cos(rad);
     m_dy=sin(rad);
 }
 void Personnage::addAngle(int a)
 {
-    m_angle+=a;
+    m_rotation.Z+=a;
 
     calculDirector();
 }

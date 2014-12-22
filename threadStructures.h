@@ -19,7 +19,7 @@ typedef struct sockaddr SOCKADDR;
 #include <unistd.h>
 #include <iostream>
 #include "utilFunctions.h"
-#include "Personnage.h"
+#include <vector>
 
 #define TEXT_SIZE 50
 #define WAIT_SEND 60

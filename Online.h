@@ -28,10 +28,6 @@ class Online
     ~Online();
 
 
-
-
-    vector<Personnage*>* playerList;
-
     private:
 
     std::vector<infosSocket> socketsReceived;

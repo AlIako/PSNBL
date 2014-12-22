@@ -5,7 +5,7 @@
 #include <GL/glu.h>
 #include "Video.h"
 #include "Online.h"
-
+#include "Map.h"
 
 class Game
 {
@@ -25,10 +25,15 @@ class Game
     void close();
     ~Game();
 
+
+    //public attributes
+    Gtexture* gtext;
+
     private:
     bool playLoop;
     Video m_video;
     Online m_online;
+    Map m_map;
     vector<Personnage*> playerList;
 };
 
