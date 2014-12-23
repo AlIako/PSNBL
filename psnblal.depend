@@ -817,7 +817,7 @@
 	"Camera.h"
 	"GTime.h"
 
-1419356138 source:d:\programmation\psnblal\game.cpp
+1419368451 source:d:\programmation\psnblal\game.cpp
 	"Game.h"
 
 1419359556 source:d:\programmation\psnblal\block.cpp
@@ -826,7 +826,7 @@
 1419213415 source:d:\programmation\psnblal\bonus.cpp
 	"Bonus.h"
 
-1419359929 source:d:\programmation\psnblal\map.cpp
+1419368938 source:d:\programmation\psnblal\map.cpp
 	"Map.h"
 
 1377268793 source:d:\programmation\psnblal\vector3d.cpp
@@ -838,10 +838,10 @@
 	<fstream>
 	<string>
 
-1419358658 source:d:\programmation\psnblal\object.cpp
+1419369622 source:d:\programmation\psnblal\object.cpp
 	"Object.h"
 
-1419360008 d:\programmation\psnblal\object.h
+1419369542 d:\programmation\psnblal\object.h
 	"Vector3D.h"
 	"GTexture.h"
 	"GTime.h"
@@ -852,12 +852,13 @@
 1419214734 d:\programmation\psnblal\bonus.h
 	"Object.h"
 
-1419359406 d:\programmation\psnblal\map.h
+1419365909 d:\programmation\psnblal\map.h
 	<vector>
 	"Collision.h"
 	"Player.h"
 	"Wall.h"
 	"Lava.h"
+	"Rope.h"
 
 1419344205 d:\programmation\psnblal\gtexture.h
 	<vector>
@@ -893,18 +894,19 @@
 1419253502 d:\programmation\psnblal\character.h
 	"Object.h"
 
-1419360028 source:d:\programmation\psnblal\player.cpp
+1419369286 source:d:\programmation\psnblal\player.cpp
 	"Player.h"
 
-1419360001 d:\programmation\psnblal\player.h
+1419365934 d:\programmation\psnblal\player.h
 	<cmath>
 	"Character.h"
+	"Rope.h"
 
-1419351133 source:d:\programmation\psnblal\camera.cpp
+1419365973 source:d:\programmation\psnblal\camera.cpp
 	"Camera.h"
 	<cmath>
 
-1419255350 d:\programmation\psnblal\camera.h
+1419368400 d:\programmation\psnblal\camera.h
 	<SDL/SDL.h>
 	<GL/gl.h>
 	<GL/glu.h>
@@ -920,10 +922,10 @@
 	<iostream>
 	<fstream>
 
-1419358342 source:d:\programmation\psnblal\collision.cpp
+1419369590 source:d:\programmation\psnblal\collision.cpp
 	"Collision.h"
 
-1419358239 d:\programmation\psnblal\collision.h
+1419369131 d:\programmation\psnblal\collision.h
 	"Object.h"
 
 1419359614 d:\programmation\psnblal\lava.h
@@ -937,4 +939,10 @@
 
 1419359562 source:d:\programmation\psnblal\wall.cpp
 	"Wall.h"
+
+1419369762 source:d:\programmation\psnblal\rope.cpp
+	"Rope.h"
+
+1419369753 d:\programmation\psnblal\rope.h
+	"Object.h"
 

@@ -19,6 +19,8 @@ Object::Object()
     m_block=true;
     m_destructible=false;
     m_life=4;
+
+    m_collided=false;
 }
 
 void Object::resurrect()
@@ -50,6 +52,9 @@ void Object::update(double functionTime)
     //rez if killed
     if(m_life<=0)
         resurrect();
+
+    if(m_collided)
+        m_collided=false;
 }
 
 
@@ -88,6 +93,10 @@ void Object::applyPhysics(int x, int y, int z)
 
 bool Object::collision(Object* o)
 {
+    if((o->getType()=="rope" && m_type=="player") || (o->getType()=="player" && m_type=="rope"))
+        return false;
+
+
     double marge=0.2*0;
     Vector3D m_taille_col=m_size;
     m_taille_col.X-=marge;

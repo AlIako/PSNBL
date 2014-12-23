@@ -50,6 +50,15 @@ void Game::play()
                 m_camera.onMouseMotion(event.motion);
                 break;
 
+                case SDL_MOUSEBUTTONUP:
+                if(event.button.button==SDL_BUTTON_LEFT)
+                {
+                    //m_direction=Vector3D(-cos(lilian[i]->getRZ()*M_PI/180),-sin(lilian[i]->getRZ()*M_PI/180),sin((-lilian[i]->m_beta+8)*M_PI/180)).normalize();
+                    Vector3D dir=Vector3D(0,0,sin((-m_camera.getBeta()+8*0)*M_PI/180))+playerList[0]->getDir();
+                    playerList[0]->linkRope(m_map.createRope(playerList[0]->getPos(),dir));
+                }
+                break;
+
                 case SDL_KEYDOWN:
                 switch(event.key.keysym.sym)
                 {

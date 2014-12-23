@@ -11,16 +11,20 @@ class Camera
     public:
     Camera();
 
-    void setCible(Object *cible);
-    void setPos(Vector3D position);
-    Vector3D getPos();
-    Vector3D getDir();
-    Object* getCible();
+    void setCible(Object *cible) { m_cible=cible; }
+    void setPos(Vector3D position) { m_position=position; }
+    Vector3D getPos() { return m_position; }
+    Vector3D getDir() { return m_direction; }
+    Vector3D getTarget() { return m_target; }
+    Object* getCible() { return m_cible; }
 
     void look();
     void onMouseMotion(const SDL_MouseMotionEvent & event);
 
     void updateTime(double fonction_temps);
+
+    double getAlpha() { return m_alpha; }
+    double getBeta() { return m_beta; }
 
     private:
     Vector3D m_position;

@@ -12,7 +12,7 @@ class Collision
     void simulatePhysics(Object* o);
     void collisionReaction(Object* o);
 
-    void testCollision(Object* o);
+    void testCollision(Object* o, Object* pointer);
     bool testCollisionColliding(Object* o);
 
 

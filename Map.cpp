@@ -30,8 +30,11 @@ void Map::update(double functionTime)
     for(unsigned int i=0, count=m_objects.size();i<count;i++)
     {
         m_objects[i]->update(ft);
-        applyGravity(m_objects[i]);
-        applyPhysics(m_objects[i]);
+        if(m_objects[i]->getPhysical() ||true)
+        {
+            applyGravity(m_objects[i]);
+            applyPhysics(m_objects[i]);
+        }
     }
     //player
     if(playerList!=NULL && playerList->size()>0)
@@ -43,6 +46,18 @@ void Map::update(double functionTime)
         applyPhysics((*playerList)[0]);
     }
 }
+
+Rope* Map::createRope(Vector3D start, Vector3D target)
+{
+    Rope* rope=new Rope();
+    rope->gtext=gtext;
+    rope->ini(start,target);
+
+    m_objects.push_back(rope);
+
+    return rope;
+}
+
 
 void Map::applyGravity(Object* o)
 {
@@ -147,15 +162,23 @@ void Map::ini()
     m_objects.push_back(new Block());
     m_objects[ind]->gtext=gtext;
     m_objects[ind]->ini();
-    m_objects[ind]->setPos(Vector3D(10,15,8));
-    m_objects[ind]->setSize(Vector3D(2,2,4));
+    m_objects[ind]->setPos(Vector3D(-10,-30,30));
+    m_objects[ind]->setSize(Vector3D(8,8,12));
 
     ind=m_objects.size();
     m_objects.push_back(new Block());
     m_objects[ind]->gtext=gtext;
     m_objects[ind]->ini();
-    m_objects[ind]->setPos(Vector3D(10,15,8));
-    m_objects[ind]->setSize(Vector3D(2,2,4));
+    m_objects[ind]->setPos(Vector3D(10,0,40));
+    m_objects[ind]->setSize(Vector3D(8,8,12));
+
+    ind=m_objects.size();
+    m_objects.push_back(new Block());
+    m_objects[ind]->gtext=gtext;
+    m_objects[ind]->ini();
+    m_objects[ind]->setPos(Vector3D(-10,30,60));
+    m_objects[ind]->setSize(Vector3D(8,8,12));
+
 }
 
 

@@ -18,10 +18,15 @@ Player::Player()
 
     m_physical=true;
     m_destructible=true;
+
+    m_type="player";
 }
 
 
-
+void Player::linkRope(Rope* p)
+{
+    m_rope=p;
+}
 
 
 void Player::ini()

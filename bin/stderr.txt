@@ -1,58 +1,12 @@
-Texture ../data/textures/char1.png(1ms).
+Texture ../data/textures/char1.png(2ms).
 mode: server
 name: Linko
 ip: 127.0.0.1
 port: 25
 
 Begin handle connections thread
-Texture ../data/textures/wall.jpg(4ms).
+Texture ../data/textures/wall.jpg(3ms).
 Texture ../data/textures/fire.jpg(5ms).
 Texture ../data/textures/rock.png(29ms).
-press key
-press key
-press key
-press key
-Client connected!
-Connection to server established! launching threads...
-Begin server receive thread
-Begin server send thread
-End handle connections thread
-press key
-press key
-press key
-press key
-press key
-press key
-press key
-press key
-press key
-press key
-press key
-press key
-press key
-press key
-press key
-press key
-press key
-press key
-press key
-press key
-press key
-press key
-press key
-press key
-press key
-press key
-press key
-press key
-press key
-press key
-press key
-press key
-press key
-press key
-press key
-press key
-press key
-press key
+Texture ../data/textures/rope.jpg(8ms).
 Exited cleanly.

@@ -128,8 +128,6 @@
 		<Unit filename="Player.h">
 			<Option virtualFolder="Object\" />
 		</Unit>
-		<Unit filename="Rope.cpp" />
-		<Unit filename="Rope.h" />
 		<Unit filename="Server.cpp">
 			<Option virtualFolder="Online\" />
 		</Unit>

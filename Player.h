@@ -2,6 +2,7 @@
 #define PLAYER_H_INCLUDED
 #include <cmath>
 #include "Character.h"
+#include "Rope.h"
 
 enum DIRECTION { DOWN, LEFT, UP, RIGHT};
 
@@ -12,6 +13,8 @@ class Player: public Object
     virtual void ini();
     virtual void draw();
 
+    void linkRope(Rope* p);
+
     void pressKey(DIRECTION k, bool pressed);
 
     void move();
@@ -21,6 +24,8 @@ class Player: public Object
     private:
     Texture* m_texture;
     bool m_pressed[4];
+
+    Rope* m_rope;
 };
 
 #endif // PLAYER_H_INCLUDED

@@ -18,7 +18,7 @@ void Collision::simulatePhysics(Object* o)
     //do a first simulation and get all colliding objects
     Object simO=*o;
     simO.applyPhysics();
-    testCollision(&simO);
+    testCollision(&simO,o);
 
     //if there was a collision, check what movement caused it (test only with colliding objects)
     if(collision())
@@ -69,6 +69,7 @@ void Collision::simulatePhysics(Object* o)
 
         //apply specific collision behaviour
         collisionReaction(&simO);
+        simO.collide();
 
     }
 
@@ -90,11 +91,11 @@ void Collision::collisionReaction(Object* o)
 
 
 
-void Collision::testCollision(Object* o)
+void Collision::testCollision(Object* o, Object* pointer)
 {
     m_colliding.clear();
     for(unsigned int i=0, count=(*m_objects).size();i<count;i++)
-        if(o->collision((*m_objects)[i]))
+        if((*m_objects)[i]!=pointer && o->collision((*m_objects)[i]))
             m_colliding.push_back((*m_objects)[i]);
 }
 

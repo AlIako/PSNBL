@@ -34,26 +34,6 @@ void Camera::look()
     m_target.X,m_target.Y,m_target.Z,
     0,0,1);
 }
-void Camera::setCible(Object *cible)
-{
-    m_cible=cible;
-}
-Vector3D Camera::getPos()
-{
-    return m_position;
-}
-Vector3D Camera::getDir()
-{
-    return m_direction;
-}
-Object* Camera::getCible()
-{
-    return m_cible;
-}
-void Camera::setPos(Vector3D position)
-{
-    m_position=position;
-}
 
 void Camera::onMouseMotion(const SDL_MouseMotionEvent & event)
 {

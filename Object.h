@@ -14,7 +14,7 @@ class Object
 
     bool collision(Object* o);
 
-    void update(double functionTime);
+    virtual void update(double functionTime);
 
     void move(Vector3D v) {m_position+=v;}
     void applyGravity();
@@ -38,12 +38,14 @@ class Object
     void setTransparency(bool t) {m_transparency=t;}
     void setBlock(bool b) {m_block=b;}
     void setDestructible(bool b) {m_destructible=b;}
+    void collide() {m_collided=true;}
 
     //get
     Vector3D getPos() {return m_position;}
     Vector3D getRot() {return m_rotation;}
     Vector3D getSize() {return m_size;}
     Vector3D getVel() {return m_velocity;}
+    Vector3D getDir() {return m_direction;}
     std::string getType() {return m_type;}
     bool getPhysical() {return m_physical; }
     bool getTransparency() {return m_transparency; }
@@ -73,6 +75,8 @@ class Object
     double ft;//function time
 
     GTime last_lose_life;
+
+    bool m_collided;
 };
 
 #endif // OBJECT_H_INCLUDED

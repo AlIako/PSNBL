@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "Wall.h"
 #include "Lava.h"
+#include "Rope.h"
 
 class Map
 {
@@ -13,6 +14,8 @@ class Map
 
     void ini();
     void draw();
+
+    Rope* createRope(Vector3D start, Vector3D target);
 
     void update(double functionTime);
     void applyGravity(Object* o);
