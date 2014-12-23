@@ -4,7 +4,7 @@
 #include "sdlglutils.h"
 #include "utilFunctions.h"
 class Texture;
-#include "Gtexture.h"
+#include "GTexture.h"
 
 using namespace std;
 
@@ -17,10 +17,10 @@ class Texture
     void bind(bool force=false);
     string getChemin();
     void cleanBorders();
-    void setGtext(Gtexture* gt) {gtext=gt;}
+    void setGtext(GTexture* gt) {gtext=gt;}
 
     private:
-    Gtexture *gtext;
+    GTexture *gtext;
     string m_type;
     string m_chemin;
     GLuint m_id;

@@ -10,8 +10,9 @@ class Block: public Object
     virtual void ini();
     virtual void draw();
 
-    private:
+    protected:
     Texture* m_texture;
+    double mosaic;
 };
 
 #endif // BLOCK_H_INCLUDED

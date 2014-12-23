@@ -31,7 +31,7 @@ class Game
 
 
     //public attributes
-    Gtexture* gtext;
+    GTexture* gtext;
 
     private:
     bool playLoop;

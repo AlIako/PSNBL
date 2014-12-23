@@ -11,8 +11,8 @@ Video::Video()
 
 void Video::ini()
 {
-    m_largeur=640;
-    m_hauteur=480;
+    m_largeur=800;
+    m_hauteur=600;
 
 
 
@@ -26,7 +26,7 @@ void Video::ini()
 
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
-    gluPerspective(70,(double)m_hauteur/m_largeur,1,1000);
+    gluPerspective(70,(double)m_hauteur/m_largeur,0.01,1000);
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_DEPTH_TEST);
     glEnable(GL_TEXTURE_2D);

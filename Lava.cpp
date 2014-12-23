@@ -1,27 +1,29 @@
-#include "Block.h"
+#include "Lava.h"
 
 
 
-Block::Block()
+Lava::Lava()
 {
     m_texture=NULL;
-    mosaic=2;
+    m_transparency=true;
+    m_block=false;
+    mosaic=5;
 }
 
-void Block::ini()
+void Lava::ini()
 {
-    m_type="block";
+    m_type="lava";
     if(gtext!=NULL)
     {
-        gtext->addTexture("../data/textures/rock.png");
-        m_texture=gtext->getTexture("../data/textures/rock.png");
+        gtext->addTexture("../data/textures/fire.jpg");
+        m_texture=gtext->getTexture("../data/textures/fire.jpg");
     }
 
     Object::ini();
 }
 
 
-void Block::draw()
+void Lava::draw()
 {
     const Vector3D m_taille=m_size;
 
@@ -31,6 +33,8 @@ void Block::draw()
         m_texture->bind();
 
 
+    glBlendFunc(GL_SRC_ALPHA,GL_ONE);
+    glEnable(GL_BLEND);
     glPushMatrix();
     glTranslated(m_position.X,m_position.Y,m_position.Z);
     //glRotated(m_rotation.Z,0,0,1);
@@ -76,6 +80,8 @@ void Block::draw()
     glEnd();
 
     glPopMatrix();
+
+    glDisable(GL_BLEND);
 }
 
 

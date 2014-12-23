@@ -2,7 +2,7 @@
 
 int main ( int argc, char** argv )
 {
-    Gtexture* gtext=new Gtexture();
+    GTexture* gtext=new GTexture();
 
     Game game;
     game.gtext=gtext;

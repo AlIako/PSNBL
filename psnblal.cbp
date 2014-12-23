@@ -82,6 +82,14 @@
 		<Unit filename="Client.h">
 			<Option virtualFolder="Online\" />
 		</Unit>
+		<Unit filename="Collision.cpp" />
+		<Unit filename="Collision.h" />
+		<Unit filename="GTexture.cpp">
+			<Option virtualFolder="Render\" />
+		</Unit>
+		<Unit filename="GTexture.h">
+			<Option virtualFolder="Render\" />
+		</Unit>
 		<Unit filename="GTime.cpp">
 			<Option virtualFolder="functions\" />
 		</Unit>
@@ -94,12 +102,8 @@
 		<Unit filename="Game.h">
 			<Option virtualFolder="Game\" />
 		</Unit>
-		<Unit filename="Gtexture.cpp">
-			<Option virtualFolder="Render\" />
-		</Unit>
-		<Unit filename="Gtexture.h">
-			<Option virtualFolder="Render\" />
-		</Unit>
+		<Unit filename="Lava.cpp" />
+		<Unit filename="Lava.h" />
 		<Unit filename="Map.cpp">
 			<Option virtualFolder="Game\" />
 		</Unit>
@@ -148,6 +152,8 @@
 		<Unit filename="Video.h">
 			<Option virtualFolder="Render\" />
 		</Unit>
+		<Unit filename="Wall.cpp" />
+		<Unit filename="Wall.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="sdlglutils.cpp">
 			<Option virtualFolder="functions\" />

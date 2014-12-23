@@ -1,14 +1,14 @@
-#include "Gtexture.h"
+#include "GTexture.h"
 
 
-Gtexture::Gtexture()
+GTexture::GTexture()
 {
     m_textures.clear();
     //m_textures.push_back(new Texture("data/red.jpg"));
     lastBind=NULL;
 }
 
-void Gtexture::loadAll()
+void GTexture::loadAll()
 {
     m_textures.clear();
 
@@ -71,14 +71,14 @@ void Gtexture::loadAll()
         }
     }
 }
-void Gtexture::reinitialiser()
+void GTexture::reinitialiser()
 {
     delAll();
     //m_textures.push_back(new Texture("data/textures/red.jpg"));
     lastBind=NULL;
     //loadAll();
 }
-void Gtexture::addTexture(string c)
+void GTexture::addTexture(string c)
 {
     bool deja_la=false;
     for(unsigned int i=0;i<m_textures.size();i++)
@@ -92,7 +92,7 @@ void Gtexture::addTexture(string c)
     }
 }
 
-string Gtexture::getSoundGround(string text,int num)
+string GTexture::getSoundGround(string text,int num)
 {
     stringstream ss;
     ss << "data/sounds/";
@@ -124,7 +124,7 @@ string Gtexture::getSoundGround(string text,int num)
 }
 
 
-Texture* Gtexture::getTexture(string c)
+Texture* GTexture::getTexture(string c)
 {
     for(unsigned int i=0;i<m_textures.size();i++)
         if(c==m_textures[i]->getChemin())
@@ -133,26 +133,26 @@ Texture* Gtexture::getTexture(string c)
 }
 
 
-Texture* Gtexture::getTexture(unsigned int index)
+Texture* GTexture::getTexture(unsigned int index)
 {
     if(index<=m_textures.size()-1)
         return m_textures[index];
     return NULL;
 }
-void Gtexture::setLastBind(Texture* t)
+void GTexture::setLastBind(Texture* t)
 {
     lastBind=t;
 }
-Texture* Gtexture::getLastBind()
+Texture* GTexture::getLastBind()
 {
     return lastBind;
 }
-unsigned int Gtexture::getSize()
+unsigned int GTexture::getSize()
 {
     return m_textures.size();
 }
 
-void Gtexture::delAll()
+void GTexture::delAll()
 {
     for(unsigned int i=0;i<m_textures.size();i++)
     {

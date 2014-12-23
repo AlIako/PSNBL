@@ -3,15 +3,16 @@
 #include <vector>
 #include <sstream>
 #include <dirent.h>
-class Gtexture;
+class GTexture;
 #include "Texture.h"
 
 using namespace std;
 
-class Gtexture
+
+class GTexture
 {
     public:
-    Gtexture();
+    GTexture();
 
     void loadAll();
     void reinitialiser();
@@ -31,11 +32,33 @@ class Gtexture
 
     void delAll();
 
-    std::vector < Texture* > m_textures;
-    Texture* lastBind;
-
 
     private:
+
+    std::vector < Texture* > m_textures;
+    Texture* lastBind;
 };
+
+//extern GTexture* gtex;
+/*
+
+class GetGT
+{
+    public:
+    GetGT()
+    {
+        gt=NULL;
+    }
+    GTexture* get()
+    {
+        if(gt==NULL)
+            gt=new GTexture();
+
+        return gt;
+    }
+    private:
+    GTexture* gt;
+};
+extern GetGT getgt=GetGT();*/
 
 #endif // GTEXTURES_H_INCLUDED

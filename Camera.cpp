@@ -15,7 +15,7 @@ void Camera::look()
 {
     if(m_cible!=NULL)
     {
-        m_position=m_cible->getPos();
+        m_position=m_cible->getPos()+Vector3D(0,0,1);
 
         double m_distance=1;
         m_target.X=m_position.X-m_distance*sin((90-m_beta)*M_PI/180)*cos(m_alpha*M_PI/180);

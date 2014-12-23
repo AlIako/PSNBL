@@ -1,4 +1,5 @@
 #include "Player.h"
+#define MAPSIZE 50
 
 
 
@@ -6,9 +7,7 @@
 Player::Player()
 {
     m_texture=NULL;
-    m_position.X=0;
-    m_position.Y=0;
-    m_position.Z=20;
+    m_position=Vector3D(-MAPSIZE/1.5,-MAPSIZE/1.5,20);
 
     m_rotation.Z=0;
 
@@ -17,7 +16,8 @@ Player::Player()
     m_pressed[LEFT]=false;
     m_pressed[RIGHT]=false;
 
-    m_speed=0.5;
+    m_physical=true;
+    m_destructible=true;
 }
 
 
@@ -26,6 +26,7 @@ Player::Player()
 
 void Player::ini()
 {
+//    getgt.get();
     if(gtext!=NULL)
     {
         gtext->addTexture("../data/textures/char1.png");
@@ -41,7 +42,7 @@ void Player::draw()
 
 
     glPushMatrix();
-    glTranslated(m_position.X,m_position.Y,m_position.Z-5);
+    glTranslated(m_position.X,m_position.Y,m_position.Z+1);
     glRotated(m_rotation.Z,0,0,1);
     if(m_texture!=NULL)
         m_texture->bind();
@@ -95,30 +96,74 @@ void Player::pressKey(DIRECTION k, bool pressed)
 
 void Player::move()
 {
-    m_direction.write();
+    //m_direction.write();
+
     if(m_pressed[UP])
     {
-        m_position.X+=m_speed*m_direction.X;
-        m_position.Y+=m_speed*m_direction.Y;
-        m_position.Z+=m_speed*m_direction.Z;
+        m_velocity.X+=m_speed*m_direction.X*ft;
+        m_velocity.Y+=m_speed*m_direction.Y*ft;
+        //m_position.Z+=m_speed*m_direction.Z;
     }
     if(m_pressed[DOWN])
     {
-        m_position.X-=m_speed*m_direction.X;
-        m_position.Y-=m_speed*m_direction.Y;
-        m_position.Z-=m_speed*m_direction.Z;
+        m_velocity.X-=m_speed*m_direction.X*ft;
+        m_velocity.Y-=m_speed*m_direction.Y*ft;
+        //m_position.Z-=m_speed*m_direction.Z;
     }
     if(m_pressed[RIGHT])
     {
-        m_position.X+=m_direction.Y*m_speed;
-        m_position.Y-=m_direction.X*m_speed;
+        m_velocity.X+=m_direction.Y*m_speed*ft;
+        m_velocity.Y-=m_direction.X*m_speed*ft;
     }
     if(m_pressed[LEFT])
     {
-        m_position.X-=m_direction.Y*m_speed;
-        m_position.Y+=m_direction.X*m_speed;
+        m_velocity.X-=m_direction.Y*m_speed*ft;
+        m_velocity.Y+=m_direction.X*m_speed*ft;
 
     }
+
+    double maxspeed=0.1;
+
+    //speed limit
+    if(m_velocity.X>maxspeed)
+        m_velocity.X=maxspeed;
+    else if(m_velocity.X<-maxspeed)
+        m_velocity.X=-maxspeed;
+
+    if(m_velocity.Y>maxspeed)
+        m_velocity.Y=maxspeed;
+    else if(m_velocity.Y<-maxspeed)
+        m_velocity.Y=-maxspeed;
+
+    double friction=0.002;
+
+    //friction
+    if(m_velocity.X>0)
+        m_velocity.X-=ft*friction;
+    else
+        m_velocity.X+=ft*friction;
+
+    if(abs(m_velocity.X)<=ft*friction)
+        m_velocity.X=0;
+
+
+    if(m_velocity.Y>0)
+        m_velocity.Y-=ft*friction;
+    else
+        m_velocity.Y+=ft*friction;
+
+    if(abs(m_velocity.Y)<=ft*friction)
+        m_velocity.Y=0;
 }
+
+
+void Player::resurrect()
+{
+    Object::resurrect();
+    m_position=Vector3D(-MAPSIZE/1.5,-MAPSIZE/1.5,20);
+}
+
+
+
 
 

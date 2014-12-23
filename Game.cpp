@@ -9,13 +9,21 @@ void Game::ini()
 {
     m_video.ini();
 
+    unsigned int ind=playerList.size();
     playerList.push_back(new Player());
+    playerList[ind]->gtext=gtext;
+    playerList[ind]->ini();
+
+    ind=playerList.size();
     playerList.push_back(new Player());
+    playerList[ind]->gtext=gtext;
+    playerList[ind]->ini();
 
     m_online.ini();
 
     m_map.gtext=gtext;
     m_map.ini();
+    m_map.playerList=&playerList;
 
     m_camera.setCible(playerList[0]);
 
@@ -45,17 +53,21 @@ void Game::play()
                 case SDL_KEYDOWN:
                 switch(event.key.keysym.sym)
                 {
-                    case SDLK_LEFT:
+                    case SDLK_a:
                     playerList[0]->pressKey(LEFT,true);
                     break;
-                    case SDLK_RIGHT:
+                    case SDLK_d:
                     playerList[0]->pressKey(RIGHT,true);
                     break;
-                    case SDLK_UP:
+                    case SDLK_w:
                     playerList[0]->pressKey(UP,true);
                     break;
-                    case SDLK_DOWN:
+                    case SDLK_s:
                     playerList[0]->pressKey(DOWN,true);
+                    break;
+                    case SDLK_SPACE:
+                    //jump
+                    playerList[0]->setVel(Vector3D(playerList[0]->getVel().X,playerList[0]->getVel().Y,0.4));
                     break;
                     case SDLK_ESCAPE:
                     playLoop = false;
@@ -68,16 +80,16 @@ void Game::play()
                 case SDL_KEYUP:
                 switch(event.key.keysym.sym)
                 {
-                    case SDLK_LEFT:
+                    case SDLK_a:
                     playerList[0]->pressKey(LEFT,false);
                     break;
-                    case SDLK_RIGHT:
+                    case SDLK_d:
                     playerList[0]->pressKey(RIGHT,false);
                     break;
-                    case SDLK_UP:
+                    case SDLK_w:
                     playerList[0]->pressKey(UP,false);
                     break;
-                    case SDLK_DOWN:
+                    case SDLK_s:
                     playerList[0]->pressKey(DOWN,false);
                     break;
                     case SDLK_c:
@@ -105,17 +117,20 @@ void Game::play()
         updateMultiplayer();
         m_online.update();
 
-        playerList[0]->move();
+        m_map.update(ft);
+
 
         //draw
         m_video.beforeDraw();
 
         m_camera.look();
 
-        m_map.draw();
 
-        for(unsigned int i=0;i<playerList.size();i++)
+
+        for(unsigned int i=1, count=playerList.size();i<count;i++)
             playerList[i]->draw();
+
+        m_map.draw();
 
 
         m_video.afterDraw();
