@@ -33,8 +33,14 @@ void* handleConnections(void* data)
         //specific IP, specify that //instead.
         addr.sin_addr.s_addr = htonl (INADDR_ANY);
 
-        s = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP); // Create socket
-        //s = socket (AF_INET, SOCK_STREAM, 0); // Create socket
+
+    params->addr=addr;
+    params->clilen = sizeof(params->addr);
+
+    if(params->tcp)
+    {
+        s = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP); // Create socket tcp
+        //s = socket (AF_INET, SOCK_STREAM, 0); // Create socket tcp
 
         if (s == INVALID_SOCKET)
         {
@@ -58,12 +64,8 @@ void* handleConnections(void* data)
         listen(s, SOMAXCONN);
 
 
-        //params->cli_addr=addr;
 
-        //socklen_t size = sizeof(client_addr);
-
-        params->clilen = sizeof(params->cli_addr);
-        *params->newsockfd = accept(s, (struct sockaddr *) &(params->cli_addr), &(params->clilen));
+        *params->newsockfd = accept(s, (struct sockaddr *) &(params->addr), &(params->clilen));
         if (*params->newsockfd < 0)
         {
             cerr<<"ERROR on accept: "<<WSAGetLastError()<<endl;
@@ -79,6 +81,33 @@ void* handleConnections(void* data)
         //Don't forget to clean up with CloseConnection()!
 
         SDL_Delay(10);
+    }
+    else//udp
+    {
+         *params->newsockfd  = socket(AF_INET, SOCK_DGRAM, 0); //Create socket udp
+        bind(*params->newsockfd, (SOCKADDR*)&addr, (params->clilen));
+
+        cerr<<"waiting for client..."<<endl;
+        infosSocket infosRecu;
+        //recvfrom(params->sock,(char*)&infosRecu,sizeof(infosRecu),0,(SOCKADDR*)params->sin,&params->crecsize);
+        while(*(params->connectionEstablished)==false)
+        {
+            params->n = receiveSocket(params->tcp,*params->newsockfd, (char*)&infosRecu,sizeof(infosRecu), 0,(struct sockaddr *) &(params->addr), &(params->clilen));
+
+            if (params->n < 0)
+                cerr<<"ERROR reading from conn socket: "<<WSAGetLastError()<<endl;
+            if(infosRecu.type==4)//client connect
+                *(params->connectionEstablished)=true;
+        }
+
+        infosRecu.type=5;//serv response
+        params->n = sendSocket(params->tcp,*params->newsockfd,(char*)&infosRecu, sizeof(infosRecu),0,(struct sockaddr *) &(params->addr), (params->clilen));
+        if (params->n < 0)
+            cerr<<"ERROR writing to conn socket: "<<WSAGetLastError()<<endl;
+
+
+        cerr << "Connection succesful!"<<endl;
+    }
     //}
     cerr << "End handle connections thread"<<endl;
     return NULL;
@@ -97,7 +126,7 @@ void* serverReceiveThread(void* data)
 
         infosSocket infosRecu;
         //recvfrom(params->sock,(char*)&infosRecu,sizeof(infosRecu),0,(SOCKADDR*)params->sin,&params->crecsize);
-        params->n = recv (*params->newsockfd, (char*)&infosRecu,sizeof(infosRecu), 0);
+        params->n = receiveSocket(params->tcp,*params->newsockfd, (char*)&infosRecu,sizeof(infosRecu), 0,(struct sockaddr *) &(params->addr), &(params->clilen));
         //params->n = read(*(params->newsockfd),params->buffer,255);
         if (params->n < 0)
             cerr<<"ERROR reading from socket: "<<WSAGetLastError()<<endl;
@@ -132,7 +161,7 @@ void* serverSendThread(void* data)
             //take first element of queue
             infosS=(*params->socketsToSend)[0];
             //send
-            params->n = sendto(*params->newsockfd,(char*)&infosS, sizeof(infosS),0,(struct sockaddr *) &(params->cli_addr), (params->clilen));
+            params->n = sendSocket(params->tcp,*params->newsockfd,(char*)&infosS, sizeof(infosS),0,(struct sockaddr *) &(params->addr), (params->clilen));
             //check any error
             if (params->n < 0)
                 cerr<<"ERROR writing to socket: "<<WSAGetLastError()<<endl;

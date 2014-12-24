@@ -27,6 +27,13 @@ typedef struct sockaddr SOCKADDR;
 
 using namespace std;
 
+
+int sendSocket(bool tcp,SOCKET s,const char* infosS,int sizeInfosS,int wut,const struct sockaddr* paramsin,int crecsize);
+int receiveSocket(bool tcp,SOCKET s,char* infosS,int sizeInfosS,int wut,struct sockaddr* paramsin=NULL,int* crecsize=NULL);
+
+
+
+
 struct infosSocket
 {
     char type;
@@ -42,12 +49,14 @@ struct thread_params
     int port;
     string ip;
 
+    bool tcp;
+
     std::vector<infosSocket>* socketsReceived;
     std::vector<infosSocket>* socketsToSend;
 
     int *newsockfd;
     int portno, clilen, n;
-    sockaddr_in serv_addr, cli_addr;
+    sockaddr_in addr;
     char buffer[256];
 };
 

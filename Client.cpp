@@ -30,31 +30,70 @@ void* clientConnectThread(void* data)
     char* tempIp=stringtochar(params->ip);
     target.sin_addr.s_addr = inet_addr (tempIp); //Target IP
 
+    params->addr=target;
+    params->clilen = sizeof(params->addr);
 
-    //*params->newsockfd = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP); //Create socket
-    *params->newsockfd = socket (AF_INET, SOCK_STREAM, 0); //Create socket
-
-    if (*params->newsockfd <0)
+    if(params->tcp)
     {
-        cerr << "Couldn't create the socket"<<endl;
-        return false; //Couldn't create the socket
-    }
+
+        *params->newsockfd = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP); //Create socket tcp
+        //*params->newsockfd = socket (AF_INET, SOCK_STREAM, 0); //Create socket tcp
+        //*params->newsockfd = socket(AF_INET, SOCK_DGRAM, 0); //Create socket udp
+
+        if (*params->newsockfd <0)
+        {
+            cerr << "Couldn't create the socket"<<endl;
+            return false; //Couldn't create the socket
+        }
 
 
-    //Try connecting...
-    cerr << "Try connecting to " << tempIp << "("<<params->port<< ")..."<< endl;
-    if (connect(*params->newsockfd, (SOCKADDR *)&target, sizeof(target)) == SOCKET_ERROR)
-    {
-        cerr << "Couldn't connect."<<endl;
+        //Try connecting...
+        cerr << "Try connecting to " << tempIp << "("<<params->port<< ")..."<< endl;
+        if (connect(*params->newsockfd, (SOCKADDR *)&target, sizeof(target)) == SOCKET_ERROR)
+        {
+            cerr << "Couldn't connect."<<endl;
+        }
+        else
+        {
+            *(params->connectionEstablished)=true;
+            cerr << "Connection succesful!"<<endl;
+        }
+
+
+        delete tempIp;
+
     }
     else
     {
-        *(params->connectionEstablished)=true;
+        infosSocket infosRecu;
+        infosRecu.type=4;//client connect
+        cerr << "connecting..."<<endl;
+
+        *params->newsockfd  = socket(AF_INET, SOCK_DGRAM, 0); //Create socket udp
+
+        //send connection request to serv
+        params->n = sendSocket(params->tcp,*params->newsockfd,(char*)&infosRecu, sizeof(infosRecu),0,(struct sockaddr *) &(params->addr), (params->clilen));
+        if (params->n < 0)
+            cerr<<"ERROR reading from conn socket: "<<WSAGetLastError()<<endl;
+
+        //receive answer from serv
+        while(*(params->connectionEstablished)==false)
+        {
+            params->n = receiveSocket(params->tcp,*params->newsockfd, (char*)&infosRecu,sizeof(infosRecu), 0,(struct sockaddr *) &(params->addr), &(params->clilen));
+
+            if (params->n < 0)
+                cerr<<"ERROR writing to conn socket: "<<WSAGetLastError()<<endl;
+
+            if(infosRecu.type==5)//serv response
+                *(params->connectionEstablished)=true;
+            SDL_Delay(50);
+        }
+
+
         cerr << "Connection succesful!"<<endl;
     }
 
 
-    delete tempIp;
     cerr << "End client connection thread"<<endl;
     return NULL;
 }
@@ -72,7 +111,7 @@ void* clientReceiveThread(void* data)
         memset(buffer, 0, sizeof(buffer)); //Clear the buffer
 
         infosSocket infosRecu;
-        params->n = recv (*params->newsockfd, (char*)&infosRecu,sizeof(infosRecu), 0);
+        params->n = receiveSocket(params->tcp,*params->newsockfd, (char*)&infosRecu,sizeof(infosRecu), 0,(struct sockaddr *) &(params->addr), &(params->clilen));
         if (params->n < 0)
             cerr<<"ERROR reading from socket: "<<WSAGetLastError()<<endl;
 
@@ -102,7 +141,7 @@ void* clientSendThread(void* data)
             //take first element of queue
             infosS=(*params->socketsToSend)[0];
             //send
-            params->n = sendto(*params->newsockfd,(char*)&infosS, sizeof(infosS),0,(struct sockaddr *) &(params->cli_addr), (params->clilen));
+            params->n = sendSocket(params->tcp,*params->newsockfd,(char*)&infosS, sizeof(infosS),0,(struct sockaddr *) &(params->addr), (params->clilen));
             //check any error
             if (params->n < 0)
                 cerr<<"ERROR writing to socket: "<<WSAGetLastError()<<endl;

@@ -6,6 +6,8 @@ Online::Online()
 {
     m_server=false;
     m_connectionEstablished=false;
+
+    m_tcp=false;
 }
 
 //add socket to send to the list
@@ -74,6 +76,7 @@ void Online::ini()
         paramsHandleConnectionsThread.socketsToSend=&socketsToSend;
         paramsHandleConnectionsThread.port=m_port;
         paramsHandleConnectionsThread.ip=m_ip;
+        paramsHandleConnectionsThread.tcp=m_tcp;
         paramsHandleConnectionsThread.newsockfd=new int;
 
         //serv threads
@@ -176,6 +179,15 @@ void Online::readMultiplayerFile()
                 if(cur_read.find("server")!=string::npos)
                     m_server=true;
                 else m_server=false;
+            }
+            else if(read_name=="protocol")
+            {
+                file >> cur_read;
+                cerr<<"protocol: "<<cur_read<<endl;
+
+                if(cur_read.find("tcp")!=string::npos)
+                    m_tcp=true;
+                else m_tcp=false;
             }
 
             file >> cur_read;

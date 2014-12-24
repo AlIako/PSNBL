@@ -3,48 +3,183 @@ mode: server
 name: Linko
 ip: 127.0.0.1
 port: 25
+protocol: tcp
 
 Begin handle connections thread
 Texture ../data/textures/wall.jpg(2ms).
-Texture ../data/textures/fire.jpg(5ms).
-Texture ../data/textures/rock.png(28ms).
+Texture ../data/textures/fire.jpg(6ms).
+Texture ../data/textures/rock.png(30ms).
 1 sending socket type 1, 0: -33.3333, 1: -33.3333, 2: 20, 3: 0
-Texture ../data/textures/rope.jpg(8ms).
-2 sending socket type 2, 0: -33.3333, 1: -33.3333, 2: 12.0152, 3: 0.468645
-update hook
-distance: 28.2643
-press 4 key
-press 1 key
-press 2 key
-press 4 key
-3 sending socket type 3, 0: -33.3333, 1: -33.3333, 2: 12.0152, 3: 0.468645
-4 sending socket type 2, 0: -21.7562, 1: -20.1195, 2: 47.0244, 3: 0.643771
-update hook
-distance: 32.5519
-press 4 key
-press 4 key
-5 sending socket type 3, 0: -21.7562, 1: -20.1195, 2: 47.0244, 3: 0.643771
-press 1 key
-press 1 key
-press 2 key
 press 0 key
 press 1 key
-press 3 key
+press 1 key
 press 0 key
-press 2 key
-press 3 key
-press 1 key
-6 sending socket type 2, 0: 7.65117, 1: 7.06995, 2: 64.0035, 3: -0.690942
+Client connected!
+Connection to server established! launching threads...
+Begin server send thread
+Begin server receive thread
+End handle connections thread
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -33.3333, 1: -33.3333, 2: 20, 3: 0
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -33.3333, 1: -33.3333, 2: 19.9467, 3: 45.4
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -33.3333, 1: -33.3333, 2: 19.7727, 3: 45.4
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -33.3333, 1: -33.3333, 2: 19.4567, 3: 45.4
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -33.3333, 1: -33.3333, 2: 18.9807, 3: 45.4
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -33.3333, 1: -33.3333, 2: 18.5187, 3: 45.3
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -33.3333, 1: -33.3333, 2: 17.7627, 3: 46.7
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -33.3333, 1: -33.3333, 2: 16.85, 3: 46.7
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -33.3333, 1: -33.3333, 2: 16.072, 3: 46.7
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -33.3341, 1: -33.282, 2: 14.8947, 3: 46.7
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -33.3365, 1: -33.1689, 2: 13.9067, 3: 46.7
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -33.26, 1: -32.9446, 2: 12.4493, 3: 46.8
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -33.1392, 1: -32.7333, 2: 12.1698, 3: 47.6
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -32.9345, 1: -32.3995, 2: 12.509, 3: 55.8
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -32.7599, 1: -32.0359, 2: 12.6882, 3: 76.9
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -32.7101, 1: -31.7632, 2: 12.7176, 3: 86.5
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -32.7459, 1: -31.3995, 2: 12.6168, 3: 90.2
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -32.777, 1: -31.1268, 2: 12.4362, 3: 91
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -32.8187, 1: -30.7632, 2: 12.0554, 3: 91.5
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -32.8621, 1: -30.3995, 2: 12.1036, 3: 91.5
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -32.8953, 1: -30.1268, 2: 12.0618, 3: 91.5
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -32.9305, 1: -29.7632, 2: 12.0242, 3: 91.5
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -32.9345, 1: -29.4905, 2: 12.0054, 3: 92.2
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -32.9035, 1: -29.1268, 2: 12.0054, 3: 92.7
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -32.8589, 1: -28.8541, 2: 12.0054, 3: 92.7
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 2, 0: -32.8409, 1: -28.7632, 2: 12.0054, 3: -0.326855
+Texture ../data/textures/rope.jpg(10ms).
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -32.6233, 1: -27.9452, 2: 12.0011, 3: 92.7
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -32.4905, 1: -27.5122, 2: 12.0011, 3: 92.7
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
 update hook
-distance: 21.6388
-press 4 key
-press 4 key
-7 sending socket type 3, 0: 7.65117, 1: 7.06995, 2: 64.0035, 3: -0.690942
-press 1 key
-8 sending socket type 3, 0: 7.65117, 1: 7.06995, 2: 64.0035, 3: -0.690942
-press 3 key
-press 3 key
-press 1 key
-press 1 key
-press 2 key
+distance: 10.2871
+received socket type 1, 0: -32.3562, 1: -27.0812, 2: 12.0011, 3: 92.7
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -32.2828, 1: -26.8475, 2: 12.0011, 3: 92.7
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -32.2558, 1: -26.7633, 2: 12.0011, 3: 92.7
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -32.2461, 1: -26.7367, 2: 12.0011, 3: 92.7
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -32.2533, 1: -26.7635, 2: 12.0011, 3: 92.7
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -32.2764, 1: -26.8432, 2: 12.0011, 3: 92.7
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -32.3279, 1: -27.0083, 2: 12.0011, 3: 92.7
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -32.4205, 1: -27.2895, 2: 12.0011, 3: 92.7
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -32.5921, 1: -27.8042, 2: 12.0011, 3: 92.7
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -32.6974, 1: -28.1194, 2: 12.0011, 3: 92.7
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -32.7982, 1: -28.4212, 2: 12.0011, 3: 92.7
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -32.8671, 1: -28.6273, 2: 12.0011, 3: 63.5
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -32.904, 1: -28.7378, 2: 12.0011, 3: 69.1
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -32.9393, 1: -28.8436, 2: 12.0011, 3: 77.5
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -32.9583, 1: -28.9002, 2: 12.0011, 3: 80.7
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -32.9764, 1: -28.9545, 2: 12.0011, 3: 85.7
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -32.9888, 1: -28.9916, 2: 12.0011, 3: 90.6
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -32.9954, 1: -29.0115, 2: 12.0011, 3: 91.7
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -33.0018, 1: -29.0305, 2: 12.0011, 3: 92.6
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -33.0052, 1: -29.0407, 2: 12.0011, 3: 92.6
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -33.0084, 1: -29.0505, 2: 12.0011, 3: 92.6
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -33.0107, 1: -29.0571, 2: 12.0011, 3: 92.6
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -33.0119, 1: -29.0607, 2: 12.0011, 3: 92.6
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -33.013, 1: -29.0641, 2: 12.0011, 3: 92.6
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -33.0136, 1: -29.0659, 2: 12.0011, 3: 92.6
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+ERROR reading from socket: 10054
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -33.0136, 1: -29.0659, 2: 12.0011, 3: 92.6
+ERROR writing to socket: 10054
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+ERROR reading from socket: 10054
+received socket type 1, 0: -33.0136, 1: -29.0659, 2: 12.0011, 3: 92.6
+ERROR writing to socket: 10054
+ERROR reading from socket: 1 sending socket type 100541
+, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -33.0136, 1: -29.0659, 2: 12.0011, 3: 92.6
+ERROR writing to socket: 10054
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+ERROR reading from socket: 10054
+received socket type 1, 0: -33.0136, 1: -29.0659, 2: 12.0011, 3: 92.6
+ERROR writing to socket: 10054
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+ERROR reading from socket: 10054
+received socket type 1, 0: -33.0136, 1: -29.0659, 2: 12.0011, 3: 92.6
+ERROR writing to socket: 10054
+ERROR reading from socket: 10054
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -33.0136, 1: -29.0659, 2: 12.0011, 3: 92.6
+ERROR writing to socket: 10054
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+ERROR reading from socket: 10054
+received socket type 1, 0: -33.0136, 1: -29.0659, 2: 12.0011, 3: 92.6
+ERROR writing to socket: 10054
+1 sending socket type 1ERROR reading from socket: , 0: 10054
+-36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -33.0136, 1: -29.0659, 2: 12.0011, 3: 92.6
+ERROR writing to socket: 10054
+ERROR reading from socket: 10054
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -33.0136, 1: -29.0659, 2: 12.0011, 3: 92.6
+ERROR writing to socket: 10054
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+ERROR reading from socket: 10054
+received socket type 1, 0: -33.0136, 1: -29.0659, 2: 12.0011, 3: 92.6
+ERROR writing to socket: 10054
+ERROR reading from socket: 10054
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -33.0136, 1: -29.0659, 2: 12.0011, 3: 92.6
+ERROR writing to socket: 10054
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+ERROR reading from socket: 10054
+received socket type 1, 0: -33.0136, 1: -29.0659, 2: 12.0011, 3: 92.6
+ERROR writing to socket: 10054
+ERROR reading from socket: 10054
+1 sending socket type 1, 0: -36.2259, 1: -38.9779, 2: 12.0007, 3: 135.1
+received socket type 1, 0: -33.0136, 1: -29.0659, 2: 12.0011, 3: 92.6
+ERROR writing to socket: 10054
 Exited cleanly.

@@ -38,7 +38,7 @@ class Online
     int m_port;
     string m_ip;
 
-
+    bool m_tcp;//if false -> udp
 
 
 
