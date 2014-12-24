@@ -78,6 +78,8 @@ void Online::ini()
         paramsHandleConnectionsThread.ip=m_ip;
         paramsHandleConnectionsThread.tcp=m_tcp;
         paramsHandleConnectionsThread.newsockfd=new int;
+        paramsHandleConnectionsThread.addr=new sockaddr_in;
+        paramsHandleConnectionsThread.clilen=new int;
 
         //serv threads
         if(m_server)

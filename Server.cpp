@@ -33,9 +33,9 @@ void* handleConnections(void* data)
         //specific IP, specify that //instead.
         addr.sin_addr.s_addr = htonl (INADDR_ANY);
 
+    (*params->addr)=addr;
 
-    params->addr=addr;
-    params->clilen = sizeof(params->addr);
+    (*params->clilen) = sizeof(*params->addr);
 
     if(params->tcp)
     {
@@ -65,7 +65,7 @@ void* handleConnections(void* data)
 
 
 
-        *params->newsockfd = accept(s, (struct sockaddr *) &(params->addr), &(params->clilen));
+        *params->newsockfd = accept(s, (struct sockaddr *) &(params->addr), (params->clilen));
         if (*params->newsockfd < 0)
         {
             cerr<<"ERROR on accept: "<<WSAGetLastError()<<endl;
@@ -85,24 +85,24 @@ void* handleConnections(void* data)
     else//udp
     {
          *params->newsockfd  = socket(AF_INET, SOCK_DGRAM, 0); //Create socket udp
-        bind(*params->newsockfd, (SOCKADDR*)&addr, (params->clilen));
+        bind(*params->newsockfd, (SOCKADDR*)&addr, (*params->clilen));
 
         cerr<<"waiting for client..."<<endl;
         infosSocket infosRecu;
         //recvfrom(params->sock,(char*)&infosRecu,sizeof(infosRecu),0,(SOCKADDR*)params->sin,&params->crecsize);
         while(*(params->connectionEstablished)==false)
         {
-            params->n = receiveSocket(params->tcp,*params->newsockfd, (char*)&infosRecu,sizeof(infosRecu), 0,(struct sockaddr *) &(params->addr), &(params->clilen));
+            int n = receiveSocket(params->tcp,*params->newsockfd, (char*)&infosRecu,sizeof(infosRecu), 0,(struct sockaddr *) (params->addr), (params->clilen));
 
-            if (params->n < 0)
+            if (n < 0)
                 cerr<<"ERROR reading from conn socket: "<<WSAGetLastError()<<endl;
             if(infosRecu.type==4)//client connect
                 *(params->connectionEstablished)=true;
         }
 
         infosRecu.type=5;//serv response
-        params->n = sendSocket(params->tcp,*params->newsockfd,(char*)&infosRecu, sizeof(infosRecu),0,(struct sockaddr *) &(params->addr), (params->clilen));
-        if (params->n < 0)
+        int n = sendSocket(params->tcp,*params->newsockfd,(char*)&infosRecu, sizeof(infosRecu),0,(struct sockaddr *) (params->addr), (*params->clilen));
+        if (n < 0)
             cerr<<"ERROR writing to conn socket: "<<WSAGetLastError()<<endl;
 
 
@@ -121,14 +121,9 @@ void* serverReceiveThread(void* data)
 
     while(params!=NULL && *(params->threadOn))
     {
-        char buffer[80];
-        memset(buffer, 0, sizeof(buffer)); //Clear the buffer
-
         infosSocket infosRecu;
-        //recvfrom(params->sock,(char*)&infosRecu,sizeof(infosRecu),0,(SOCKADDR*)params->sin,&params->crecsize);
-        params->n = receiveSocket(params->tcp,*params->newsockfd, (char*)&infosRecu,sizeof(infosRecu), 0,(struct sockaddr *) &(params->addr), &(params->clilen));
-        //params->n = read(*(params->newsockfd),params->buffer,255);
-        if (params->n < 0)
+        int n = receiveSocket(params->tcp,*params->newsockfd, (char*)&infosRecu,sizeof(infosRecu), 0,(struct sockaddr *) (params->addr), (params->clilen));
+        if (n < 0)
             cerr<<"ERROR reading from socket: "<<WSAGetLastError()<<endl;
 
         //add received socket to queue
@@ -148,8 +143,6 @@ void* serverSendThread(void* data)
     thread_params* params;
     params=(thread_params*)data;
 
-    string tempString="hello :)";
-
     infosSocket infosS;
 
     //infinite while
@@ -161,9 +154,9 @@ void* serverSendThread(void* data)
             //take first element of queue
             infosS=(*params->socketsToSend)[0];
             //send
-            params->n = sendSocket(params->tcp,*params->newsockfd,(char*)&infosS, sizeof(infosS),0,(struct sockaddr *) &(params->addr), (params->clilen));
+            int n = sendSocket(params->tcp,*params->newsockfd,(char*)&infosS, sizeof(infosS),0,(struct sockaddr *) (params->addr), (*params->clilen));
             //check any error
-            if (params->n < 0)
+            if (n < 0)
                 cerr<<"ERROR writing to socket: "<<WSAGetLastError()<<endl;
             //update queue
             for(unsigned int i=0;i<(*params->socketsToSend).size()-1;i++)

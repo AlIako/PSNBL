@@ -54,10 +54,8 @@ struct thread_params
     std::vector<infosSocket>* socketsReceived;
     std::vector<infosSocket>* socketsToSend;
 
-    int *newsockfd;
-    int portno, clilen, n;
-    sockaddr_in addr;
-    char buffer[256];
+    int *newsockfd, *clilen;
+    sockaddr_in *addr;
 };
 
 #endif // THREADSTRUCTURES_H_INCLUDED

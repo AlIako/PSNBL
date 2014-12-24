@@ -30,8 +30,10 @@ void* clientConnectThread(void* data)
     char* tempIp=stringtochar(params->ip);
     target.sin_addr.s_addr = inet_addr (tempIp); //Target IP
 
-    params->addr=target;
-    params->clilen = sizeof(params->addr);
+
+    (*params->addr)=target;
+
+    (*params->clilen) = sizeof(*params->addr);
 
     if(params->tcp)
     {
@@ -72,16 +74,16 @@ void* clientConnectThread(void* data)
         *params->newsockfd  = socket(AF_INET, SOCK_DGRAM, 0); //Create socket udp
 
         //send connection request to serv
-        params->n = sendSocket(params->tcp,*params->newsockfd,(char*)&infosRecu, sizeof(infosRecu),0,(struct sockaddr *) &(params->addr), (params->clilen));
-        if (params->n < 0)
+        int n = sendSocket(params->tcp,*params->newsockfd,(char*)&infosRecu, sizeof(infosRecu),0,(struct sockaddr *) (params->addr), (*params->clilen));
+        if (n < 0)
             cerr<<"ERROR reading from conn socket: "<<WSAGetLastError()<<endl;
 
         //receive answer from serv
         while(*(params->connectionEstablished)==false)
         {
-            params->n = receiveSocket(params->tcp,*params->newsockfd, (char*)&infosRecu,sizeof(infosRecu), 0,(struct sockaddr *) &(params->addr), &(params->clilen));
+            n = receiveSocket(params->tcp,*params->newsockfd, (char*)&infosRecu,sizeof(infosRecu), 0,(struct sockaddr *) (params->addr), (params->clilen));
 
-            if (params->n < 0)
+            if (n < 0)
                 cerr<<"ERROR writing to conn socket: "<<WSAGetLastError()<<endl;
 
             if(infosRecu.type==5)//serv response
@@ -107,12 +109,9 @@ void* clientReceiveThread(void* data)
     //receive informations from server
     while(params!=NULL && *(params->threadOn))
     {
-        char buffer[80];
-        memset(buffer, 0, sizeof(buffer)); //Clear the buffer
-
         infosSocket infosRecu;
-        params->n = receiveSocket(params->tcp,*params->newsockfd, (char*)&infosRecu,sizeof(infosRecu), 0,(struct sockaddr *) &(params->addr), &(params->clilen));
-        if (params->n < 0)
+        int n = receiveSocket(params->tcp,*params->newsockfd, (char*)&infosRecu,sizeof(infosRecu), 0,(struct sockaddr *) (params->addr), (params->clilen));
+        if (n < 0)
             cerr<<"ERROR reading from socket: "<<WSAGetLastError()<<endl;
 
         //add received socket to queue
@@ -141,9 +140,9 @@ void* clientSendThread(void* data)
             //take first element of queue
             infosS=(*params->socketsToSend)[0];
             //send
-            params->n = sendSocket(params->tcp,*params->newsockfd,(char*)&infosS, sizeof(infosS),0,(struct sockaddr *) &(params->addr), (params->clilen));
+            int n = sendSocket(params->tcp,*params->newsockfd,(char*)&infosS, sizeof(infosS),0,(struct sockaddr *) (params->addr), (*params->clilen));
             //check any error
-            if (params->n < 0)
+            if (n < 0)
                 cerr<<"ERROR writing to socket: "<<WSAGetLastError()<<endl;
             //update queue
             for(unsigned int i=0;i<(*params->socketsToSend).size()-1;i++)
