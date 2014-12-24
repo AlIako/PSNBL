@@ -15,19 +15,67 @@ Player::Player()
     m_pressed[DOWN]=false;
     m_pressed[LEFT]=false;
     m_pressed[RIGHT]=false;
+    m_pressed[KEY_E]=false;
 
     m_physical=true;
     m_destructible=true;
 
+    m_rope=NULL;
     m_type="player";
+
+    m_jumping=false;
 }
 
+void Player::update(double functionTime)
+{
+    Object::update(functionTime);
+
+    if(m_collided)
+    {
+        m_jumping=false;
+        m_collided=false;
+    }
+}
+void Player::jump()
+{
+    if(!m_jumping)
+    {
+        m_jumping=true;
+        setVel(Vector3D(getVel().X,getVel().Y,0.4));
+
+        unlinkRope();
+    }
+}
+
+void Player::pullUpRope()
+{
+    if(m_rope!=NULL)
+    {
+
+    }
+}
 
 void Player::linkRope(Rope* p)
 {
+    m_jumping=false;
+
+    if(m_rope!=NULL)
+        m_rope->unlink();
+
     m_rope=p;
+    m_rope->linkToObject(this);
+}
+void Player::unlinkRope()
+{
+    if(m_rope!=NULL)
+        m_rope->unlink();
+    m_rope=NULL;
 }
 
+bool Player::hookedToRope()
+{
+    return m_rope!=NULL;
+}
 
 void Player::ini()
 {
@@ -96,12 +144,24 @@ void Player::draw()
 void Player::pressKey(DIRECTION k, bool pressed)
 {
     m_pressed[k]=pressed;
-    cerr<<"press key"<<endl;
+    cerr<<"press "<< k <<" key"<<endl;
 }
+
+void Player::resurrect()
+{
+    Object::resurrect();
+    m_position=Vector3D(-MAPSIZE/1.5,-MAPSIZE/1.5,20);
+
+    unlinkRope();
+}
+
 
 void Player::move()
 {
     //m_direction.write();
+
+    if(hookedToRope())
+        m_speed*=2;
 
     if(m_pressed[UP])
     {
@@ -127,7 +187,20 @@ void Player::move()
 
     }
 
+    //hook
+    if(m_pressed[KEY_E])
+    {
+        /*if(hookedToRope())
+            m_rope->pullUp();*/
+    }
+
+    if(hookedToRope())
+        m_speed/=2;
+
     double maxspeed=0.1;
+
+    if(hookedToRope())
+        maxspeed*=2;
 
     //speed limit
     if(m_velocity.X>maxspeed)
@@ -140,9 +213,10 @@ void Player::move()
     else if(m_velocity.Y<-maxspeed)
         m_velocity.Y=-maxspeed;
 
-    double friction=0.002;
 
     //friction
+    double friction=0.002;
+
     if(m_velocity.X>0)
         m_velocity.X-=ft*friction;
     else
@@ -159,13 +233,6 @@ void Player::move()
 
     if(abs(m_velocity.Y)<=ft*friction)
         m_velocity.Y=0;
-}
-
-
-void Player::resurrect()
-{
-    Object::resurrect();
-    m_position=Vector3D(-MAPSIZE/1.5,-MAPSIZE/1.5,20);
 }
 
 

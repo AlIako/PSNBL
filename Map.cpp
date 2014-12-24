@@ -36,12 +36,15 @@ void Map::update(double functionTime)
             applyPhysics(m_objects[i]);
         }
     }
+    //players
+    for(unsigned int i=0, count=playerList->size();i<count;i++)
+    {
+        (*playerList)[i]->update(ft);
+        (*playerList)[i]->move();
+    }
     //player
     if(playerList!=NULL && playerList->size()>0)
     {
-        (*playerList)[0]->update(ft);
-        (*playerList)[0]->move();
-
         applyGravity((*playerList)[0]);
         applyPhysics((*playerList)[0]);
     }

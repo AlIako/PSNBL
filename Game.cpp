@@ -53,9 +53,29 @@ void Game::play()
                 case SDL_MOUSEBUTTONUP:
                 if(event.button.button==SDL_BUTTON_LEFT)
                 {
-                    //m_direction=Vector3D(-cos(lilian[i]->getRZ()*M_PI/180),-sin(lilian[i]->getRZ()*M_PI/180),sin((-lilian[i]->m_beta+8)*M_PI/180)).normalize();
                     Vector3D dir=Vector3D(0,0,sin((-m_camera.getBeta()+8*0)*M_PI/180))+playerList[0]->getDir();
+                    dir=(m_camera.getTarget()-(playerList[0]->getPos()+Vector3D(0,0,1))).normalize();
                     playerList[0]->linkRope(m_map.createRope(playerList[0]->getPos(),dir));
+
+                    infosSocket s;
+                    s.type=2;
+
+                    s.variable[0]=playerList[0]->getPos().X;
+                    s.variable[1]=playerList[0]->getPos().Y;
+                    s.variable[2]=playerList[0]->getPos().Z;
+                    s.variable[3]=dir.X;
+                    s.variable[4]=dir.Y;
+                    s.variable[5]=dir.Z;
+
+                    m_online.sendSocket(s);//add socket to queue
+                }
+                if(event.button.button==SDL_BUTTON_RIGHT)
+                {
+                    playerList[0]->unlinkRope();
+
+                    infosSocket s;
+                    s.type=3;
+                    m_online.sendSocket(s);//add socket to queue
                 }
                 break;
 
@@ -74,9 +94,15 @@ void Game::play()
                     case SDLK_s:
                     playerList[0]->pressKey(DOWN,true);
                     break;
+                    case SDLK_e:
+                    playerList[0]->pressKey(KEY_E,true);
+                    break;
                     case SDLK_SPACE:
-                    //jump
-                    playerList[0]->setVel(Vector3D(playerList[0]->getVel().X,playerList[0]->getVel().Y,0.4));
+                    playerList[0]->jump();
+
+                    infosSocket s;
+                    s.type=3;
+                    m_online.sendSocket(s);//add socket to queue
                     break;
                     case SDLK_ESCAPE:
                     playLoop = false;
@@ -100,6 +126,9 @@ void Game::play()
                     break;
                     case SDLK_s:
                     playerList[0]->pressKey(DOWN,false);
+                    break;
+                    case SDLK_e:
+                    playerList[0]->pressKey(KEY_E,false);
                     break;
                     case SDLK_c:
                     if(grabCursor)
@@ -181,6 +210,18 @@ void Game::updateMultiplayer()
             {
                 playerList[1]->setPos(Vector3D(s.variable[0],s.variable[1],s.variable[2]));
                 playerList[1]->setRot(Vector3D(0,0,s.variable[3]));
+            }
+            //hook
+            if(s.type==2)
+            {
+                Vector3D pos=Vector3D(s.variable[0],s.variable[1],s.variable[2]);
+                Vector3D dir=Vector3D(s.variable[3],s.variable[4],s.variable[5]);
+                playerList[1]->linkRope(m_map.createRope(pos,dir));
+            }
+            //unhook
+            if(s.type==3)
+            {
+                playerList[1]->unlinkRope();
             }
         }
     }

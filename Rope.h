@@ -7,9 +7,16 @@ class Rope: public Object
     public:
     Rope();
     void ini(Vector3D start, Vector3D dir);
+
     virtual void update(double functionTime);
     virtual void ini();
     virtual void draw();
+
+    void pullUp();
+    void pullDown();
+
+    void linkToObject(Object* o) {linkedTo=o;}
+    void unlink();
 
     private:
     Texture* m_texture;
@@ -17,6 +24,10 @@ class Rope: public Object
 
     Vector3D m_start;
     Vector3D m_end;
+    double m_distance;
+
+    Object* linkedTo;
+    Object simulLinked;
 };
 
 

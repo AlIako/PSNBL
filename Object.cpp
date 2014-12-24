@@ -21,6 +21,7 @@ Object::Object()
     m_life=4;
 
     m_collided=false;
+    ft=0;
 }
 
 void Object::resurrect()

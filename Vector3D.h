@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <cmath>
 /* Implémentation intuitive d'une classe Vector3D pour les lecteurs du cours
 d'OpenGL,débutants en C++. Il est évident qu'une approche template est à
 privilégier pour favoriser la réutilisabilité et l'inlinisme. */
@@ -47,4 +48,5 @@ public:
     Vector3D & normalize();
 };
 
+double distance2V(Vector3D v1, Vector3D v2);
 #endif //VECTOR3D_H

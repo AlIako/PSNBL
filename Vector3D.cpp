@@ -1,6 +1,11 @@
 #include "vector3d.h"
 #include <cmath>
 
+double distance2V(Vector3D v1, Vector3D v2)
+{
+    return sqrt((v1.X-v2.X)*(v1.X-v2.X)+(v1.Y-v2.Y)*(v1.Y-v2.Y)+(v1.Z-v2.Z)*(v1.Z-v2.Z));
+}
+
 Vector3D::Vector3D()
 {
     X = 0;

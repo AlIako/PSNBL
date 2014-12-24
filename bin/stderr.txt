@@ -1,12 +1,80 @@
-Texture ../data/textures/char1.png(2ms).
+Texture ../data/textures/char1.png(1ms).
 mode: server
 name: Linko
 ip: 127.0.0.1
 port: 25
 
 Begin handle connections thread
-Texture ../data/textures/wall.jpg(3ms).
-Texture ../data/textures/fire.jpg(5ms).
-Texture ../data/textures/rock.png(29ms).
+Texture ../data/textures/wall.jpg(4ms).
+Texture ../data/textures/fire.jpg(6ms).
+Texture ../data/textures/rock.png(28ms).
+Client connected!
+Connection to server established! launching threads...
+Begin server send thread
+Begin server receive thread
+End handle connections thread
 Texture ../data/textures/rope.jpg(8ms).
+update hook
+distance: 23.0472
+update hook
+distance: 22.9741
+update hook
+distance: 42.6139
+update hook
+distance: 33.6983
+update hook
+distance: 20.6335
+update hook
+distance: 25.4581
+update hook
+distance: 73.3224
+update hook
+distance: 74.7311
+update hook
+distance: 78.8468
+update hook
+distance: 26.7438
+update hook
+distance: 27.3096
+update hook
+distance: 27.3105
+update hook
+distance: 27.3115
+update hook
+distance: 23.2475
+update hook
+distance: 23.9947
+update hook
+distance: 23.9798
+ERROR reading from socket: 10054
+ERROR writing to socket: 10054
+ERROR reading from socket: 10054
+ERROR writing to socket: 10054
+ERROR reading from socket: 10054
+ERROR writing to socket: 10054
+ERROR reading from socket: 10054
+ERROR writing to socket: 10054
+ERROR reading from socket: 10054
+ERROR writing to socket: 10054
+ERROR reading from socket: 10054
+ERROR writing to socket: 10054
+ERROR reading from socket: 10054
+ERROR writing to socket: 10054
+ERROR reading from socket: 10054
+ERROR writing to socket: 10054
+ERROR reading from socket: 10054
+ERROR writing to socket: 10054
+ERROR reading from socket: 10054
+ERROR writing to socket: 10054
+ERROR reading from socket: 10054
+ERROR writing to socket: 10054
+ERROR reading from socket: 10054
+ERROR writing to socket: 10054
+ERROR reading from socket: 10054
+ERROR writing to socket: 10054
+ERROR reading from socket: 10054
+ERROR writing to socket: 10054
+ERROR reading from socket: 10054
+ERROR writing to socket: 10054
+ERROR reading from socket: 10054
 Exited cleanly.

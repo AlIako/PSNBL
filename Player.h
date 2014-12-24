@@ -4,16 +4,25 @@
 #include "Character.h"
 #include "Rope.h"
 
-enum DIRECTION { DOWN, LEFT, UP, RIGHT};
+enum DIRECTION { DOWN, LEFT, UP, RIGHT, KEY_E};
 
 class Player: public Object
 {
     public:
     Player();
+
+
+    virtual void update(double functionTime);
+
     virtual void ini();
     virtual void draw();
 
+    void jump();
+
+    void pullUpRope();
     void linkRope(Rope* p);
+    void unlinkRope();
+    bool hookedToRope();
 
     void pressKey(DIRECTION k, bool pressed);
 
@@ -26,6 +35,8 @@ class Player: public Object
     bool m_pressed[4];
 
     Rope* m_rope;
+
+    bool m_jumping;
 };
 
 #endif // PLAYER_H_INCLUDED

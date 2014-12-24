@@ -5,5 +5,5 @@
 ./psnblal.depend
 ./psnblal.exe
 ./psnblal.layout
-./stderr.txt
-./stdout.txt
+bin/stderr.txt
+bin/stdout.txt
