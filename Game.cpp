@@ -199,12 +199,14 @@ void Game::updateMultiplayer()
     m_online.sendSocketReplace(s);//add socket to queue
 
 
+    //cerr<<"received "<<m_online.socketsReceived.size()<<" sockets..."<<endl;
     //receive
     for(int i = 0;i<RECEIVE_SOCKET_HANDLE_PER_FRAME;i++)
     {
         s=m_online.getNextSocketRemove();//get next socket on the queue
         if(s.type!=-1)//if something on the list
         {
+            cerr<<"received socket type "<<(int)s.type << ", 0: "<< s.variable[0]  << ", 1: "<< s.variable[1] << ", 2: "<< s.variable[2] << ", 3: "<< s.variable[3] <<endl;
             //player position and angle
             if(s.type==1)
             {

@@ -9,6 +9,7 @@ class Rope: public Object
     void ini(Vector3D start, Vector3D dir);
 
     virtual void update(double functionTime);
+    virtual void pullMe(Object* o);
     virtual void ini();
     virtual void draw();
 
@@ -17,6 +18,8 @@ class Rope: public Object
 
     void linkToObject(Object* o) {linkedTo=o;}
     void unlink();
+
+    bool isHooked() {return m_hooked;}
 
     private:
     Texture* m_texture;

@@ -11,6 +11,7 @@ Object::Object()
     m_type="object";
     m_speed=0.01;
 
+    m_gravity=true;
     m_physical=false;
 
     gtext=NULL;

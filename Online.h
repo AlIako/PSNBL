@@ -27,10 +27,10 @@ class Online
     void close();
     ~Online();
 
+    std::vector<infosSocket> socketsReceived;
 
     private:
 
-    std::vector<infosSocket> socketsReceived;
     std::vector<infosSocket> socketsToSend;
 
     SOCKET newsockfd;

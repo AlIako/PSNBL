@@ -12,12 +12,14 @@ Online::Online()
 void Online::sendSocket(infosSocket s)
 {
     socketsToSend.push_back(s);
+    cerr<<socketsToSend.size()<<" sending socket type "<<(int)s.type << ", 0: "<< s.variable[0]  << ", 1: "<< s.variable[1] << ", 2: "<< s.variable[2] << ", 3: "<< s.variable[3] <<endl;
 }
 
 
 //if socket already in list, just replace it
 void Online::sendSocketReplace(infosSocket s)
 {
+    //cerr<<socketsToSend.size()<<" sending socketR type "<<(int)s.type << ", 0: "<< s.variable[0]  << ", 1: "<< s.variable[1] << ", 2: "<< s.variable[2] << ", 3: "<< s.variable[3] <<endl;
     //check if already in list
     bool socketFound=false;
     for(unsigned int i=0;i<socketsToSend.size();i++)

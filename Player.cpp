@@ -28,17 +28,26 @@ Player::Player()
 
 void Player::update(double functionTime)
 {
-    Object::update(functionTime);
-
     if(m_collided)
     {
         m_jumping=false;
         m_collided=false;
     }
+
+    if(hookedToRope())
+    {
+        if(ropeHooked())
+        {
+            m_jumping=false;
+            m_rope->pullMe(this);
+        }
+    }
+
+    Object::update(functionTime);
 }
 void Player::jump()
 {
-    if(!m_jumping)
+    if(!m_jumping && (abs(m_velocity.Z)<0.1 || ropeHooked()))
     {
         m_jumping=true;
         setVel(Vector3D(getVel().X,getVel().Y,0.4));
@@ -49,9 +58,9 @@ void Player::jump()
 
 void Player::pullUpRope()
 {
-    if(m_rope!=NULL)
+    if(hookedToRope() && ropeHooked())
     {
-
+        m_rope->pullUp();
     }
 }
 
@@ -59,8 +68,7 @@ void Player::linkRope(Rope* p)
 {
     m_jumping=false;
 
-    if(m_rope!=NULL)
-        m_rope->unlink();
+    unlinkRope();
 
     m_rope=p;
     m_rope->linkToObject(this);
@@ -75,6 +83,14 @@ void Player::unlinkRope()
 bool Player::hookedToRope()
 {
     return m_rope!=NULL;
+}
+
+bool Player::ropeHooked()
+{
+    if(hookedToRope())
+        if(m_rope->isHooked())
+            return true;
+    return false;
 }
 
 void Player::ini()
@@ -190,8 +206,7 @@ void Player::move()
     //hook
     if(m_pressed[KEY_E])
     {
-        /*if(hookedToRope())
-            m_rope->pullUp();*/
+        pullUpRope();
     }
 
     if(hookedToRope())
@@ -215,24 +230,8 @@ void Player::move()
 
 
     //friction
-    double friction=0.002;
-
-    if(m_velocity.X>0)
-        m_velocity.X-=ft*friction;
-    else
-        m_velocity.X+=ft*friction;
-
-    if(abs(m_velocity.X)<=ft*friction)
-        m_velocity.X=0;
-
-
-    if(m_velocity.Y>0)
-        m_velocity.Y-=ft*friction;
-    else
-        m_velocity.Y+=ft*friction;
-
-    if(abs(m_velocity.Y)<=ft*friction)
-        m_velocity.Y=0;
+    m_velocity.X/=1.1;
+    m_velocity.Y/=1.1;
 }
 
 

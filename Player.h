@@ -23,6 +23,7 @@ class Player: public Object
     void linkRope(Rope* p);
     void unlinkRope();
     bool hookedToRope();
+    bool ropeHooked();
 
     void pressKey(DIRECTION k, bool pressed);
 
@@ -32,7 +33,7 @@ class Player: public Object
 
     private:
     Texture* m_texture;
-    bool m_pressed[4];
+    bool m_pressed[5];
 
     Rope* m_rope;
 

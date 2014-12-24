@@ -38,6 +38,7 @@ class Object
     void setTransparency(bool t) {m_transparency=t;}
     void setBlock(bool b) {m_block=b;}
     void setDestructible(bool b) {m_destructible=b;}
+    void setOnground(bool b) {m_onground=b;}
     void collide() {m_collided=true;}
 
     //get
@@ -51,6 +52,7 @@ class Object
     bool getTransparency() {return m_transparency; }
     bool getBlock() {return m_block; }
     bool getDestructible() {return m_destructible; }
+    bool getOnground() {return m_onground; }
     double getLife() {return m_life; }
 
     //public attributes
@@ -76,7 +78,9 @@ class Object
 
     GTime last_lose_life;
 
+    bool m_gravity;
     bool m_collided;
+    bool m_onground;
 };
 
 #endif // OBJECT_H_INCLUDED

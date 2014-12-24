@@ -32,21 +32,14 @@ void Rope::update(double functionTime)
             m_physical=false;
             m_block=false;
             m_end=m_position;
-            m_distance=distance2V(m_start,m_end)-2;
+            m_distance=distance2V(m_start,m_end)-2+2;
 
             cerr<<"distance: "<<m_distance<<endl;
         }
     }
     else
     {
-        if(linkedTo!=NULL)
-        {
-            //pull your player
-            if ((m_end-linkedTo->getPos()).length() > m_distance )
-                // we're past the end of our rope -> pull the avatar back in
-                linkedTo->setVel(linkedTo->getVel()+(m_end-linkedTo->getPos()).normalize()*ft/40);
-        }
-        else//if player isnt attached to rope anymore
+        if(linkedTo==NULL)//if player isnt attached to rope anymore
         {
             simulLinked.applyGravity();
             simulLinked.applyPhysics();
@@ -65,10 +58,19 @@ void Rope::update(double functionTime)
         m_start=simulLinked.getPos();
 }
 
+void Rope::pullMe(Object* o)
+{
+    //pull your player
+    if ((m_end-o->getPos()).length() > m_distance )
+        // we're past the end of our rope -> pull the avatar back in
+        o->setVel(o->getVel()+(m_end-o->getPos()).normalize()*ft/40);
+}
 void Rope::pullUp()
 {
-    cerr<<"pull up rope: "<< m_distance << endl;
-    m_distance-=100*ft;
+    //cerr<<"pull up rope: "<< m_distance << endl;
+    m_distance-=10*ft;
+    if(m_distance<1)
+        m_distance=1;
 }
 void Rope::pullDown()
 {
