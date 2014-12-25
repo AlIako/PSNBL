@@ -69,7 +69,7 @@ void Collision::simulatePhysics(Object* o)
 
         //apply specific collision behaviour
         collisionReaction(&simO);
-        simO.collide();
+        simO.collide(m_colliding,m_types);
 
     }
 
@@ -84,7 +84,7 @@ void Collision::collisionReaction(Object* o)
         if(m_colliding[i]->getType()=="lava")
         {
             if(o->getDestructible())
-                o->loseLife(1);
+                o->loseLife(30);
         }
     }
 }

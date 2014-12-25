@@ -163,7 +163,9 @@
 		<Unit filename="sdlglutils.h">
 			<Option virtualFolder="functions\" />
 		</Unit>
-		<Unit filename="threadStructures.cpp" />
+		<Unit filename="threadStructures.cpp">
+			<Option virtualFolder="Online\" />
+		</Unit>
 		<Unit filename="threadStructures.h">
 			<Option virtualFolder="Online\" />
 		</Unit>

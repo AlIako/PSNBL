@@ -19,7 +19,7 @@ Object::Object()
     m_transparency=false;
     m_block=true;
     m_destructible=false;
-    m_life=4;
+    m_life=100;
 
     m_collided=false;
     ft=0;
@@ -78,10 +78,13 @@ void Object::applyGravity()
     }
 }
 
+
 void Object::applyPhysics()
 {
     applyPhysics(1,1,1);
 }
+
+
 void Object::applyPhysics(int x, int y, int z)
 {
     if(x)
@@ -90,6 +93,17 @@ void Object::applyPhysics(int x, int y, int z)
         m_position.Y+=m_velocity.Y;
     if(z)
         m_position.Z+=m_velocity.Z;
+}
+
+
+bool Object::collidedWithType(std::string t)
+{
+    for(unsigned int i=0,count=m_colliding.size();i<count;i++)
+    {
+        if(m_colliding[i]->getType()==t)
+            return true;
+    }
+    return false;
 }
 
 

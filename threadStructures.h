@@ -41,6 +41,10 @@ struct infosSocket
     char text[TEXT_SIZE];
 };
 
+struct client
+{
+    sockaddr_in *addr;
+};
 
 struct thread_params
 {

@@ -25,6 +25,8 @@ class Object
     void applyPhysics();
     void applyPhysics(int x, int y, int z);
 
+    bool collidedWithType(std::string t);
+
     void rotate(Vector3D v) {m_rotation+=v; }
 
     //set
@@ -39,7 +41,7 @@ class Object
     void setBlock(bool b) {m_block=b;}
     void setDestructible(bool b) {m_destructible=b;}
     void setOnground(bool b) {m_onground=b;}
-    void collide() {m_collided=true;}
+    void collide(std::vector<Object*> v, std::vector<int> t) {m_collided=true; m_colliding=v; m_colTypes=t;}
 
     //get
     Vector3D getPos() {return m_position;}
@@ -79,8 +81,11 @@ class Object
     GTime last_lose_life;
 
     bool m_gravity;
-    bool m_collided;
     bool m_onground;
+
+    bool m_collided;
+    std::vector<Object*> m_colliding;
+    std::vector<int> m_colTypes;
 };
 
 #endif // OBJECT_H_INCLUDED

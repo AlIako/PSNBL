@@ -29,11 +29,18 @@ void Map::update(double functionTime)
     //objects
     for(unsigned int i=0, count=m_objects.size();i<count;i++)
     {
+        //update
         m_objects[i]->update(ft);
-        if(m_objects[i]->getPhysical() ||true)
+        //physics, gravity
+        applyGravity(m_objects[i]);
+        applyPhysics(m_objects[i]);
+        //if dead, delete from list
+        if(m_objects[i]->getLife()<=0)
         {
-            applyGravity(m_objects[i]);
-            applyPhysics(m_objects[i]);
+            delete m_objects[i];
+            for(unsigned int j=i;j<count-1;j++)
+                m_objects[j]=m_objects[j+1];
+            m_objects.pop_back();
         }
     }
     //players
@@ -180,6 +187,69 @@ void Map::ini()
     m_objects[ind]->gtext=gtext;
     m_objects[ind]->ini();
     m_objects[ind]->setPos(Vector3D(-10,30,60));
+    m_objects[ind]->setSize(Vector3D(8,8,12));
+
+    ind=m_objects.size();
+    m_objects.push_back(new Block());
+    m_objects[ind]->gtext=gtext;
+    m_objects[ind]->ini();
+    m_objects[ind]->setPos(Vector3D(-10,-30,80));
+    m_objects[ind]->setSize(Vector3D(8,8,12));
+
+    ind=m_objects.size();
+    m_objects.push_back(new Block());
+    m_objects[ind]->gtext=gtext;
+    m_objects[ind]->ini();
+    m_objects[ind]->setPos(Vector3D(10,0,100));
+    m_objects[ind]->setSize(Vector3D(8,8,12));
+
+    ind=m_objects.size();
+    m_objects.push_back(new Block());
+    m_objects[ind]->gtext=gtext;
+    m_objects[ind]->ini();
+    m_objects[ind]->setPos(Vector3D(-10,30,120));
+    m_objects[ind]->setSize(Vector3D(8,8,12));
+
+    ind=m_objects.size();
+    m_objects.push_back(new Block());
+    m_objects[ind]->gtext=gtext;
+    m_objects[ind]->ini();
+    m_objects[ind]->setPos(Vector3D(-10,-30,140));
+    m_objects[ind]->setSize(Vector3D(8,8,12));
+
+    ind=m_objects.size();
+    m_objects.push_back(new Block());
+    m_objects[ind]->gtext=gtext;
+    m_objects[ind]->ini();
+    m_objects[ind]->setPos(Vector3D(10,0,160));
+    m_objects[ind]->setSize(Vector3D(8,8,12));
+
+    ind=m_objects.size();
+    m_objects.push_back(new Block());
+    m_objects[ind]->gtext=gtext;
+    m_objects[ind]->ini();
+    m_objects[ind]->setPos(Vector3D(-10,30,180));
+    m_objects[ind]->setSize(Vector3D(8,8,12));
+
+    ind=m_objects.size();
+    m_objects.push_back(new Block());
+    m_objects[ind]->gtext=gtext;
+    m_objects[ind]->ini();
+    m_objects[ind]->setPos(Vector3D(-10,-30,200));
+    m_objects[ind]->setSize(Vector3D(8,8,12));
+
+    ind=m_objects.size();
+    m_objects.push_back(new Block());
+    m_objects[ind]->gtext=gtext;
+    m_objects[ind]->ini();
+    m_objects[ind]->setPos(Vector3D(10,0,220));
+    m_objects[ind]->setSize(Vector3D(8,8,12));
+
+    ind=m_objects.size();
+    m_objects.push_back(new Block());
+    m_objects[ind]->gtext=gtext;
+    m_objects[ind]->ini();
+    m_objects[ind]->setPos(Vector3D(-10,30,240));
     m_objects[ind]->setSize(Vector3D(8,8,12));
 
 }

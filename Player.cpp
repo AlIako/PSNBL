@@ -36,6 +36,9 @@ void Player::update(double functionTime)
 
     if(hookedToRope())
     {
+        if(m_rope->getLife()==0)
+            unlinkRope();
+
         if(ropeHooked())
         {
             m_jumping=false;
@@ -50,7 +53,9 @@ void Player::jump()
     if(!m_jumping && (abs(m_velocity.Z)<0.1 || ropeHooked()))
     {
         m_jumping=true;
-        setVel(Vector3D(getVel().X,getVel().Y,0.4));
+
+        if(m_velocity.Z<0.4)
+            setVel(Vector3D(getVel().X,getVel().Y,0.4));
 
         unlinkRope();
     }
