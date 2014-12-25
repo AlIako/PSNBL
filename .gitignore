@@ -1,9 +1,9 @@
 /obj
 /archives
 /client
-./psnblal.cbp
-./psnblal.depend
+psnblal.cbp
+psnblal.depend
 ./psnblal.exe
-./psnblal.layout
+psnblal.layout
 bin/stderr.txt
 bin/stdout.txt
