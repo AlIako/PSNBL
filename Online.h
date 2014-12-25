@@ -24,14 +24,21 @@ class Online
     infosSocket getNextSocket();
     infosSocket getNextSocketRemove();
 
+    bool active() {return m_active;}
+
     void close();
     ~Online();
 
     std::vector<infosSocket> socketsReceived;
+    int clientID;
+    bool m_connectionEstablished;
+    bool m_server;//false for client
 
     private:
+    bool m_active;
 
     std::vector<infosSocket> socketsToSend;
+    std::vector<infosClient> clients;
 
     SOCKET newsockfd;
 
@@ -42,7 +49,6 @@ class Online
 
 
 
-    bool m_server;//false for client
     bool m_threadsOn;
 
     //threads serv
@@ -63,7 +69,6 @@ class Online
     pthread_t clientSendPThread;
     thread_params paramsHandleClientSendThread;
 
-    bool m_connectionEstablished;
 
 };
 

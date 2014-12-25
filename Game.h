@@ -20,6 +20,7 @@ class Game
 
     void play();
     void updateMultiplayer();
+    Player* playerForId(int id);
 
     void updateTimes();
 

@@ -37,7 +37,7 @@ void* clientConnectThread(void* data)
 
     if(params->tcp)
     {
-
+        cerr<<"starting tcp connection thread"<<endl;
         *params->newsockfd = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP); //Create socket tcp
         //*params->newsockfd = socket (AF_INET, SOCK_STREAM, 0); //Create socket tcp
         //*params->newsockfd = socket(AF_INET, SOCK_DGRAM, 0); //Create socket udp
@@ -57,6 +57,26 @@ void* clientConnectThread(void* data)
         }
         else
         {
+
+            //receive answer from server
+            infosSocket infosRecu;
+            int n = receiveSocket(params->tcp,*params->newsockfd, (char*)&infosRecu,sizeof(infosRecu), 0,(struct sockaddr *) (params->addr), (params->clilen));
+
+            if (n < 0)
+                cerr<<"ERROR receiving conn socket: "<<WSAGetLastError()<<endl;
+
+            if(infosRecu.type==5)//serv response
+                *(params->connectionEstablished)=true;
+
+            (*params->clientID)=infosRecu.variable[0];
+
+            cerr<<"server responded. my client id is "<< (int)infosRecu.variable[0]<<endl;
+
+            (*params->socketsReceived).push_back(infosRecu);
+
+            SDL_Delay(50);
+
+
             *(params->connectionEstablished)=true;
             cerr << "Connection succesful!"<<endl;
         }
@@ -67,6 +87,7 @@ void* clientConnectThread(void* data)
     }
     else
     {
+        cerr<<"starting udp connection thread"<<endl;
         infosSocket infosRecu;
         infosRecu.type=4;//client connect
         cerr << "connecting..."<<endl;
@@ -76,7 +97,7 @@ void* clientConnectThread(void* data)
         //send connection request to serv
         int n = sendSocket(params->tcp,*params->newsockfd,(char*)&infosRecu, sizeof(infosRecu),0,(struct sockaddr *) (params->addr), (*params->clilen));
         if (n < 0)
-            cerr<<"ERROR reading from conn socket: "<<WSAGetLastError()<<endl;
+            cerr<<"ERROR writing from conn socket: "<<WSAGetLastError()<<endl;
 
         //receive answer from serv
         while(*(params->connectionEstablished)==false)
@@ -84,7 +105,7 @@ void* clientConnectThread(void* data)
             n = receiveSocket(params->tcp,*params->newsockfd, (char*)&infosRecu,sizeof(infosRecu), 0,(struct sockaddr *) (params->addr), (params->clilen));
 
             if (n < 0)
-                cerr<<"ERROR writing to conn socket: "<<WSAGetLastError()<<endl;
+                cerr<<"ERROR reading to conn socket: "<<WSAGetLastError()<<endl;
 
             if(infosRecu.type==5)//serv response
                 *(params->connectionEstablished)=true;
@@ -139,14 +160,20 @@ void* clientSendThread(void* data)
         {
             //take first element of queue
             infosS=(*params->socketsToSend)[0];
+
+
+            //infosSocket s=infosS;
+            //cerr<<" sending socket type "<<(int)s.type << ", 0: "<< s.variable[0]  << ", 1: "<< s.variable[1] << ", 2: "<< s.variable[2] << ", 3: "<< s.variable[3] <<endl;
+
             //send
             int n = sendSocket(params->tcp,*params->newsockfd,(char*)&infosS, sizeof(infosS),0,(struct sockaddr *) (params->addr), (*params->clilen));
             //check any error
             if (n < 0)
                 cerr<<"ERROR writing to socket: "<<WSAGetLastError()<<endl;
+
             //update queue
             for(unsigned int i=0;i<(*params->socketsToSend).size()-1;i++)
-                (*params->socketsToSend)[0]=(*params->socketsToSend)[1];
+                (*params->socketsToSend)[i]=(*params->socketsToSend)[i+1];
             if((*params->socketsToSend).size()>0)
                 (*params->socketsToSend).pop_back();
         }

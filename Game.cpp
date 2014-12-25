@@ -7,6 +7,8 @@ Game::Game()
 
 void Game::ini()
 {
+    grabCursor=true;
+
     m_video.ini();
 
     unsigned int ind=playerList.size();
@@ -14,20 +16,30 @@ void Game::ini()
     playerList[ind]->gtext=gtext;
     playerList[ind]->ini();
 
-    ind=playerList.size();
-    playerList.push_back(new Player());
-    playerList[ind]->gtext=gtext;
-    playerList[ind]->ini();
-
-    m_online.ini();
-
     m_map.gtext=gtext;
     m_map.ini();
     m_map.playerList=&playerList;
 
     m_camera.setCible(playerList[0]);
 
-    grabCursor=true;
+
+    //online
+    m_online.ini();
+
+    if(m_online.m_server)
+        playerList[0]->setIdOnline(0);
+
+    if(!m_online.m_server)
+    {
+        while(!m_online.m_connectionEstablished)
+        {
+            m_online.update();
+            SDL_Delay(50);
+        }
+        updateMultiplayer();
+    }
+    //end ini online
+
 }
 
 void Game::play()
@@ -60,12 +72,12 @@ void Game::play()
                     infosSocket s;
                     s.type=2;
 
-                    s.variable[0]=playerList[0]->getPos().X;
-                    s.variable[1]=playerList[0]->getPos().Y;
-                    s.variable[2]=playerList[0]->getPos().Z;
-                    s.variable[3]=dir.X;
-                    s.variable[4]=dir.Y;
-                    s.variable[5]=dir.Z;
+                    s.variable[1]=playerList[0]->getPos().X;
+                    s.variable[2]=playerList[0]->getPos().Y;
+                    s.variable[3]=playerList[0]->getPos().Z;
+                    s.variable[4]=dir.X;
+                    s.variable[5]=dir.Y;
+                    s.variable[6]=dir.Z;
 
                     m_online.sendSocket(s);//add socket to queue
                 }
@@ -191,10 +203,10 @@ void Game::updateMultiplayer()
     //send player position and angle
     s.type=1;
 
-    s.variable[0]=playerList[0]->getPos().X;
-    s.variable[1]=playerList[0]->getPos().Y;
-    s.variable[2]=playerList[0]->getPos().Z;
-    s.variable[3]=playerList[0]->getRot().Z;
+    s.variable[1]=playerList[0]->getPos().X;
+    s.variable[2]=playerList[0]->getPos().Y;
+    s.variable[3]=playerList[0]->getPos().Z;
+    s.variable[4]=playerList[0]->getRot().Z;
 
     m_online.sendSocketReplace(s);//add socket to queue
 
@@ -206,30 +218,77 @@ void Game::updateMultiplayer()
         s=m_online.getNextSocketRemove();//get next socket on the queue
         if(s.type!=-1)//if something on the list
         {
-            cerr<<"received socket type "<<(int)s.type << ", 0: "<< s.variable[0]  << ", 1: "<< s.variable[1] << ", 2: "<< s.variable[2] << ", 3: "<< s.variable[3] <<endl;
+            cerr<<"received socket type "<<(int)s.type<<", "<<s.variable[0]<<", "<<s.variable[1]<<endl;
+
+            //seek player to update for this id
+            int idPlayer=floor(s.variable[0]);
+            Player *player=playerForId(idPlayer);
+            //if player not found, create it and assign id
+            if(player==NULL && s.type!=5)
+            {
+                unsigned int ind=playerList.size();
+                playerList.push_back(new Player());
+                playerList[ind]->gtext=gtext;
+                playerList[ind]->ini();
+                playerList[ind]->setIdOnline(idPlayer);
+                player=playerList[ind];
+                cerr<<"creating new player, id online: "<<idPlayer<<endl;
+            }
+
+
             //player position and angle
             if(s.type==1)
             {
-                playerList[1]->setPos(Vector3D(s.variable[0],s.variable[1],s.variable[2]));
-                playerList[1]->setRot(Vector3D(0,0,s.variable[3]));
+                player->setPos(Vector3D(s.variable[1],s.variable[2],s.variable[3]));
+                player->setRot(Vector3D(0,0,s.variable[4]));
             }
             //hook
             if(s.type==2)
             {
-                Vector3D pos=Vector3D(s.variable[0],s.variable[1],s.variable[2]);
-                Vector3D dir=Vector3D(s.variable[3],s.variable[4],s.variable[5]);
-                playerList[1]->linkRope(m_map.createRope(pos,dir));
+                Vector3D pos=Vector3D(s.variable[1],s.variable[2],s.variable[3]);
+                Vector3D dir=Vector3D(s.variable[4],s.variable[5],s.variable[6]);
+                player->linkRope(m_map.createRope(pos,dir));
             }
             //unhook
             if(s.type==3)
             {
-                playerList[1]->unlinkRope();
+                player->unlinkRope();
+            }
+            //new player
+            if(s.type==4 && 0)
+            {
+                unsigned int ind=playerList.size();
+                playerList.push_back(new Player());
+                playerList[ind]->gtext=gtext;
+                playerList[ind]->ini();
+                playerList[ind]->setIdOnline(idPlayer);
+            }
+            //you just connected and got response from server and your id
+            if(s.type==5)
+            {
+                playerList[0]->setIdOnline(idPlayer);
+                //first create all the players (i'd need to receive playerN from server)
+                /*for(int i=0;i<playerN;i++)
+                {
+                    unsigned int ind=playerList.size();
+                    playerList.push_back(new Player());
+                    playerList[ind]->gtext=gtext;
+                    playerList[ind]->ini();
+                }*/
             }
         }
     }
 }
 
-
+Player* Game::playerForId(int id)
+{
+    for(unsigned int i=0,count=playerList.size();i<count;i++)
+    {
+        if(playerList[i]->getIdOnline()==id)
+            return playerList[i];
+    }
+    return NULL;
+}
 
 
 void Game::updateTimes()

@@ -4,34 +4,51 @@
 
 Online::Online()
 {
+    m_active=true;
+
     m_server=false;
     m_connectionEstablished=false;
 
     m_tcp=false;
+
+    clientID=0;
 }
 
 //add socket to send to the list
 void Online::sendSocket(infosSocket s)
 {
-    socketsToSend.push_back(s);
-    cerr<<socketsToSend.size()<<" sending socket type "<<(int)s.type << ", 0: "<< s.variable[0]  << ", 1: "<< s.variable[1] << ", 2: "<< s.variable[2] << ", 3: "<< s.variable[3] <<endl;
+    if(m_connectionEstablished)
+    {
+        int cl=clientID;
+        if(m_server) cl=0;
+        s.variable[0]=cl;
+
+        socketsToSend.push_back(s);
+        cerr<<socketsToSend.size()<<" sending socket type "<<(int)s.type << ": "<< s.variable[0]  << ", 1: "<< s.variable[1] << ", 2: "<< s.variable[2] << ", 3: "<< s.variable[3] <<endl;
+    }
 }
 
 
 //if socket already in list, just replace it
 void Online::sendSocketReplace(infosSocket s)
 {
+    int cl=clientID;
+    if(m_server) cl=0;
+    s.variable[0]=cl;
+
     //cerr<<socketsToSend.size()<<" sending socketR type "<<(int)s.type << ", 0: "<< s.variable[0]  << ", 1: "<< s.variable[1] << ", 2: "<< s.variable[2] << ", 3: "<< s.variable[3] <<endl;
     //check if already in list
     bool socketFound=false;
     for(unsigned int i=0;i<socketsToSend.size();i++)
     {
-        if(socketsToSend[i].type==s.type)
+        if((int)socketsToSend[i].variable[0]==cl && socketsToSend[i].type==s.type)
         {
             socketFound=true;
             socketsToSend[i]=s;
         }
     }
+    //cerr<<socketsToSend.size()<<" sending socketR type "<<(int)s.type << ": "<< s.variable[0]  << ", 1: "<< s.variable[1] << ", 2: "<< s.variable[2] << ", 3: "<< s.variable[3] <<endl;
+
 
     //if not in list, add to list
     if(!socketFound)
@@ -55,7 +72,7 @@ infosSocket Online::getNextSocketRemove()
     infosSocket s=getNextSocket();
 
     for(int i=0;i<(int)socketsReceived.size()-1;i++)
-        socketsReceived[0]=socketsReceived[1];
+        socketsReceived[i]=socketsReceived[i+1];
     if(socketsReceived.size()>0)
         socketsReceived.pop_back();
 
@@ -74,12 +91,14 @@ void Online::ini()
         paramsHandleConnectionsThread.connectionEstablished=&m_connectionEstablished;
         paramsHandleConnectionsThread.socketsReceived=&socketsReceived;
         paramsHandleConnectionsThread.socketsToSend=&socketsToSend;
+        paramsHandleConnectionsThread.clients=&clients;
         paramsHandleConnectionsThread.port=m_port;
         paramsHandleConnectionsThread.ip=m_ip;
         paramsHandleConnectionsThread.tcp=m_tcp;
         paramsHandleConnectionsThread.newsockfd=new int;
         paramsHandleConnectionsThread.addr=new sockaddr_in;
         paramsHandleConnectionsThread.clilen=new int;
+        paramsHandleConnectionsThread.clientID=&clientID;
 
         //serv threads
         if(m_server)
@@ -110,6 +129,7 @@ void Online::update()
             if(m_threadsOn==false && m_connectionEstablished)
             {
                 cerr<<"Connection to server established! launching threads..."<<endl;
+                m_threadsOn=true;
 
                 //receive thread
                 paramsHandleClientReceiveThread=paramsHandleConnectionsThread;
@@ -118,7 +138,6 @@ void Online::update()
                 paramsHandleClientSendThread=paramsHandleConnectionsThread;
                 pthread_create(&clientSendPThread,NULL, clientSendThread,&paramsHandleClientSendThread);
 
-                m_threadsOn=true;
             }
         }
         else
@@ -126,7 +145,8 @@ void Online::update()
             //check if client finally established connection to server, then launch receive and send threads
             if(m_threadsOn==false && m_connectionEstablished)
             {
-                cerr<<"Connection to server established! launching threads..."<<endl;
+                cerr<<"Connection to a client established! launching threads..."<<endl;
+                m_threadsOn=true;
 
                 //receive thread
                 paramsServerReceiveThread=paramsHandleConnectionsThread;
@@ -135,7 +155,6 @@ void Online::update()
                 paramsServerSendThread=paramsHandleConnectionsThread;
                 pthread_create(&serverSendPThread,NULL, serverSendThread,&paramsServerSendThread);
 
-                m_threadsOn=true;
             }
         }
     }

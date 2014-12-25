@@ -41,6 +41,7 @@ class Object
     void setBlock(bool b) {m_block=b;}
     void setDestructible(bool b) {m_destructible=b;}
     void setOnground(bool b) {m_onground=b;}
+    void setIdOnline(int i) { m_idOnline=i;}
     void collide(std::vector<Object*> v, std::vector<int> t) {m_collided=true; m_colliding=v; m_colTypes=t;}
 
     //get
@@ -56,6 +57,7 @@ class Object
     bool getDestructible() {return m_destructible; }
     bool getOnground() {return m_onground; }
     double getLife() {return m_life; }
+    int getIdOnline() {return m_idOnline;}
 
     //public attributes
     GTexture* gtext;
@@ -86,6 +88,8 @@ class Object
     bool m_collided;
     std::vector<Object*> m_colliding;
     std::vector<int> m_colTypes;
+
+    int m_idOnline;
 };
 
 #endif // OBJECT_H_INCLUDED

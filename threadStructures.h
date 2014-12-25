@@ -20,6 +20,7 @@ typedef struct sockaddr SOCKADDR;
 #include <iostream>
 #include "utilFunctions.h"
 #include <vector>
+#include "GTime.h"
 
 #define TEXT_SIZE 50
 #define WAIT_SEND 60
@@ -41,9 +42,13 @@ struct infosSocket
     char text[TEXT_SIZE];
 };
 
-struct client
+struct infosClient
 {
     sockaddr_in *addr;
+    int clilen;
+    int *sock;
+    int id;
+    GTime lastHeardFrom;
 };
 
 struct thread_params
@@ -57,6 +62,9 @@ struct thread_params
 
     std::vector<infosSocket>* socketsReceived;
     std::vector<infosSocket>* socketsToSend;
+    std::vector<infosClient>* clients;
+
+    int *clientID;
 
     int *newsockfd, *clilen;
     sockaddr_in *addr;

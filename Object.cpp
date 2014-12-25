@@ -23,6 +23,8 @@ Object::Object()
 
     m_collided=false;
     ft=0;
+
+    m_idOnline=-1;
 }
 
 void Object::resurrect()
