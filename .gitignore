@@ -3,7 +3,9 @@
 /client
 psnblal.cbp
 psnblal.depend
-./psnblal.exe
 psnblal.layout
+psnblal.cbp.cbTemp
+psnblal.layout.cbTemp
+bin/psnblal.exe
 bin/stderr.txt
 bin/stdout.txt
