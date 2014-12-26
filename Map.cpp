@@ -1,11 +1,12 @@
 #include "Map.h"
 #define MAPSIZE 50
-#define WALL_HEIGHT 400
+#define WALL_HEIGHT 1000
 
 
 Map::Map()
 {
     playerList=NULL;
+    online=NULL;
 }
 
 void Map::draw()
@@ -45,14 +46,17 @@ void Map::update(double functionTime)
         }
     }
     //players
-    for(unsigned int i=0, count=playerList->size();i<count;i++)
+    /*for(unsigned int i=0, count=playerList->size();i<count;i++)
     {
         (*playerList)[i]->update(ft);
         (*playerList)[i]->move();
-    }
+    }*/
     //player
     if(playerList!=NULL && playerList->size()>0)
     {
+        (*playerList)[0]->update(ft);
+        (*playerList)[0]->move();
+
         applyGravity((*playerList)[0]);
         applyPhysics((*playerList)[0]);
     }
@@ -139,6 +143,8 @@ void Map::ini()
     m_objects[ind]->setSize(Vector3D(MAPSIZE,MAPSIZE,2));
 
 
+    m_phase.m_incontrol=m_incontrol;
+    m_phase.online=online;
     m_phase.gtext=gtext;
     m_phase.ini(&m_objects);
     m_phase.iniMap();
@@ -146,6 +152,32 @@ void Map::ini()
 
 }
 
+
+void Map::addPatternToQueue(int p)
+{
+    m_phase.addPatternToQueue(p);
+}
+
+void Map::setLavaLevel(double z)
+{
+    cerr<<"adjusting laval evel"<<endl;
+    for(unsigned int i=0,count=m_objects.size();i<count;i++)
+    {
+        if(m_objects[i]->getType()=="lava")
+            m_objects[i]->setSize(Vector3D(m_objects[i]->getSize().X,m_objects[i]->getSize().Y,z));
+    }
+}
+double Map::getLavaLevel()
+{
+    double lvl=-1;
+    for(unsigned int i=0,count=m_objects.size();i<count;i++)
+    {
+        if(m_objects[i]->getType()=="lava")
+            lvl=m_objects[i]->getSize().Z;
+    }
+
+    return lvl;
+}
 
 
 void Map::restart()

@@ -46,6 +46,8 @@ class Game
     double ft;//function time
 
     bool grabCursor;
+
+    bool m_incontrol;
 };
 
 

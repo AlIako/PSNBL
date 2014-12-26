@@ -11,6 +11,9 @@ Phase::Phase()
 
     highestZ=-100;
 
+    m_pattern=NULL;
+    online=NULL;
+
 }
 
 
@@ -58,57 +61,42 @@ void Phase::nextPattern()
     addPatternToQueue();
 }
 
-void Phase::addPatternToQueue()
-{
-    int randomizer=myIntRand(0,100);
-    if(m_name=="still")
-    {
-        //first pattern is still
-        if(m_patternQueue.size()==0)
-            m_patternQueue.push_back(new PatStill());
-        else
-        {
-            //next pattern are random
-            if(randomizer>50)
-                m_patternQueue.push_back(new PatStill());
-            else if(randomizer>0)
-                m_patternQueue.push_back(new PatBigBlocks());
-        }
-    }
-    //ini those new patterns but dont start them yet
-    if(m_patternQueue.size()>0)
-    {
-        m_patternQueue[m_patternQueue.size()-1]->gtext=gtext;
-        m_patternQueue[m_patternQueue.size()-1]->ini(highestZ,m_objects);
-        highestZ=m_patternQueue[m_patternQueue.size()-1]->getHighestZ();
-    }
-}
-
 void Phase::iniMap()
 {
     cerr<<"ini mapphase "<<m_name<<endl;
 
     m_patternQueue.clear();
-    //add pattern to queue
-    addPatternToQueue();
-    addPatternToQueue();
-    /*addPatternToQueue();
-    addPatternToQueue();
-    addPatternToQueue();*/
+    if(m_incontrol)
+    {
+        //add pattern to queue
+        addPatternToQueue();
+        addPatternToQueue();
+        /*addPatternToQueue();
+        addPatternToQueue();
+        addPatternToQueue();*/
 
-    //nextPattern();
-    m_pattern=m_patternQueue[0];
-    m_pattern->start();
+        //nextPattern();
+        m_pattern=m_patternQueue[0];
+        m_pattern->start();
+    }
 }
 
 
 void Phase::update(double functionTime)
 {
-    m_pattern->update(functionTime);
-    if(m_pattern->finished())
+    if(m_pattern!=NULL)
     {
-        cerr<<"next pattern"<<endl;
-        nextPattern();
+        m_pattern->update(functionTime);
+        if(m_pattern->finished())
+        {
+            cerr<<"next pattern"<<endl;
+            nextPattern();
+        }
+    }
+    else if(m_patternQueue.size()>0)
+    {
+        m_pattern=m_patternQueue[0];
+        m_pattern->start();
     }
 }
 
@@ -130,6 +118,81 @@ void Phase::goToNextPhase()
 
     iniMap();
 }
+
+
+void Phase::addPatternToQueue()
+{
+    int pCreated=0;
+    int randomizer=myIntRand(0,100);
+    if(m_name=="still")
+    {
+        //first pattern is still
+        if(m_patternQueue.size()==0)
+            m_patternQueue.push_back(new PatStill());
+        else
+        {
+            //next pattern are random
+            if(randomizer>50)
+                m_patternQueue.push_back(new PatStill());
+            else if(randomizer>0)
+                m_patternQueue.push_back(new PatBigBlocks());
+        }
+    }
+    iniLastPattern();
+
+
+    if(m_incontrol)
+    {
+        if(online!=NULL && online->active())
+        {
+            pCreated=m_patternQueue[m_patternQueue.size()-1]->getPID();
+            cerr<<"sending pattern "<< pCreated << " to clients"<<endl;
+            infosSocket s;
+            s.type=8;
+            s.variable[0]=0;
+            s.variable[1]=-1;
+            s.variable[2]=pCreated;
+            s.variable[3]=-1;
+            online->sendSocket(s);
+        }
+    }
+}
+void Phase::addPatternToQueue(int p)
+{
+    if(p==1)
+    {
+        m_patternQueue.push_back(new PatStill());
+    }
+    else if(p==2)
+    {
+        m_patternQueue.push_back(new PatBigBlocks());
+    }
+
+    iniLastPattern();
+}
+
+
+void Phase::iniLastPattern()
+{
+    //ini those new patterns but dont start them yet
+    if(m_patternQueue.size()>0)
+    {
+        m_patternQueue[m_patternQueue.size()-1]->gtext=gtext;
+        m_patternQueue[m_patternQueue.size()-1]->ini(highestZ,m_objects);
+        highestZ=m_patternQueue[m_patternQueue.size()-1]->getHighestZ();
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
 
 void Phase::erase()
 {

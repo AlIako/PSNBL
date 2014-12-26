@@ -171,7 +171,7 @@ void Player::pressKey(DIRECTION k, bool pressed)
 void Player::resurrect()
 {
     Object::resurrect();
-    m_position=Vector3D(-MAPSIZE/1.5,-MAPSIZE/1.5,20);
+    m_position=Vector3D(-45,-45,60);
 
     unlinkRope();
 }

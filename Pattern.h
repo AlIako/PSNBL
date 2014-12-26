@@ -15,6 +15,8 @@ class Pattern
     void calculHighestZ();
     double getHighestZ() {return m_highestZ;}
 
+    int getPID();
+
     bool finished() {return m_finished;}
 
     //public attributes

@@ -100,8 +100,8 @@ void Rope::pullDown()
 
 void Rope::unlink()
 {
-    if(linkedTo!=NULL)
-        simulLinked=*linkedTo;
+    /*if(linkedTo!=NULL)
+        simulLinked=*linkedTo;*/
 
     linkedTo=NULL;
 }

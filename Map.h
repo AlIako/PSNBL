@@ -29,7 +29,15 @@ class Map
     void restart();
     void erase();
 
+    void addPatternToQueue(int p);
+    void setLavaLevel(double z);
+    double getLavaLevel();
+
+    Phase* getPhase() {return &m_phase;}
+
     //public attributes
+    bool m_incontrol;
+    Online* online;
     GTexture* gtext;
 
     vector<Player*>* playerList;

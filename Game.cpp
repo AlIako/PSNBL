@@ -2,7 +2,7 @@
 
 Game::Game()
 {
-
+    m_incontrol=true;
 }
 
 void Game::ini()
@@ -16,13 +16,6 @@ void Game::ini()
     playerList[ind]->gtext=gtext;
     playerList[ind]->ini();
 
-    m_map.gtext=gtext;
-    m_map.ini();
-    m_map.playerList=&playerList;
-
-    m_camera.setCible(playerList[0]);
-
-
     //online
     m_online.ini();
 
@@ -31,6 +24,8 @@ void Game::ini()
 
     if(!m_online.m_server)
     {
+        m_incontrol=false;
+
         GTime start_try_connect;
         start_try_connect.reset();
         while(!m_online.m_connectionEstablished && !start_try_connect.ecouler(2500))
@@ -42,6 +37,15 @@ void Game::ini()
         updateMultiplayer();
     }
     //end ini online
+
+    m_map.m_incontrol=m_incontrol;
+    m_map.gtext=gtext;
+    m_map.online=&m_online;
+    m_map.ini();
+    m_map.playerList=&playerList;
+
+    m_camera.setCible(playerList[0]);
+
 
 }
 
@@ -146,7 +150,15 @@ void Game::play()
                     playerList[0]->pressKey(KEY_E,false);
                     break;
                     case SDLK_r:
-                    m_map.restart();
+                    if(m_incontrol)
+                    {
+                        infosSocket s;
+                        s.type=6;
+                        m_online.sendSocket(s);//add socket to queue
+
+
+                        m_map.restart();
+                    }
                     break;
                     case SDLK_c:
                     if(grabCursor)
@@ -200,6 +212,22 @@ void Game::play()
 
 
 
+void Game::updateTimes()
+{
+    since_last_frame.couler();
+    int timePast=since_last_frame.timePast();
+    ft=timePast/15.000;//facteur temps(déplacement en fonction du temps)
+    if(ft>1)
+        ft=1;
+    else if(ft<-1)
+        ft=-1;
+
+    m_camera.updateTime(ft);
+
+    since_last_frame.reset();
+}
+
+
 void Game::updateMultiplayer()
 {
     infosSocket s;
@@ -224,7 +252,7 @@ void Game::updateMultiplayer()
         s=m_online.getNextSocketRemove();//get next socket on the queue
         if(s.type!=-1)//if something on the list
         {
-            cerr<<"received socket type "<<(int)s.type<<", "<<s.variable[0]<<", "<<s.variable[1]<<endl;
+            cerr<<"received socket type "<<(int)s.type<<", "<<s.variable[0]<<", "<<s.variable[1]<<", "<<s.variable[2]<<", "<<s.variable[3]<<endl;
 
             //seek player to update for this id
             int idPlayer=floor(s.variable[0]);
@@ -273,6 +301,14 @@ void Game::updateMultiplayer()
             if(s.type==5)
             {
                 playerList[0]->setIdOnline(idPlayer);
+
+                //send request for patterns
+                infosSocket s;
+                s.type=8;
+                s.variable[0]=idPlayer;
+                m_online.sendSocket(s);
+
+
                 //first create all the players (i'd need to receive playerN from server)
                 /*for(int i=0;i<playerN;i++)
                 {
@@ -281,6 +317,74 @@ void Game::updateMultiplayer()
                     playerList[ind]->gtext=gtext;
                     playerList[ind]->ini();
                 }*/
+            }
+            //restart map
+            if(s.type==6)
+            {
+                m_map.restart();
+
+                //send request for patterns
+               /* infosSocket s;
+                s.type=8;
+                s.variable[0]=playerList[0]->getIdOnline();
+                m_online.sendSocket(s);*/
+            }
+            //phase
+            if(s.type==7)
+            {
+                //set phase and ini
+            }
+            //pattern/lava lvl or request for patterns/lava lvl
+            if(s.type==8)
+            {
+                if(m_online.m_server)
+                {
+                    cerr<<"sending pattern/lava lvl "<< floor(s.variable[1]) <<" to client"<<endl;
+                    //send lava level and pattern queue to client
+                    infosSocket s;
+                    s.type=8;
+                    s.variable[0]=0;
+                    s.variable[1]=m_map.getLavaLevel();
+
+                    std::vector<Pattern*>* pq=m_map.getPhase()->getPatternQueue();
+                    //cerr<<"sending pattern/lava lvl "<< pq->size() <<" to client"<<endl;
+                    unsigned int j=0;
+                    for(unsigned int count=pq->size();j<count;j++)
+                    {
+                        cerr<<"send pat  "<< j <<" to client"<<endl;
+                        s.variable[j+2]=(*pq)[j]->getPID();
+                    }
+                    s.variable[j+2]=-1;
+                        cerr<<"sending pattern/lava lvl "<< j <<" to client"<<endl;
+
+                    m_online.sendSocket(s);
+                }
+                else
+                {
+                    cerr<<"received pattern/lava lvl "<< floor(s.variable[1]) <<" from server!"<<endl;
+
+                    if(floor(s.variable[1])!=-1)
+                        m_map.setLavaLevel(floor(s.variable[1]));
+
+                    for(int j =2;j<24;j++)
+                    {
+                        cerr<<"rec pat  "<< floor(s.variable[j]) <<" from server!"<<endl;
+                        if(s.variable[j]==-1)
+                            break;
+                        //add pattern to queue
+                        m_map.addPatternToQueue(floor(s.variable[j]));
+                    }
+                }
+            }
+            //lava level
+            if(s.type==9)
+            {
+
+            }
+            //rez all
+            if(s.type==10)
+            {
+
             }
         }
     }
@@ -294,22 +398,6 @@ Player* Game::playerForId(int id)
             return playerList[i];
     }
     return NULL;
-}
-
-
-void Game::updateTimes()
-{
-    since_last_frame.couler();
-    int timePast=since_last_frame.timePast();
-    ft=timePast/15.000;//facteur temps(déplacement en fonction du temps)
-    if(ft>1)
-        ft=1;
-    else if(ft<-1)
-        ft=-1;
-
-    m_camera.updateTime(ft);
-
-    since_last_frame.reset();
 }
 
 

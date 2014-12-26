@@ -19,7 +19,7 @@ void Pattern::start()
 
 void Pattern::update(double functionTime)
 {
-    cerr<<"checking if "<<  m_lava->getPos().Z+m_lava->getSize().Z<<" >= "<<m_highestZ <<endl;
+    //cerr<<"checking if "<<  m_lava->getPos().Z+m_lava->getSize().Z<<" >= "<<m_highestZ <<endl;
     if(m_lava->getPos().Z+m_lava->getSize().Z*2>=m_highestZ)
     {
         cerr<<"pattern "<<m_name<<" finished!"<<endl;
@@ -63,6 +63,15 @@ void Pattern::ini(double startZ, std::vector<Object*>* objects)
     calculHighestZ();
 }
 
+
+int Pattern::getPID()
+{
+    if(m_name=="still")
+        return 1;
+    if(m_name=="PatBigBlocks")
+        return 2;
+    return 0;
+}
 
 
 

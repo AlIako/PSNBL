@@ -2,6 +2,7 @@
 #define PHASE_H_INCLUDED
 #include "PatStill.h"
 #include "PatBigBlocks.h"
+#include "Online.h"
 
 class Phase
 {
@@ -14,12 +15,19 @@ class Phase
     void update(double functionTime);
 
     void addPatternToQueue();
+    void addPatternToQueue(int p);
+    void iniLastPattern();
     void nextPattern();
     void goToNextPhase();
 
     void erase();
 
+
+    std::vector<Pattern*>* getPatternQueue() { return &m_patternQueue;}
+
     //public attributes
+    bool m_incontrol;
+    Online* online;
     GTexture* gtext;
 
     private:
