@@ -19,6 +19,11 @@ class Game
 
 
     void play();
+
+    void updateCamMode();
+    void switchSpectate(int d);
+
+
     void updateMultiplayer();
     Player* playerForId(int id);
 
@@ -48,6 +53,8 @@ class Game
     bool grabCursor;
 
     bool m_incontrol;
+
+    std::string m_mode;//playing, death(spectate)
 };
 
 

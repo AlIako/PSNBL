@@ -36,7 +36,7 @@ void Player::update(double functionTime)
 
     if(hookedToRope())
     {
-        if(m_rope->getLife()==0)
+        if(m_rope->getLife()<=0)
             unlinkRope();
 
         if(ropeHooked())
@@ -110,56 +110,58 @@ void Player::ini()
 
 void Player::draw()
 {
+    if(m_life>0)
+    {
+        glColor3ub(255,255,255);
 
-    glColor3ub(255,255,255);
 
 
+        glPushMatrix();
+        glTranslated(m_position.X,m_position.Y,m_position.Z+1);
+        glRotated(m_rotation.Z,0,0,1);
+        if(m_texture!=NULL)
+            m_texture->bind();
 
-    glPushMatrix();
-    glTranslated(m_position.X,m_position.Y,m_position.Z+1);
-    glRotated(m_rotation.Z,0,0,1);
-    if(m_texture!=NULL)
-        m_texture->bind();
+        double m_lx=1;
+        double m_ly=1;
+        double m_lz=1;
 
-    double m_lx=1;
-    double m_ly=1;
-    double m_lz=1;
+        glBegin(GL_QUADS);
+        glTexCoord2d(0,1);     glVertex3d(m_lx,m_ly,m_lz);
+        glTexCoord2d(0,0);     glVertex3d(m_lx,m_ly,-m_lz);
+        glTexCoord2d(1,0);     glVertex3d(-m_lx,m_ly,-m_lz);
+        glTexCoord2d(1,1);     glVertex3d(-m_lx,m_ly,m_lz);
 
-    glBegin(GL_QUADS);
-    glTexCoord2d(0,1);     glVertex3d(m_lx,m_ly,m_lz);
-    glTexCoord2d(0,0);     glVertex3d(m_lx,m_ly,-m_lz);
-    glTexCoord2d(1,0);     glVertex3d(-m_lx,m_ly,-m_lz);
-    glTexCoord2d(1,1);     glVertex3d(-m_lx,m_ly,m_lz);
+        glTexCoord2d(0,1);     glVertex3d(m_lx,-m_ly,m_lz);
+        glTexCoord2d(0,0);     glVertex3d(m_lx,-m_ly,-m_lz);
+        glTexCoord2d(1,0);     glVertex3d(m_lx,m_ly,-m_lz);
+        glTexCoord2d(1,1);     glVertex3d(m_lx,m_ly,m_lz);
 
-    glTexCoord2d(0,1);     glVertex3d(m_lx,-m_ly,m_lz);
-    glTexCoord2d(0,0);     glVertex3d(m_lx,-m_ly,-m_lz);
-    glTexCoord2d(1,0);     glVertex3d(m_lx,m_ly,-m_lz);
-    glTexCoord2d(1,1);     glVertex3d(m_lx,m_ly,m_lz);
+        glTexCoord2d(0,1);     glVertex3d(-m_lx,-m_ly,m_lz);
+        glTexCoord2d(0,0);     glVertex3d(-m_lx,-m_ly,-m_lz);
+        glTexCoord2d(1,0);     glVertex3d(m_lx,-m_ly,-m_lz);
+        glTexCoord2d(1,1);     glVertex3d(m_lx,-m_ly,m_lz);
 
-    glTexCoord2d(0,1);     glVertex3d(-m_lx,-m_ly,m_lz);
-    glTexCoord2d(0,0);     glVertex3d(-m_lx,-m_ly,-m_lz);
-    glTexCoord2d(1,0);     glVertex3d(m_lx,-m_ly,-m_lz);
-    glTexCoord2d(1,1);     glVertex3d(m_lx,-m_ly,m_lz);
+        glTexCoord2d(0,1);     glVertex3d(-m_lx,m_ly,m_lz);
+        glTexCoord2d(0,0);     glVertex3d(-m_lx,m_ly,-m_lz);
+        glTexCoord2d(1,0);     glVertex3d(-m_lx,-m_ly,-m_lz);
+        glTexCoord2d(1,1);     glVertex3d(-m_lx,-m_ly,m_lz);
 
-    glTexCoord2d(0,1);     glVertex3d(-m_lx,m_ly,m_lz);
-    glTexCoord2d(0,0);     glVertex3d(-m_lx,m_ly,-m_lz);
-    glTexCoord2d(1,0);     glVertex3d(-m_lx,-m_ly,-m_lz);
-    glTexCoord2d(1,1);     glVertex3d(-m_lx,-m_ly,m_lz);
+        glTexCoord2d(0,1);     glVertex3d(m_lx,m_ly,m_lz);
+        glTexCoord2d(0,0);     glVertex3d(-m_lx,m_ly,m_lz);
+        glTexCoord2d(1,0);     glVertex3d(-m_lx,-m_ly,m_lz);
+        glTexCoord2d(1,1);     glVertex3d(m_lx,-m_ly,m_lz);
 
-    glTexCoord2d(0,1);     glVertex3d(m_lx,m_ly,m_lz);
-    glTexCoord2d(0,0);     glVertex3d(-m_lx,m_ly,m_lz);
-    glTexCoord2d(1,0);     glVertex3d(-m_lx,-m_ly,m_lz);
-    glTexCoord2d(1,1);     glVertex3d(m_lx,-m_ly,m_lz);
+        glTexCoord2d(0,1);     glVertex3d(m_lx,m_ly,-m_lz);
+        glTexCoord2d(0,0);     glVertex3d(-m_lx,m_ly,-m_lz);
+        glTexCoord2d(1,0);     glVertex3d(-m_lx,-m_ly,-m_lz);
+        glTexCoord2d(1,1);     glVertex3d(m_lx,-m_ly,-m_lz);
 
-    glTexCoord2d(0,1);     glVertex3d(m_lx,m_ly,-m_lz);
-    glTexCoord2d(0,0);     glVertex3d(-m_lx,m_ly,-m_lz);
-    glTexCoord2d(1,0);     glVertex3d(-m_lx,-m_ly,-m_lz);
-    glTexCoord2d(1,1);     glVertex3d(m_lx,-m_ly,-m_lz);
+        glEnd();
 
-    glEnd();
-
-    glTranslated(-m_position.X,-m_position.Y,0);
-    glPopMatrix();
+        glTranslated(-m_position.X,-m_position.Y,0);
+        glPopMatrix();
+    }
 }
 
 void Player::pressKey(DIRECTION k, bool pressed)
@@ -172,6 +174,7 @@ void Player::resurrect()
 {
     Object::resurrect();
     m_position=Vector3D(-45,-45,60);
+    m_life=100;
 
     unlinkRope();
 }
@@ -179,6 +182,14 @@ void Player::resurrect()
 
 void Player::move()
 {
+    if(m_life<=0)
+    {
+        m_pressed[UP]=false;
+        m_pressed[DOWN]=false;
+        m_pressed[LEFT]=false;
+        m_pressed[RIGHT]=false;
+        m_pressed[KEY_E]=false;
+    }
     //m_direction.write();
 
     if(ropeHooked())

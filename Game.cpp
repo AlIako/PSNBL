@@ -45,6 +45,8 @@ void Game::ini()
     m_map.playerList=&playerList;
 
     m_camera.setCible(playerList[0]);
+    m_mode="play";
+    m_camera.setMode(m_mode);
 
 
 }
@@ -72,29 +74,43 @@ void Game::play()
                 case SDL_MOUSEBUTTONUP:
                 if(event.button.button==SDL_BUTTON_LEFT)
                 {
-                    Vector3D dir=Vector3D(0,0,sin((-m_camera.getBeta()+8*0)*M_PI/180))+playerList[0]->getDir();
-                    dir=(m_camera.getTarget()-(playerList[0]->getPos()+Vector3D(0,0,1))).normalize();
-                    playerList[0]->linkRope(m_map.createRope(playerList[0]->getPos(),dir));
+                    if(m_mode=="play")
+                    {
+                        Vector3D dir=Vector3D(0,0,sin((-m_camera.getBeta()+8*0)*M_PI/180))+playerList[0]->getDir();
+                        dir=(m_camera.getTarget()-(playerList[0]->getPos()+Vector3D(0,0,1))).normalize();
+                        playerList[0]->linkRope(m_map.createRope(playerList[0]->getPos(),dir));
 
-                    infosSocket s;
-                    s.type=2;
+                        infosSocket s;
+                        s.type=2;
 
-                    s.variable[1]=playerList[0]->getPos().X;
-                    s.variable[2]=playerList[0]->getPos().Y;
-                    s.variable[3]=playerList[0]->getPos().Z;
-                    s.variable[4]=dir.X;
-                    s.variable[5]=dir.Y;
-                    s.variable[6]=dir.Z;
+                        s.variable[1]=playerList[0]->getPos().X;
+                        s.variable[2]=playerList[0]->getPos().Y;
+                        s.variable[3]=playerList[0]->getPos().Z;
+                        s.variable[4]=dir.X;
+                        s.variable[5]=dir.Y;
+                        s.variable[6]=dir.Z;
 
-                    m_online.sendSocket(s);//add socket to queue
+                        m_online.sendSocket(s);//add socket to queue
+                    }
+                    else if(m_mode=="spectate")
+                    {
+                        switchSpectate(1);
+                    }
                 }
                 if(event.button.button==SDL_BUTTON_RIGHT)
                 {
-                    playerList[0]->unlinkRope();
+                    if(m_mode=="play")
+                    {
+                        playerList[0]->unlinkRope();
 
-                    infosSocket s;
-                    s.type=3;
-                    m_online.sendSocket(s);//add socket to queue
+                        infosSocket s;
+                        s.type=3;
+                        m_online.sendSocket(s);//add socket to queue
+                    }
+                    else if(m_mode=="spectate")
+                    {
+                        switchSpectate(-1);
+                    }
                 }
                 break;
 
@@ -158,6 +174,10 @@ void Game::play()
 
 
                         m_map.restart();
+
+                        m_camera.setCible(playerList[0]);
+                        m_camera.setMode("play");
+                        m_mode="play";
                     }
                     break;
                     case SDLK_c:
@@ -187,6 +207,8 @@ void Game::play()
 
         m_map.update(ft);
 
+        updateCamMode();
+
 
         //draw
         m_video.beforeDraw();
@@ -194,7 +216,8 @@ void Game::play()
         m_camera.look();
 
 
-
+        if(m_mode!="play")
+            playerList[0]->draw();
         for(unsigned int i=1, count=playerList.size();i<count;i++)
             playerList[i]->draw();
 
@@ -210,6 +233,55 @@ void Game::play()
     close();
 }
 
+void Game::updateCamMode()
+{
+    if(m_camera.getCible()->getLife()<=0)
+    {
+        Object* p=m_camera.getCible();
+        for(unsigned int i=1, count=playerList.size();i<count;i++)
+        {
+            if(playerList[i]->getLife()>0)
+                p=playerList[i];
+        }
+        m_mode="spectate";
+        m_camera.setMode("spectate");
+        m_camera.setCible(p);
+    }
+}
+
+void Game::switchSpectate(int d)
+{
+    int id=0;
+    Object* p=m_camera.getCible();
+
+    //find which id we have now
+    for(unsigned int i=0, count=playerList.size();i<count;i++)
+    {
+        if(playerList[i]->getIdOnline()==p->getIdOnline())
+            id=i;
+    }
+
+    //find next player in list that has no same id
+    bool foundPl=false;
+    for(unsigned int i=id+1, count=playerList.size();i<count;i++)
+    {
+        int tempI=i;
+        if(!foundPl && playerList[tempI]->getLife()>0)
+        {
+            foundPl=true;
+            p=playerList[tempI];
+        }
+    }
+    for(int i=0;i<id;i++)
+    {
+        if(!foundPl && playerList[i]->getLife()>0)
+        {
+            foundPl=true;
+            p=playerList[i];
+        }
+    }
+    m_camera.setCible(p);
+}
 
 
 void Game::updateTimes()
@@ -241,6 +313,7 @@ void Game::updateMultiplayer()
     s.variable[2]=playerList[0]->getPos().Y;
     s.variable[3]=playerList[0]->getPos().Z;
     s.variable[4]=playerList[0]->getRot().Z;
+    s.variable[5]=playerList[0]->getLife();
 
     m_online.sendSocketReplace(s);//add socket to queue
 
@@ -270,11 +343,12 @@ void Game::updateMultiplayer()
             }
 
 
-            //player position and angle
+            //player position and angle and life
             if(s.type==1)
             {
                 player->setPos(Vector3D(s.variable[1],s.variable[2],s.variable[3]));
                 player->setRot(Vector3D(0,0,s.variable[4]));
+                player->setLife(s.variable[5]);
             }
             //hook
             if(s.type==2)
@@ -381,10 +455,14 @@ void Game::updateMultiplayer()
             {
 
             }
-            //rez all
+            //rez
             if(s.type==10)
             {
-
+                playerList[0]->resurrect();
+                playerList[0]->setPos(Vector3D(s.variable[1],s.variable[2],s.variable[3]));
+                m_camera.setCible(playerList[0]);
+                m_camera.setMode("play");
+                m_mode="play";
             }
         }
     }

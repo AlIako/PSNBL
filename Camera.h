@@ -25,6 +25,7 @@ class Camera
 
     double getAlpha() { return m_alpha; }
     double getBeta() { return m_beta; }
+    void setMode(std::string m){m_mode=m;}
 
     private:
     Vector3D m_position;
@@ -36,6 +37,7 @@ class Camera
     double m_alpha;
     double m_beta;
     double m_sensibility;
+    std::string m_mode;
 };
 
 

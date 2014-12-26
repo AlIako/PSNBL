@@ -53,10 +53,6 @@ void Object::update(double functionTime)
     if(m_position.Z<=-50)
         m_life=0;
 
-    //rez if killed
-    if(m_life<=0)
-        resurrect();
-
     if(m_collided)
         m_collided=false;
 }
