@@ -181,7 +181,7 @@ void Player::move()
 {
     //m_direction.write();
 
-    if(hookedToRope())
+    if(ropeHooked())
         m_speed*=2;
 
     if(m_pressed[UP])
@@ -214,24 +214,25 @@ void Player::move()
         pullUpRope();
     }
 
-    if(hookedToRope())
+    if(ropeHooked())
         m_speed/=2;
 
     double maxspeed=0.1;
 
-    if(hookedToRope())
-        maxspeed*=2;
 
-    //speed limit
-    if(m_velocity.X>maxspeed)
-        m_velocity.X=maxspeed;
-    else if(m_velocity.X<-maxspeed)
-        m_velocity.X=-maxspeed;
+    if(!ropeHooked())
+    {
+        //speed limit
+        if(m_velocity.X>maxspeed)
+            m_velocity.X=maxspeed;
+        else if(m_velocity.X<-maxspeed)
+            m_velocity.X=-maxspeed;
 
-    if(m_velocity.Y>maxspeed)
-        m_velocity.Y=maxspeed;
-    else if(m_velocity.Y<-maxspeed)
-        m_velocity.Y=-maxspeed;
+        if(m_velocity.Y>maxspeed)
+            m_velocity.Y=maxspeed;
+        else if(m_velocity.Y<-maxspeed)
+            m_velocity.Y=-maxspeed;
+    }
 
 
     //friction

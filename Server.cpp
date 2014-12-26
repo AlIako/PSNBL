@@ -186,7 +186,7 @@ void* serverReceiveThread(void* data)
             }
         }
 
-        SDL_Delay(WAIT_RECEIVE);
+        SDL_Delay(SERV_WAIT_RECEIVE);
     }
     cerr << "End server receive thread"<<endl;
     return NULL;
@@ -204,36 +204,42 @@ void* serverSendThread(void* data)
     while(params!=NULL && *(params->threadOn))
     {
         //if there is something to send
-        if((*params->socketsToSend).size()>0)
+        int nSendDirectly=(*params->socketsToSend).size();
+        nSendDirectly=1;
+        for(int j=0;j<nSendDirectly;j++)
         {
-            //take first element of queue
-            infosS=(*params->socketsToSend)[0];
-
-            //int n = sendSocket(params->tcp,*params->newsockfd,(char*)&infosS, sizeof(infosS),0,(struct sockaddr *) (params->addr), (*params->clilen));
-            for(unsigned int i=0;i<(*params->clients).size();i++)
-            {
-                infosClient ic=(*params->clients)[i];
-                if(floor(infosS.variable[0])!=ic.id)//dont send to client who sent this to you
-                {
-                    infosSocket s;
-                    s=infosS;
-                    //cerr<<" sending socket type "<<(int)s.type << ", 0: "<< s.variable[0]  << ", 1: "<< s.variable[1] << ", 2: "<< s.variable[2] << ", 3: "<< s.variable[3] <<endl;
-                    //send
-                    //int n = sendSocket(params->tcp,*params->newsockfd,(char*)&infosS, sizeof(infosS),0,(struct sockaddr *) (params->addr), (*params->clilen));
-                    int n = sendSocket(params->tcp,*ic.sock,(char*)&infosS, sizeof(infosS),0,(struct sockaddr *) (ic.addr), (ic.clilen));
-                    //check any error
-                    if (n < 0)
-                        cerr<<"ERROR writing to socket: "<<WSAGetLastError()<<endl;
-                }
-            }
-            //update queue
-            for(unsigned int i=0;i<(*params->socketsToSend).size()-1;i++)
-                (*params->socketsToSend)[i]=(*params->socketsToSend)[i+1];
             if((*params->socketsToSend).size()>0)
-                (*params->socketsToSend).pop_back();
+            {
+                //take first element of queue
+                infosS=(*params->socketsToSend)[0];
+
+                //int n = sendSocket(params->tcp,*params->newsockfd,(char*)&infosS, sizeof(infosS),0,(struct sockaddr *) (params->addr), (*params->clilen));
+                for(unsigned int i=0;i<(*params->clients).size();i++)
+                {
+                    infosClient ic=(*params->clients)[i];
+                    if(floor(infosS.variable[0])!=ic.id)//dont send to client who sent this to you
+                    {
+                        infosSocket s;
+                        s=infosS;
+                        //cerr<<" sending socket type "<<(int)s.type << ", 0: "<< s.variable[0]  << ", 1: "<< s.variable[1] << ", 2: "<< s.variable[2] << ", 3: "<< s.variable[3] <<endl;
+                        //send
+                        //int n = sendSocket(params->tcp,*params->newsockfd,(char*)&infosS, sizeof(infosS),0,(struct sockaddr *) (params->addr), (*params->clilen));
+                        int n = sendSocket(params->tcp,*ic.sock,(char*)&infosS, sizeof(infosS),0,(struct sockaddr *) (ic.addr), (ic.clilen));
+                        //check any error
+                        if (n < 0)
+                            cerr<<"ERROR writing to socket: "<<WSAGetLastError()<<endl;
+                    }
+                }
+                //update queue
+                for(unsigned int i=0;i<(*params->socketsToSend).size()-1;i++)
+                    (*params->socketsToSend)[i]=(*params->socketsToSend)[i+1];
+                if((*params->socketsToSend).size()>0)
+                    (*params->socketsToSend).pop_back();
+            }
+
         }
 
-        SDL_Delay(WAIT_SEND);
+        SDL_Delay(SERV_WAIT_SEND);
     }
 
     close(*params->newsockfd);

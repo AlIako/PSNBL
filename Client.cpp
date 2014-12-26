@@ -141,7 +141,7 @@ void* clientReceiveThread(void* data)
             (*params->socketsReceived).push_back(infosRecu);
         }
 
-        SDL_Delay(WAIT_RECEIVE);
+        SDL_Delay(CLIENT_WAIT_RECEIVE);
     }
     cerr << "End client receive thread"<<endl;
     return NULL;
@@ -178,7 +178,7 @@ void* clientSendThread(void* data)
                 (*params->socketsToSend).pop_back();
         }
 
-        SDL_Delay(WAIT_SEND);
+        SDL_Delay(CLIENT_WAIT_SEND);
     }
 
 

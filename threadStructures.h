@@ -23,8 +23,12 @@ typedef struct sockaddr SOCKADDR;
 #include "GTime.h"
 
 #define TEXT_SIZE 50
-#define WAIT_SEND 60
-#define WAIT_RECEIVE 60
+
+#define SERV_WAIT_SEND 10
+#define SERV_WAIT_RECEIVE 10
+
+#define CLIENT_WAIT_SEND 60
+#define CLIENT_WAIT_RECEIVE 10
 
 using namespace std;
 
