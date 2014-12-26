@@ -39,7 +39,7 @@ void Map::update(double functionTime)
         //if dead, delete from list
         if(m_objects[i]->getLife()<=0)
         {
-            delete m_objects[i];
+            //delete m_objects[i];
             for(unsigned int j=i;j<count-1;j++)
                 m_objects[j]=m_objects[j+1];
             m_objects.pop_back();

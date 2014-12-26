@@ -1,6 +1,7 @@
 #ifndef PATTERN_H_INCLUDED
 #define PATTERN_H_INCLUDED
 #include "Block.h"
+#include "Bonus.h"
 
 class Pattern
 {
@@ -21,6 +22,7 @@ class Pattern
 
     //public attributes
     GTexture* gtext;
+    Online* online;
 
     protected:
     std::string m_name;

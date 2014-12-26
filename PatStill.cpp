@@ -49,6 +49,14 @@ void PatStill::ini(double startZ, std::vector<Object*>* objects)
     (*m_objects)[ind]->setPos(Vector3D(-50/1.5,-50/1.5,startZ+4));
     (*m_objects)[ind]->setSize(Vector3D(10,10,4));
 
+    ind=(*m_objects).size();
+    (*m_objects).push_back(new Bonus());
+    (*m_objects)[ind]->gtext=gtext;
+    (*m_objects)[ind]->online=online;
+    (*m_objects)[ind]->setName("rez");
+    (*m_objects)[ind]->ini();
+    (*m_objects)[ind]->setPos(Vector3D(10,10,startZ+12.5));
+
 
 
 

@@ -79,14 +79,14 @@ void Collision::simulatePhysics(Object* o)
 
 void Collision::collisionReaction(Object* o)
 {
-    for(unsigned int i=0, count=m_colliding.size();i<count;i++)
+    /*for(unsigned int i=0, count=m_colliding.size();i<count;i++)
     {
         if(m_colliding[i]->getType()=="lava")
         {
             if(o->getDestructible())
                 o->loseLife(30);
         }
-    }
+    }*/
 }
 
 

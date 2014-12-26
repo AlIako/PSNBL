@@ -6,6 +6,8 @@
 
 Player::Player()
 {
+    gtext=NULL;
+    online=NULL;
     m_texture=NULL;
     m_position=Vector3D(-MAPSIZE/1.5,-MAPSIZE/1.5,20);
 
@@ -31,7 +33,28 @@ void Player::update(double functionTime)
     if(m_collided)
     {
         m_jumping=false;
-        m_collided=false;
+        //m_collided=false;
+
+        //grabbed a bonus?
+        for(unsigned int i=0;i<m_colliding.size();i++)
+        {
+            if(m_colliding[i]->getType()=="bonus")
+            {
+                m_colliding[i]->setLife(0);
+                if(m_colliding[i]->getName()=="rez")
+                {
+                    if(online!=NULL)
+                    {
+                        infosSocket s;
+                        s.type=10;
+                        s.variable[1]=m_position.X;
+                        s.variable[2]=m_position.Y;
+                        s.variable[3]=m_position.Z;
+                        online->sendSocket(s);
+                    }
+                }
+            }
+        }
     }
 
     if(hookedToRope())
@@ -105,63 +128,71 @@ void Player::ini()
     {
         gtext->addTexture("../data/textures/char1.png");
         m_texture=gtext->getTexture("../data/textures/char1.png");
+
+        gtext->addTexture("../data/textures/chardead.png");
+        m_textureDead=gtext->getTexture("../data/textures/chardead.png");
     }
 }
 
 void Player::draw()
 {
+    glColor3ub(255,255,255);
+
+
+
+    glPushMatrix();
+    glTranslated(m_position.X,m_position.Y,m_position.Z+1);
+    glRotated(m_rotation.Z,0,0,1);
     if(m_life>0)
     {
-        glColor3ub(255,255,255);
-
-
-
-        glPushMatrix();
-        glTranslated(m_position.X,m_position.Y,m_position.Z+1);
-        glRotated(m_rotation.Z,0,0,1);
         if(m_texture!=NULL)
             m_texture->bind();
-
-        double m_lx=1;
-        double m_ly=1;
-        double m_lz=1;
-
-        glBegin(GL_QUADS);
-        glTexCoord2d(0,1);     glVertex3d(m_lx,m_ly,m_lz);
-        glTexCoord2d(0,0);     glVertex3d(m_lx,m_ly,-m_lz);
-        glTexCoord2d(1,0);     glVertex3d(-m_lx,m_ly,-m_lz);
-        glTexCoord2d(1,1);     glVertex3d(-m_lx,m_ly,m_lz);
-
-        glTexCoord2d(0,1);     glVertex3d(m_lx,-m_ly,m_lz);
-        glTexCoord2d(0,0);     glVertex3d(m_lx,-m_ly,-m_lz);
-        glTexCoord2d(1,0);     glVertex3d(m_lx,m_ly,-m_lz);
-        glTexCoord2d(1,1);     glVertex3d(m_lx,m_ly,m_lz);
-
-        glTexCoord2d(0,1);     glVertex3d(-m_lx,-m_ly,m_lz);
-        glTexCoord2d(0,0);     glVertex3d(-m_lx,-m_ly,-m_lz);
-        glTexCoord2d(1,0);     glVertex3d(m_lx,-m_ly,-m_lz);
-        glTexCoord2d(1,1);     glVertex3d(m_lx,-m_ly,m_lz);
-
-        glTexCoord2d(0,1);     glVertex3d(-m_lx,m_ly,m_lz);
-        glTexCoord2d(0,0);     glVertex3d(-m_lx,m_ly,-m_lz);
-        glTexCoord2d(1,0);     glVertex3d(-m_lx,-m_ly,-m_lz);
-        glTexCoord2d(1,1);     glVertex3d(-m_lx,-m_ly,m_lz);
-
-        glTexCoord2d(0,1);     glVertex3d(m_lx,m_ly,m_lz);
-        glTexCoord2d(0,0);     glVertex3d(-m_lx,m_ly,m_lz);
-        glTexCoord2d(1,0);     glVertex3d(-m_lx,-m_ly,m_lz);
-        glTexCoord2d(1,1);     glVertex3d(m_lx,-m_ly,m_lz);
-
-        glTexCoord2d(0,1);     glVertex3d(m_lx,m_ly,-m_lz);
-        glTexCoord2d(0,0);     glVertex3d(-m_lx,m_ly,-m_lz);
-        glTexCoord2d(1,0);     glVertex3d(-m_lx,-m_ly,-m_lz);
-        glTexCoord2d(1,1);     glVertex3d(m_lx,-m_ly,-m_lz);
-
-        glEnd();
-
-        glTranslated(-m_position.X,-m_position.Y,0);
-        glPopMatrix();
     }
+    else
+    {
+        if(m_textureDead!=NULL)
+            m_textureDead->bind();
+    }
+
+    double m_lx=1;
+    double m_ly=1;
+    double m_lz=1;
+
+    glBegin(GL_QUADS);
+    glTexCoord2d(0,1);     glVertex3d(m_lx,m_ly,m_lz);
+    glTexCoord2d(0,0);     glVertex3d(m_lx,m_ly,-m_lz);
+    glTexCoord2d(1,0);     glVertex3d(-m_lx,m_ly,-m_lz);
+    glTexCoord2d(1,1);     glVertex3d(-m_lx,m_ly,m_lz);
+
+    glTexCoord2d(0,1);     glVertex3d(m_lx,-m_ly,m_lz);
+    glTexCoord2d(0,0);     glVertex3d(m_lx,-m_ly,-m_lz);
+    glTexCoord2d(1,0);     glVertex3d(m_lx,m_ly,-m_lz);
+    glTexCoord2d(1,1);     glVertex3d(m_lx,m_ly,m_lz);
+
+    glTexCoord2d(0,1);     glVertex3d(-m_lx,-m_ly,m_lz);
+    glTexCoord2d(0,0);     glVertex3d(-m_lx,-m_ly,-m_lz);
+    glTexCoord2d(1,0);     glVertex3d(m_lx,-m_ly,-m_lz);
+    glTexCoord2d(1,1);     glVertex3d(m_lx,-m_ly,m_lz);
+
+    glTexCoord2d(0,1);     glVertex3d(-m_lx,m_ly,m_lz);
+    glTexCoord2d(0,0);     glVertex3d(-m_lx,m_ly,-m_lz);
+    glTexCoord2d(1,0);     glVertex3d(-m_lx,-m_ly,-m_lz);
+    glTexCoord2d(1,1);     glVertex3d(-m_lx,-m_ly,m_lz);
+
+    glTexCoord2d(0,1);     glVertex3d(m_lx,m_ly,m_lz);
+    glTexCoord2d(0,0);     glVertex3d(-m_lx,m_ly,m_lz);
+    glTexCoord2d(1,0);     glVertex3d(-m_lx,-m_ly,m_lz);
+    glTexCoord2d(1,1);     glVertex3d(m_lx,-m_ly,m_lz);
+
+    glTexCoord2d(0,1);     glVertex3d(m_lx,m_ly,-m_lz);
+    glTexCoord2d(0,0);     glVertex3d(-m_lx,m_ly,-m_lz);
+    glTexCoord2d(1,0);     glVertex3d(-m_lx,-m_ly,-m_lz);
+    glTexCoord2d(1,1);     glVertex3d(m_lx,-m_ly,-m_lz);
+
+    glEnd();
+
+    glTranslated(-m_position.X,-m_position.Y,0);
+    glPopMatrix();
 }
 
 void Player::pressKey(DIRECTION k, bool pressed)

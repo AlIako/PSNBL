@@ -24,8 +24,8 @@ void Online::sendSocket(infosSocket s)
         s.variable[0]=cl;
 
         socketsToSend.push_back(s);
-        if(s.type==8)
-            cerr<<socketsToSend.size()<<" sending socket type "<<(int)s.type << ": "<< s.variable[0]  << ", 1: "<< s.variable[1] << ", 2: "<< s.variable[2] << ", 3: "<< s.variable[3] <<endl;
+        //if(s.type==8)
+        //cerr<<socketsToSend.size()<<" sending socket type "<<(int)s.type << ": "<< s.variable[0]  << ", 1: "<< s.variable[1] << ", 2: "<< s.variable[2] << ", 3: "<< s.variable[3] <<endl;
     }
 }
 

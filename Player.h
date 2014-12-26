@@ -33,6 +33,7 @@ class Player: public Object
 
     private:
     Texture* m_texture;
+    Texture* m_textureDead;
     bool m_pressed[5];
 
     Rope* m_rope;

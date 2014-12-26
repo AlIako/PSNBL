@@ -4,6 +4,8 @@
 #include "PatBigBlocks.h"
 #include "Online.h"
 
+#define PATTERN_AT_ONCE 5
+
 class Phase
 {
     public:

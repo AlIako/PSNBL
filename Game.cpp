@@ -14,6 +14,7 @@ void Game::ini()
     unsigned int ind=playerList.size();
     playerList.push_back(new Player());
     playerList[ind]->gtext=gtext;
+    playerList[ind]->online=&m_online;
     playerList[ind]->ini();
 
     //online
@@ -180,6 +181,9 @@ void Game::play()
                         m_mode="play";
                     }
                     break;
+                    case SDLK_k:
+                    playerList[0]->setLife(0);
+                    break;
                     case SDLK_c:
                     if(grabCursor)
                     {
@@ -336,6 +340,7 @@ void Game::updateMultiplayer()
                 unsigned int ind=playerList.size();
                 playerList.push_back(new Player());
                 playerList[ind]->gtext=gtext;
+                playerList[ind]->online=&m_online;
                 playerList[ind]->ini();
                 playerList[ind]->setIdOnline(idPlayer);
                 player=playerList[ind];
@@ -368,6 +373,7 @@ void Game::updateMultiplayer()
                 unsigned int ind=playerList.size();
                 playerList.push_back(new Player());
                 playerList[ind]->gtext=gtext;
+                playerList[ind]->online=&m_online;
                 playerList[ind]->ini();
                 playerList[ind]->setIdOnline(idPlayer);
             }
@@ -458,11 +464,15 @@ void Game::updateMultiplayer()
             //rez
             if(s.type==10)
             {
-                playerList[0]->resurrect();
-                playerList[0]->setPos(Vector3D(s.variable[1],s.variable[2],s.variable[3]));
-                m_camera.setCible(playerList[0]);
-                m_camera.setMode("play");
-                m_mode="play";
+                cerr<<"resurecting!"<<endl;
+                if(playerList[0]->getLife()<=0)
+                {
+                    playerList[0]->resurrect();
+                    playerList[0]->setPos(Vector3D(s.variable[1],s.variable[2],s.variable[3]));
+                    m_camera.setCible(playerList[0]);
+                    m_camera.setMode("play");
+                    m_mode="play";
+                }
             }
         }
     }

@@ -7,6 +7,7 @@
 
 Pattern::Pattern()
 {
+    online=NULL;
     m_lavaspeed=0;
     m_name="pattern";
 }

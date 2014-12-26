@@ -9,6 +9,7 @@ Object::Object()
     m_velocity=Vector3D(0,0,0);
     m_size=Vector3D(1,1,1);
     m_type="object";
+    m_name="name";
     m_speed=0.01;
 
     m_gravity=true;
@@ -33,6 +34,7 @@ void Object::resurrect()
     m_position=Vector3D(0,0,40);
     m_rotation=Vector3D(0,0,0);
     m_velocity=Vector3D(0,0,0);
+    m_colliding.clear();
 }
 
 void Object::loseLife(double value)
@@ -54,7 +56,18 @@ void Object::update(double functionTime)
         m_life=0;
 
     if(m_collided)
+    {
         m_collided=false;
+        for(unsigned int i=0, count=m_colliding.size();i<count;i++)
+        {
+            if(m_colliding[i]->getType()=="lava")
+            {
+                if(getDestructible())
+                    loseLife(30);
+            }
+        }
+        m_colliding.clear();
+    }
 }
 
 

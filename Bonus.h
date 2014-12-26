@@ -8,9 +8,11 @@ class Bonus: public Object
     Bonus();
 
     virtual void ini();
+    virtual void update(double functionTime);
     virtual void draw();
 
     private:
+    Texture* m_texture;
 };
 
 #endif // BONUS_H_INCLUDED

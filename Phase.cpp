@@ -72,11 +72,8 @@ void Phase::iniMap()
     if(m_incontrol)
     {
         //add pattern to queue
-        addPatternToQueue();
-        addPatternToQueue();
-        /*addPatternToQueue();
-        addPatternToQueue();
-        addPatternToQueue();*/
+        for(int i=0;i<PATTERN_AT_ONCE;i++)
+            addPatternToQueue();
 
         //nextPattern();
         m_pattern=m_patternQueue[0];
@@ -181,6 +178,7 @@ void Phase::iniLastPattern()
     if(m_patternQueue.size()>0)
     {
         m_patternQueue[m_patternQueue.size()-1]->gtext=gtext;
+        m_patternQueue[m_patternQueue.size()-1]->online=online;
         m_patternQueue[m_patternQueue.size()-1]->ini(highestZ,m_objects);
         highestZ=m_patternQueue[m_patternQueue.size()-1]->getHighestZ();
     }
