@@ -43,6 +43,8 @@ class Object
     void setOnground(bool b) {m_onground=b;}
     void setIdOnline(int i) { m_idOnline=i;}
     void collide(std::vector<Object*> v, std::vector<int> t) {m_collided=true; m_colliding=v; m_colTypes=t;}
+    void setSpeed(double s) {m_speed=s;}
+
 
     //get
     Vector3D getPos() {return m_position;}

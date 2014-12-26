@@ -8,6 +8,7 @@ Lava::Lava()
     m_transparency=true;
     m_block=false;
     mosaic=5;
+    m_speed=0;
 }
 
 void Lava::ini()
@@ -20,6 +21,13 @@ void Lava::ini()
     }
 
     Object::ini();
+}
+
+
+void Lava::update(double functionTime)
+{
+    //m_position.Z+=m_speed*functionTime/10;
+    m_size.Z+=m_speed*functionTime/10;
 }
 
 

@@ -165,7 +165,7 @@ void Player::draw()
 void Player::pressKey(DIRECTION k, bool pressed)
 {
     m_pressed[k]=pressed;
-    cerr<<"press "<< k <<" key"<<endl;
+    //cerr<<"press "<< k <<" key"<<endl;
 }
 
 void Player::resurrect()

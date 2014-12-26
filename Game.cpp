@@ -31,8 +31,11 @@ void Game::ini()
 
     if(!m_online.m_server)
     {
-        while(!m_online.m_connectionEstablished)
+        GTime start_try_connect;
+        start_try_connect.reset();
+        while(!m_online.m_connectionEstablished && !start_try_connect.ecouler(2500))
         {
+            start_try_connect.couler();
             m_online.update();
             SDL_Delay(50);
         }
@@ -141,6 +144,9 @@ void Game::play()
                     break;
                     case SDLK_e:
                     playerList[0]->pressKey(KEY_E,false);
+                    break;
+                    case SDLK_r:
+                    m_map.restart();
                     break;
                     case SDLK_c:
                     if(grabCursor)

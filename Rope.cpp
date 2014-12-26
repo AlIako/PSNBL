@@ -28,9 +28,9 @@ void Rope::update(double functionTime)
         m_end=m_position;
         if(m_collided)
         {
-            if(collidedWithType("wall")==false)
+            if(collidedWithType("wall")==false && collidedWithType("lava")==false)
             {
-                cerr<<"update hook"<<endl;
+                //cerr<<"update hook"<<endl;
                 m_hooked=true;
                 m_velocity=Vector3D(0,0,0);
                 m_physical=false;
@@ -38,7 +38,7 @@ void Rope::update(double functionTime)
                 m_end=m_position;
                 m_distance=distance2V(m_start,m_end);
 
-                cerr<<"distance: "<<m_distance<<endl;
+                //cerr<<"distance: "<<m_distance<<endl;
             }
             else
             {

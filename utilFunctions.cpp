@@ -11,3 +11,13 @@ char* stringtochar(std::string lestring)
     strncpy( bufferpseudo, lestring.c_str(), size );
     return bufferpseudo;
 }
+
+int myIntRand(int min, int max)
+{
+    return (rand() % (max - min + 1)) + min;
+}
+
+double myDoubleRand(double min, double max)
+{
+    return (double) (min + ((float) rand() / RAND_MAX * (max - min + 1.000)));
+}

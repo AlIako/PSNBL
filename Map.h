@@ -6,6 +6,10 @@
 #include "Wall.h"
 #include "Lava.h"
 #include "Rope.h"
+#include "Phase.h"
+
+enum{PHASE_LOBBY,PHASE_EASY,PHASE_MEDIUM,PHASE_HARD};
+enum{PAT_ONE,PAT_TWO,PAT_THREE,PAT_FOUR};
 
 class Map
 {
@@ -18,8 +22,12 @@ class Map
     Rope* createRope(Vector3D start, Vector3D target);
 
     void update(double functionTime);
+    void updateMap();
     void applyGravity(Object* o);
     void applyPhysics(Object* o);
+
+    void restart();
+    void erase();
 
     //public attributes
     GTexture* gtext;
@@ -29,6 +37,8 @@ class Map
     private:
     std::vector<Object*> m_objects;
     double ft;//function time
+
+    Phase m_phase;
 
 };
 

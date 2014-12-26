@@ -2,6 +2,8 @@
 
 int main ( int argc, char** argv )
 {
+    srand (time(NULL));
+
     GTexture* gtext=new GTexture();
 
     Game game;

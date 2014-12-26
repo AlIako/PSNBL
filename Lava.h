@@ -8,6 +8,7 @@ class Lava: public Object
     Lava();
 
     virtual void ini();
+    virtual void update(double functionTime);
     virtual void draw();
 
     private:

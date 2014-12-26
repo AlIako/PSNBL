@@ -25,6 +25,7 @@ void Map::draw()
 void Map::update(double functionTime)
 {
     ft=functionTime;
+    updateMap();
 
     //objects
     for(unsigned int i=0, count=m_objects.size();i<count;i++)
@@ -55,6 +56,11 @@ void Map::update(double functionTime)
         applyGravity((*playerList)[0]);
         applyPhysics((*playerList)[0]);
     }
+}
+
+void Map::updateMap()
+{
+    m_phase.update(ft);
 }
 
 Rope* Map::createRope(Vector3D start, Vector3D target)
@@ -132,132 +138,33 @@ void Map::ini()
     m_objects[ind]->setPos(Vector3D(0,0,2));
     m_objects[ind]->setSize(Vector3D(MAPSIZE,MAPSIZE,2));
 
-    //blocks
-    ind=m_objects.size();
-    m_objects.push_back(new Block());
-    m_objects[ind]->gtext=gtext;
-    m_objects[ind]->ini();
-    m_objects[ind]->setPos(Vector3D(10,10,4));
-    m_objects[ind]->setSize(Vector3D(4,4,4));
 
-    ind=m_objects.size();
-    m_objects.push_back(new Block());
-    m_objects[ind]->gtext=gtext;
-    m_objects[ind]->ini();
-    m_objects[ind]->setPos(Vector3D(10,15,8));
-    m_objects[ind]->setSize(Vector3D(2,2,4));
+    m_phase.gtext=gtext;
+    m_phase.ini(&m_objects);
+    m_phase.iniMap();
 
-    ind=m_objects.size();
-    m_objects.push_back(new Block());
-    m_objects[ind]->gtext=gtext;
-    m_objects[ind]->ini();
-    m_objects[ind]->setPos(Vector3D(2,-MAPSIZE,2));
-    m_objects[ind]->setSize(Vector3D(MAPSIZE,10,8));
-
-    ind=m_objects.size();
-    m_objects.push_back(new Block());
-    m_objects[ind]->gtext=gtext;
-    m_objects[ind]->ini();
-    m_objects[ind]->setPos(Vector3D(MAPSIZE,2,18));
-    m_objects[ind]->setSize(Vector3D(10,MAPSIZE,4));
-
-    ind=m_objects.size();
-    m_objects.push_back(new Block());
-    m_objects[ind]->gtext=gtext;
-    m_objects[ind]->ini();
-    m_objects[ind]->setPos(Vector3D(-MAPSIZE/1.5,-MAPSIZE/1.5,4));
-    m_objects[ind]->setSize(Vector3D(10,10,4));
-
-    ind=m_objects.size();
-    m_objects.push_back(new Block());
-    m_objects[ind]->gtext=gtext;
-    m_objects[ind]->ini();
-    m_objects[ind]->setPos(Vector3D(-10,-30,30));
-    m_objects[ind]->setSize(Vector3D(8,8,12));
-
-    ind=m_objects.size();
-    m_objects.push_back(new Block());
-    m_objects[ind]->gtext=gtext;
-    m_objects[ind]->ini();
-    m_objects[ind]->setPos(Vector3D(10,0,40));
-    m_objects[ind]->setSize(Vector3D(8,8,12));
-
-    ind=m_objects.size();
-    m_objects.push_back(new Block());
-    m_objects[ind]->gtext=gtext;
-    m_objects[ind]->ini();
-    m_objects[ind]->setPos(Vector3D(-10,30,60));
-    m_objects[ind]->setSize(Vector3D(8,8,12));
-
-    ind=m_objects.size();
-    m_objects.push_back(new Block());
-    m_objects[ind]->gtext=gtext;
-    m_objects[ind]->ini();
-    m_objects[ind]->setPos(Vector3D(-10,-30,80));
-    m_objects[ind]->setSize(Vector3D(8,8,12));
-
-    ind=m_objects.size();
-    m_objects.push_back(new Block());
-    m_objects[ind]->gtext=gtext;
-    m_objects[ind]->ini();
-    m_objects[ind]->setPos(Vector3D(10,0,100));
-    m_objects[ind]->setSize(Vector3D(8,8,12));
-
-    ind=m_objects.size();
-    m_objects.push_back(new Block());
-    m_objects[ind]->gtext=gtext;
-    m_objects[ind]->ini();
-    m_objects[ind]->setPos(Vector3D(-10,30,120));
-    m_objects[ind]->setSize(Vector3D(8,8,12));
-
-    ind=m_objects.size();
-    m_objects.push_back(new Block());
-    m_objects[ind]->gtext=gtext;
-    m_objects[ind]->ini();
-    m_objects[ind]->setPos(Vector3D(-10,-30,140));
-    m_objects[ind]->setSize(Vector3D(8,8,12));
-
-    ind=m_objects.size();
-    m_objects.push_back(new Block());
-    m_objects[ind]->gtext=gtext;
-    m_objects[ind]->ini();
-    m_objects[ind]->setPos(Vector3D(10,0,160));
-    m_objects[ind]->setSize(Vector3D(8,8,12));
-
-    ind=m_objects.size();
-    m_objects.push_back(new Block());
-    m_objects[ind]->gtext=gtext;
-    m_objects[ind]->ini();
-    m_objects[ind]->setPos(Vector3D(-10,30,180));
-    m_objects[ind]->setSize(Vector3D(8,8,12));
-
-    ind=m_objects.size();
-    m_objects.push_back(new Block());
-    m_objects[ind]->gtext=gtext;
-    m_objects[ind]->ini();
-    m_objects[ind]->setPos(Vector3D(-10,-30,200));
-    m_objects[ind]->setSize(Vector3D(8,8,12));
-
-    ind=m_objects.size();
-    m_objects.push_back(new Block());
-    m_objects[ind]->gtext=gtext;
-    m_objects[ind]->ini();
-    m_objects[ind]->setPos(Vector3D(10,0,220));
-    m_objects[ind]->setSize(Vector3D(8,8,12));
-
-    ind=m_objects.size();
-    m_objects.push_back(new Block());
-    m_objects[ind]->gtext=gtext;
-    m_objects[ind]->ini();
-    m_objects[ind]->setPos(Vector3D(-10,30,240));
-    m_objects[ind]->setSize(Vector3D(8,8,12));
 
 }
 
 
 
+void Map::restart()
+{
+    erase();
+    ini();
+
+    (*playerList)[0]->resurrect();
+}
 
 
+void Map::erase()
+{
+    m_phase.erase();
+
+    for(unsigned int i=0,count=m_objects.size();i<count;i++)
+        delete m_objects[i];
+    m_objects.clear();
+}
 
 
 
