@@ -252,7 +252,7 @@ void Game::updateMultiplayer()
         s=m_online.getNextSocketRemove();//get next socket on the queue
         if(s.type!=-1)//if something on the list
         {
-            cerr<<"received socket type "<<(int)s.type<<", "<<s.variable[0]<<", "<<s.variable[1]<<", "<<s.variable[2]<<", "<<s.variable[3]<<endl;
+            //cerr<<"received socket type "<<(int)s.type<<", "<<s.variable[0]<<", "<<s.variable[1]<<", "<<s.variable[2]<<", "<<s.variable[3]<<endl;
 
             //seek player to update for this id
             int idPlayer=floor(s.variable[0]);

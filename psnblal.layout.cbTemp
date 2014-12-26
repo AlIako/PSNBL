@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Debug" />
+	<File name="Block.cpp" open="0" top="0" tabpos="13">
+		<Cursor position="1523" topLine="43" />
+	</File>
+	<File name="Block.h" open="0" top="0" tabpos="10">
+		<Cursor position="227" topLine="0" />
+	</File>
+	<File name="Bonus.cpp" open="0" top="0" tabpos="16">
+		<Cursor position="26" topLine="0" />
+	</File>
+	<File name="Bonus.h" open="0" top="0" tabpos="17">
+		<Cursor position="147" topLine="0" />
+	</File>
+	<File name="Camera.cpp" open="0" top="0" tabpos="6">
+		<Cursor position="753" topLine="7" />
+	</File>
+	<File name="Camera.h" open="0" top="0" tabpos="7">
+		<Cursor position="719" topLine="0" />
+	</File>
+	<File name="Client.cpp" open="1" top="0" tabpos="4">
+		<Cursor position="5789" topLine="145" />
+	</File>
+	<File name="Client.h" open="0" top="0" tabpos="8">
+		<Cursor position="259" topLine="0" />
+	</File>
+	<File name="Collision.cpp" open="0" top="0" tabpos="10">
+		<Cursor position="2395" topLine="42" />
+	</File>
+	<File name="Collision.h" open="0" top="0" tabpos="11">
+		<Cursor position="641" topLine="0" />
+	</File>
+	<File name="GTexture.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="4681" topLine="127" />
+	</File>
+	<File name="GTexture.h" open="0" top="0" tabpos="0">
+		<Cursor position="696" topLine="25" />
+	</File>
+	<File name="GTime.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="865" topLine="20" />
+	</File>
+	<File name="GTime.h" open="0" top="0" tabpos="11">
+		<Cursor position="175" topLine="0" />
+	</File>
+	<File name="Game.cpp" open="1" top="0" tabpos="2">
+		<Cursor position="6373" topLine="222" />
+	</File>
+	<File name="Game.h" open="0" top="0" tabpos="3">
+		<Cursor position="356" topLine="3" />
+	</File>
+	<File name="Map.cpp" open="0" top="0" tabpos="4">
+		<Cursor position="899" topLine="56" />
+	</File>
+	<File name="Map.h" open="0" top="0" tabpos="6">
+		<Cursor position="167" topLine="0" />
+	</File>
+	<File name="Object.cpp" open="0" top="0" tabpos="12">
+		<Cursor position="455" topLine="0" />
+	</File>
+	<File name="Object.h" open="0" top="0" tabpos="13">
+		<Cursor position="1173" topLine="30" />
+	</File>
+	<File name="Online.cpp" open="0" top="0" tabpos="5">
+		<Cursor position="416" topLine="0" />
+	</File>
+	<File name="Online.h" open="0" top="0" tabpos="6">
+		<Cursor position="628" topLine="11" />
+	</File>
+	<File name="Player.cpp" open="0" top="0" tabpos="4">
+		<Cursor position="4735" topLine="206" />
+	</File>
+	<File name="Player.h" open="0" top="0" tabpos="7">
+		<Cursor position="644" topLine="1" />
+	</File>
+	<File name="Rope.cpp" open="0" top="0" tabpos="4">
+		<Cursor position="2721" topLine="125" />
+	</File>
+	<File name="Rope.h" open="0" top="0" tabpos="4">
+		<Cursor position="427" topLine="0" />
+	</File>
+	<File name="Server.cpp" open="1" top="1" tabpos="3">
+		<Cursor position="8809" topLine="208" />
+	</File>
+	<File name="Server.h" open="0" top="0" tabpos="10">
+		<Cursor position="123" topLine="0" />
+	</File>
+	<File name="Texture.cpp" open="0" top="0" tabpos="14">
+		<Cursor position="841" topLine="17" />
+	</File>
+	<File name="Texture.h" open="0" top="0" tabpos="15">
+		<Cursor position="473" topLine="0" />
+	</File>
+	<File name="Vector3D.cpp" open="0" top="0" tabpos="14">
+		<Cursor position="634" topLine="0" />
+	</File>
+	<File name="Vector3D.h" open="0" top="0" tabpos="0">
+		<Cursor position="1482" topLine="13" />
+	</File>
+	<File name="Video.cpp" open="0" top="0" tabpos="3">
+		<Cursor position="420" topLine="9" />
+	</File>
+	<File name="Wall.h" open="0" top="0" tabpos="0">
+		<Cursor position="196" topLine="0" />
+	</File>
+	<File name="main.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="19" topLine="0" />
+	</File>
+	<File name="sdlglutils.cpp" open="0" top="0" tabpos="4">
+		<Cursor position="57" topLine="0" />
+	</File>
+	<File name="sdlglutils.h" open="0" top="0" tabpos="5">
+		<Cursor position="76" topLine="0" />
+	</File>
+	<File name="threadStructures.cpp" open="0" top="0" tabpos="7">
+		<Cursor position="253" topLine="0" />
+	</File>
+	<File name="threadStructures.h" open="1" top="0" tabpos="5">
+		<Cursor position="643" topLine="16" />
+	</File>
+	<File name="utilFunctions.cpp" open="0" top="0" tabpos="7">
+		<Cursor position="305" topLine="0" />
+	</File>
+	<File name="utilFunctions.h" open="0" top="0" tabpos="8">
+		<Cursor position="109" topLine="0" />
+	</File>
+</CodeBlocks_layout_file>

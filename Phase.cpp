@@ -57,8 +57,11 @@ void Phase::nextPattern()
     //apply pattern
     m_pattern->start();
 
-    //add pattern to queue
-    addPatternToQueue();
+    if(m_incontrol)
+    {
+        //add pattern to queue
+        addPatternToQueue();
+    }
 }
 
 void Phase::iniMap()
