@@ -32,6 +32,8 @@ class Player: public Object
     virtual void resurrect();
 
     private:
+    Vector3D m_startpos;
+
     Texture* m_texture;
     Texture* m_textureDead;
     bool m_pressed[5];

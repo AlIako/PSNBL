@@ -41,6 +41,7 @@ void Game::ini()
 
     m_map.m_incontrol=m_incontrol;
     m_map.gtext=gtext;
+    m_map.video=&m_video;
     m_map.online=&m_online;
     m_map.ini();
     m_map.playerList=&playerList;
@@ -209,6 +210,7 @@ void Game::play()
         updateMultiplayer();
         m_online.update();
 
+        m_video.update(ft);
         m_map.update(ft);
 
         updateCamMode();
@@ -461,17 +463,43 @@ void Game::updateMultiplayer()
             {
 
             }
-            //rez
+            //loot bonus
             if(s.type==10)
             {
-                cerr<<"resurecting!"<<endl;
-                if(playerList[0]->getLife()<=0)
+                Vector3D pos=Vector3D(s.variable[1],s.variable[2],s.variable[3]);
+                std::vector<Object*>* objects=m_map.getObjects();
+
+                //find nearest bonus (cant be farther than 5)
+                Object* o=NULL;
+                double distMax=5;
+
+                for(unsigned int i = 0, count = (*objects).size(); i<count;i++)
                 {
-                    playerList[0]->resurrect();
-                    playerList[0]->setPos(Vector3D(s.variable[1],s.variable[2],s.variable[3]));
-                    m_camera.setCible(playerList[0]);
-                    m_camera.setMode("play");
-                    m_mode="play";
+                    double tempDist=distance2V(pos,(*objects)[i]->getPos());
+                    if(tempDist<distMax)
+                    {
+                        o=(*objects)[i];
+                        distMax=tempDist;
+                    }
+                }
+
+                //object found
+                if(o!=NULL)
+                {
+                    if(o->getName()=="rez")
+                    {
+                        //rez bonus
+                        cerr<<"resurecting!"<<endl;
+                        if(playerList[0]->getLife()<=0)
+                        {
+                            playerList[0]->resurrect();
+                            playerList[0]->setPos(pos);
+                            m_camera.setCible(playerList[0]);
+                            m_camera.setMode("play");
+                            m_mode="play";
+                        }
+                    }
+                    o->setLife(0);
                 }
             }
         }

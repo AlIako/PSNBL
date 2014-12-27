@@ -2,6 +2,8 @@
 #define PHASE_H_INCLUDED
 #include "PatStill.h"
 #include "PatBigBlocks.h"
+#include "PatMidBlocks.h"
+#include "PatBeams.h"
 #include "Online.h"
 
 #define PATTERN_AT_ONCE 5
@@ -29,6 +31,7 @@ class Phase
 
     //public attributes
     bool m_incontrol;
+    Video *video;
     Online* online;
     GTexture* gtext;
 
@@ -42,7 +45,6 @@ class Phase
     Object* m_lava;
     std::vector<Object*> m_walls;
 
-    double m_fogdistance;
 
     double highestZ;
 };

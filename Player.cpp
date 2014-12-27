@@ -9,7 +9,8 @@ Player::Player()
     gtext=NULL;
     online=NULL;
     m_texture=NULL;
-    m_position=Vector3D(-MAPSIZE/1.5,-MAPSIZE/1.5,20);
+    m_startpos=Vector3D(-MAPSIZE/1.5,-MAPSIZE/1.5,20);
+    m_position=m_startpos;
 
     m_rotation.Z=0;
 
@@ -41,17 +42,15 @@ void Player::update(double functionTime)
             if(m_colliding[i]->getType()=="bonus")
             {
                 m_colliding[i]->setLife(0);
-                if(m_colliding[i]->getName()=="rez")
+                if(online!=NULL)
                 {
-                    if(online!=NULL)
-                    {
-                        infosSocket s;
-                        s.type=10;
-                        s.variable[1]=m_position.X;
-                        s.variable[2]=m_position.Y;
-                        s.variable[3]=m_position.Z;
-                        online->sendSocket(s);
-                    }
+                    infosSocket s;
+                    s.type=10;
+                    s.variable[1]=m_colliding[i]->getPos().X;
+                    s.variable[2]=m_colliding[i]->getPos().Y;
+                    s.variable[3]=m_colliding[i]->getPos().Z;
+
+                    online->sendSocket(s);
                 }
             }
         }
@@ -73,7 +72,7 @@ void Player::update(double functionTime)
 }
 void Player::jump()
 {
-    if(!m_jumping && (abs(m_velocity.Z)<0.1 || ropeHooked()))
+    if(!m_jumping && (fabs(m_velocity.Z)<0.1 || ropeHooked()))
     {
         m_jumping=true;
 
@@ -204,7 +203,7 @@ void Player::pressKey(DIRECTION k, bool pressed)
 void Player::resurrect()
 {
     Object::resurrect();
-    m_position=Vector3D(-45,-45,60);
+    m_position=m_startpos;
     m_life=100;
 
     unlinkRope();

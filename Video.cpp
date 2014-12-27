@@ -37,15 +37,12 @@ void Video::ini()
     SDL_WM_GrabInput(SDL_GRAB_ON);
 
 
+    fog.enable();
+}
 
-    //fog
-    /*glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glFogi(GL_FOG_MODE, GL_LINEAR);//GL_LINEAR,GL_EXP ou GL_EXP2
-    glFogf(GL_FOG_START, 100);
-    glFogf(GL_FOG_END, 300);
-    GLfloat fog_c[] = {0.0f, 0.0f, 0.0f, 1.0f};//couleur du brouillard, ici noir
-    glFogfv(GL_FOG_COLOR, fog_c);
-    glEnable(GL_FOG);*/
+void Video::update(double functionTime)
+{
+    fog.update(functionTime);
 }
 
 void Video::beforeDraw()

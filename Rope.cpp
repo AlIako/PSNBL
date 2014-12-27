@@ -134,63 +134,67 @@ void Rope::ini(Vector3D start, Vector3D dir)
 
 void Rope::draw()
 {
-    const Vector3D m_taille=m_size;
-    const double mosaic=0.5;
+    if(linkedTo!=NULL)
+    {
+        const Vector3D m_taille=m_size;
+        const double mosaic=0.5;
 
-    glColor3ub(255,255,255);
+        glColor3ub(255,255,255);
 
-    if(m_texture!=NULL)
-        m_texture->bind();
+        if(m_texture!=NULL)
+            m_texture->bind();
 
-    double distance=distance2V(m_start,m_end);
-    //double distance=2;
+        double distance=distance2V(m_start,m_end);
+        //double distance=2;
 
-    glPushMatrix();
+        glPushMatrix();
 
-    glBegin(GL_QUADS);
-    glNormal3d(0.0,1.0,0.0);
-    glTexCoord2d(0,distance/mosaic);                                 glVertex3d(m_end.X+m_taille.X,m_end.Y+m_taille.Y,m_end.Z+m_taille.Z*2);
-    glTexCoord2d(0,0);                                                      glVertex3d(m_start.X+m_taille.X,m_start.Y+m_taille.Y,m_start.Z-m_taille.Z*0);
-    glTexCoord2d(1,0);                                                           glVertex3d(m_start.X-m_taille.X,m_start.Y+m_taille.Y,m_start.Z-m_taille.Z*0);
-    glTexCoord2d(1,distance/mosaic);                                                                        glVertex3d(m_end.X-m_taille.X,m_end.Y+m_taille.Y,m_end.Z+m_taille.Z*2);
+        glBegin(GL_QUADS);
+        glNormal3d(0.0,1.0,0.0);
+        glTexCoord2d(0,distance/mosaic);                                 glVertex3d(m_end.X+m_taille.X,m_end.Y+m_taille.Y,m_end.Z+m_taille.Z*2);
+        glTexCoord2d(0,0);                                                      glVertex3d(m_start.X+m_taille.X,m_start.Y+m_taille.Y,m_start.Z-m_taille.Z*0);
+        glTexCoord2d(1,0);                                                           glVertex3d(m_start.X-m_taille.X,m_start.Y+m_taille.Y,m_start.Z-m_taille.Z*0);
+        glTexCoord2d(1,distance/mosaic);                                                                        glVertex3d(m_end.X-m_taille.X,m_end.Y+m_taille.Y,m_end.Z+m_taille.Z*2);
 
-    glNormal3d(1.0,0.0,0.0);
-    glTexCoord2d(0,distance/mosaic);                                          glVertex3d(m_end.X+m_taille.X,m_end.Y-m_taille.Y,m_end.Z+m_taille.Z*2);
-    glTexCoord2d(0,0);             glVertex3d(m_start.X+m_taille.X,m_start.Y-m_taille.Y,m_start.Z-m_taille.Z*0);
-    glTexCoord2d(1,0);                                         glVertex3d(m_start.X+m_taille.X,m_start.Y+m_taille.Y,m_start.Z-m_taille.Z*0);
-    glTexCoord2d(1,distance/mosaic);                                                                     glVertex3d(m_end.X+m_taille.X,m_end.Y+m_taille.Y,m_end.Z+m_taille.Z*2);
+        glNormal3d(1.0,0.0,0.0);
+        glTexCoord2d(0,distance/mosaic);                                          glVertex3d(m_end.X+m_taille.X,m_end.Y-m_taille.Y,m_end.Z+m_taille.Z*2);
+        glTexCoord2d(0,0);             glVertex3d(m_start.X+m_taille.X,m_start.Y-m_taille.Y,m_start.Z-m_taille.Z*0);
+        glTexCoord2d(1,0);                                         glVertex3d(m_start.X+m_taille.X,m_start.Y+m_taille.Y,m_start.Z-m_taille.Z*0);
+        glTexCoord2d(1,distance/mosaic);                                                                     glVertex3d(m_end.X+m_taille.X,m_end.Y+m_taille.Y,m_end.Z+m_taille.Z*2);
 
-    glNormal3d(0.0,-1.0,0.0);
-    glTexCoord2d(0,distance/mosaic);                                      glVertex3d(m_end.X-m_taille.X,m_end.Y-m_taille.Y,m_end.Z+m_taille.Z*2);
-    glTexCoord2d(0,0);                                                                  glVertex3d(m_start.X-m_taille.X,m_start.Y-m_taille.Y,m_start.Z-m_taille.Z*0);
-    glTexCoord2d(1,0);                              glVertex3d(m_start.X+m_taille.X,m_start.Y-m_taille.Y,m_start.Z-m_taille.Z*0);
-    glTexCoord2d(1,distance/mosaic);    glVertex3d(m_end.X+m_taille.X,m_end.Y-m_taille.Y,m_end.Z+m_taille.Z*2);
+        glNormal3d(0.0,-1.0,0.0);
+        glTexCoord2d(0,distance/mosaic);                                      glVertex3d(m_end.X-m_taille.X,m_end.Y-m_taille.Y,m_end.Z+m_taille.Z*2);
+        glTexCoord2d(0,0);                                                                  glVertex3d(m_start.X-m_taille.X,m_start.Y-m_taille.Y,m_start.Z-m_taille.Z*0);
+        glTexCoord2d(1,0);                              glVertex3d(m_start.X+m_taille.X,m_start.Y-m_taille.Y,m_start.Z-m_taille.Z*0);
+        glTexCoord2d(1,distance/mosaic);    glVertex3d(m_end.X+m_taille.X,m_end.Y-m_taille.Y,m_end.Z+m_taille.Z*2);
 
-    glNormal3d(-1.0,0.0,0.0);
-    glTexCoord2d(0,distance/mosaic);                                    glVertex3d(m_end.X-m_taille.X,m_end.Y+m_taille.Y,m_end.Z+m_taille.Z*2);
-    glTexCoord2d(0,0);                                                                 glVertex3d(m_start.X-m_taille.X,m_start.Y+m_taille.Y,m_start.Z-m_taille.Z*0);
-    glTexCoord2d(1,0);                                  glVertex3d(m_start.X-m_taille.X,m_start.Y-m_taille.Y,m_start.Z-m_taille.Z*0);
-    glTexCoord2d(1,distance/mosaic);    glVertex3d(m_end.X-m_taille.X,m_end.Y-m_taille.Y,m_end.Z+m_taille.Z*2);
-
-
-
-    glNormal3d(0.0,0.0,1.0);
-    glTexCoord2d(0,1);    glVertex3d(m_end.X+m_taille.X,m_end.Y+m_taille.Y,m_end.Z+m_taille.Z*2);
-    glTexCoord2d(0,0);    glVertex3d(m_end.X+m_taille.X,m_end.Y+m_taille.Y,m_end.Z+m_taille.Z*2);
-    glTexCoord2d(1,0);    glVertex3d(m_end.X+m_taille.X,m_end.Y-m_taille.Y,m_end.Z+m_taille.Z*2);
-    glTexCoord2d(1,1);    glVertex3d(m_end.X+m_taille.X,m_end.Y-m_taille.Y,m_end.Z+m_taille.Z*2);
+        glNormal3d(-1.0,0.0,0.0);
+        glTexCoord2d(0,distance/mosaic);                                    glVertex3d(m_end.X-m_taille.X,m_end.Y+m_taille.Y,m_end.Z+m_taille.Z*2);
+        glTexCoord2d(0,0);                                                                 glVertex3d(m_start.X-m_taille.X,m_start.Y+m_taille.Y,m_start.Z-m_taille.Z*0);
+        glTexCoord2d(1,0);                                  glVertex3d(m_start.X-m_taille.X,m_start.Y-m_taille.Y,m_start.Z-m_taille.Z*0);
+        glTexCoord2d(1,distance/mosaic);    glVertex3d(m_end.X-m_taille.X,m_end.Y-m_taille.Y,m_end.Z+m_taille.Z*2);
 
 
 
-    glNormal3d(0.0,0.0,-1.0);
-    glTexCoord2d(0,1);    glVertex3d(m_start.X+m_taille.X,m_start.Y+m_taille.Y,m_start.Z-m_taille.Z*0);
-    glTexCoord2d(1,1);    glVertex3d(m_start.X+m_taille.X,m_start.Y-m_taille.Y,m_start.Z-m_taille.Z*0);
-    glTexCoord2d(1,0);    glVertex3d(m_start.X-m_taille.X,m_start.Y-m_taille.Y,m_start.Z-m_taille.Z*0);
-    glTexCoord2d(0,0);    glVertex3d(m_start.X-m_taille.X,m_start.Y+m_taille.Y,m_start.Z-m_taille.Z*0);
+        glNormal3d(0.0,0.0,1.0);
+        glTexCoord2d(0,1);    glVertex3d(m_end.X+m_taille.X,m_end.Y+m_taille.Y,m_end.Z+m_taille.Z*2);
+        glTexCoord2d(0,0);    glVertex3d(m_end.X+m_taille.X,m_end.Y+m_taille.Y,m_end.Z+m_taille.Z*2);
+        glTexCoord2d(1,0);    glVertex3d(m_end.X+m_taille.X,m_end.Y-m_taille.Y,m_end.Z+m_taille.Z*2);
+        glTexCoord2d(1,1);    glVertex3d(m_end.X+m_taille.X,m_end.Y-m_taille.Y,m_end.Z+m_taille.Z*2);
 
-    glEnd();
 
-    glPopMatrix();
+
+        glNormal3d(0.0,0.0,-1.0);
+        glTexCoord2d(0,1);    glVertex3d(m_start.X+m_taille.X,m_start.Y+m_taille.Y,m_start.Z-m_taille.Z*0);
+        glTexCoord2d(1,1);    glVertex3d(m_start.X+m_taille.X,m_start.Y-m_taille.Y,m_start.Z-m_taille.Z*0);
+        glTexCoord2d(1,0);    glVertex3d(m_start.X-m_taille.X,m_start.Y-m_taille.Y,m_start.Z-m_taille.Z*0);
+        glTexCoord2d(0,0);    glVertex3d(m_start.X-m_taille.X,m_start.Y+m_taille.Y,m_start.Z-m_taille.Z*0);
+
+        glEnd();
+
+        glPopMatrix();
+
+    }
 }
 
 

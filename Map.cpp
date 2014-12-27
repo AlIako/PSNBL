@@ -7,6 +7,7 @@ Map::Map()
 {
     playerList=NULL;
     online=NULL;
+    video=NULL;
 }
 
 void Map::draw()
@@ -144,6 +145,7 @@ void Map::ini()
 
 
     m_phase.m_incontrol=m_incontrol;
+    m_phase.video=video;
     m_phase.online=online;
     m_phase.gtext=gtext;
     m_phase.ini(&m_objects);

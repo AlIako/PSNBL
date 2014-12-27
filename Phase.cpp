@@ -6,13 +6,13 @@
 
 Phase::Phase()
 {
-    m_fogdistance=100;
     m_name="still";
 
     highestZ=-100;
 
     m_pattern=NULL;
     online=NULL;
+    video=NULL;
 
 }
 
@@ -132,10 +132,12 @@ void Phase::addPatternToQueue()
         else
         {
             //next pattern are random
-            if(randomizer>50)
-                m_patternQueue.push_back(new PatStill());
-            else if(randomizer>0)
+            if(randomizer>66)
                 m_patternQueue.push_back(new PatBigBlocks());
+            else if(randomizer>33)
+                m_patternQueue.push_back(new PatBeams());
+            else if(randomizer>0)
+                m_patternQueue.push_back(new PatMidBlocks());
         }
     }
     iniLastPattern();
@@ -177,6 +179,7 @@ void Phase::iniLastPattern()
     //ini those new patterns but dont start them yet
     if(m_patternQueue.size()>0)
     {
+        m_patternQueue[m_patternQueue.size()-1]->video=video;
         m_patternQueue[m_patternQueue.size()-1]->gtext=gtext;
         m_patternQueue[m_patternQueue.size()-1]->online=online;
         m_patternQueue[m_patternQueue.size()-1]->ini(highestZ,m_objects);

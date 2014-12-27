@@ -7,19 +7,29 @@
 
 Pattern::Pattern()
 {
+    video=NULL;
     online=NULL;
     m_lavaspeed=0;
     m_name="pattern";
+
+    m_fogdistancestart=100;
+    m_fogdistanceend=300;
+    m_fogr=0.0f;
+    m_fogg=0.0f;
+    m_fogb=0.0f;
 }
 
 
 void Pattern::start()
 {
     m_lava->setSpeed(m_lavaspeed);
+    if(video!=NULL)
+        video->getFog()->setTarget(m_fogdistancestart,m_fogdistanceend,m_fogr,m_fogg,m_fogb);
 }
 
 void Pattern::update(double functionTime)
 {
+    //check for pattern end
     //cerr<<"checking if "<<  m_lava->getPos().Z+m_lava->getSize().Z<<" >= "<<m_highestZ <<endl;
     if(m_lava->getPos().Z+m_lava->getSize().Z*2>=m_highestZ)
     {
@@ -62,6 +72,14 @@ void Pattern::ini(double startZ, std::vector<Object*>* objects)
     }
 
     calculHighestZ();
+
+
+    m_lavaspeed=0.1;
+    m_fogdistancestart=100;
+    m_fogdistanceend=300;
+    m_fogr=0.0f;
+    m_fogg=0.0f;
+    m_fogb=0.0f;
 }
 
 
