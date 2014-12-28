@@ -14,5 +14,8 @@ class Lava: public Object
     private:
     Texture* m_texture;
     double mosaic;
+
+    bool txtdir;
+    Vector3D txtcord;
 };
 #endif // LAVA_H_INCLUDED

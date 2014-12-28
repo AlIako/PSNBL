@@ -10,6 +10,7 @@ Rope::Rope()
 
     m_hooked=false;
     m_physical=true;
+    m_gravity=false;
 
     m_type="rope";
     linkedTo=NULL;

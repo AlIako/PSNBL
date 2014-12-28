@@ -6,7 +6,7 @@
 
 Wall::Wall()
 {
-    mosaic=10;
+    mosaic=15;
 }
 
 
@@ -16,11 +16,15 @@ void Wall::ini()
     m_type="wall";
     if(gtext!=NULL)
     {
-        gtext->addTexture("../data/textures/wall.jpg");
-        m_texture=gtext->getTexture("../data/textures/wall.jpg");
+        gtext->addTexture("../data/textures/hellrock_static.png");
+        m_texture=gtext->getTexture("../data/textures/hellrock_static.png");
     }
 
     Object::ini();
+
+    m_r=255;
+    m_g=255;
+    m_b=255;
 }
 
 

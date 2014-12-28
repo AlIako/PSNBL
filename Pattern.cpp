@@ -89,6 +89,10 @@ int Pattern::getPID()
         return 1;
     if(m_name=="PatBigBlocks")
         return 2;
+    if(m_name=="PatBeams")
+        return 3;
+    if(m_name=="PatMidBlocks")
+        return 4;
     return 0;
 }
 

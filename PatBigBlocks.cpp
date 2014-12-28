@@ -13,7 +13,7 @@ void PatBigBlocks::ini(double startZ, std::vector<Object*>* objects)
 
     m_lavaspeed=0.7;
     m_fogdistancestart=10;
-    m_fogdistanceend=100;
+    m_fogdistanceend=150;
     m_fogr=1.0f;
     m_fogg=0.0f;
     m_fogb=0.0f;
@@ -103,7 +103,6 @@ void PatBigBlocks::ini(double startZ, std::vector<Object*>* objects)
     (*m_objects)[ind]->ini();
     (*m_objects)[ind]->setPos(Vector3D(-10,30,startZ+240));
     (*m_objects)[ind]->setSize(Vector3D(8,8,12));
-
 
 
     calculHighestZ();

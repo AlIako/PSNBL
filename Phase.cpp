@@ -169,6 +169,14 @@ void Phase::addPatternToQueue(int p)
     {
         m_patternQueue.push_back(new PatBigBlocks());
     }
+    else if(p==3)
+    {
+        m_patternQueue.push_back(new PatBeams());
+    }
+    else if(p==4)
+    {
+        m_patternQueue.push_back(new PatMidBlocks());
+    }
 
     iniLastPattern();
 }

@@ -83,7 +83,7 @@ void Object::draw()
 
 void Object::applyGravity()
 {
-    if(m_physical)
+    if(m_physical && m_gravity)
     {
         m_velocity.Z-=0.01*ft;
     }

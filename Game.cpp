@@ -404,6 +404,9 @@ void Game::updateMultiplayer()
             if(s.type==6)
             {
                 m_map.restart();
+                m_camera.setCible(playerList[0]);
+                m_camera.setMode("play");
+                m_mode="play";
 
                 //send request for patterns
                /* infosSocket s;

@@ -13,6 +13,10 @@ class Block: public Object
     protected:
     Texture* m_texture;
     double mosaic;
+
+    int m_r;
+    int m_g;
+    int m_b;
 };
 
 #endif // BLOCK_H_INCLUDED
