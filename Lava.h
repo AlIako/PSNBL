@@ -15,7 +15,8 @@ class Lava: public Object
     Texture* m_texture;
     double mosaic;
 
-    bool txtdir;
     Vector3D txtcord;
+
+    DRDampingSpring dampvalue;
 };
 #endif // LAVA_H_INCLUDED

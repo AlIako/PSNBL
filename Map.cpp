@@ -154,12 +154,6 @@ void Map::ini()
 
 }
 
-
-void Map::addPatternToQueue(int p)
-{
-    m_phase.addPatternToQueue(p);
-}
-
 void Map::setLavaLevel(double z)
 {
     cerr<<"adjusting laval evel"<<endl;

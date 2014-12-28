@@ -16,10 +16,11 @@ class Pattern
 
     void calculHighestZ();
     double getHighestZ() {return m_highestZ;}
-
+    double getStartZ() {return m_startZ;}
     int getPID();
-
     bool finished() {return m_finished;}
+
+    void setStartZ(double s) {m_startZ=s;}
 
     //public attributes
     GTexture* gtext;

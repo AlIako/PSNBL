@@ -337,7 +337,7 @@ void Game::updateMultiplayer()
             int idPlayer=floor(s.variable[0]);
             Player *player=playerForId(idPlayer);
             //if player not found, create it and assign id
-            if(player==NULL && s.type!=5)
+            if(player==NULL && s.type!=5 && idPlayer<30)//idPlayer<10 = sux fix temporaire
             {
                 unsigned int ind=playerList.size();
                 playerList.push_back(new Player());
@@ -432,14 +432,17 @@ void Game::updateMultiplayer()
                     s.variable[1]=m_map.getLavaLevel();
 
                     std::vector<Pattern*>* pq=m_map.getPhase()->getPatternQueue();
+                    //start z from first pattern
+                    if(pq->size()>0)
+                        s.variable[2]=(*pq)[0]->getStartZ();
                     //cerr<<"sending pattern/lava lvl "<< pq->size() <<" to client"<<endl;
                     unsigned int j=0;
                     for(unsigned int count=pq->size();j<count;j++)
                     {
                         cerr<<"send pat  "<< j <<" to client"<<endl;
-                        s.variable[j+2]=(*pq)[j]->getPID();
+                        s.variable[j+3]=(*pq)[j]->getPID();
                     }
-                    s.variable[j+2]=-1;
+                    s.variable[j+3]=-1;
                         cerr<<"sending pattern/lava lvl "<< j <<" to client"<<endl;
 
                     m_online.sendSocket(s);
@@ -448,16 +451,23 @@ void Game::updateMultiplayer()
                 {
                     cerr<<"received pattern/lava lvl "<< floor(s.variable[1]) <<" from server!"<<endl;
 
+                    //lava level
                     if(floor(s.variable[1])!=-1)
-                        m_map.setLavaLevel(floor(s.variable[1]));
+                        m_map.setLavaLevel(s.variable[1]);
 
-                    for(int j =2;j<24;j++)
+                    std::vector<Pattern*>* pq=m_map.getPhase()->getPatternQueue();
+                    for(int j =3;j<24;j++)
                     {
                         cerr<<"rec pat  "<< floor(s.variable[j]) <<" from server!"<<endl;
                         if(s.variable[j]==-1)
                             break;
                         //add pattern to queue
-                        m_map.addPatternToQueue(floor(s.variable[j]));
+                        m_map.getPhase()->addPatternToQueue(floor(s.variable[j]));
+                        //pattern start z from first pattern
+                        if(j==3 && floor(s.variable[2])!=-1)
+                        {
+                            (*pq)[pq->size()-1]->setStartZ(s.variable[2]);
+                        }
                     }
                 }
             }
@@ -479,7 +489,7 @@ void Game::updateMultiplayer()
                 for(unsigned int i = 0, count = (*objects).size(); i<count;i++)
                 {
                     double tempDist=distance2V(pos,(*objects)[i]->getPos());
-                    if(tempDist<distMax)
+                    if(o->getType()=="bonus" && tempDist<distMax)
                     {
                         o=(*objects)[i];
                         distMax=tempDist;

@@ -46,22 +46,27 @@ void Phase::ini(std::vector<Object*>* objects)
 void Phase::nextPattern()
 {
     //delete first pattern from queue
-    delete m_patternQueue[0];
-    for(unsigned int i=0, count=m_patternQueue.size()-1;i<count;i++)
-        m_patternQueue[i]=m_patternQueue[i+1];
-    m_patternQueue.pop_back();
-
-    //take first pattern from queue
-    m_pattern=m_patternQueue[0];
-
-    //apply pattern
-    m_pattern->start();
-
-    if(m_incontrol)
+    if(m_patternQueue.size()>0)
     {
-        //add pattern to queue
-        addPatternToQueue();
+        delete m_patternQueue[0];
+        for(unsigned int i=0, count=m_patternQueue.size()-1;i<count;i++)
+            m_patternQueue[i]=m_patternQueue[i+1];
+        m_patternQueue.pop_back();
+
     }
+    //size changed so check again
+    if(m_patternQueue.size()>0)
+    {
+        //take first pattern from queue
+        m_pattern=m_patternQueue[0];
+
+        //apply pattern
+        m_pattern->start();
+    }
+
+    //if serv or solo: add pattern to queue
+    if(m_incontrol)
+        addPatternToQueue();
 }
 
 void Phase::iniMap()
@@ -152,9 +157,10 @@ void Phase::addPatternToQueue()
             infosSocket s;
             s.type=8;
             s.variable[0]=0;
-            s.variable[1]=-1;
-            s.variable[2]=pCreated;
-            s.variable[3]=-1;
+            s.variable[1]=-1;//lava level
+            s.variable[2]=m_patternQueue[m_patternQueue.size()-1]->getStartZ();
+            s.variable[3]=pCreated;
+            s.variable[4]=-1;
             online->sendSocket(s);
         }
     }

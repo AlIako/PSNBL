@@ -3,6 +3,7 @@
 #include "Vector3D.h"
 #include "GTexture.h"
 #include "GTime.h"
+#include "DRDampingSpring.h"
 #include "Online.h"
 
 class Object

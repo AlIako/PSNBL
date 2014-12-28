@@ -29,7 +29,6 @@ class Map
     void restart();
     void erase();
 
-    void addPatternToQueue(int p);
     void setLavaLevel(double z);
     double getLavaLevel();
 

@@ -46,7 +46,7 @@ void Pattern::calculHighestZ()
         if((*m_objects)[i]->getType()!="wall" && (*m_objects)[i]->getType()!="lava")
         {
             if((*m_objects)[i]->getPos().Z+(*m_objects)[i]->getSize().Z>m_highestZ)
-                m_highestZ=(*m_objects)[i]->getPos().Z+(*m_objects)[i]->getSize().Z;
+                m_highestZ=(*m_objects)[i]->getPos().Z+(*m_objects)[i]->getSize().Z*2;
         }
     }
 }
