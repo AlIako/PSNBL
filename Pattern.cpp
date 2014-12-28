@@ -9,22 +9,12 @@ Pattern::Pattern()
 {
     video=NULL;
     online=NULL;
-    m_lavaspeed=0;
     m_name="pattern";
-
-    m_fogdistancestart=100;
-    m_fogdistanceend=300;
-    m_fogr=0.0f;
-    m_fogg=0.0f;
-    m_fogb=0.0f;
 }
 
 
 void Pattern::start()
 {
-    m_lava->setSpeed(m_lavaspeed);
-    if(video!=NULL)
-        video->getFog()->setTarget(m_fogdistancestart,m_fogdistanceend,m_fogr,m_fogg,m_fogb);
 }
 
 void Pattern::update(double functionTime)
@@ -72,14 +62,6 @@ void Pattern::ini(double startZ, std::vector<Object*>* objects)
     }
 
     calculHighestZ();
-
-
-    m_lavaspeed=0.1;
-    m_fogdistancestart=100;
-    m_fogdistanceend=300;
-    m_fogr=0.0f;
-    m_fogg=0.0f;
-    m_fogb=0.0f;
 }
 
 
@@ -93,6 +75,8 @@ int Pattern::getPID()
         return 3;
     if(m_name=="PatMidBlocks")
         return 4;
+    if(m_name=="PatEndPhase")
+        return 5;
     return 0;
 }
 

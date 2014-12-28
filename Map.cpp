@@ -37,9 +37,15 @@ void Map::update(double functionTime)
         //physics, gravity
         applyGravity(m_objects[i]);
         applyPhysics(m_objects[i]);
+
         //if dead, delete from list
         if(m_objects[i]->getLife()<=0)
         {
+            //if a REZ bonus was taken, increase lava speed (phase is over)
+            if(m_objects[i]->getType()=="bonus" && m_objects[i]->getName()=="rez")
+            {
+                increaseLavaSpeed();
+            }
             //delete m_objects[i];
             for(unsigned int j=i;j<count-1;j++)
                 m_objects[j]=m_objects[j+1];
@@ -154,25 +160,37 @@ void Map::ini()
 
 }
 
+void Map::increaseLavaSpeed()
+{
+    Object* lava=getLava();
+    if(lava) lava->setSpeed(2);
+}
+
 void Map::setLavaLevel(double z)
 {
     cerr<<"adjusting laval evel"<<endl;
-    for(unsigned int i=0,count=m_objects.size();i<count;i++)
-    {
-        if(m_objects[i]->getType()=="lava")
-            m_objects[i]->setSize(Vector3D(m_objects[i]->getSize().X,m_objects[i]->getSize().Y,z));
-    }
+
+    Object* lava=getLava();
+    if(lava) lava->setSize(Vector3D(lava->getSize().X,lava->getSize().Y,z));
 }
 double Map::getLavaLevel()
 {
     double lvl=-1;
+
+    Object* lava=getLava();
+    if(lava) lvl=lava->getSize().Z;
+
+    return lvl;
+}
+
+Object* Map::getLava()
+{
     for(unsigned int i=0,count=m_objects.size();i<count;i++)
     {
         if(m_objects[i]->getType()=="lava")
-            lvl=m_objects[i]->getSize().Z;
+            return m_objects[i];
     }
-
-    return lvl;
+    return NULL;
 }
 
 

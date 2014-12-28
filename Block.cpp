@@ -14,7 +14,6 @@ void Block::ini()
     if(gtext!=NULL)
     {
         string path="../data/textures/bedrock.png";
-
         /*int randTexture=myIntRand(0,300);
         if(randTexture>200)
             path="../data/textures/cubes_squares.jpg";
@@ -23,6 +22,10 @@ void Block::ini()
         else if(randTexture>100)
             path="../data/textures/cubes_triangles.jpg";
         */
+        if(m_name=="finalBlock")
+        {
+            path="../data/textures/redrock.png";
+        }
         char* tempPath=stringtochar(path);
         gtext->addTexture(tempPath);
         m_texture=gtext->getTexture(tempPath);

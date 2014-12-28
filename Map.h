@@ -29,8 +29,10 @@ class Map
     void restart();
     void erase();
 
+    void increaseLavaSpeed();
     void setLavaLevel(double z);
     double getLavaLevel();
+    Object* getLava();
 
     Phase* getPhase() {return &m_phase;}
     std::vector<Object*>* getObjects() {return &m_objects;}

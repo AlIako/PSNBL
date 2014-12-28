@@ -34,14 +34,6 @@ class Pattern
     std::vector<Object*> m_walls;
 
     bool m_finished;
-
-    double m_fogdistancestart;
-    double m_fogdistanceend;
-    float m_fogr;
-    float m_fogg;
-    float m_fogb;
-
-    double m_lavaspeed;
     double m_startZ;
     double m_highestZ;
 };

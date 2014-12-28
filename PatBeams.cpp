@@ -11,13 +11,6 @@ void PatBeams::ini(double startZ, std::vector<Object*>* objects)
 {
     Pattern::ini(startZ, objects);
 
-    m_lavaspeed=1;
-    m_fogdistancestart=10;
-    m_fogdistanceend=150;
-    m_fogr=1.0f;
-    m_fogg=0.0f;
-    m_fogb=0.0f;
-
     //blocks
     double distBetwBeams=30;
     double zOffset=10;
@@ -73,13 +66,6 @@ void PatBeams::ini(double startZ, std::vector<Object*>* objects)
 
 
 
-    ind=(*m_objects).size();
-    (*m_objects).push_back(new Bonus());
-    (*m_objects)[ind]->gtext=gtext;
-    (*m_objects)[ind]->online=online;
-    (*m_objects)[ind]->setName("rez");
-    (*m_objects)[ind]->ini();
-    (*m_objects)[ind]->setPos(Vector3D(-30,30,startZ+zOffset+distBetwBeams*5+2));
 
     calculHighestZ();
 }

@@ -4,9 +4,10 @@
 #include "PatBigBlocks.h"
 #include "PatMidBlocks.h"
 #include "PatBeams.h"
+#include "PatEndPhase.h"
 #include "Online.h"
 
-#define PATTERN_AT_ONCE 5
+#define PATTERN_AT_ONCE 1
 
 class Phase
 {
@@ -15,17 +16,16 @@ class Phase
 
     void ini(std::vector<Object*>* objects);
     void iniMap();
+    void iniPhaseProperties();
 
     void update(double functionTime);
 
-    void addPatternToQueue();
     void addPatternToQueue(int p);
     void iniLastPattern();
     void nextPattern();
     void goToNextPhase();
 
     void erase();
-
 
     std::vector<Pattern*>* getPatternQueue() { return &m_patternQueue;}
 
@@ -34,6 +34,8 @@ class Phase
     Video *video;
     Online* online;
     GTexture* gtext;
+
+
 
     private:
     std::string m_name;
@@ -45,6 +47,15 @@ class Phase
     Object* m_lava;
     std::vector<Object*> m_walls;
 
+
+
+    double m_fogdistancestart;
+    double m_fogdistanceend;
+    float m_fogr;
+    float m_fogg;
+    float m_fogb;
+
+    double m_lavaspeed;
 
     double highestZ;
 };

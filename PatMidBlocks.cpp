@@ -11,13 +11,6 @@ void PatMidBlocks::ini(double startZ, std::vector<Object*>* objects)
 {
     Pattern::ini(startZ, objects);
 
-    m_lavaspeed=1;
-    m_fogdistancestart=10;
-    m_fogdistanceend=150;
-    m_fogr=1.0f;
-    m_fogg=0.0f;
-    m_fogb=0.0f;
-
     //blocks
     unsigned int ind=(*m_objects).size();
     for(int i=0;i<10;i++)

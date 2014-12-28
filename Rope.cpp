@@ -1,5 +1,5 @@
 #include "Rope.h"
-
+#define DISTANCE_MAX 40
 
 
 
@@ -27,9 +27,11 @@ void Rope::update(double functionTime)
     if(!m_hooked)
     {
         m_end=m_position;
+        m_distance=distance2V(m_start,m_end);
+        //collide
         if(m_collided)
         {
-            if(collidedWithType("wall")==false && collidedWithType("lava")==false)
+            if(collidedWithType("wall")==false/* && collidedWithType("lava")==false*/)
             {
                 //cerr<<"update hook"<<endl;
                 m_hooked=true;
@@ -37,7 +39,6 @@ void Rope::update(double functionTime)
                 m_physical=false;
                 m_block=false;
                 m_end=m_position;
-                m_distance=distance2V(m_start,m_end);
 
                 //cerr<<"distance: "<<m_distance<<endl;
             }
@@ -46,6 +47,12 @@ void Rope::update(double functionTime)
                 m_life=0;
                 unlink();
             }
+        }
+        //too far: kill
+        if(m_distance>DISTANCE_MAX)
+        {
+            m_life=0;
+            unlink();
         }
     }
     else

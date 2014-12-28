@@ -14,6 +14,14 @@ Phase::Phase()
     online=NULL;
     video=NULL;
 
+    m_lavaspeed=0;
+
+    m_fogdistancestart=100;
+    m_fogdistanceend=300;
+    m_fogr=0.0f;
+    m_fogg=0.0f;
+    m_fogb=0.0f;
+
 }
 
 
@@ -63,28 +71,15 @@ void Phase::nextPattern()
         //apply pattern
         m_pattern->start();
     }
+    else m_pattern=NULL;
 
+
+    /*
     //if serv or solo: add pattern to queue
     if(m_incontrol)
-        addPatternToQueue();
+        addPatternToQueue();*/
 }
 
-void Phase::iniMap()
-{
-    cerr<<"ini mapphase "<<m_name<<endl;
-
-    m_patternQueue.clear();
-    if(m_incontrol)
-    {
-        //add pattern to queue
-        for(int i=0;i<PATTERN_AT_ONCE;i++)
-            addPatternToQueue();
-
-        //nextPattern();
-        m_pattern=m_patternQueue[0];
-        m_pattern->start();
-    }
-}
 
 
 void Phase::update(double functionTime)
@@ -96,6 +91,12 @@ void Phase::update(double functionTime)
         {
             cerr<<"next pattern"<<endl;
             nextPattern();
+
+            if(m_pattern==NULL)//if all patterns are finished
+            {
+                //go to a next phase
+                goToNextPhase();
+            }
         }
     }
     else if(m_patternQueue.size()>0)
@@ -118,53 +119,148 @@ void Phase::goToNextPhase()
     }
     else if(m_name=="medium")
     {
+        m_name="dark";
+    }
+    else if(m_name=="dark")
+    {
         m_name="hard";
     }
+    else m_name="still";//just to be sure
 
     iniMap();
 }
 
-
-void Phase::addPatternToQueue()
+void Phase::iniPhaseProperties()
 {
-    int pCreated=0;
-    int randomizer=myIntRand(0,100);
+    m_lavaspeed=0.1;
+    m_fogdistancestart=100;
+    m_fogdistanceend=300;
+    m_fogr=0.0f;
+    m_fogg=0.0f;
+    m_fogb=0.0f;
+
     if(m_name=="still")
     {
-        //first pattern is still
-        if(m_patternQueue.size()==0)
-            m_patternQueue.push_back(new PatStill());
-        else
-        {
-            //next pattern are random
-            if(randomizer>66)
-                m_patternQueue.push_back(new PatBigBlocks());
-            else if(randomizer>33)
-                m_patternQueue.push_back(new PatBeams());
-            else if(randomizer>0)
-                m_patternQueue.push_back(new PatMidBlocks());
-        }
     }
-    iniLastPattern();
+    else if(m_name=="easy")
+    {
+        m_lavaspeed=0.1;
+    }
+    else if(m_name=="medium")
+    {
+        m_lavaspeed=0.4;
+        m_fogdistancestart=50;
+        m_fogdistanceend=200;
+        m_fogr=0.7f;
+        m_fogg=0.1f;
+        m_fogb=0.1f;
+    }
+    else if(m_name=="dark")
+    {
+        m_lavaspeed=0.3;
+        m_fogdistancestart=0;
+        m_fogdistanceend=45;
+        m_fogr=0.0f;
+        m_fogg=0.0f;
+        m_fogb=0.0f;
+    }
+    else if(m_name=="hard")
+    {
+        m_lavaspeed=0.7;
+        m_fogdistancestart=10;
+        m_fogdistanceend=150;
+        m_fogr=1.0f;
+        m_fogg=0.0f;
+        m_fogb=0.0f;
+    }
 
+    m_lava->setSpeed(m_lavaspeed);
 
+    if(video!=NULL)
+        video->getFog()->setTarget(m_fogdistancestart,m_fogdistanceend,m_fogr,m_fogg,m_fogb);
+}
+
+void Phase::iniMap()
+{
+    cerr<<"ini mapphase "<<m_name<<endl;
+
+    iniPhaseProperties();
+
+    m_patternQueue.clear();
     if(m_incontrol)
     {
-        if(online!=NULL && online->active())
+        int randomizer=myIntRand(0,100);
+        //ini patterns depending on which phase
+        if(m_name=="still")//lobby like, lava rly slow
         {
-            pCreated=m_patternQueue[m_patternQueue.size()-1]->getPID();
-            cerr<<"sending pattern "<< pCreated << " to clients"<<endl;
-            infosSocket s;
-            s.type=8;
-            s.variable[0]=0;
-            s.variable[1]=-1;//lava level
-            s.variable[2]=m_patternQueue[m_patternQueue.size()-1]->getStartZ();
-            s.variable[3]=pCreated;
-            s.variable[4]=-1;
-            online->sendSocket(s);
+            addPatternToQueue(1);
         }
+        else if(m_name=="easy")
+        {
+            for(int i=0;i<2;i++)
+            {
+                randomizer=myIntRand(0,100);
+                //next pattern are random
+                if(randomizer>66)
+                    addPatternToQueue(2);
+                else if(randomizer>33)
+                    addPatternToQueue(3);
+                else if(randomizer>0)
+                    addPatternToQueue(4);
+            }
+        }
+        else if(m_name=="medium")
+        {
+            for(int i=0;i<2;i++)
+            {
+                randomizer=myIntRand(0,100);
+                //next pattern are random
+                if(randomizer>66)
+                    addPatternToQueue(2);
+                else if(randomizer>33)
+                    addPatternToQueue(3);
+                else if(randomizer>0)
+                    addPatternToQueue(4);
+            }
+        }
+        else if(m_name=="dark")
+        {
+            for(int i=0;i<3;i++)
+            {
+                randomizer=myIntRand(0,100);
+                //next pattern are random
+                if(randomizer>66)
+                    addPatternToQueue(2);
+                else if(randomizer>33)
+                    addPatternToQueue(3);
+                else if(randomizer>0)
+                    addPatternToQueue(4);
+            }
+        }
+        else if(m_name=="hard")
+        {
+            for(int i=0;i<4;i++)
+            {
+                randomizer=myIntRand(0,100);
+                //next pattern are random
+                if(randomizer>66)
+                    addPatternToQueue(2);
+                else if(randomizer>33)
+                    addPatternToQueue(3);
+                else if(randomizer>0)
+                    addPatternToQueue(4);
+            }
+        }
+
+        //always at the end of a phase
+        addPatternToQueue(5);
+
+        //start with first pattern in queue
+        m_pattern=m_patternQueue[0];
+        m_pattern->start();
     }
 }
+
 void Phase::addPatternToQueue(int p)
 {
     if(p==1)
@@ -183,8 +279,28 @@ void Phase::addPatternToQueue(int p)
     {
         m_patternQueue.push_back(new PatMidBlocks());
     }
+    else if(p==5)
+    {
+        m_patternQueue.push_back(new PatEndPhase());
+    }
 
     iniLastPattern();
+
+    if(m_incontrol)
+    {
+        if(online!=NULL && online->active())
+        {
+            cerr<<"sending pattern "<< p << " to clients"<<endl;
+            infosSocket s;
+            s.type=8;
+            s.variable[0]=0;
+            s.variable[1]=-1;//lava level
+            s.variable[2]=m_patternQueue[m_patternQueue.size()-1]->getStartZ();
+            s.variable[3]=p;
+            s.variable[4]=-1;
+            online->sendSocket(s);
+        }
+    }
 }
 
 
@@ -219,6 +335,8 @@ void Phase::erase()
     m_patternQueue.clear();
 
     m_pattern=NULL;
+
+    m_name="still";
 }
 
 

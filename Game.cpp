@@ -489,7 +489,7 @@ void Game::updateMultiplayer()
                 for(unsigned int i = 0, count = (*objects).size(); i<count;i++)
                 {
                     double tempDist=distance2V(pos,(*objects)[i]->getPos());
-                    if(o->getType()=="bonus" && tempDist<distMax)
+                    if((*objects)[i]->getType()=="bonus" && tempDist<distMax)
                     {
                         o=(*objects)[i];
                         distMax=tempDist;

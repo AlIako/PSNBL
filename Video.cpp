@@ -18,7 +18,7 @@ void Video::ini()
 
     SDL_Init(SDL_INIT_VIDEO);
 
-    SDL_WM_SetCaption("PSNBLAL 0.05",NULL);
+    SDL_WM_SetCaption("PSNBLAL 0.06",NULL);
     SDL_SetVideoMode(m_largeur, m_hauteur, 32, SDL_OPENGL);
 
 
