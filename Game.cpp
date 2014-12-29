@@ -331,7 +331,7 @@ void Game::updateMultiplayer()
         s=m_online.getNextSocketRemove();//get next socket on the queue
         if(s.type!=-1)//if something on the list
         {
-            //cerr<<"received socket type "<<(int)s.type<<", "<<s.variable[0]<<", "<<s.variable[1]<<", "<<s.variable[2]<<", "<<s.variable[3]<<endl;
+            cerr<<"received socket type "<<(int)s.type<<", "<<s.variable[0]<<", "<<s.variable[1]<<", "<<s.variable[2]<<", "<<s.variable[3]<<endl;
 
             //seek player to update for this id
             int idPlayer=floor(s.variable[0]);
@@ -419,7 +419,7 @@ void Game::updateMultiplayer()
             {
                 //set phase and ini
             }
-            //pattern/lava lvl or request for patterns/lava lvl
+            //next phase: pattern/lava lvl or request for patterns/lava lvl
             if(s.type==8)
             {
                 if(m_online.m_server)
@@ -451,6 +451,9 @@ void Game::updateMultiplayer()
                 {
                     cerr<<"received pattern/lava lvl "<< floor(s.variable[1]) <<" from server!"<<endl;
 
+                    //go next phase
+                    m_map.getPhase()->goToNextPhase();
+
                     //lava level
                     if(floor(s.variable[1])!=-1)
                         m_map.setLavaLevel(s.variable[1]);
@@ -461,6 +464,7 @@ void Game::updateMultiplayer()
                         cerr<<"rec pat  "<< floor(s.variable[j]) <<" from server!"<<endl;
                         if(s.variable[j]==-1)
                             break;
+
                         //add pattern to queue
                         m_map.getPhase()->addPatternToQueue(floor(s.variable[j]));
                         //pattern start z from first pattern
@@ -469,6 +473,7 @@ void Game::updateMultiplayer()
                             (*pq)[pq->size()-1]->setStartZ(s.variable[2]);
                         }
                     }
+
                 }
             }
             //lava level

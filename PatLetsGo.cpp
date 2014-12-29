@@ -24,7 +24,7 @@ void PatLetsGo::ini(double startZ, std::vector<Object*>* objects)
     ind=(*m_objects).size();
     (*m_objects).push_back(new Block());
     (*m_objects)[ind]->gtext=gtext;
-    (*m_objects)[ind]->setName("noHookBlock");
+    //(*m_objects)[ind]->setName("noHookBlock");
     (*m_objects)[ind]->ini();
     (*m_objects)[ind]->setPos(Vector3D(48,12,startZ+zOffset));
     (*m_objects)[ind]->setSize(Vector3D(4,25,4));
@@ -40,7 +40,7 @@ void PatLetsGo::ini(double startZ, std::vector<Object*>* objects)
     ind=(*m_objects).size();
     (*m_objects).push_back(new Block());
     (*m_objects)[ind]->gtext=gtext;
-    (*m_objects)[ind]->setName("noHookBlock");
+    //(*m_objects)[ind]->setName("noHookBlock");
     (*m_objects)[ind]->ini();
     (*m_objects)[ind]->setPos(Vector3D(30,42,startZ+zOffset+12));
     (*m_objects)[ind]->setSize(Vector3D(6,6,3));
@@ -56,7 +56,7 @@ void PatLetsGo::ini(double startZ, std::vector<Object*>* objects)
     ind=(*m_objects).size();
     (*m_objects).push_back(new Block());
     (*m_objects)[ind]->gtext=gtext;
-    (*m_objects)[ind]->setName("noHookBlock");
+    //(*m_objects)[ind]->setName("noHookBlock");
     (*m_objects)[ind]->ini();
     (*m_objects)[ind]->setPos(Vector3D(6,42,startZ+zOffset+24));
     (*m_objects)[ind]->setSize(Vector3D(6,6,3));
@@ -72,7 +72,7 @@ void PatLetsGo::ini(double startZ, std::vector<Object*>* objects)
     ind=(*m_objects).size();
     (*m_objects).push_back(new Block());
     (*m_objects)[ind]->gtext=gtext;
-    (*m_objects)[ind]->setName("noHookBlock");
+    //(*m_objects)[ind]->setName("noHookBlock");
     (*m_objects)[ind]->ini();
     (*m_objects)[ind]->setPos(Vector3D(-18,42,startZ+zOffset+36));
     (*m_objects)[ind]->setSize(Vector3D(6,6,3));
@@ -88,7 +88,7 @@ void PatLetsGo::ini(double startZ, std::vector<Object*>* objects)
     ind=(*m_objects).size();
     (*m_objects).push_back(new Block());
     (*m_objects)[ind]->gtext=gtext;
-    (*m_objects)[ind]->setName("noHookBlock");
+    //(*m_objects)[ind]->setName("noHookBlock");
     (*m_objects)[ind]->ini();
     (*m_objects)[ind]->setPos(Vector3D(-42,42,startZ+zOffset+48));
     (*m_objects)[ind]->setSize(Vector3D(6,6,3));
@@ -104,7 +104,7 @@ void PatLetsGo::ini(double startZ, std::vector<Object*>* objects)
     ind=(*m_objects).size();
     (*m_objects).push_back(new Block());
     (*m_objects)[ind]->gtext=gtext;
-    (*m_objects)[ind]->setName("noHookBlock");
+    //(*m_objects)[ind]->setName("noHookBlock");
     (*m_objects)[ind]->ini();
     (*m_objects)[ind]->setPos(Vector3D(-46,18,startZ+zOffset+60));
     (*m_objects)[ind]->setSize(Vector3D(6,6,3));
@@ -120,7 +120,7 @@ void PatLetsGo::ini(double startZ, std::vector<Object*>* objects)
     ind=(*m_objects).size();
     (*m_objects).push_back(new Block());
     (*m_objects)[ind]->gtext=gtext;
-    (*m_objects)[ind]->setName("noHookBlock");
+    //(*m_objects)[ind]->setName("noHookBlock");
     (*m_objects)[ind]->ini();
     (*m_objects)[ind]->setPos(Vector3D(-46,0,startZ+zOffset+72));
     (*m_objects)[ind]->setSize(Vector3D(6,6,3));
@@ -136,7 +136,7 @@ void PatLetsGo::ini(double startZ, std::vector<Object*>* objects)
     ind=(*m_objects).size();
     (*m_objects).push_back(new Block());
     (*m_objects)[ind]->gtext=gtext;
-    (*m_objects)[ind]->setName("noHookBlock");
+    //(*m_objects)[ind]->setName("noHookBlock");
     (*m_objects)[ind]->ini();
     (*m_objects)[ind]->setPos(Vector3D(-22,0,startZ+zOffset+84));
     (*m_objects)[ind]->setSize(Vector3D(6,6,3));

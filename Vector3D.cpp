@@ -36,7 +36,7 @@ Vector3D::Vector3D(const Vector3D & from,const Vector3D & to)
 
 Vector3D & Vector3D::operator= (const Vector3D & v)
 {
-    X = v.X;
+     X = v.X;
     Y = v.Y;
     Z = v.Z;
     return *this;

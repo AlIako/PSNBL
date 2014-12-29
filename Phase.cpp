@@ -48,6 +48,8 @@ void Phase::ini(std::vector<Object*>* objects)
         cerr<<"WARNING! lava not found"<<endl;
     highestZ=m_lava->getPos().Z+m_lava->getSize().Z;
 
+    if(!m_incontrol)
+        m_name="waitingToReceive";
 }
 
 
@@ -92,7 +94,7 @@ void Phase::update(double functionTime)
             cerr<<"next pattern"<<endl;
             nextPattern();
 
-            if(m_pattern==NULL)//if all patterns are finished
+            if(m_incontrol && m_pattern==NULL)//if all patterns are finished
             {
                 //go to a next phase
                 goToNextPhase();
@@ -109,7 +111,9 @@ void Phase::update(double functionTime)
 
 void Phase::goToNextPhase()
 {
-    if(m_name=="still")
+    if(m_name=="waitingToReceive")
+        m_name="still";
+    else if(m_name=="still")
     {
         m_name="easy";
     }
@@ -194,7 +198,7 @@ void Phase::iniMap()
         if(m_name=="still")//lobby like, lava rly slow
         {
             addPatternToQueue(1);
-            addPatternToQueue(6);
+            //addPatternToQueue(6);
         }
         else if(m_name=="easy")
         {
@@ -275,6 +279,27 @@ void Phase::iniMap()
         //start with first pattern in queue
         m_pattern=m_patternQueue[0];
         m_pattern->start();
+
+
+        //send that shit
+        if(m_incontrol)
+        {
+            if(online!=NULL && online->active())
+            {
+                infosSocket s;
+                s.type=8;
+                s.variable[0]=0;
+                s.variable[1]=m_lava->getSize().Z;//lava level
+                s.variable[2]=m_patternQueue[m_patternQueue.size()-1]->getStartZ();
+                for(unsigned int i=0;i<m_patternQueue.size();i++)
+                {
+                    s.variable[3+i]=m_patternQueue[i]->getPID();
+                    cerr<<"sending pattern "<< s.variable[3+i] << " to clients"<<endl;
+                }
+                s.variable[3+m_patternQueue.size()]=-1;
+                online->sendSocket(s);
+            }
+        }
     }
 }
 
@@ -310,22 +335,6 @@ void Phase::addPatternToQueue(int p)
     }
 
     iniLastPattern();
-
-    if(m_incontrol)
-    {
-        if(online!=NULL && online->active())
-        {
-            cerr<<"sending pattern "<< p << " to clients"<<endl;
-            infosSocket s;
-            s.type=8;
-            s.variable[0]=0;
-            s.variable[1]=-1;//lava level
-            s.variable[2]=m_patternQueue[m_patternQueue.size()-1]->getStartZ();
-            s.variable[3]=p;
-            s.variable[4]=-1;
-            online->sendSocket(s);
-        }
-    }
 }
 
 
