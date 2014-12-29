@@ -130,28 +130,66 @@ void* handleConnections(void* data)
     {
          *params->newsockfd  = socket(AF_INET, SOCK_DGRAM, 0); //Create socket udp
         bind(*params->newsockfd, (SOCKADDR*)&addr, (*params->clilen));
-
         cerr<<"waiting for client..."<<endl;
-        infosSocket infosRecu;
-
         //waiting for client to connect
-        while(*(params->connectionEstablished)==false)
+        while(/* *(params->connectionEstablished)==false*/  true)
         {
+
+            infosSocket infosRecu;
             int n = receiveSocket(params->tcp,*params->newsockfd, (char*)&infosRecu,sizeof(infosRecu), 0,(struct sockaddr *) (params->addr), (params->clilen));
 
             if (n < 0)
                 cerr<<"ERROR reading from conn socket: "<<WSAGetLastError()<<endl;
             if(infosRecu.type==4)//client connect
+            {
+
+
+                *params->clientID=*params->clientID+1;
+                cerr << "new client: "<<(int)*params->clientID<<endl;
+
+                //simulate received type 4 to add player in game
+                infosSocket dummyS;
+                dummyS.type=4;
+                (*params->socketsReceived).push_back(dummyS);
+
+                //increment the last client ID
+
+                //send to all clients except the new one information that a new client is connected, with his id
+                dummyS.type=4;
+                dummyS.variable[0]=*params->clientID;
+                (*params->socketsToSend).push_back(dummyS);
+
+                //send to this client his id
+                dummyS.type=5;
+                dummyS.variable[0]=*params->clientID;
+                int n = sendSocket(params->tcp,*params->newsockfd,(char*)&dummyS, sizeof(dummyS),0,(struct sockaddr *) (params->addr), (*params->clilen));
+                if (n < 0)
+                    cerr<<"ERROR writing to conn socket: "<<WSAGetLastError()<<endl;
+
+                //add new client to client list.
+                infosClient ic;
+                ic.id=*params->clientID;
+                ic.lastHeardFrom.reset();
+
+                ic.sock=new int;
+                *ic.sock=(*params->newsockfd);
+
+                ic.addr=new sockaddr_in;
+                *ic.addr=(*params->addr);
+
+
+                ic.clilen=(*params->clilen);
+
+                (*params->clients).push_back(ic);
+
+
+                SDL_Delay(100);
+                cerr<<"end connection with this client "<<endl;
                 *(params->connectionEstablished)=true;
+            }
+            else (*params->socketsReceived).push_back(infosRecu);
         }
 
-        infosRecu.type=5;//serv response
-        int n = sendSocket(params->tcp,*params->newsockfd,(char*)&infosRecu, sizeof(infosRecu),0,(struct sockaddr *) (params->addr), (*params->clilen));
-        if (n < 0)
-            cerr<<"ERROR writing to conn socket: "<<WSAGetLastError()<<endl;
-
-
-        cerr << "Connection succesful!"<<endl;
     }
     //}
     cerr << "End handle connections thread"<<endl;
@@ -177,6 +215,7 @@ void* serverReceiveThread(void* data)
 
             if(infosRecu.type!=-1)
             {
+                cerr<<" received socket type "<<(int)infosRecu.type << ", 0: "<< infosRecu.variable[0]  << ", 1: "<< infosRecu.variable[1] << ", 2: "<< infosRecu.variable[2] << ", 3: "<< infosRecu.variable[3] <<endl;
                 //add received socket to queue
                 (*params->socketsReceived).push_back(infosRecu);
 
@@ -221,7 +260,7 @@ void* serverSendThread(void* data)
                     {
                         infosSocket s;
                         s=infosS;
-                        //cerr<<" sending socket type "<<(int)s.type << ", 0: "<< s.variable[0]  << ", 1: "<< s.variable[1] << ", 2: "<< s.variable[2] << ", 3: "<< s.variable[3] <<endl;
+                        cerr<<" sending socket type "<<(int)s.type << ", 0: "<< s.variable[0]  << ", 1: "<< s.variable[1] << ", 2: "<< s.variable[2] << ", 3: "<< s.variable[3] <<endl;
                         //send
                         //int n = sendSocket(params->tcp,*params->newsockfd,(char*)&infosS, sizeof(infosS),0,(struct sockaddr *) (params->addr), (*params->clilen));
                         int n = sendSocket(params->tcp,*ic.sock,(char*)&infosS, sizeof(infosS),0,(struct sockaddr *) (ic.addr), (ic.clilen));

@@ -337,7 +337,7 @@ void Game::updateMultiplayer()
             int idPlayer=floor(s.variable[0]);
             Player *player=playerForId(idPlayer);
             //if player not found, create it and assign id
-            if(player==NULL && s.type!=5 && idPlayer<30)//idPlayer<10 = sux fix temporaire
+            if(player==NULL && s.type!=5 && idPlayer>=0 && idPlayer<30)//idPlayer<10 = sux fix temporaire
             {
                 unsigned int ind=playerList.size();
                 playerList.push_back(new Player());
@@ -349,175 +349,177 @@ void Game::updateMultiplayer()
                 cerr<<"creating new player, id online: "<<idPlayer<<endl;
             }
 
-
-            //player position and angle and life
-            if(s.type==1)
+            if(player)
             {
-                player->setPos(Vector3D(s.variable[1],s.variable[2],s.variable[3]));
-                player->setRot(Vector3D(0,0,s.variable[4]));
-                player->setLife(s.variable[5]);
-            }
-            //hook
-            if(s.type==2)
-            {
-                Vector3D pos=Vector3D(s.variable[1],s.variable[2],s.variable[3]);
-                Vector3D dir=Vector3D(s.variable[4],s.variable[5],s.variable[6]);
-                player->linkRope(m_map.createRope(pos,dir));
-            }
-            //unhook
-            if(s.type==3)
-            {
-                player->unlinkRope();
-            }
-            //new player
-            if(s.type==4 && 0)
-            {
-                unsigned int ind=playerList.size();
-                playerList.push_back(new Player());
-                playerList[ind]->gtext=gtext;
-                playerList[ind]->online=&m_online;
-                playerList[ind]->ini();
-                playerList[ind]->setIdOnline(idPlayer);
-            }
-            //you just connected and got response from server and your id
-            if(s.type==5)
-            {
-                playerList[0]->setIdOnline(idPlayer);
-
-                //send request for patterns
-                infosSocket s;
-                s.type=8;
-                s.variable[0]=idPlayer;
-                m_online.sendSocket(s);
-
-
-                //first create all the players (i'd need to receive playerN from server)
-                /*for(int i=0;i<playerN;i++)
+                //player position and angle and life
+                if(s.type==1)
+                {
+                    player->setPos(Vector3D(s.variable[1],s.variable[2],s.variable[3]));
+                    player->setRot(Vector3D(0,0,s.variable[4]));
+                    player->setLife(s.variable[5]);
+                }
+                //hook
+                if(s.type==2)
+                {
+                    Vector3D pos=Vector3D(s.variable[1],s.variable[2],s.variable[3]);
+                    Vector3D dir=Vector3D(s.variable[4],s.variable[5],s.variable[6]);
+                    player->linkRope(m_map.createRope(pos,dir));
+                }
+                //unhook
+                if(s.type==3)
+                {
+                    player->unlinkRope();
+                }
+                //new player
+                if(s.type==4 && 0)
                 {
                     unsigned int ind=playerList.size();
                     playerList.push_back(new Player());
                     playerList[ind]->gtext=gtext;
+                    playerList[ind]->online=&m_online;
                     playerList[ind]->ini();
-                }*/
-            }
-            //restart map
-            if(s.type==6)
-            {
-                m_map.restart();
-                m_camera.setCible(playerList[0]);
-                m_camera.setMode("play");
-                m_mode="play";
-
-                //send request for patterns
-               /* infosSocket s;
-                s.type=8;
-                s.variable[0]=playerList[0]->getIdOnline();
-                m_online.sendSocket(s);*/
-            }
-            //phase
-            if(s.type==7)
-            {
-                //set phase and ini
-            }
-            //next phase: pattern/lava lvl or request for patterns/lava lvl
-            if(s.type==8)
-            {
-                if(m_online.m_server)
+                    playerList[ind]->setIdOnline(idPlayer);
+                }
+                //you just connected and got response from server and your id
+                if(s.type==5)
                 {
-                    cerr<<"sending pattern/lava lvl "<< floor(s.variable[1]) <<" to client"<<endl;
-                    //send lava level and pattern queue to client
+                    playerList[0]->setIdOnline(idPlayer);
+/*
+                    //send request for patterns
                     infosSocket s;
                     s.type=8;
-                    s.variable[0]=0;
-                    s.variable[1]=m_map.getLavaLevel();
+                    s.variable[0]=idPlayer;
+                    m_online.sendSocket(s);*/
 
-                    std::vector<Pattern*>* pq=m_map.getPhase()->getPatternQueue();
-                    //start z from first pattern
-                    if(pq->size()>0)
-                        s.variable[2]=(*pq)[0]->getStartZ();
-                    //cerr<<"sending pattern/lava lvl "<< pq->size() <<" to client"<<endl;
-                    unsigned int j=0;
-                    for(unsigned int count=pq->size();j<count;j++)
+
+                    //first create all the players (i'd need to receive playerN from server)
+                    /*for(int i=0;i<playerN;i++)
                     {
-                        cerr<<"send pat  "<< j <<" to client"<<endl;
-                        s.variable[j+3]=(*pq)[j]->getPID();
-                    }
-                    s.variable[j+3]=-1;
-                        cerr<<"sending pattern/lava lvl "<< j <<" to client"<<endl;
-
-                    m_online.sendSocket(s);
+                        unsigned int ind=playerList.size();
+                        playerList.push_back(new Player());
+                        playerList[ind]->gtext=gtext;
+                        playerList[ind]->ini();
+                    }*/
                 }
-                else
+                //restart map
+                if(s.type==6)
                 {
-                    cerr<<"received pattern/lava lvl "<< floor(s.variable[1]) <<" from server!"<<endl;
+                    m_map.restart();
+                    m_camera.setCible(playerList[0]);
+                    m_camera.setMode("play");
+                    m_mode="play";
 
-                    //go next phase
-                    m_map.getPhase()->goToNextPhase();
-
-                    //lava level
-                    if(floor(s.variable[1])!=-1)
-                        m_map.setLavaLevel(s.variable[1]);
-
-                    std::vector<Pattern*>* pq=m_map.getPhase()->getPatternQueue();
-                    for(int j =3;j<24;j++)
+                    //send request for patterns
+                   /* infosSocket s;
+                    s.type=8;
+                    s.variable[0]=playerList[0]->getIdOnline();
+                    m_online.sendSocket(s);*/
+                }
+                //phase
+                if(s.type==7)
+                {
+                    //set phase and ini
+                }
+                //next phase: pattern/lava lvl or request for patterns/lava lvl
+                if(s.type==8)
+                {
+                    if(m_online.m_server)
                     {
-                        cerr<<"rec pat  "<< floor(s.variable[j]) <<" from server!"<<endl;
-                        if(s.variable[j]==-1)
-                            break;
+                        cerr<<"sending pattern/lava lvl "<< floor(s.variable[1]) <<" to client"<<endl;
+                        //send lava level and pattern queue to client
+                        infosSocket s;
+                        s.type=8;
+                        s.variable[0]=0;
+                        s.variable[1]=m_map.getLavaLevel();
 
-                        //add pattern to queue
-                        m_map.getPhase()->addPatternToQueue(floor(s.variable[j]));
-                        //pattern start z from first pattern
-                        if(j==3 && floor(s.variable[2])!=-1)
+                        std::vector<Pattern*>* pq=m_map.getPhase()->getPatternQueue();
+                        //start z from first pattern
+                        if(pq->size()>0)
+                            s.variable[2]=(*pq)[0]->getStartZ();
+                        //cerr<<"sending pattern/lava lvl "<< pq->size() <<" to client"<<endl;
+                        unsigned int j=0;
+                        for(unsigned int count=pq->size();j<count;j++)
                         {
-                            (*pq)[pq->size()-1]->setStartZ(s.variable[2]);
+                            cerr<<"send pat  "<< j <<" to client"<<endl;
+                            s.variable[j+3]=(*pq)[j]->getPID();
+                        }
+                        s.variable[j+3]=-1;
+                            cerr<<"sending pattern/lava lvl "<< j <<" to client"<<endl;
+
+                        m_online.sendSocket(s);
+                    }
+                    else
+                    {
+                        cerr<<"received pattern/lava lvl "<< floor(s.variable[1]) <<" from server!"<<endl;
+
+                        //go next phase
+                        m_map.getPhase()->goToNextPhase();
+
+                        //lava level
+                        if(floor(s.variable[1])!=-1)
+                            m_map.setLavaLevel(s.variable[1]);
+
+                        std::vector<Pattern*>* pq=m_map.getPhase()->getPatternQueue();
+                        for(int j =3;j<24;j++)
+                        {
+                            cerr<<"rec pat  "<< floor(s.variable[j]) <<" from server!"<<endl;
+                            if(s.variable[j]==-1)
+                                break;
+
+                            //add pattern to queue
+                            m_map.getPhase()->addPatternToQueue(floor(s.variable[j]));
+                            //pattern start z from first pattern
+                            if(j==3 && floor(s.variable[2])!=-1)
+                            {
+                                (*pq)[pq->size()-1]->setStartZ(s.variable[2]);
+                            }
+                        }
+
+                    }
+                }
+                //lava level
+                if(s.type==9)
+                {
+
+                }
+                //loot bonus
+                if(s.type==10)
+                {
+                    Vector3D pos=Vector3D(s.variable[1],s.variable[2],s.variable[3]);
+                    std::vector<Object*>* objects=m_map.getObjects();
+
+                    //find nearest bonus (cant be farther than 5)
+                    Object* o=NULL;
+                    double distMax=5;
+
+                    for(unsigned int i = 0, count = (*objects).size(); i<count;i++)
+                    {
+                        double tempDist=distance2V(pos,(*objects)[i]->getPos());
+                        if((*objects)[i]->getType()=="bonus" && tempDist<distMax)
+                        {
+                            o=(*objects)[i];
+                            distMax=tempDist;
                         }
                     }
 
-                }
-            }
-            //lava level
-            if(s.type==9)
-            {
-
-            }
-            //loot bonus
-            if(s.type==10)
-            {
-                Vector3D pos=Vector3D(s.variable[1],s.variable[2],s.variable[3]);
-                std::vector<Object*>* objects=m_map.getObjects();
-
-                //find nearest bonus (cant be farther than 5)
-                Object* o=NULL;
-                double distMax=5;
-
-                for(unsigned int i = 0, count = (*objects).size(); i<count;i++)
-                {
-                    double tempDist=distance2V(pos,(*objects)[i]->getPos());
-                    if((*objects)[i]->getType()=="bonus" && tempDist<distMax)
+                    //object found
+                    if(o!=NULL)
                     {
-                        o=(*objects)[i];
-                        distMax=tempDist;
-                    }
-                }
-
-                //object found
-                if(o!=NULL)
-                {
-                    if(o->getName()=="rez")
-                    {
-                        //rez bonus
-                        cerr<<"resurecting!"<<endl;
-                        if(playerList[0]->getLife()<=0)
+                        if(o->getName()=="rez")
                         {
-                            playerList[0]->resurrect();
-                            playerList[0]->setPos(pos);
-                            m_camera.setCible(playerList[0]);
-                            m_camera.setMode("play");
-                            m_mode="play";
+                            //rez bonus
+                            cerr<<"resurecting!"<<endl;
+                            if(playerList[0]->getLife()<=0)
+                            {
+                                playerList[0]->resurrect();
+                                playerList[0]->setPos(pos);
+                                m_camera.setCible(playerList[0]);
+                                m_camera.setMode("play");
+                                m_mode="play";
+                            }
                         }
+                        o->setLife(0);
                     }
-                    o->setLife(0);
                 }
             }
         }

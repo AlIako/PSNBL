@@ -100,17 +100,23 @@ void* clientConnectThread(void* data)
             cerr<<"ERROR writing from conn socket: "<<WSAGetLastError()<<endl;
 
         //receive answer from serv
-        while(*(params->connectionEstablished)==false)
-        {
-            n = receiveSocket(params->tcp,*params->newsockfd, (char*)&infosRecu,sizeof(infosRecu), 0,(struct sockaddr *) (params->addr), (params->clilen));
+        n = receiveSocket(params->tcp,*params->newsockfd, (char*)&infosRecu,sizeof(infosRecu), 0,(struct sockaddr *) (params->addr), (params->clilen));
 
-            if (n < 0)
-                cerr<<"ERROR reading to conn socket: "<<WSAGetLastError()<<endl;
+        if (n < 0)
+            cerr<<"ERROR reading to conn socket: "<<WSAGetLastError()<<endl;
 
-            if(infosRecu.type==5)//serv response
-                *(params->connectionEstablished)=true;
-            SDL_Delay(50);
-        }
+
+
+        if(infosRecu.type==5)//serv response
+            *(params->connectionEstablished)=true;
+
+
+        (*params->clientID)=infosRecu.variable[0];
+        cerr<<"server responded. my client id is "<< (int)infosRecu.variable[0]<<endl;
+        (*params->socketsReceived).push_back(infosRecu);
+
+
+        SDL_Delay(50);
 
 
         cerr << "Connection succesful!"<<endl;
@@ -124,6 +130,7 @@ void* clientConnectThread(void* data)
 
 void* clientReceiveThread(void* data)
 {
+    cerr << "Begin client receive thread"<<endl;
     thread_params* params;
     params=(thread_params*)data;
 
@@ -138,6 +145,7 @@ void* clientReceiveThread(void* data)
         //add received socket to queue
         if(infosRecu.type!=-1)
         {
+            cerr<<" received socket type "<<(int)infosRecu.type << ", 0: "<< infosRecu.variable[0]  << ", 1: "<< infosRecu.variable[1] << ", 2: "<< infosRecu.variable[2] << ", 3: "<< infosRecu.variable[3] <<endl;
             (*params->socketsReceived).push_back(infosRecu);
         }
 
@@ -149,6 +157,7 @@ void* clientReceiveThread(void* data)
 
 void* clientSendThread(void* data)
 {
+    cerr << "Begin client send thread"<<endl;
     thread_params* params=(thread_params*)data;
 
     infosSocket infosS;
@@ -163,7 +172,7 @@ void* clientSendThread(void* data)
 
 
             //infosSocket s=infosS;
-            //cerr<<" sending socket type "<<(int)s.type << ", 0: "<< s.variable[0]  << ", 1: "<< s.variable[1] << ", 2: "<< s.variable[2] << ", 3: "<< s.variable[3] <<endl;
+            cerr<<" sending socket type "<<(int)infosS.type << ", 0: "<< infosS.variable[0]  << ", 1: "<< infosS.variable[1] << ", 2: "<< infosS.variable[2] << ", 3: "<< infosS.variable[3] <<endl;
 
             //send
             int n = sendSocket(params->tcp,*params->newsockfd,(char*)&infosS, sizeof(infosS),0,(struct sockaddr *) (params->addr), (*params->clilen));

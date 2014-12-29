@@ -204,16 +204,14 @@ void Phase::iniMap()
         {
             for(int i=0;i<2;i++)
             {
-                randomizer=myIntRand(0,500);
+                randomizer=myIntRand(0,400);
                 //next pattern are random
-                if(randomizer>400)
+                if(randomizer>300)
                     addPatternToQueue(2);
-                else if(randomizer>300)
-                    addPatternToQueue(3);
                 else if(randomizer>200)
-                    addPatternToQueue(6);
+                    addPatternToQueue(3);
                 else if(randomizer>100)
-                    addPatternToQueue(7);
+                    addPatternToQueue(6);
                 else if(randomizer>0)
                     addPatternToQueue(4);
             }
@@ -222,14 +220,12 @@ void Phase::iniMap()
         {
             for(int i=0;i<2;i++)
             {
-                randomizer=myIntRand(0,500);
+                randomizer=myIntRand(0,400);
                 //next pattern are random
-                if(randomizer>400)
+                if(randomizer>300)
                     addPatternToQueue(2);
-                else if(randomizer>300)
-                    addPatternToQueue(3);
                 else if(randomizer>200)
-                    addPatternToQueue(6);
+                    addPatternToQueue(3);
                 else if(randomizer>100)
                     addPatternToQueue(7);
                 else if(randomizer>0)
@@ -240,14 +236,12 @@ void Phase::iniMap()
         {
             for(int i=0;i<3;i++)
             {
-                randomizer=myIntRand(0,500);
+                randomizer=myIntRand(0,400);
                 //next pattern are random
-                if(randomizer>400)
+                if(randomizer>300)
                     addPatternToQueue(2);
-                else if(randomizer>300)
-                    addPatternToQueue(3);
                 else if(randomizer>200)
-                    addPatternToQueue(6);
+                    addPatternToQueue(3);
                 else if(randomizer>100)
                     addPatternToQueue(7);
                 else if(randomizer>0)
@@ -258,16 +252,14 @@ void Phase::iniMap()
         {
             for(int i=0;i<4;i++)
             {
-                randomizer=myIntRand(0,500);
+                randomizer=myIntRand(0,400);
                 //next pattern are random
-                if(randomizer>400)
+                if(randomizer>300)
                     addPatternToQueue(2);
-                else if(randomizer>300)
-                    addPatternToQueue(3);
                 else if(randomizer>200)
-                    addPatternToQueue(6);
+                    addPatternToQueue(3);
                 else if(randomizer>100)
-                    addPatternToQueue(7);
+                    addPatternToQueue(6);
                 else if(randomizer>0)
                     addPatternToQueue(4);
             }
