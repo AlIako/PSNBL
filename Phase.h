@@ -5,9 +5,9 @@
 #include "PatMidBlocks.h"
 #include "PatBeams.h"
 #include "PatEndPhase.h"
+#include "PatLetsGo.h"
+#include "PatHookAround.h"
 #include "Online.h"
-
-#define PATTERN_AT_ONCE 1
 
 class Phase
 {

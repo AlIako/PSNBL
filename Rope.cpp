@@ -31,7 +31,7 @@ void Rope::update(double functionTime)
         //collide
         if(m_collided)
         {
-            if(collidedWithType("wall")==false/* && collidedWithType("lava")==false*/)
+            if(collidedWithHookable())
             {
                 //cerr<<"update hook"<<endl;
                 m_hooked=true;

@@ -22,6 +22,8 @@ Object::Object()
     m_destructible=false;
     m_life=100;
 
+    m_hookable=false;
+
     m_collided=false;
     ft=0;
 
@@ -112,6 +114,15 @@ bool Object::collidedWithType(std::string t)
     for(unsigned int i=0,count=m_colliding.size();i<count;i++)
     {
         if(m_colliding[i]->getType()==t)
+            return true;
+    }
+    return false;
+}
+bool Object::collidedWithHookable()
+{
+    for(unsigned int i=0,count=m_colliding.size();i<count;i++)
+    {
+        if(m_colliding[i]->isHookable())
             return true;
     }
     return false;

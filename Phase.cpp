@@ -194,17 +194,22 @@ void Phase::iniMap()
         if(m_name=="still")//lobby like, lava rly slow
         {
             addPatternToQueue(1);
+            addPatternToQueue(6);
         }
         else if(m_name=="easy")
         {
             for(int i=0;i<2;i++)
             {
-                randomizer=myIntRand(0,100);
+                randomizer=myIntRand(0,500);
                 //next pattern are random
-                if(randomizer>66)
+                if(randomizer>400)
                     addPatternToQueue(2);
-                else if(randomizer>33)
+                else if(randomizer>300)
                     addPatternToQueue(3);
+                else if(randomizer>200)
+                    addPatternToQueue(6);
+                else if(randomizer>100)
+                    addPatternToQueue(7);
                 else if(randomizer>0)
                     addPatternToQueue(4);
             }
@@ -213,12 +218,16 @@ void Phase::iniMap()
         {
             for(int i=0;i<2;i++)
             {
-                randomizer=myIntRand(0,100);
+                randomizer=myIntRand(0,500);
                 //next pattern are random
-                if(randomizer>66)
+                if(randomizer>400)
                     addPatternToQueue(2);
-                else if(randomizer>33)
+                else if(randomizer>300)
                     addPatternToQueue(3);
+                else if(randomizer>200)
+                    addPatternToQueue(6);
+                else if(randomizer>100)
+                    addPatternToQueue(7);
                 else if(randomizer>0)
                     addPatternToQueue(4);
             }
@@ -227,12 +236,16 @@ void Phase::iniMap()
         {
             for(int i=0;i<3;i++)
             {
-                randomizer=myIntRand(0,100);
+                randomizer=myIntRand(0,500);
                 //next pattern are random
-                if(randomizer>66)
+                if(randomizer>400)
                     addPatternToQueue(2);
-                else if(randomizer>33)
+                else if(randomizer>300)
                     addPatternToQueue(3);
+                else if(randomizer>200)
+                    addPatternToQueue(6);
+                else if(randomizer>100)
+                    addPatternToQueue(7);
                 else if(randomizer>0)
                     addPatternToQueue(4);
             }
@@ -241,12 +254,16 @@ void Phase::iniMap()
         {
             for(int i=0;i<4;i++)
             {
-                randomizer=myIntRand(0,100);
+                randomizer=myIntRand(0,500);
                 //next pattern are random
-                if(randomizer>66)
+                if(randomizer>400)
                     addPatternToQueue(2);
-                else if(randomizer>33)
+                else if(randomizer>300)
                     addPatternToQueue(3);
+                else if(randomizer>200)
+                    addPatternToQueue(6);
+                else if(randomizer>100)
+                    addPatternToQueue(7);
                 else if(randomizer>0)
                     addPatternToQueue(4);
             }
@@ -282,6 +299,14 @@ void Phase::addPatternToQueue(int p)
     else if(p==5)
     {
         m_patternQueue.push_back(new PatEndPhase());
+    }
+    else if(p==6)
+    {
+        m_patternQueue.push_back(new PatLetsGo());
+    }
+    else if(p==7)
+    {
+        m_patternQueue.push_back(new PatHookAround());
     }
 
     iniLastPattern();

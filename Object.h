@@ -28,6 +28,7 @@ class Object
     void applyPhysics(int x, int y, int z);
 
     bool collidedWithType(std::string t);
+    bool collidedWithHookable();
 
     void rotate(Vector3D v) {m_rotation+=v; }
 
@@ -48,6 +49,7 @@ class Object
     void collide(std::vector<Object*> v, std::vector<int> t) {m_collided=true; m_colliding=v; m_colTypes=t;}
     void setSpeed(double s) {m_speed=s;}
     void setLife(double l) {m_life=l;}
+    void setHookable(bool h) {m_hookable=h;}
 
 
     //get
@@ -65,6 +67,7 @@ class Object
     bool getOnground() {return m_onground; }
     double getLife() {return m_life; }
     int getIdOnline() {return m_idOnline;}
+    bool isHookable() { return m_hookable; }
 
     //public attributes
     GTexture* gtext;
@@ -99,6 +102,8 @@ class Object
     std::vector<int> m_colTypes;
 
     int m_idOnline;
+
+    bool m_hookable;
 };
 
 #endif // OBJECT_H_INCLUDED

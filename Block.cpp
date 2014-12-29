@@ -6,6 +6,8 @@ Block::Block()
 {
     m_texture=NULL;
     mosaic=4;
+
+    m_hookable=true;
 }
 
 void Block::ini()
@@ -25,6 +27,11 @@ void Block::ini()
         if(m_name=="finalBlock")
         {
             path="../data/textures/redrock.png";
+        }
+        if(m_name=="noHookBlock")
+        {
+            path="../data/textures/metal.png";
+            m_hookable=false;
         }
         char* tempPath=stringtochar(path);
         gtext->addTexture(tempPath);

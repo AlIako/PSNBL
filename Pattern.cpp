@@ -77,6 +77,10 @@ int Pattern::getPID()
         return 4;
     if(m_name=="PatEndPhase")
         return 5;
+    if(m_name=="PatLetsGo")
+        return 6;
+    if(m_name=="PatHookAround")
+        return 7;
     return 0;
 }
 
