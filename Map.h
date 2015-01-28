@@ -37,12 +37,6 @@ class Map
     Phase* getPhase() {return &m_phase;}
     std::vector<Object*>* getObjects() {return &m_objects;}
 
-    //public attributes
-    bool m_incontrol;
-    Video* video;
-    Online* online;
-    GTexture* gtext;
-
     vector<Player*>* playerList;
 
     private:

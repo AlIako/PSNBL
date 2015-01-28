@@ -59,6 +59,7 @@ void* handleConnections(void* data)
         }
         while(/* *(params->connectionEstablished)==false || */true)
         {
+            //sem_wait(params->mutex);
 
             //Now we can start listening (allowing as many connections as possible to
             //be made at the same time using SOMAXCONN). You could specify any
@@ -124,6 +125,8 @@ void* handleConnections(void* data)
             close(s);
 
             SDL_Delay(100);
+
+            //sem_post(params->mutex);
         }
     }
     else//udp
@@ -134,6 +137,7 @@ void* handleConnections(void* data)
         //waiting for client to connect
         while(/* *(params->connectionEstablished)==false*/  true)
         {
+            sem_wait(params->mutex);
 
             infosSocket infosRecu;
             int n = receiveSocket(params->tcp,*params->newsockfd, (char*)&infosRecu,sizeof(infosRecu), 0,(struct sockaddr *) (params->addr), (params->clilen));
@@ -188,6 +192,9 @@ void* handleConnections(void* data)
                 *(params->connectionEstablished)=true;
             }
             else (*params->socketsReceived).push_back(infosRecu);
+
+
+            sem_post(params->mutex);
         }
 
     }
@@ -204,6 +211,8 @@ void* serverReceiveThread(void* data)
 
     while(params!=NULL/* && *(params->threadOn)*/)
     {
+        //sem_wait(params->mutex);
+
         infosSocket infosRecu;
         for(unsigned int i=0;i<(*params->clients).size();i++)
         {
@@ -226,6 +235,8 @@ void* serverReceiveThread(void* data)
         }
 
         SDL_Delay(SERV_WAIT_RECEIVE);
+
+        //sem_post(params->mutex);
     }
     cerr << "End server receive thread"<<endl;
     return NULL;
@@ -242,6 +253,8 @@ void* serverSendThread(void* data)
     //infinite while
     while(params!=NULL && *(params->threadOn))
     {
+        //sem_wait(params->mutex);
+
         //if there is something to send
         int nSendDirectly=(*params->socketsToSend).size();
         nSendDirectly=1;
@@ -279,6 +292,8 @@ void* serverSendThread(void* data)
         }
 
         SDL_Delay(SERV_WAIT_SEND);
+
+        //sem_post(params->mutex);
     }
 
     close(*params->newsockfd);

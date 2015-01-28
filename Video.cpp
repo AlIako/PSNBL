@@ -1,5 +1,13 @@
 #include "Video.h"
 
+Video* Video::m_instance = new Video();
+
+
+Video* Video::getInstance()
+{
+    return m_instance;
+}
+
 
 
 Video::Video()

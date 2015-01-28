@@ -137,6 +137,8 @@ void* clientReceiveThread(void* data)
     //receive informations from server
     while(params!=NULL && *(params->threadOn))
     {
+        //sem_wait(params->mutex);
+
         infosSocket infosRecu;
         int n = receiveSocket(params->tcp,*params->newsockfd, (char*)&infosRecu,sizeof(infosRecu), 0,(struct sockaddr *) (params->addr), (params->clilen));
         if (n < 0)
@@ -150,6 +152,7 @@ void* clientReceiveThread(void* data)
         }
 
         SDL_Delay(CLIENT_WAIT_RECEIVE);
+        //sem_post(params->mutex);
     }
     cerr << "End client receive thread"<<endl;
     return NULL;
@@ -164,6 +167,8 @@ void* clientSendThread(void* data)
 
     while(params!=NULL && *(params->threadOn))
     {
+        //sem_wait(params->mutex);
+
         //if there is something to send
         if((*params->socketsToSend).size()>0)
         {
@@ -188,6 +193,7 @@ void* clientSendThread(void* data)
         }
 
         SDL_Delay(CLIENT_WAIT_SEND);
+        //sem_post(params->mutex);
     }
 
 

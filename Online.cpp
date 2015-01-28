@@ -1,9 +1,17 @@
 #include "Online.h"
 
+Online* Online::m_instance = new Online();
+
+
+Online* Online::getInstance()
+{
+    return m_instance;
+}
 
 
 Online::Online()
 {
+    m_incontrol=true;
     m_active=true;
 
     m_server=false;
@@ -17,15 +25,18 @@ Online::Online()
 //add socket to send to the list
 void Online::sendSocket(infosSocket s)
 {
-    if(m_connectionEstablished)
+    if(m_active)
     {
-        int cl=clientID;
-        if(m_server) cl=0;
-        s.variable[0]=cl;
+        if(m_connectionEstablished)
+        {
+            int cl=clientID;
+            if(m_server) cl=0;
+            s.variable[0]=cl;
 
-        socketsToSend.push_back(s);
-        //if(s.type==8)
-        //cerr<<socketsToSend.size()<<" sending socket type "<<(int)s.type << ": "<< s.variable[0]  << ", 1: "<< s.variable[1] << ", 2: "<< s.variable[2] << ", 3: "<< s.variable[3] <<endl;
+            socketsToSend.push_back(s);
+            //if(s.type==8)
+            //cerr<<socketsToSend.size()<<" sending socket type "<<(int)s.type << ": "<< s.variable[0]  << ", 1: "<< s.variable[1] << ", 2: "<< s.variable[2] << ", 3: "<< s.variable[3] <<endl;
+        }
     }
 }
 
@@ -33,27 +44,30 @@ void Online::sendSocket(infosSocket s)
 //if socket already in list, just replace it
 void Online::sendSocketReplace(infosSocket s)
 {
-    int cl=clientID;
-    if(m_server) cl=0;
-    s.variable[0]=cl;
-
-    //cerr<<socketsToSend.size()<<" sending socketR type "<<(int)s.type << ", 0: "<< s.variable[0]  << ", 1: "<< s.variable[1] << ", 2: "<< s.variable[2] << ", 3: "<< s.variable[3] <<endl;
-    //check if already in list
-    bool socketFound=false;
-    for(unsigned int i=0;i<socketsToSend.size();i++)
+    if(m_active)
     {
-        if((int)socketsToSend[i].variable[0]==cl && socketsToSend[i].type==s.type)
+        int cl=clientID;
+        if(m_server) cl=0;
+        s.variable[0]=cl;
+
+        //cerr<<socketsToSend.size()<<" sending socketR type "<<(int)s.type << ", 0: "<< s.variable[0]  << ", 1: "<< s.variable[1] << ", 2: "<< s.variable[2] << ", 3: "<< s.variable[3] <<endl;
+        //check if already in list
+        bool socketFound=false;
+        for(unsigned int i=0;i<socketsToSend.size();i++)
         {
-            socketFound=true;
-            socketsToSend[i]=s;
+            if((int)socketsToSend[i].variable[0]==cl && socketsToSend[i].type==s.type)
+            {
+                socketFound=true;
+                socketsToSend[i]=s;
+            }
         }
+        //cerr<<socketsToSend.size()<<" sending socketR type "<<(int)s.type << ": "<< s.variable[0]  << ", 1: "<< s.variable[1] << ", 2: "<< s.variable[2] << ", 3: "<< s.variable[3] <<endl;
+
+
+        //if not in list, add to list
+        if(!socketFound)
+            sendSocket(s);
     }
-    //cerr<<socketsToSend.size()<<" sending socketR type "<<(int)s.type << ": "<< s.variable[0]  << ", 1: "<< s.variable[1] << ", 2: "<< s.variable[2] << ", 3: "<< s.variable[3] <<endl;
-
-
-    //if not in list, add to list
-    if(!socketFound)
-        sendSocket(s);
 }
 
 //get next socket from the list
@@ -86,7 +100,7 @@ void Online::ini()
     //read settings file
     readMultiplayerFile();
 
-    if(true)
+    if(m_active)
     {
         paramsHandleConnectionsThread.threadOn=&m_threadsOn;
         paramsHandleConnectionsThread.connectionEstablished=&m_connectionEstablished;
@@ -100,6 +114,9 @@ void Online::ini()
         paramsHandleConnectionsThread.addr=new sockaddr_in;
         paramsHandleConnectionsThread.clilen=new int;
         paramsHandleConnectionsThread.clientID=&clientID;
+        paramsHandleConnectionsThread.mutex=&mutex;
+
+        sem_init(&mutex, 0, 1);
 
         //serv threads
         if(m_server)
@@ -121,7 +138,7 @@ void Online::ini()
 
 void Online::update()
 {
-    if(true)
+    if(m_active)
     {
         //client
         if(m_server==false)

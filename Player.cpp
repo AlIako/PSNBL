@@ -6,8 +6,6 @@
 
 Player::Player()
 {
-    gtext=NULL;
-    online=NULL;
     m_texture=NULL;
     m_startpos=Vector3D(-MAPSIZE/1.5,-MAPSIZE/1.5,20);
     m_position=m_startpos;
@@ -42,7 +40,7 @@ void Player::update(double functionTime)
             if(m_colliding[i]->getType()=="bonus")
             {
                 m_colliding[i]->setLife(0);
-                if(online!=NULL)
+                if(Online::getInstance()!=NULL)
                 {
                     infosSocket s;
                     s.type=10;
@@ -50,7 +48,7 @@ void Player::update(double functionTime)
                     s.variable[2]=m_colliding[i]->getPos().Y;
                     s.variable[3]=m_colliding[i]->getPos().Z;
 
-                    online->sendSocket(s);
+                    Online::getInstance()->sendSocket(s);
                 }
             }
         }
@@ -123,13 +121,13 @@ bool Player::ropeHooked()
 void Player::ini()
 {
 //    getgt.get();
-    if(gtext!=NULL)
+    if(GTexture::getInstance())
     {
-        gtext->addTexture("../data/textures/char1.png");
-        m_texture=gtext->getTexture("../data/textures/char1.png");
+        GTexture::getInstance()->addTexture("../data/textures/char1.png");
+        m_texture=GTexture::getInstance()->getTexture("../data/textures/char1.png");
 
-        gtext->addTexture("../data/textures/chardead.png");
-        m_textureDead=gtext->getTexture("../data/textures/chardead.png");
+        GTexture::getInstance()->addTexture("../data/textures/chardead.png");
+        m_textureDead=GTexture::getInstance()->getTexture("../data/textures/chardead.png");
     }
 }
 

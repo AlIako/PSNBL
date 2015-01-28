@@ -13,7 +13,7 @@ Block::Block()
 void Block::ini()
 {
     m_type="block";
-    if(gtext!=NULL)
+    if(GTexture::getInstance())
     {
         string path="../data/textures/bedrock.png";
         /*int randTexture=myIntRand(0,300);
@@ -34,8 +34,8 @@ void Block::ini()
             m_hookable=false;
         }
         char* tempPath=stringtochar(path);
-        gtext->addTexture(tempPath);
-        m_texture=gtext->getTexture(tempPath);
+        GTexture::getInstance()->addTexture(tempPath);
+        m_texture=GTexture::getInstance()->getTexture(tempPath);
         delete tempPath;
     }
 

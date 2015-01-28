@@ -35,14 +35,10 @@ class Game
     void close();
     ~Game();
 
-
-    //public attributes
-    GTexture* gtext;
-
     private:
     bool playLoop;
-    Video m_video;
-    Online m_online;
+    Video* m_video;
+    Online* m_online;
     Map m_map;
     vector<Player*> playerList;
     Camera m_camera;
@@ -51,8 +47,6 @@ class Game
     double ft;//function time
 
     bool grabCursor;
-
-    bool m_incontrol;
 
     std::string m_mode;//playing, death(spectate)
 };

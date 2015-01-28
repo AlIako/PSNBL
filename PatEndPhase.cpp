@@ -15,7 +15,6 @@ void PatEndPhase::ini(double startZ, std::vector<Object*>* objects)
 
     unsigned int ind=(*m_objects).size();
     (*m_objects).push_back(new Block());
-    (*m_objects)[ind]->gtext=gtext;
     (*m_objects)[ind]->setName("finalBlock");
     (*m_objects)[ind]->ini();
     (*m_objects)[ind]->setPos(Vector3D(0,0,startZ+15));
@@ -23,8 +22,6 @@ void PatEndPhase::ini(double startZ, std::vector<Object*>* objects)
 
     ind=(*m_objects).size();
     (*m_objects).push_back(new Bonus());
-    (*m_objects)[ind]->gtext=gtext;
-    (*m_objects)[ind]->online=online;
     (*m_objects)[ind]->setName("rez");
     (*m_objects)[ind]->ini();
     (*m_objects)[ind]->setPos(Vector3D(0,0,startZ+15+4));

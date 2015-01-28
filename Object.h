@@ -69,10 +69,6 @@ class Object
     int getIdOnline() {return m_idOnline;}
     bool isHookable() { return m_hookable; }
 
-    //public attributes
-    GTexture* gtext;
-    Online* online;
-
     protected:
     Vector3D m_position;
     Vector3D m_rotation;

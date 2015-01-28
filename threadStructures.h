@@ -30,6 +30,8 @@ typedef struct sockaddr SOCKADDR;
 #define CLIENT_WAIT_SEND 60
 #define CLIENT_WAIT_RECEIVE 10
 
+#include <semaphore.h>
+
 using namespace std;
 
 
@@ -61,6 +63,8 @@ struct thread_params
     bool* connectionEstablished;
     int port;
     string ip;
+
+    sem_t *mutex;
 
     bool tcp;
 

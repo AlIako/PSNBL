@@ -23,9 +23,7 @@ class Pattern
     void setStartZ(double s) {m_startZ=s;}
 
     //public attributes
-    GTexture* gtext;
     Video *video;
-    Online* online;
 
     protected:
     std::string m_name;

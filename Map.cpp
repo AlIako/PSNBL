@@ -6,8 +6,6 @@
 Map::Map()
 {
     playerList=NULL;
-    online=NULL;
-    video=NULL;
 }
 
 void Map::draw()
@@ -77,7 +75,6 @@ void Map::updateMap()
 Rope* Map::createRope(Vector3D start, Vector3D target)
 {
     Rope* rope=new Rope();
-    rope->gtext=gtext;
     rope->ini(start,target);
 
     m_objects.push_back(rope);
@@ -106,28 +103,24 @@ void Map::ini()
     //walls
     unsigned int ind=0;
     m_objects.push_back(new Wall());
-    m_objects[ind]->gtext=gtext;
     m_objects[ind]->ini();
     m_objects[ind]->setPos(Vector3D(2,MAPSIZE,2));
     m_objects[ind]->setSize(Vector3D(MAPSIZE,2,WALL_HEIGHT));
 
     ind=m_objects.size();
     m_objects.push_back(new Wall());
-    m_objects[ind]->gtext=gtext;
     m_objects[ind]->ini();
     m_objects[ind]->setPos(Vector3D(MAPSIZE,2,2));
     m_objects[ind]->setSize(Vector3D(2,MAPSIZE,WALL_HEIGHT));
 
     ind=m_objects.size();
     m_objects.push_back(new Wall());
-    m_objects[ind]->gtext=gtext;
     m_objects[ind]->ini();
     m_objects[ind]->setPos(Vector3D(-MAPSIZE,2,2));
     m_objects[ind]->setSize(Vector3D(2,MAPSIZE,WALL_HEIGHT));
 
     ind=m_objects.size();
     m_objects.push_back(new Wall());
-    m_objects[ind]->gtext=gtext;
     m_objects[ind]->ini();
     m_objects[ind]->ini();
     m_objects[ind]->setPos(Vector3D(2,-MAPSIZE,2));
@@ -136,7 +129,6 @@ void Map::ini()
     //lava
     ind=m_objects.size();
     m_objects.push_back(new Lava());
-    m_objects[ind]->gtext=gtext;
     m_objects[ind]->ini();
     m_objects[ind]->setPos(Vector3D(0,0,4));
     m_objects[ind]->setSize(Vector3D(MAPSIZE,MAPSIZE,2));
@@ -144,16 +136,11 @@ void Map::ini()
     //floor
     ind=m_objects.size();
     m_objects.push_back(new Block());
-    m_objects[ind]->gtext=gtext;
     m_objects[ind]->ini();
     m_objects[ind]->setPos(Vector3D(0,0,2));
     m_objects[ind]->setSize(Vector3D(MAPSIZE,MAPSIZE,2));
 
 
-    m_phase.m_incontrol=m_incontrol;
-    m_phase.video=video;
-    m_phase.online=online;
-    m_phase.gtext=gtext;
     m_phase.ini(&m_objects);
     m_phase.iniMap();
 

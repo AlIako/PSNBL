@@ -8,7 +8,6 @@
 Pattern::Pattern()
 {
     video=NULL;
-    online=NULL;
     m_name="pattern";
 }
 

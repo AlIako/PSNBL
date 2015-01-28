@@ -12,7 +12,8 @@ using namespace std;
 class GTexture
 {
     public:
-    GTexture();
+    static GTexture* getInstance();
+
 
     void loadAll();
     void reinitialiser();
@@ -34,14 +35,16 @@ class GTexture
 
 
     private:
+    GTexture();
+    static GTexture* m_instance;
 
     std::vector < Texture* > m_textures;
     Texture* lastBind;
 };
 
 //extern GTexture* gtex;
-/*
 
+/*
 class GetGT
 {
     public:
@@ -59,6 +62,6 @@ class GetGT
     private:
     GTexture* gt;
 };
-extern GetGT getgt=GetGT();*/
+extern GetGT getgt;*/
 
 #endif // GTEXTURES_H_INCLUDED

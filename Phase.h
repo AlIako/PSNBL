@@ -29,14 +29,6 @@ class Phase
 
     std::vector<Pattern*>* getPatternQueue() { return &m_patternQueue;}
 
-    //public attributes
-    bool m_incontrol;
-    Video *video;
-    Online* online;
-    GTexture* gtext;
-
-
-
     private:
     std::string m_name;
 

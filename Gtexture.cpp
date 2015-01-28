@@ -1,5 +1,13 @@
 #include "GTexture.h"
 
+GTexture* GTexture::m_instance = new GTexture();
+
+
+GTexture* GTexture::getInstance()
+{
+    return m_instance;
+}
+
 
 GTexture::GTexture()
 {

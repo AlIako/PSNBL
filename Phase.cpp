@@ -11,8 +11,6 @@ Phase::Phase()
     highestZ=-100;
 
     m_pattern=NULL;
-    online=NULL;
-    video=NULL;
 
     m_lavaspeed=0;
 
@@ -48,7 +46,7 @@ void Phase::ini(std::vector<Object*>* objects)
         cerr<<"WARNING! lava not found"<<endl;
     highestZ=m_lava->getPos().Z+m_lava->getSize().Z;
 
-    if(!m_incontrol)
+    if(!Online::getInstance()->inControl())
         m_name="waitingToReceive";
 }
 
@@ -78,7 +76,7 @@ void Phase::nextPattern()
 
     /*
     //if serv or solo: add pattern to queue
-    if(m_incontrol)
+    if(Online::getInstance()->inControl())
         addPatternToQueue();*/
 }
 
@@ -94,7 +92,7 @@ void Phase::update(double functionTime)
             cerr<<"next pattern"<<endl;
             nextPattern();
 
-            if(m_incontrol && m_pattern==NULL)//if all patterns are finished
+            if(Online::getInstance()->inControl() && m_pattern==NULL)//if all patterns are finished
             {
                 //go to a next phase
                 goToNextPhase();
@@ -180,8 +178,8 @@ void Phase::iniPhaseProperties()
 
     m_lava->setSpeed(m_lavaspeed);
 
-    if(video!=NULL)
-        video->getFog()->setTarget(m_fogdistancestart,m_fogdistanceend,m_fogr,m_fogg,m_fogb);
+    if(Video::getInstance()!=NULL)
+        Video::getInstance()->getFog()->setTarget(m_fogdistancestart,m_fogdistanceend,m_fogr,m_fogg,m_fogb);
 }
 
 void Phase::iniMap()
@@ -191,7 +189,7 @@ void Phase::iniMap()
     iniPhaseProperties();
 
     m_patternQueue.clear();
-    if(m_incontrol)
+    if(Online::getInstance()->inControl())
     {
         int randomizer=myIntRand(0,100);
         //ini patterns depending on which phase
@@ -274,9 +272,9 @@ void Phase::iniMap()
 
 
         //send that shit
-        if(m_incontrol)
+        if(Online::getInstance()->inControl())
         {
-            if(online!=NULL && online->active())
+            if(Online::getInstance()!=NULL && Online::getInstance()->active())
             {
                 infosSocket s;
                 s.type=8;
@@ -289,7 +287,7 @@ void Phase::iniMap()
                     cerr<<"sending pattern "<< s.variable[3+i] << " to clients"<<endl;
                 }
                 s.variable[3+m_patternQueue.size()]=-1;
-                online->sendSocket(s);
+                Online::getInstance()->sendSocket(s);
             }
         }
     }
@@ -335,9 +333,6 @@ void Phase::iniLastPattern()
     //ini those new patterns but dont start them yet
     if(m_patternQueue.size()>0)
     {
-        m_patternQueue[m_patternQueue.size()-1]->video=video;
-        m_patternQueue[m_patternQueue.size()-1]->gtext=gtext;
-        m_patternQueue[m_patternQueue.size()-1]->online=online;
         m_patternQueue[m_patternQueue.size()-1]->ini(highestZ,m_objects);
         highestZ=m_patternQueue[m_patternQueue.size()-1]->getHighestZ();
     }

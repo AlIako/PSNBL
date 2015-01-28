@@ -15,8 +15,6 @@ Object::Object()
     m_gravity=true;
     m_physical=false;
 
-    gtext=NULL;
-
     m_transparency=false;
     m_block=true;
     m_destructible=false;

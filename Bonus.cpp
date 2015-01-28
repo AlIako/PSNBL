@@ -20,10 +20,10 @@ void Bonus::ini()
 {
     m_size=Vector3D(1,1,1);
     m_type="bonus";
-    if(gtext!=NULL)
+    if(GTexture::getInstance())
     {
-        gtext->addTexture("../data/textures/blue.jpg");
-        m_texture=gtext->getTexture("../data/textures/blue.jpg");
+        GTexture::getInstance()->addTexture("../data/textures/blue.jpg");
+        m_texture=GTexture::getInstance()->getTexture("../data/textures/blue.jpg");
     }
 
     Object::ini();

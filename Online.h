@@ -11,7 +11,7 @@ using namespace std;
 class Online
 {
     public:
-    Online();
+    static Online* getInstance();
 
     void ini();
     void readMultiplayerFile();
@@ -24,6 +24,8 @@ class Online
     infosSocket getNextSocket();
     infosSocket getNextSocketRemove();
 
+    void setIncontrol(bool b) { m_incontrol=b;}
+    bool inControl() {return m_incontrol;}
     bool active() {return m_active;}
 
     void close();
@@ -35,6 +37,11 @@ class Online
     bool m_server;//false for client
 
     private:
+    Online();
+    static Online* m_instance;
+
+
+    bool m_incontrol;
     bool m_active;
 
     std::vector<infosSocket> socketsToSend;
@@ -69,6 +76,8 @@ class Online
     pthread_t clientSendPThread;
     thread_params paramsHandleClientSendThread;
 
+    //mutex
+    sem_t mutex;
 
 };
 

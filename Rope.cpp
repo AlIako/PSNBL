@@ -117,10 +117,10 @@ void Rope::unlink()
 void Rope::ini()
 {
     m_type="rope";
-    if(gtext!=NULL)
+    if(GTexture::getInstance()!=NULL)
     {
-        gtext->addTexture("../data/textures/rope.jpg");
-        m_texture=gtext->getTexture("../data/textures/rope.jpg");
+        GTexture::getInstance()->addTexture("../data/textures/rope.jpg");
+        m_texture=GTexture::getInstance()->getTexture("../data/textures/rope.jpg");
     }
 
     m_size=Vector3D(0.05,0.05,0.05);

@@ -9,7 +9,8 @@
 class Video
 {
     public:
-    Video();
+    static Video* getInstance();
+
     void ini();
     void update(double functionTime);
     void close();
@@ -23,6 +24,10 @@ class Video
     ~Video();
 
     private:
+    Video();
+    static Video* m_instance;
+
+
     double m_largeur;
     double m_hauteur;
 

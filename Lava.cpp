@@ -15,10 +15,10 @@ Lava::Lava()
 void Lava::ini()
 {
     m_type="lava";
-    if(gtext!=NULL)
+    if(GTexture::getInstance())
     {
-        gtext->addTexture("../data/textures/lava.png");
-        m_texture=gtext->getTexture("../data/textures/lava.png");
+        GTexture::getInstance()->addTexture("../data/textures/lava.png");
+        m_texture=GTexture::getInstance()->getTexture("../data/textures/lava.png");
     }
 
     dampvalue.setParameter(15, 2);

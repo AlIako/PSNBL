@@ -15,10 +15,10 @@ Wall::Wall()
 void Wall::ini()
 {
     m_type="wall";
-    if(gtext!=NULL)
+    if(GTexture::getInstance()!=NULL)
     {
-        gtext->addTexture("../data/textures/hellrock_static.png");
-        m_texture=gtext->getTexture("../data/textures/hellrock_static.png");
+        GTexture::getInstance()->addTexture("../data/textures/hellrock_static.png");
+        m_texture=GTexture::getInstance()->getTexture("../data/textures/hellrock_static.png");
     }
 
     Object::ini();
