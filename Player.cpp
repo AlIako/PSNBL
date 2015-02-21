@@ -43,6 +43,7 @@ void Player::update(double functionTime)
                 if(Online::getInstance()!=NULL)
                 {
                     infosSocket s;
+                    s.confirmationID=-1;
                     s.type=10;
                     s.variable[1]=m_colliding[i]->getPos().X;
                     s.variable[2]=m_colliding[i]->getPos().Y;

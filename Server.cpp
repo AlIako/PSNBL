@@ -87,6 +87,7 @@ void* handleConnections(void* data)
 
             //simulate received type 4 to add player in game
             infosSocket dummyS;
+            dummyS.confirmationID=-1;
             dummyS.type=4;
             (*params->socketsReceived).push_back(dummyS);
 
@@ -164,6 +165,7 @@ void* handleConnections(void* data)
 
                 //simulate received type 4 to add player in game
                 infosSocket dummyS;
+                dummyS.confirmationID=-1;
                 dummyS.type=4;
                 (*params->socketsReceived).push_back(dummyS);
 
@@ -245,25 +247,45 @@ void* serverReceiveThread(void* data)
 
             if(infosRecu.type!=-1)
             {
-                cerr<<" received socket type "<<(int)infosRecu.type << ", 0: "<< infosRecu.variable[0]  << ", 1: "<< infosRecu.variable[1] << ", 2: "<< infosRecu.variable[2] << ", 3: "<< infosRecu.variable[3] <<endl;
+                //cerr<<" received socket type "<<(int)infosRecu.type << ", 0: "<< infosRecu.variable[0]  << ", 1: "<< infosRecu.variable[1] << ", 2: "<< infosRecu.variable[2] << ", 3: "<< infosRecu.variable[3] <<endl;
                 //add received socket to queue
-                (*params->socketsReceived).push_back(infosRecu);
 
 
-                //cerr<<"transmiting socket type "<< (int)infosRecu.type<<endl;
+                //add to list only if you didn't already receive that or if not important socket
+                bool alreadyReceived=false;
 
-
-                //add to send queue to send to other clients
-                //(*params->socketsToSend).push_back(infosRecu);
-                for(unsigned int j=0;j<(*params->clients).size();j++)
+                if(infosRecu.confirmationID!=-1)
                 {
-                    infosClient ic=(*params->clients)[j];
-                    if((*params->clients)[j].id!=ic.id)//dont send to client who sent this to you
+                    for(unsigned int j=0;!alreadyReceived && j<(*params->confirmIDreceived).size();j++)
                     {
-                        SocketWrapper sw;
-                        sw.socket=infosRecu;
-                        sw.client=ic;
-                        (*params->socketWrappersToSend).push_back(sw);
+                        if(infosRecu.confirmationID==(*params->confirmIDreceived)[j])
+                            alreadyReceived=true;
+                    }
+                }
+
+                if(!alreadyReceived)
+                {
+                    if(infosRecu.confirmationID!=-1)
+                        (*params->confirmIDreceived).push_back(infosRecu.confirmationID);
+
+
+                    (*params->socketsReceived).push_back(infosRecu);
+
+
+                    //cerr<<"transmiting socket type "<< (int)infosRecu.type<<endl;
+
+                    //add to send queue to send to other clients
+                    //(*params->socketsToSend).push_back(infosRecu);
+                    for(unsigned int j=0;j<(*params->clients).size();j++)
+                    {
+                        infosClient ic=(*params->clients)[j];
+                        if((*params->clients)[j].id!=ic.id)//dont send to client who sent this to you
+                        {
+                            SocketWrapper sw;
+                            sw.socket=infosRecu;
+                            sw.client=ic;
+                            (*params->socketWrappersToSend).push_back(sw);
+                        }
                     }
                 }
 
@@ -284,18 +306,19 @@ void* serverReceiveThread(void* data)
                         if((*params->clients)[j].id==infosRecu.variable[0])
                             sw.client=(*params->clients)[j];
                     }
-                    //add to list
                     (*params->socketWrappersToSend).push_back(sw);
                 }
 
                 //if I received confirmation, delete socket that needed this confirmation so it wont be sent again
                 if(infosRecu.type==11)
                 {
+                    cerr<<"received confirmation " << infosRecu.confirmationID<< "!"<<endl;
                     for(unsigned int j=0;j<(*params->socketWrappersToSend).size();j++)
                     {
                         SocketWrapper sw=(*params->socketWrappersToSend)[j];
-                        if(sw.socket.confirmationID==infosRecu.confirmationID)
+                        if(sw.socket.confirmationID==infosRecu.confirmationID && sw.client.id==infosRecu.variable[0])//same ID, same client
                         {
+                            cerr<<"important socket "<< infosRecu.confirmationID<< " deleted."<<endl;
                             for(unsigned int k=j;k<(*params->socketWrappersToSend).size()-1;k++)
                                 (*params->socketWrappersToSend)[k]=(*params->socketWrappersToSend)[k+1];
                             if((*params->socketWrappersToSend).size()>0)
@@ -346,7 +369,7 @@ void* serverSendThread(void* data)
                     //int n = sendSocket(params->tcp,*params->newsockfd,(char*)&infosS, sizeof(infosS),0,(struct sockaddr *) (params->addr), (*params->clilen));
                     infosClient ic=sw.client;
 
-                    cerr<<" sending socket type "<<(int)infosS.type << ", 0: "<< infosS.variable[0]  << ", 1: "<< infosS.variable[1] << ", 2: "<< infosS.variable[2] << ", 3: "<< infosS.variable[3] <<endl;
+                    //cerr<<" sending socket type "<<(int)infosS.type << ", 0: "<< infosS.variable[0]  << ", 1: "<< infosS.variable[1] << ", 2: "<< infosS.variable[2] << ", 3: "<< infosS.variable[3] <<endl;
                     //send
                     //int n = sendSocket(params->tcp,*params->newsockfd,(char*)&infosS, sizeof(infosS),0,(struct sockaddr *) (params->addr), (*params->clilen));
                     int n = sendSocket(params->tcp,*ic.sock,(char*)&infosS, sizeof(infosS),0,(struct sockaddr *) (ic.addr), (ic.clilen));
@@ -367,6 +390,7 @@ void* serverSendThread(void* data)
                     }
                     else//if socket NEEDS confirmation, put it at the end of the queue, so that it will be sent again
                     {
+                        cerr<<"important socket "<<sw.socket.confirmationID <<" (type "<< (int)sw.socket.type<<") sent! puting it at the end of the queue"<<endl;
                         //send it a bit later
                         sw.untilSend.reset();
                         sw.timeTilResend=100;

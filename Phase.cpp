@@ -277,6 +277,7 @@ void Phase::iniMap()
             if(Online::getInstance()!=NULL && Online::getInstance()->active())
             {
                 infosSocket s;
+                s.confirmationID=Online::getInstance()->nextConfirmationID();
                 s.type=8;
                 s.variable[0]=0;
                 s.variable[1]=m_lava->getSize().Z;//lava level

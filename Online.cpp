@@ -21,6 +21,8 @@ Online::Online()
     m_tcp=false;
 
     clientID=0;
+
+    nextConfirmID=50;
 }
 
 //add socket to send to the list
@@ -93,6 +95,7 @@ infosSocket Online::getNextSocket()
 {
     infosSocket s;
     s.type=-1;
+    s.confirmationID=-1;
     if(socketsReceived.size()<=0)
         return s;
 
@@ -125,6 +128,7 @@ void Online::ini()
         paramsHandleConnectionsThread.socketsReceived=&socketsReceived;
         paramsHandleConnectionsThread.clients=&clients;
         paramsHandleConnectionsThread.socketWrappersToSend=&socketWrappersToSend;
+        paramsHandleConnectionsThread.confirmIDreceived=&confirmIDreceived;
         paramsHandleConnectionsThread.port=m_port;
         paramsHandleConnectionsThread.ip=m_ip;
         paramsHandleConnectionsThread.tcp=m_tcp;
@@ -260,6 +264,13 @@ void Online::readMultiplayerFile()
         cerr << "can't open file (multiplayer settings)" << endl;
 
 }
+
+int Online::nextConfirmationID()
+{
+    nextConfirmID++;
+    return nextConfirmID;
+}
+
 
 void Online::close()
 {

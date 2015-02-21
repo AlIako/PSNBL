@@ -34,6 +34,7 @@ struct thread_params
     std::vector<infosSocket>* socketsReceived;
     std::vector<infosClient>* clients;
     std::vector<SocketWrapper>* socketWrappersToSend;
+    std::vector<int>* confirmIDreceived;
 
     int *clientID;
 

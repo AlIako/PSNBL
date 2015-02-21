@@ -80,6 +80,7 @@ void Game::play()
                         playerList[0]->linkRope(m_map.createRope(playerList[0]->getPos(),dir));
 
                         infosSocket s;
+                        s.confirmationID=-1;
                         s.type=2;
 
                         s.variable[1]=playerList[0]->getPos().X;
@@ -103,6 +104,7 @@ void Game::play()
                         playerList[0]->unlinkRope();
 
                         infosSocket s;
+                        s.confirmationID=-1;
                         s.type=3;
                         m_online->sendSocket(s);//add socket to queue
                     }
@@ -135,6 +137,7 @@ void Game::play()
                     playerList[0]->jump();
 
                     infosSocket s;
+                    s.confirmationID=-1;
                     s.type=3;
                     m_online->sendSocket(s);//add socket to queue
                     break;
@@ -168,6 +171,7 @@ void Game::play()
                     if(Online::getInstance()->inControl())
                     {
                         infosSocket s;
+                        s.confirmationID=m_online->nextConfirmationID();
                         s.type=6;
                         m_online->sendSocket(s);//add socket to queue
 
@@ -331,7 +335,7 @@ void Game::updateMultiplayer()
             s=m_online->getNextSocketRemove();//get next socket on the queue
             if(s.type!=-1)//if something on the list
             {
-                cerr<<"received socket type "<<(int)s.type<<", "<<s.variable[0]<<", "<<s.variable[1]<<", "<<s.variable[2]<<", "<<s.variable[3]<<endl;
+                //cerr<<"received socket type "<<(int)s.type<<", "<<s.variable[0]<<", "<<s.variable[1]<<", "<<s.variable[2]<<", "<<s.variable[3]<<endl;
 
                 //seek player to update for this id
                 int idPlayer=floor(s.variable[0]);
@@ -441,9 +445,10 @@ void Game::updateMultiplayer()
                     {
                         if(m_online->m_server)
                         {
-                            cerr<<"sending pattern/lava lvl "<< floor(s.variable[1]) <<" to client"<<endl;
+                            //cerr<<"sending pattern/lava lvl "<< floor(s.variable[1]) <<" to client"<<endl;
                             //send lava level and pattern queue to client
                             infosSocket s;
+                            s.confirmationID=m_online->nextConfirmationID();
                             s.type=8;
                             s.variable[0]=0;
                             s.variable[1]=m_map.getLavaLevel();
@@ -456,17 +461,17 @@ void Game::updateMultiplayer()
                             unsigned int j=0;
                             for(unsigned int count=pq->size();j<count;j++)
                             {
-                                cerr<<"send pat  "<< j <<" to client"<<endl;
+                                //cerr<<"send pat  "<< j <<" to client"<<endl;
                                 s.variable[j+3]=(*pq)[j]->getPID();
                             }
                             s.variable[j+3]=-1;
-                                cerr<<"sending pattern/lava lvl "<< j <<" to client"<<endl;
+                            //cerr<<"sending pattern/lava lvl "<< j <<" to client"<<endl;
 
                             m_online->sendSocket(s);
                         }
                         else
                         {
-                            cerr<<"received pattern/lava lvl "<< floor(s.variable[1]) <<" from server!"<<endl;
+                            //cerr<<"received pattern/lava lvl "<< floor(s.variable[1]) <<" from server!"<<endl;
 
                             //go next phase
                             m_map.getPhase()->goToNextPhase();
@@ -478,7 +483,7 @@ void Game::updateMultiplayer()
                             std::vector<Pattern*>* pq=m_map.getPhase()->getPatternQueue();
                             for(int j =3;j<24;j++)
                             {
-                                cerr<<"rec pat  "<< floor(s.variable[j]) <<" from server!"<<endl;
+                                //cerr<<"rec pat  "<< floor(s.variable[j]) <<" from server!"<<endl;
                                 if(s.variable[j]==-1)
                                     break;
 

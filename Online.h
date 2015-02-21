@@ -21,6 +21,8 @@ class Online
     void sendSocket(infosSocket s);
     void sendSocketReplace(infosSocket s);
 
+    int nextConfirmationID();
+
     infosSocket getNextSocket();
     infosSocket getNextSocketRemove();
 
@@ -35,6 +37,7 @@ class Online
     int clientID;
     bool m_connectionEstablished;
     bool m_server;//false for client
+
 
     private:
     Online();
@@ -54,6 +57,8 @@ class Online
 
     bool m_tcp;//if false -> udp
 
+    int nextConfirmID;//ID for socket confirmation. Append each time to keep it unique
+    std::vector<int> confirmIDreceived;//IDs that were received, so that you dont receive and handle a same socket twice
 
 
     bool m_threadsOn;
