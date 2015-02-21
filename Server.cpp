@@ -95,7 +95,18 @@ void* handleConnections(void* data)
             //send to all clients except the new one information that a new client is connected, with his id
             dummyS.type=4;
             dummyS.variable[0]=*params->clientID;
-            (*params->socketsToSend).push_back(dummyS);
+            //(*params->socketsToSend).push_back(dummyS);
+            for(unsigned int i=0;i<(*params->clients).size();i++)
+            {
+                infosClient ic=(*params->clients)[i];
+                if(floor(dummyS.variable[0])!=ic.id)//dont send to client who sent this to you
+                {
+                    SocketWrapper sw;
+                    sw.socket=dummyS;
+                    sw.client=ic;
+                    (*params->socketWrappersToSend).push_back(sw);
+                }
+            }
 
             //send to this client his id
             dummyS.type=5;
@@ -161,7 +172,17 @@ void* handleConnections(void* data)
                 //send to all clients except the new one information that a new client is connected, with his id
                 dummyS.type=4;
                 dummyS.variable[0]=*params->clientID;
-                (*params->socketsToSend).push_back(dummyS);
+                for(unsigned int i=0;i<(*params->clients).size();i++)
+                {
+                    infosClient ic=(*params->clients)[i];
+                    if(floor(dummyS.variable[0])!=ic.id)//dont send to client who sent this to you
+                    {
+                        SocketWrapper sw;
+                        sw.socket=dummyS;
+                        sw.client=ic;
+                        (*params->socketWrappersToSend).push_back(sw);
+                    }
+                }
 
                 //send to this client his id
                 dummyS.type=5;
@@ -228,9 +249,60 @@ void* serverReceiveThread(void* data)
                 //add received socket to queue
                 (*params->socketsReceived).push_back(infosRecu);
 
+
                 //cerr<<"transmiting socket type "<< (int)infosRecu.type<<endl;
+
+
                 //add to send queue to send to other clients
-                (*params->socketsToSend).push_back(infosRecu);
+                //(*params->socketsToSend).push_back(infosRecu);
+                for(unsigned int j=0;j<(*params->clients).size();j++)
+                {
+                    infosClient ic=(*params->clients)[j];
+                    if((*params->clients)[j].id!=ic.id)//dont send to client who sent this to you
+                    {
+                        SocketWrapper sw;
+                        sw.socket=infosRecu;
+                        sw.client=ic;
+                        (*params->socketWrappersToSend).push_back(sw);
+                    }
+                }
+
+
+                //if socket needs confirmation; send it back.to this particular client only
+                if(infosRecu.confirmationID!=-1)
+                {
+                    infosSocket infosConfirmation;
+                    infosConfirmation.type=11;
+                    infosConfirmation.confirmationID=infosRecu.confirmationID;
+                    infosConfirmation.variable[0]=infosRecu.variable[0];//same id as socket received
+
+                    SocketWrapper sw;
+                    sw.socket=infosConfirmation;
+                    //find which client
+                    for(unsigned int j=0;j<(*params->clients).size();j++)
+                    {
+                        if((*params->clients)[j].id==infosRecu.variable[0])
+                            sw.client=(*params->clients)[j];
+                    }
+                    //add to list
+                    (*params->socketWrappersToSend).push_back(sw);
+                }
+
+                //if I received confirmation, delete socket that needed this confirmation so it wont be sent again
+                if(infosRecu.type==11)
+                {
+                    for(unsigned int j=0;j<(*params->socketWrappersToSend).size();j++)
+                    {
+                        SocketWrapper sw=(*params->socketWrappersToSend)[j];
+                        if(sw.socket.confirmationID==infosRecu.confirmationID)
+                        {
+                            for(unsigned int k=j;k<(*params->socketWrappersToSend).size()-1;k++)
+                                (*params->socketWrappersToSend)[k]=(*params->socketWrappersToSend)[k+1];
+                            if((*params->socketWrappersToSend).size()>0)
+                                (*params->socketWrappersToSend).pop_back();
+                        }
+                    }
+                }
             }
         }
 
@@ -256,37 +328,61 @@ void* serverSendThread(void* data)
         //sem_wait(params->mutex);
 
         //if there is something to send
-        int nSendDirectly=(*params->socketsToSend).size();
+        int nSendDirectly=(*params->socketWrappersToSend).size();
         nSendDirectly=1;
         for(int j=0;j<nSendDirectly;j++)
         {
-            if((*params->socketsToSend).size()>0)
+            if((*params->socketWrappersToSend).size()>0)
             {
                 //take first element of queue
-                infosS=(*params->socketsToSend)[0];
+                SocketWrapper sw=(*params->socketWrappersToSend)[j];
 
-                //int n = sendSocket(params->tcp,*params->newsockfd,(char*)&infosS, sizeof(infosS),0,(struct sockaddr *) (params->addr), (*params->clilen));
-                for(unsigned int i=0;i<(*params->clients).size();i++)
+
+                sw.untilSend.couler();
+                if(sw.untilSend.ecouler(sw.timeTilResend))//is it time to send it?
                 {
-                    infosClient ic=(*params->clients)[i];
-                    if(floor(infosS.variable[0])!=ic.id)//dont send to client who sent this to you
+                    infosS=sw.socket;
+
+                    //int n = sendSocket(params->tcp,*params->newsockfd,(char*)&infosS, sizeof(infosS),0,(struct sockaddr *) (params->addr), (*params->clilen));
+                    infosClient ic=sw.client;
+
+                    cerr<<" sending socket type "<<(int)infosS.type << ", 0: "<< infosS.variable[0]  << ", 1: "<< infosS.variable[1] << ", 2: "<< infosS.variable[2] << ", 3: "<< infosS.variable[3] <<endl;
+                    //send
+                    //int n = sendSocket(params->tcp,*params->newsockfd,(char*)&infosS, sizeof(infosS),0,(struct sockaddr *) (params->addr), (*params->clilen));
+                    int n = sendSocket(params->tcp,*ic.sock,(char*)&infosS, sizeof(infosS),0,(struct sockaddr *) (ic.addr), (ic.clilen));
+                    //check any error
+                    if (n < 0)
+                        cerr<<"ERROR writing to socket: "<<WSAGetLastError()<<endl;
+
+
+
+                    //update queue
+                    //if socket doenst need confirmation (or is a confirmation for a client that needs one), delete it from quere
+                    if(infosS.confirmationID==-1 || infosS.type==11)
                     {
-                        infosSocket s;
-                        s=infosS;
-                        cerr<<" sending socket type "<<(int)s.type << ", 0: "<< s.variable[0]  << ", 1: "<< s.variable[1] << ", 2: "<< s.variable[2] << ", 3: "<< s.variable[3] <<endl;
-                        //send
-                        //int n = sendSocket(params->tcp,*params->newsockfd,(char*)&infosS, sizeof(infosS),0,(struct sockaddr *) (params->addr), (*params->clilen));
-                        int n = sendSocket(params->tcp,*ic.sock,(char*)&infosS, sizeof(infosS),0,(struct sockaddr *) (ic.addr), (ic.clilen));
-                        //check any error
-                        if (n < 0)
-                            cerr<<"ERROR writing to socket: "<<WSAGetLastError()<<endl;
+                        for(unsigned int i=0;i<(*params->socketWrappersToSend).size()-1;i++)
+                            (*params->socketWrappersToSend)[i]=(*params->socketWrappersToSend)[i+1];
+                        if((*params->socketWrappersToSend).size()>0)
+                            (*params->socketWrappersToSend).pop_back();
+                    }
+                    else//if socket NEEDS confirmation, put it at the end of the queue, so that it will be sent again
+                    {
+                        //send it a bit later
+                        sw.untilSend.reset();
+                        sw.timeTilResend=100;
+
+
+                        for(unsigned int i=0;i<(*params->socketWrappersToSend).size()-1;i++)
+                            (*params->socketWrappersToSend)[i]=(*params->socketWrappersToSend)[i+1];
+                        (*params->socketWrappersToSend)[(*params->socketWrappersToSend).size()-1]=sw;
                     }
                 }
-                //update queue
-                for(unsigned int i=0;i<(*params->socketsToSend).size()-1;i++)
-                    (*params->socketsToSend)[i]=(*params->socketsToSend)[i+1];
-                if((*params->socketsToSend).size()>0)
-                    (*params->socketsToSend).pop_back();
+                else// if not time to send, put it at the end of the list
+                {
+                    for(unsigned int i=0;i<(*params->socketWrappersToSend).size()-1;i++)
+                        (*params->socketWrappersToSend)[i]=(*params->socketWrappersToSend)[i+1];
+                    (*params->socketWrappersToSend)[(*params->socketWrappersToSend).size()-1]=sw;
+                }
             }
 
         }

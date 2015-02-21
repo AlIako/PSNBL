@@ -1,5 +1,6 @@
 #include "Online.h"
 
+
 Online* Online::m_instance = new Online();
 
 
@@ -33,9 +34,26 @@ void Online::sendSocket(infosSocket s)
             if(m_server) cl=0;
             s.variable[0]=cl;
 
-            socketsToSend.push_back(s);
+
+            SocketWrapper sw;
+            sw.socket=s;
             //if(s.type==8)
             //cerr<<socketsToSend.size()<<" sending socket type "<<(int)s.type << ": "<< s.variable[0]  << ", 1: "<< s.variable[1] << ", 2: "<< s.variable[2] << ", 3: "<< s.variable[3] <<endl;
+
+
+            //if server, push back socket for EACH client to SocketWrapper list
+            if(m_server)
+            {
+                for(unsigned int i=0;i<clients.size();i++)
+                {
+                    sw.client=clients[i];
+                    socketWrappersToSend.push_back(sw);
+                }
+            }
+            else//client, just add it once (just send it to server)
+            {
+                socketWrappersToSend.push_back(sw);
+            }
         }
     }
 }
@@ -53,12 +71,12 @@ void Online::sendSocketReplace(infosSocket s)
         //cerr<<socketsToSend.size()<<" sending socketR type "<<(int)s.type << ", 0: "<< s.variable[0]  << ", 1: "<< s.variable[1] << ", 2: "<< s.variable[2] << ", 3: "<< s.variable[3] <<endl;
         //check if already in list
         bool socketFound=false;
-        for(unsigned int i=0;i<socketsToSend.size();i++)
+        for(unsigned int i=0;i<socketWrappersToSend.size();i++)
         {
-            if((int)socketsToSend[i].variable[0]==cl && socketsToSend[i].type==s.type)
+            if((int)socketWrappersToSend[i].socket.variable[0]==cl && socketWrappersToSend[i].socket.type==s.type)
             {
                 socketFound=true;
-                socketsToSend[i]=s;
+                socketWrappersToSend[i].socket=s;
             }
         }
         //cerr<<socketsToSend.size()<<" sending socketR type "<<(int)s.type << ": "<< s.variable[0]  << ", 1: "<< s.variable[1] << ", 2: "<< s.variable[2] << ", 3: "<< s.variable[3] <<endl;
@@ -105,8 +123,8 @@ void Online::ini()
         paramsHandleConnectionsThread.threadOn=&m_threadsOn;
         paramsHandleConnectionsThread.connectionEstablished=&m_connectionEstablished;
         paramsHandleConnectionsThread.socketsReceived=&socketsReceived;
-        paramsHandleConnectionsThread.socketsToSend=&socketsToSend;
         paramsHandleConnectionsThread.clients=&clients;
+        paramsHandleConnectionsThread.socketWrappersToSend=&socketWrappersToSend;
         paramsHandleConnectionsThread.port=m_port;
         paramsHandleConnectionsThread.ip=m_ip;
         paramsHandleConnectionsThread.tcp=m_tcp;

@@ -313,6 +313,7 @@ void Game::updateMultiplayer()
 
         //send player position and angle
         s.type=1;
+        s.confirmationID=-1;
 
         s.variable[1]=playerList[0]->getPos().X;
         s.variable[2]=playerList[0]->getPos().Y;
@@ -346,8 +347,28 @@ void Game::updateMultiplayer()
                     cerr<<"creating new player, id online: "<<idPlayer<<endl;
                 }
 
+
+
+
+                //if we found/created the player that sent us this message
+                //we can finaly handle the received messages
                 if(player)
                 {
+
+                    /*
+                    socket types
+                    1: player position, angle and life
+                    2: hook
+                    3: unhook
+                    4: new player
+                    5: you just connected and got response from server and your id
+                    6:restart map
+                    7:phase
+                    8:next phase: pattern/lava lvl or request for patterns/lava lvl
+                    9:lava level
+                    10:loot bonus
+                    11:socket confirmation
+                    */
                     //player position and angle and life
                     if(s.type==1)
                     {

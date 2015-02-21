@@ -44,8 +44,8 @@ class Online
     bool m_incontrol;
     bool m_active;
 
-    std::vector<infosSocket> socketsToSend;
     std::vector<infosClient> clients;
+    std::vector<SocketWrapper> socketWrappersToSend;
 
     SOCKET newsockfd;
 
