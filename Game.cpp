@@ -372,6 +372,7 @@ void Game::updateMultiplayer()
                     9:lava level
                     10:loot bonus
                     11:socket confirmation
+                    12:disconnect
                     */
                     //player position and angle and life
                     if(s.type==1)
@@ -399,6 +400,23 @@ void Game::updateMultiplayer()
                         playerList.push_back(new Player());
                         playerList[ind]->ini();
                         playerList[ind]->setIdOnline(idPlayer);
+                    }
+                    //player disconnected
+                    if(s.type==12)
+                    {
+                        cerr<<"Player "<<s.variable[0]<< " disconnected. Deleting it from list."<<endl;
+                        //delete player from player list
+                        for(unsigned int j=0;j<playerList.size();j++)
+                        {
+                            if(playerList[j]->getIdOnline()==s.variable[0])
+                            {
+                                delete playerList[j];
+                                for(unsigned int k=j;k<playerList.size()-1;k++)
+                                    playerList[k]=playerList[k+1];
+                                if(playerList.size()>0)
+                                    playerList.pop_back();
+                            }
+                        }
                     }
                     //you just connected and got response from server and your id
                     if(s.type==5)
@@ -568,6 +586,14 @@ Player* Game::playerForId(int id)
 
 void Game::close()
 {
+    if(m_online->active())
+    {
+        infosSocket s;
+        s.type=12;
+        s.confirmationID=-1;
+        m_online->sendSocket(s);
+        SDL_Delay(250);
+    }
     m_online->close();
     m_video->close();
 

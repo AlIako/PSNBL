@@ -89,6 +89,7 @@ void* clientConnectThread(void* data)
     {
         cerr<<"starting udp connection thread"<<endl;
         infosSocket infosRecu;
+        infosRecu.confirmationID=-1;
         infosRecu.type=4;//client connect
         cerr << "connecting..."<<endl;
 
@@ -147,7 +148,7 @@ void* clientReceiveThread(void* data)
         //add received socket to queue
         if(infosRecu.type!=-1)
         {
-            //cerr<<" received socket type "<<(int)infosRecu.type << ", 0: "<< infosRecu.variable[0]  << ", 1: "<< infosRecu.variable[1] << ", 2: "<< infosRecu.variable[2] << ", 3: "<< infosRecu.variable[3] <<endl;
+            cerr<<"-----received socket type "<<(int)infosRecu.type << ", 0: "<< infosRecu.variable[0]  << ", 1: "<< infosRecu.variable[1] << ", 2: "<< infosRecu.variable[2] << ", 3: "<< infosRecu.variable[3] <<endl;
 
             //add to list only if you didn't already receive that or if not important socket
             bool alreadyReceived=false;
@@ -177,7 +178,7 @@ void* clientReceiveThread(void* data)
 
 
             //if socket needs confirmation; send it back.to the server
-            if(infosRecu.confirmationID!=-1)
+            if(infosRecu.confirmationID!=-1 && infosRecu.type!=11)
             {
                 infosSocket infosConfirmation;
                 infosConfirmation.type=11;
@@ -241,7 +242,7 @@ void* clientSendThread(void* data)
 
 
                 //infosSocket s=infosS;
-                //cerr<<" sending socket type "<<(int)infosS.type << ", 0: "<< infosS.variable[0]  << ", 1: "<< infosS.variable[1] << ", 2: "<< infosS.variable[2] << ", 3: "<< infosS.variable[3] <<endl;
+                cerr<<"-----sending socket type "<<(int)infosS.type << ", 0: "<< infosS.variable[0]  << ", 1: "<< infosS.variable[1] << ", 2: "<< infosS.variable[2] << ", 3: "<< infosS.variable[3] <<endl;
 
                 //send
                 int n = sendSocket(params->tcp,*params->newsockfd,(char*)&infosS, sizeof(infosS),0,(struct sockaddr *) (params->addr), (*params->clilen));

@@ -143,6 +143,7 @@ void Phase::iniPhaseProperties()
 
     if(m_name=="still")
     {
+        m_lavaspeed=0;
     }
     else if(m_name=="easy")
     {
