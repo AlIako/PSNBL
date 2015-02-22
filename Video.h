@@ -3,9 +3,13 @@
 #include <SDL.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
-#include <fstream>
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
 #include "Fog.h"
+#include "version.h"
+#include "utilFunctions.h"
 
 using namespace std;
 

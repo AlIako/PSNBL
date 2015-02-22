@@ -75,7 +75,14 @@ void Video::ini()
 
     SDL_Init(SDL_INIT_VIDEO);
 
-    SDL_WM_SetCaption("PSNBLAL 0.06",NULL);
+    ostringstream oss;
+    oss << "PSNBLAL " << AutoVersion::MAJOR <<"."<<AutoVersion::MINOR<<"."<<AutoVersion::BUILD;
+    oss <<" ("<<AutoVersion::DATE<<"/"<<AutoVersion::MONTH<<"/"<<AutoVersion::YEAR<<")";
+
+    cerr<<"Launching "<< oss.str()<<endl;
+    char* tempString=stringtochar(oss.str());
+    SDL_WM_SetCaption(tempString,NULL);
+    delete tempString;
 
     if(m_fullscreen)
         SDL_SetVideoMode(m_largeur, m_hauteur, 32, SDL_OPENGL | SDL_FULLSCREEN);

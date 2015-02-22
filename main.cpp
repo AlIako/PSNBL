@@ -2,6 +2,7 @@
 
 int main ( int argc, char** argv )
 {
+    cerr<<"Start main"<<endl;
     srand (time(NULL));
 
 
