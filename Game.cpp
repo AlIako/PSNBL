@@ -15,6 +15,9 @@ void Game::ini()
     playerList.push_back(new Player());
     playerList[ind]->ini();
 
+    //chat
+    m_chat.activate(m_video->getWidth(), m_video->getHeight(), "../data/fonts/arial.TTF");
+
     //online
     m_online=Online::getInstance();
     m_online->ini();
@@ -53,11 +56,19 @@ void Game::ini()
 void Game::play()
 {
     ini();
+
     //SDL_EnableKeyRepeat(10, 0);
+
+    SDL_Event event;
+
     playLoop=true;
+
     while (playLoop)
     {
-        SDL_Event event;
+
+        if(m_chat.boxOpened())
+            m_chat.checkKeyboard();
+        else
         while (SDL_PollEvent(&event))
         {
             switch (event.type)
@@ -118,6 +129,10 @@ void Game::play()
                 case SDL_KEYDOWN:
                 switch(event.key.keysym.sym)
                 {
+                    case SDLK_RETURN:
+                    if(m_chat.active())
+                        m_chat.openTextBox(playerList[0]->getIdOnline(),0.5);
+                    break;
                     case SDLK_a:
                     playerList[0]->pressKey(LEFT,true);
                     break;
@@ -152,6 +167,10 @@ void Game::play()
                 case SDL_KEYUP:
                 switch(event.key.keysym.sym)
                 {
+                    case SDLK_RETURN:
+                    if(m_chat.active())
+                        m_chat.enterUp();
+                    break;
                     case SDLK_a:
                     playerList[0]->pressKey(LEFT,false);
                     break;
@@ -230,6 +249,7 @@ void Game::play()
 
         m_map.draw();
 
+        m_chat.draw();
 
         m_video->afterDraw();
 

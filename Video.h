@@ -3,8 +3,11 @@
 #include <SDL.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include <fstream>
+#include <iostream>
 #include "Fog.h"
 
+using namespace std;
 
 class Video
 {
@@ -20,6 +23,8 @@ class Video
 
     Fog* getFog() {return &fog;}
 
+    double getWidth() { return m_largeur; }
+    double getHeight() {return m_hauteur;}
 
     ~Video();
 
@@ -30,6 +35,8 @@ class Video
 
     double m_largeur;
     double m_hauteur;
+    bool m_fullscreen;
+    int m_fov;//field of view
 
     Fog fog;
 };

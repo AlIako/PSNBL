@@ -8,6 +8,7 @@
 #include "Map.h"
 #include "Camera.h"
 #include "GTime.h"
+#include "Chat.h"
 
 class Game
 {
@@ -42,6 +43,7 @@ class Game
     Map m_map;
     vector<Player*> playerList;
     Camera m_camera;
+    Chat m_chat;
 
     GTime since_last_frame;
     double ft;//function time
