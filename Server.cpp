@@ -352,15 +352,24 @@ void* serverReceiveThread(void* data)
                 {
                     for(unsigned int j=0;!alreadyReceived && j<(*params->confirmIDreceived).size();j++)
                     {
-                        if(infosRecu.confirmationID==(*params->confirmIDreceived)[j])
+                        if(infosRecu.confirmationID==(*params->confirmIDreceived)[j].idConfirm
+                        && infosRecu.variable[0]==(*params->confirmIDreceived)[j].idClient)//already received
+                        {
+                            cerr<<"socket "<<infosRecu.confirmationID <<" already received "<<endl;
                             alreadyReceived=true;
+                        }
                     }
                 }
 
                 if(!alreadyReceived)
                 {
-                    if(infosRecu.confirmationID!=-1)
-                        (*params->confirmIDreceived).push_back(infosRecu.confirmationID);
+                    if(infosRecu.confirmationID!=-1 && infosRecu.type!=11)
+                    {
+                        cID cid;
+                        cid.idClient=infosRecu.variable[0];
+                        cid.idConfirm=infosRecu.confirmationID;
+                        (*params->confirmIDreceived).push_back(cid);
+                    }
 
 
                     (*params->socketsReceived).push_back(infosRecu);
@@ -382,6 +391,10 @@ void* serverReceiveThread(void* data)
                         }
                     }
                 }
+                else
+                {
+                    cerr<<"already received; not handling again."<<endl;
+                }
 
 
                 //if socket needs confirmation; send it back.to this particular client only
@@ -401,6 +414,8 @@ void* serverReceiveThread(void* data)
                             sw.client=(*params->clients)[j];
                     }
                     (*params->socketWrappersToSend).push_back(sw);
+
+                    cerr<<"important socket " <<infosConfirmation.confirmationID << " (type " << (int)infosRecu.type <<") received"<<endl;
                 }
 
                 //if I received confirmation, delete socket that needed this confirmation so it wont be sent again

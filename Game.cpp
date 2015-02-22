@@ -41,6 +41,7 @@ void Game::ini()
             updateMultiplayer();
         }
     }
+    playerList[0]->setOnlineName(m_online->getOnlineName());
     //end ini online
 
     m_map.ini();
@@ -200,6 +201,8 @@ void Game::play()
                         m_camera.setCible(playerList[0]);
                         m_camera.setMode("play");
                         m_mode="play";
+
+                        m_chat.newMessage("Map reset.",-2);
                     }
                     break;
                     case SDLK_k:
@@ -264,6 +267,18 @@ void Game::updateCamMode()
 {
     if(m_camera.getCible()->getLife()<=0)
     {
+        //if you just died, chat message
+        if(m_camera.getMode()=="play")
+        {
+            stringstream ss;
+            ss << playerList[0]->getOnlineName() << " died in hell.";
+            char* tempChar=stringtochar(ss.str());
+            m_chat.newMessage(tempChar,-2);
+            delete tempChar;
+        }
+
+
+        //camera mode
         Object* p=m_camera.getCible();
         for(unsigned int i=1, count=playerList.size();i<count;i++)
         {
@@ -347,6 +362,86 @@ void Game::updateMultiplayer()
 
         m_online->sendSocketReplace(s);//add socket to queue
 
+        //chat messages
+        for(unsigned int i=0;i<m_chat.msgToSend.size();i++)
+        {
+            s.type=13;
+            s.confirmationID=m_online->nextConfirmationID();
+
+            int namewritten=-1;
+            std::string nametoWrite=playerList[0]->getOnlineName();
+            for(int j=0;j<TEXT_SIZE;j++)
+            {
+                if(namewritten==-1)
+                {
+                    if(j<=(int)nametoWrite.size())
+                    {
+                        if(j==(int)nametoWrite.size())
+                        {
+                            s.text[j]=':';
+                            s.text[j+1]=' ';
+                        }
+                        else s.text[j]=nametoWrite[j];
+                    }
+                    else namewritten=j+1;
+                }
+                else
+                {
+                    if(j-namewritten>=(int)m_chat.msgToSend[i].msg.size())
+                        s.text[j]='\0';
+                    else
+                        s.text[j]=m_chat.msgToSend[i].msg[j-namewritten];
+                }
+            }
+            cerr<<"Envoi du message "<<s.text<<endl;
+            m_online->sendSocket(s);//add socket to queue
+
+            //chat->newMessage(online->playerList[0]->name+" got eaten alive...",-2);
+            /*if(m_chat.msgToSend[i].user==-1)
+                m_chat.msgToSend[i].user=(*params->playerList)[0]->id;
+
+            cerr << "msg to send : " << params->chat->msgToSend[i].user << endl;
+            //send message avec le nom devant
+            infosSocket infosSMSG;
+            infosSMSG.type=4;//msg
+            int namewritten=-1;
+
+            string nametoWrite=(*params->playerList)[0]->name;
+            if(params->chat->msgToSend[i].user==-2)
+                namewritten=0;
+
+            for(int j=0;j<TEXT_SIZE;j++)
+            {
+                if(namewritten==-1)
+                {
+                    if(j<=(int)nametoWrite.size())
+                    {
+                        if(j==(int)nametoWrite.size())
+                        {
+                            infosSMSG.texte[j]=':';
+                            infosSMSG.texte[j+1]=' ';
+                        }
+                        else infosSMSG.texte[j]=nametoWrite[j];
+                    }
+                    else namewritten=j+1;
+                }
+                else
+                {
+                    if(j-namewritten>=(int)params->chat->msgToSend[i].msg.size())
+                        infosSMSG.texte[j]='\0';
+                    else
+                        infosSMSG.texte[j]=params->chat->msgToSend[i].msg[j-namewritten];
+                }
+            }
+            infosSMSG.variable[0]=params->chat->msgToSend[i].id;
+            infosSMSG.variable[19]=params->chat->msgToSend[i].user;
+            infosSMSG.variable[20]=(*params->playerList)[0]->id;*/
+
+        }
+        m_chat.msgToSend.clear();
+
+
+
 
         //cerr<<"received "<<m_online->socketsReceived.size()<<" sockets..."<<endl;
         //receive
@@ -361,7 +456,7 @@ void Game::updateMultiplayer()
                 int idPlayer=floor(s.variable[0]);
                 Player *player=playerForId(idPlayer);
                 //if player not found, create it and assign id
-                if(player==NULL && s.type!=5 && idPlayer>=0 && idPlayer<30)//idPlayer<10 = sux fix temporaire
+                if(player==NULL && s.type!=5 && s.type!=12 && idPlayer>=0 && idPlayer<30)//idPlayer<10 = sux fix temporaire
                 {
                     unsigned int ind=playerList.size();
                     playerList.push_back(new Player());
@@ -369,11 +464,20 @@ void Game::updateMultiplayer()
                     playerList[ind]->setIdOnline(idPlayer);
                     player=playerList[ind];
                     cerr<<"creating new player, id online: "<<idPlayer<<endl;
+
+                    //chat message
+                    stringstream ss;
+                    ss << "Player ";
+                    ss << idPlayer << " joined.";
+                    char* tempChar=stringtochar(ss.str());
+                    m_chat.recieveMessage(tempChar,0,-2);
+                    delete tempChar;
                 }
-
-
-
-
+                else if(s.type==5)//you just connected and got response from server and your id
+                {
+                    cerr<<"setting your online id to "<<idPlayer<<endl;
+                    playerList[0]->setIdOnline(idPlayer);
+                }
                 //if we found/created the player that sent us this message
                 //we can finaly handle the received messages
                 if(player)
@@ -393,6 +497,7 @@ void Game::updateMultiplayer()
                     10:loot bonus
                     11:socket confirmation
                     12:disconnect
+                    13:chat msg
                     */
                     //player position and angle and life
                     if(s.type==1)
@@ -437,27 +542,6 @@ void Game::updateMultiplayer()
                                     playerList.pop_back();
                             }
                         }
-                    }
-                    //you just connected and got response from server and your id
-                    if(s.type==5)
-                    {
-                        playerList[0]->setIdOnline(idPlayer);
-    /*
-                        //send request for patterns
-                        infosSocket s;
-                        s.type=8;
-                        s.variable[0]=idPlayer;
-                        m_online.sendSocket(s);*/
-
-
-                        //first create all the players (i'd need to receive playerN from server)
-                        /*for(int i=0;i<playerN;i++)
-                        {
-                            unsigned int ind=playerList.size();
-                            playerList.push_back(new Player());
-                            playerList[ind]->gtext=gtext;
-                            playerList[ind]->ini();
-                        }*/
                     }
                     //restart map
                     if(s.type==6)
@@ -579,6 +663,24 @@ void Game::updateMultiplayer()
                             }
                             o->setLife(0);
                         }
+                    }
+                    if(s.type==12)
+                    {
+                        stringstream ss;
+                        ss << "Player ";
+                        ss << player->getIdOnline() << " left.";
+                        char* tempChar=stringtochar(ss.str());
+
+                        m_chat.recieveMessage(tempChar,0,-2);
+
+                        delete tempChar;
+                    }
+                    //chat msg
+                    if(s.type==13)
+                    {
+                        cerr<<"Message reçu: "<<s.text<<endl;
+                        //m_chat.newMessage(s.text,s.variable[0]);
+                        m_chat.recieveMessage(s.text,0,s.variable[0]);
                     }
                 }
             }

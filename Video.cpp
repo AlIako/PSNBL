@@ -111,6 +111,12 @@ void Video::update(double functionTime)
     fog.update(functionTime);
 }
 
+void Video::matrixProjection()
+{
+    glMatrixMode( GL_PROJECTION );
+    glLoadIdentity( );
+    gluPerspective(m_fov,(double)m_hauteur/m_largeur,0.01,1000);
+}
 void Video::beforeDraw()
 {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );

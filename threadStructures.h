@@ -17,7 +17,11 @@ int sendSocket(bool tcp,SOCKET s,const char* infosS,int sizeInfosS,int wut,const
 int receiveSocket(bool tcp,SOCKET s,char* infosS,int sizeInfosS,int wut,struct sockaddr* paramsin=NULL,int* crecsize=NULL);
 
 
-
+struct cID
+{
+    int idConfirm;
+    int idClient;
+};
 
 
 struct thread_params
@@ -34,7 +38,7 @@ struct thread_params
     std::vector<infosSocket>* socketsReceived;
     std::vector<infosClient>* clients;
     std::vector<SocketWrapper>* socketWrappersToSend;
-    std::vector<int>* confirmIDreceived;
+    std::vector<cID>* confirmIDreceived;
 
     int *clientID;
 

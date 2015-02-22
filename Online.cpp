@@ -218,6 +218,7 @@ void Online::readMultiplayerFile()
             if(read_name=="name")
             {
                 file >> cur_read;
+                m_onlineName=cur_read;
                 cerr<<"name: "<<cur_read<<endl;
             }
             else if(read_name=="ip")

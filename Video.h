@@ -22,6 +22,8 @@ class Video
     void update(double functionTime);
     void close();
 
+    void matrixProjection();
+
     void beforeDraw();
     void afterDraw();
 

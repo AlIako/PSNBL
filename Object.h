@@ -10,6 +10,7 @@ class Object
 {
     public:
     Object();
+    virtual ~Object(){};
 
     virtual void ini();
     virtual void draw();
@@ -46,6 +47,7 @@ class Object
     void setDestructible(bool b) {m_destructible=b;}
     void setOnground(bool b) {m_onground=b;}
     void setIdOnline(int i) { m_idOnline=i;}
+    void setOnlineName(std::string s) {m_onlineName=s;}
     void collide(std::vector<Object*> v, std::vector<int> t) {m_collided=true; m_colliding=v; m_colTypes=t;}
     void setSpeed(double s) {m_speed=s;}
     void setLife(double l) {m_life=l;}
@@ -67,6 +69,7 @@ class Object
     bool getOnground() {return m_onground; }
     double getLife() {return m_life; }
     int getIdOnline() {return m_idOnline;}
+    std::string getOnlineName() { return m_onlineName;}
     bool isHookable() { return m_hookable; }
 
     protected:
@@ -98,6 +101,7 @@ class Object
     std::vector<int> m_colTypes;
 
     int m_idOnline;
+    std::string m_onlineName;
 
     bool m_hookable;
 };

@@ -30,6 +30,8 @@ class Online
     bool inControl() {return m_incontrol;}
     bool active() {return m_active;}
 
+    std::string getOnlineName() {return m_onlineName; }
+
     void close();
     ~Online();
 
@@ -58,8 +60,9 @@ class Online
     bool m_tcp;//if false -> udp
 
     int nextConfirmID;//ID for socket confirmation. Append each time to keep it unique
-    std::vector<int> confirmIDreceived;//IDs that were received, so that you dont receive and handle a same socket twice
+    std::vector<cID> confirmIDreceived;//IDs that were received, so that you dont receive and handle a same socket twice
 
+    std::string m_onlineName;
 
     bool m_threadsOn;
 

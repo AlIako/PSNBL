@@ -86,9 +86,7 @@ void Texte::draw(int r, int g, int b)
 	}
 
     glPopMatrix();
-    glMatrixMode( GL_PROJECTION );
-    glLoadIdentity( );
-    gluPerspective(70,(double)m_largeur/m_hauteur,0.01,1000);
+    Video::getInstance()->matrixProjection();
 
     //si on affiche une texture
     if(m_texture!=NULL)
@@ -134,12 +132,11 @@ void Texte::draw(int r, int g, int b)
         glPopMatrix();
         glDisable(GL_BLEND);
 
-        glMatrixMode( GL_PROJECTION );
-        glLoadIdentity( );
-        gluPerspective(70,(double)m_largeur/m_hauteur,0.01,1000);
+        Video::getInstance()->matrixProjection();
         glEnable(GL_LIGHTING);
     }
     glEnable(GL_CULL_FACE);
+    glDisable(GL_CULL_FACE);
 }
 
 void Texte::setX(float x)

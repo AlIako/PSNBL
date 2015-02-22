@@ -158,15 +158,21 @@ void* clientReceiveThread(void* data)
                 for(unsigned int j=0;!alreadyReceived && j<(*params->confirmIDreceived).size();j++)
                 {
                     //cerr<<"c: "<<infosRecu.confirmationID<<" -- "<<(*params->confirmIDreceived)[j]<<endl;
-                    if(infosRecu.confirmationID==(*params->confirmIDreceived)[j])//already received
+                    if(infosRecu.confirmationID==(*params->confirmIDreceived)[j].idConfirm
+                       && infosRecu.variable[0]==(*params->confirmIDreceived)[j].idClient)//already received
                         alreadyReceived=true;
                 }
             }
             //handle socket only if not already received
             if(!alreadyReceived)
             {
-                if(infosRecu.confirmationID!=-1)
-                    (*params->confirmIDreceived).push_back(infosRecu.confirmationID);
+                if(infosRecu.confirmationID!=-1 && infosRecu.type!=11)
+                {
+                    cID cid;
+                    cid.idClient=infosRecu.variable[0];
+                    cid.idConfirm=infosRecu.confirmationID;
+                    (*params->confirmIDreceived).push_back(cid);
+                }
 
 
                 (*params->socketsReceived).push_back(infosRecu);
@@ -196,11 +202,13 @@ void* clientReceiveThread(void* data)
             //if I received confirmation, delete socket that needed this confirmation so it wont be sent again
             if(infosRecu.type==11)
             {
+                cerr<<"received confirmation " << infosRecu.confirmationID<< "!"<<endl;
                 for(unsigned int j=0;j<(*params->socketWrappersToSend).size();j++)
                 {
                     SocketWrapper sw=(*params->socketWrappersToSend)[j];
                     if(sw.socket.confirmationID==infosRecu.confirmationID)
                     {
+                        cerr<<"important socket "<< infosRecu.confirmationID<< " deleted."<<endl;
                         for(unsigned int k=j;k<(*params->socketWrappersToSend).size()-1;k++)
                             (*params->socketWrappersToSend)[k]=(*params->socketWrappersToSend)[k+1];
                         if((*params->socketWrappersToSend).size()>0)

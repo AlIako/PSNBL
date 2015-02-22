@@ -8,6 +8,7 @@ class Pattern
 {
     public:
     Pattern();
+    virtual ~Pattern(){};
 
     virtual void update(double functionTime);
 

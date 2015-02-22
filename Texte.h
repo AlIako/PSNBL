@@ -6,6 +6,7 @@
 #include "freetype.h"
 #include "utilFunctions.h"
 #include "Texture.h"
+#include "Video.h"
 
 class Texte
 {

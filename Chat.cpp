@@ -218,7 +218,7 @@ void Chat::newMessage(string m, int iduser)
 }
 void Chat::recieveMessage(const char* t, int id, int iduser)
 {
-    if(!possedeId(id,iduser))
+    if(!possedeId(id,iduser) ||true)
     {
         lastId++;
         message incMSG;

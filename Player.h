@@ -10,6 +10,7 @@ class Player: public Object
 {
     public:
     Player();
+    virtual ~Player(){};
 
 
     virtual void update(double functionTime);
