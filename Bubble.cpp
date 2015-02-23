@@ -18,7 +18,9 @@ void Bubble::ini()
     zUp=0;
 
     m_life=1.0;
-    m_speed=myIntRand(1,5)/200.0;
+    m_speed=myIntRand(1,5)/20.0;
+
+    timeTilPop.reset();
 
     Object::ini();
 }
@@ -64,11 +66,21 @@ void Bubble::update(double functionTime)
 {
     if(m_life>0)
     {
-        m_life-=functionTime*speedDie;
         m_size.X+=functionTime*speedSize;
 
         if(goingUp)
             zUp+=functionTime*m_speed;
+
+        if(timeToPop==-1)
+            m_life-=functionTime*speedDie;
+        else
+        {
+            timeTilPop.couler();
+            if(timeTilPop.ecouler(timeToPop))
+            {
+                m_life-=functionTime*speedDie;
+            }
+        }
     }
 }
 

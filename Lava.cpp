@@ -59,7 +59,8 @@ void Lava::update(double functionTime)
             m_bubbles[i].setTexture(m_texture);
             m_bubbles[i].setSize(Vector3D(1,1,1));
             m_bubbles[i].ini();
-            m_bubbles[i].speedDie=myIntRand(1,10)/2000.0;
+            m_bubbles[i].timeToPop=myIntRand(2000,12000);
+            m_bubbles[i].speedDie=0.03+0*myIntRand(1,10)/2000.0;
             m_bubbles[i].speedSize=myIntRand(1,10)/1000.0;
             m_bubbles[i].setPos(Vector3D(myIntRand(0,floor(m_size.X*2)),myIntRand(0,floor(m_size.X*2)),-1)+
                                 Vector3D(-m_size.X,-m_size.Y,m_size.Z*2));//randomize X Y position
@@ -74,7 +75,8 @@ void Lava::update(double functionTime)
             m_steam[i].setTexture(m_texture);
             m_steam[i].setSize(Vector3D(0.1,0.1,0.1));
             m_steam[i].ini();
-            m_steam[i].speedDie=myIntRand(1,10)/1000.0;
+            m_steam[i].timeToPop=-1;
+            m_steam[i].speedDie=myIntRand(1,5)/300.0;
             m_steam[i].speedSize=0;
             m_steam[i].setSize(Vector3D(myIntRand(1,5)/10.0,0,0));
             m_steam[i].goingUp=true;

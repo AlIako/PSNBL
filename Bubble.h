@@ -17,10 +17,12 @@ class Bubble: public Object
 
     double speedDie;
     double speedSize;
+    int timeToPop;
 
     private:
     Texture* m_texture;
 
+    GTime timeTilPop;
 
     double zUp;
 };

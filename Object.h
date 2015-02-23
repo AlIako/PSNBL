@@ -51,6 +51,7 @@ class Object
     void collide(std::vector<Object*> v, std::vector<int> t) {m_collided=true; m_colliding=v; m_colTypes=t;}
     void setSpeed(double s) {m_speed=s;}
     void setLife(double l) {m_life=l;}
+    void setLifeMax(double l) {m_lifeMax=l;}
     void setHookable(bool h) {m_hookable=h;}
 
 
@@ -68,6 +69,7 @@ class Object
     bool getDestructible() {return m_destructible; }
     bool getOnground() {return m_onground; }
     double getLife() {return m_life; }
+    double getLifeMax() {return m_lifeMax; }
     int getIdOnline() {return m_idOnline;}
     std::string getOnlineName() { return m_onlineName;}
     bool isHookable() { return m_hookable; }
@@ -86,6 +88,7 @@ class Object
     bool m_block;
     bool m_destructible;
     double m_life;
+    double m_lifeMax;
 
     double m_speed;
 

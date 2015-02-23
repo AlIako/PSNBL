@@ -19,6 +19,7 @@ Object::Object()
     m_block=true;
     m_destructible=false;
     m_life=100;
+    m_lifeMax=100;
 
     m_hookable=false;
 

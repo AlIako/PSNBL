@@ -15,6 +15,10 @@ void Game::ini()
     playerList.push_back(new Player());
     playerList[ind]->ini();
 
+
+    //interface
+    m_interface.setTarget(playerList[0]);
+    m_interface.ini();
     //chat
     m_chat.activate(m_video->getWidth(), m_video->getHeight(), "../data/fonts/arial.TTF");
 
@@ -235,6 +239,7 @@ void Game::play()
 
         m_video->update(ft);
         m_map.update(ft);
+        m_interface.update(ft);
 
         updateCamMode();
 
@@ -258,6 +263,10 @@ void Game::play()
 
         m_map.draw();
 
+        if(m_camera.getPos().Z<=m_map.getLava()->getPos().Z+m_map.getLava()->getSize().Z*2)
+            m_interface.drawScreenEffect("../data/textures/lava.png");
+
+        m_interface.draw();
         m_chat.draw();
 
 

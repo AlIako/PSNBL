@@ -208,6 +208,15 @@ void Video::matrixProjection()
     glLoadIdentity( );
     gluPerspective(m_fov,(double)m_hauteur/m_largeur,0.01,1000);
 }
+
+void Video::matrixOrtho2D()
+{
+    glMatrixMode(GL_PROJECTION );
+    glLoadIdentity( );
+    gluOrtho2D(0,1,0,1);
+    glMatrixMode( GL_MODELVIEW );
+    glLoadIdentity( );
+}
 void Video::beforeDraw()
 {
     glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
