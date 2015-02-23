@@ -24,7 +24,7 @@ void Video::ini()
     m_fullscreen=false;
     m_fov=90;
 
-    ifstream file("config.ini", ios::in);
+    std::ifstream file("config.ini", std::ios::in);
 
     if(file)
     {
@@ -43,7 +43,7 @@ void Video::ini()
                 file >> cur_int;
                 m_hauteur=cur_int;
 
-                cerr<<"resolution: "<<m_largeur<<" "<< m_hauteur<<endl;
+                std::cerr<<"resolution: "<<m_largeur<<" "<< m_hauteur<<std::endl;
             }
             else if(read_name=="fullscreen")
             {
@@ -64,22 +64,22 @@ void Video::ini()
 
         }
 
-        cerr<<endl;
+        std::cerr<<std::endl;
         file.close();
     }
     else
-        cerr << "can't open file (config settings)" << endl;
+        std::cerr << "can't open file (config settings)" << std::endl;
 
 
 
 
     SDL_Init(SDL_INIT_VIDEO);
 
-    ostringstream oss;
+    std::ostringstream oss;
     oss << "PSNBLAL " << AutoVersion::MAJOR <<"."<<AutoVersion::MINOR<<"."<<AutoVersion::BUILD;
     oss <<" ("<<AutoVersion::DATE<<"/"<<AutoVersion::MONTH<<"/"<<AutoVersion::YEAR<<")";
 
-    cerr<<"Launching "<< oss.str()<<endl;
+    std::cerr<<"Launching "<< oss.str()<<std::endl;
     char* tempString=stringtochar(oss.str());
     SDL_WM_SetCaption(tempString,NULL);
     delete tempString;
@@ -104,6 +104,97 @@ void Video::ini()
 
 
     fog.enable();
+
+
+
+    const unsigned char* glver = glGetString(GL_VERSION);
+    std::cerr <<"Opengl Version: "<< glver<<std::endl;
+
+
+    //glew
+    glewInit();
+    //shaders
+    programID = LoadShaders( "../shaders/vertexShader.vsh", "../shaders/fragmentShader.fsh" );
+    programIDRed = LoadShaders( "../shaders/vertexShaderRed.vsh", "../shaders/fragmentShaderRed.fsh" );
+    programIDBlur = LoadShaders( "../shaders/vertexShaderBlur.vsh", "../shaders/fragmentShaderBlur.fsh" );
+}
+
+//shaders
+GLuint Video::LoadShaders(const char * vertex_file_path,const char * fragment_file_path)
+{
+    // Create the shaders
+    GLuint VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
+    GLuint FragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
+
+    // Read the Vertex Shader code from the file
+    std::string VertexShaderCode;
+    std::ifstream VertexShaderStream(vertex_file_path, std::ios::in);
+    if(VertexShaderStream.is_open())
+    {
+        std::string Line = "";
+        while(getline(VertexShaderStream, Line))
+            VertexShaderCode += "\n" + Line;
+        VertexShaderStream.close();
+    }
+
+    // Read the Fragment Shader code from the file
+    std::string FragmentShaderCode;
+    std::ifstream FragmentShaderStream(fragment_file_path, std::ios::in);
+    if(FragmentShaderStream.is_open())
+    {
+        std::string Line = "";
+        while(getline(FragmentShaderStream, Line))
+            FragmentShaderCode += "\n" + Line;
+        FragmentShaderStream.close();
+    }
+
+    GLint Result = GL_FALSE;
+    int InfoLogLength;
+
+    // Compile Vertex Shader
+    printf("Compiling shader : %s\n", vertex_file_path);
+    char const * VertexSourcePointer = VertexShaderCode.c_str();
+    glShaderSource(VertexShaderID, 1, &VertexSourcePointer , NULL);
+    glCompileShader(VertexShaderID);
+
+    // Check Vertex Shader
+    glGetShaderiv(VertexShaderID, GL_COMPILE_STATUS, &Result);
+    glGetShaderiv(VertexShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
+    std::vector<char> VertexShaderErrorMessage(InfoLogLength);
+    glGetShaderInfoLog(VertexShaderID, InfoLogLength, NULL, &VertexShaderErrorMessage[0]);
+    fprintf(stdout, "%s\n", &VertexShaderErrorMessage[0]);
+
+    // Compile Fragment Shader
+    printf("Compiling shader : %s\n", fragment_file_path);
+    char const * FragmentSourcePointer = FragmentShaderCode.c_str();
+    glShaderSource(FragmentShaderID, 1, &FragmentSourcePointer , NULL);
+    glCompileShader(FragmentShaderID);
+
+    // Check Fragment Shader
+    glGetShaderiv(FragmentShaderID, GL_COMPILE_STATUS, &Result);
+    glGetShaderiv(FragmentShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
+    std::vector<char> FragmentShaderErrorMessage(InfoLogLength);
+    glGetShaderInfoLog(FragmentShaderID, InfoLogLength, NULL, &FragmentShaderErrorMessage[0]);
+    fprintf(stdout, "%s\n", &FragmentShaderErrorMessage[0]);
+
+    // Link the program
+    fprintf(stdout, "Linking program\n");
+    GLuint ProgramID = glCreateProgram();
+    glAttachShader(ProgramID, VertexShaderID);
+    glAttachShader(ProgramID, FragmentShaderID);
+    glLinkProgram(ProgramID);
+
+    // Check the program
+    glGetProgramiv(ProgramID, GL_LINK_STATUS, &Result);
+    glGetProgramiv(ProgramID, GL_INFO_LOG_LENGTH, &InfoLogLength);
+    std::vector<char> ProgramErrorMessage( std::max(InfoLogLength, int(1)) );
+    glGetProgramInfoLog(ProgramID, InfoLogLength, NULL, &ProgramErrorMessage[0]);
+    fprintf(stdout, "%s\n", &ProgramErrorMessage[0]);
+
+    glDeleteShader(VertexShaderID);
+    glDeleteShader(FragmentShaderID);
+
+    return ProgramID;
 }
 
 void Video::update(double functionTime)

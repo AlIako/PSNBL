@@ -1,8 +1,8 @@
 #include "Game.h"
-
 Game::Game()
 {
 }
+
 
 void Game::ini()
 {
@@ -245,14 +245,22 @@ void Game::play()
         m_camera.look();
 
 
+        //glUseProgram(m_video->programIDRed);
+        //glUseProgram(m_video->programID);
+
         if(m_mode!="play")
             playerList[0]->draw();
         for(unsigned int i=1, count=playerList.size();i<count;i++)
             playerList[i]->draw();
 
+
+        //glUseProgram(m_video->programIDBlur);
+
         m_map.draw();
 
         m_chat.draw();
+
+
 
         m_video->afterDraw();
 

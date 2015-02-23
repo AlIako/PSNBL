@@ -1,7 +1,6 @@
 #ifndef TEXTE_H_INCLUDED
 #define TEXTE_H_INCLUDED
-#include <gl\gl.h>
-#include <gl\glu.h>
+#include <GL/glew.h>
 #include <string>
 #include "freetype.h"
 #include "utilFunctions.h"

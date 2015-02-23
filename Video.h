@@ -1,17 +1,15 @@
 #ifndef VIDEO_H_INCLUDED
 #define VIDEO_H_INCLUDED
 #include <SDL.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
+#include <GL/glew.h>
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <vector>
 #include "Fog.h"
 #include "version.h"
 #include "utilFunctions.h"
-
-using namespace std;
 
 class Video
 {
@@ -21,6 +19,8 @@ class Video
     void ini();
     void update(double functionTime);
     void close();
+
+    GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path);
 
     void matrixProjection();
 
@@ -33,6 +33,11 @@ class Video
     double getHeight() {return m_hauteur;}
 
     ~Video();
+
+
+    GLuint programID;
+    GLuint programIDRed;
+    GLuint programIDBlur;
 
     private:
     Video();

@@ -1,8 +1,7 @@
 #ifndef FOG_H_INCLUDED
 #define FOG_H_INCLUDED
 #include <SDL.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
+#include <GL/glew.h>
 #include <cmath>
 
 class Fog

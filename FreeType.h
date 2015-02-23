@@ -10,8 +10,7 @@
 
 //OpenGL Headers
 #include <windows.h>		//(the GL headers need it)
-#include <GL/gl.h>
-#include <GL/glu.h>
+#include <GL/glew.h>
 
 //Some STL headers
 #include <vector>

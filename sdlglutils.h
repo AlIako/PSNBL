@@ -1,7 +1,7 @@
 #ifndef SDLGLUTILS_H
 #define SDLGLUTILS_H
 
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <SDL.h>
 
 #ifndef GL_CLAMP_TO_EDGE
