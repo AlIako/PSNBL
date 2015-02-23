@@ -23,6 +23,14 @@ void Lava::ini()
 
     dampvalue.setParameter(15, 2);
     dampvalue = 2;
+
+    //bubbles
+    m_bubbles.resize(100);
+    m_steam.resize(150);
+
+
+
+
     Object::ini();
 }
 
@@ -33,18 +41,55 @@ void Lava::update(double functionTime)
 
     //text value damping
     dampvalue.update(functionTime/10.0);
-    txtcord.X += dampvalue/5;
-    txtcord.Y += dampvalue/5;
+    txtcord.X += 0*dampvalue/5;
+    txtcord.Y += 0*dampvalue/5;
 
     if(dampvalue>=1)
         dampvalue = -2;
     if(dampvalue<=-1)
         dampvalue = 2;
+
+
+    //bubbles
+    for(unsigned int i=0;i<m_bubbles.size();i++)
+    {
+        m_bubbles[i].update(functionTime);
+        if(m_bubbles[i].getLife()<=0)
+        {
+            m_bubbles[i].setTexture(m_texture);
+            m_bubbles[i].setSize(Vector3D(1,1,1));
+            m_bubbles[i].ini();
+            m_bubbles[i].speedDie=myIntRand(1,10)/2000.0;
+            m_bubbles[i].speedSize=myIntRand(1,10)/1000.0;
+            m_bubbles[i].setPos(Vector3D(myIntRand(0,floor(m_size.X*2)),myIntRand(0,floor(m_size.X*2)),-1)+
+                                Vector3D(-m_size.X,-m_size.Y,m_size.Z*2));//randomize X Y position
+        }
+        m_bubbles[i].setPos(Vector3D(m_bubbles[i].getPos().X,m_bubbles[i].getPos().Y,m_size.Z*2-1));//lava goes up; update Z
+    }
+    for(unsigned int i=0;i<m_steam.size();i++)
+    {
+        m_steam[i].update(functionTime);
+        if(m_steam[i].getLife()<=0)
+        {
+            m_steam[i].setTexture(m_texture);
+            m_steam[i].setSize(Vector3D(0.1,0.1,0.1));
+            m_steam[i].ini();
+            m_steam[i].speedDie=myIntRand(1,10)/1000.0;
+            m_steam[i].speedSize=0;
+            m_steam[i].setSize(Vector3D(myIntRand(1,5)/10.0,0,0));
+            m_steam[i].goingUp=true;
+            m_steam[i].setPos(Vector3D(myIntRand(0,floor(m_size.X*2)),myIntRand(0,floor(m_size.X*2)),-1)+
+                                Vector3D(-m_size.X,-m_size.Y,m_size.Z*2));//randomize X Y position
+        }
+        m_steam[i].setPos(Vector3D(m_steam[i].getPos().X,m_steam[i].getPos().Y,m_size.Z*2-1));//lava goes up; update Z
+    }
 }
 
 
 void Lava::draw()
 {
+
+    //lava
     const Vector3D m_taille=m_size;
 
     glColor3ub(255,255,255);
@@ -54,7 +99,7 @@ void Lava::draw()
 
 
     glBlendFunc(GL_SRC_ALPHA,GL_ONE);
-    glEnable(GL_BLEND);
+    //glEnable(GL_BLEND);
     glPushMatrix();
     glTranslated(m_position.X,m_position.Y,m_position.Z);
 
@@ -110,7 +155,16 @@ void Lava::draw()
     }
     txtcord=savetxtcord;
 
+
+    //bubble
+    glTranslated(-txtcord.X/10,txtcord.Y/10,0);
+    for(unsigned int i=0;i<m_bubbles.size();i++)
+        m_bubbles[i].draw();
+    for(unsigned int i=0;i<m_steam.size();i++)
+        m_steam[i].draw();
+
     glPopMatrix();
+
 
     glDisable(GL_BLEND);
 }

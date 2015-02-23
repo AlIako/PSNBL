@@ -1,6 +1,6 @@
 #ifndef LAVA_H_INCLUDED
 #define LAVA_H_INCLUDED
-#include "Object.h"
+#include "Bubble.h"
 
 class Lava: public Object
 {
@@ -12,6 +12,8 @@ class Lava: public Object
     virtual void draw();
 
     private:
+    vector<Bubble> m_bubbles;
+    vector<Bubble> m_steam;
     Texture* m_texture;
     double mosaic;
 
