@@ -10,7 +10,6 @@ Chat::Chat()
     lastId=-1;
     up=true;
     m_side=0;//gauche
-    gsounds=NULL;
     curseur=0;
 }
 
@@ -236,10 +235,10 @@ void Chat::recieveMessage(const char* t, int id, int iduser)
 void Chat::soundMsg()
 {
     lastson.couler();
-    if(gsounds!=NULL && lastson.ecouler(500))
+    if(lastson.ecouler(500))
     {
         lastson.reset();
-        gsounds->play("data/sounds/chat.wav");
+        Gsounds::getInstance()->play("../data/sounds/chat.wav");
     }
 }
 void Chat::redrawAll()

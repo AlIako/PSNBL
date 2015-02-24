@@ -10,6 +10,11 @@ Lava::Lava()
     mosaic=7;
     m_speed=0;
     txtcord=Vector3D(0,0,0);
+
+    nextLoopSoundTime=0;
+
+    loopSound="../data/sounds/lava_loop.wav";
+    bubbleSound="../data/sounds/lavabubble.wav";
 }
 
 void Lava::ini()
@@ -32,12 +37,47 @@ void Lava::ini()
 
 
     Object::ini();
+
+    nextBubbleSoundTime=1000;
+
+    if(Gsounds::getInstance()->getSound(loopSound)!=NULL)
+    {
+        nextLoopSoundTime=Gsounds::getInstance()->getSound(loopSound)->getLength();
+        cerr<<"nextLoopSoundTime: "<<nextLoopSoundTime<<endl;
+    }
 }
 
 
 void Lava::update(double functionTime)
 {
+    //going up
     m_size.Z+=m_speed*functionTime/10;
+
+    //sounds
+    loopSoundTime.couler();
+    if(nextLoopSoundTime!=0 && loopSoundTime.ecouler(nextBubbleSoundTime))
+    {
+        loopSoundTime.reset();
+        if(Gsounds::getInstance()->getSound(loopSound)!=NULL)
+        {
+            Gsounds::getInstance()->getSound(loopSound)->setPos((m_position+Vector3D(0,0,m_size.Z*2)).toLeft());
+            Gsounds::getInstance()->play(loopSound,1,20,140);
+        }
+    }
+    bubbleSoundTime.couler();
+    if(bubbleSoundTime.ecouler(nextBubbleSoundTime))
+    {
+        bubbleSoundTime.reset();
+        nextBubbleSoundTime=myIntRand(1000,3000);
+        if(Gsounds::getInstance()->getSound(bubbleSound)!=NULL)
+        {
+            Gsounds::getInstance()->getSound(bubbleSound)->setPos(
+                (Vector3D(myIntRand(0,floor(m_size.X*2)),myIntRand(0,floor(m_size.X*2)),-1)+
+                 Vector3D(-m_size.X,-m_size.Y,m_size.Z*2)).toLeft());
+
+            Gsounds::getInstance()->play(bubbleSound,1,30,100);
+        }
+    }
 
     //text value damping
     dampvalue.update(functionTime/10.0);

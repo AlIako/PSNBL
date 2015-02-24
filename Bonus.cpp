@@ -29,6 +29,12 @@ void Bonus::ini()
     Object::ini();
 }
 
+void Bonus::loseLife(double value)
+{
+    Object::loseLife(value);
+    Gsounds::getInstance()->play("../data/sounds/metal_impact.mp3");
+}
+
 void Bonus::update(double functionTime)
 {
     m_rotation.Z+=ft;

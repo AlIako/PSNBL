@@ -5,6 +5,7 @@
 #include "GTime.h"
 #include "DRDampingSpring.h"
 #include "Online.h"
+#include "Gsounds.h"
 
 class Object
 {
@@ -23,7 +24,7 @@ class Object
     void applyGravity();
 
     virtual void resurrect();
-    void loseLife(double value);
+    virtual void loseLife(double value);
 
     void applyPhysics();
     void applyPhysics(int x, int y, int z);

@@ -20,5 +20,13 @@ class Lava: public Object
     Vector3D txtcord;
 
     DRDampingSpring dampvalue;
+
+    string loopSound;
+    GTime loopSoundTime;
+    int nextLoopSoundTime;
+
+    string bubbleSound;
+    GTime bubbleSoundTime;
+    int nextBubbleSoundTime;
 };
 #endif // LAVA_H_INCLUDED

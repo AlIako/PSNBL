@@ -43,7 +43,6 @@ class Chat
     std::vector<message> msgToSend;
     message nextMessage;
 
-    Gsounds* gsounds;
     GTime lastson;
 
     private:

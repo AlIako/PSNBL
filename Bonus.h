@@ -10,6 +10,7 @@ class Bonus: public Object
     virtual void ini();
     virtual void update(double functionTime);
     virtual void draw();
+    virtual void loseLife(double value);
 
     private:
     Texture* m_texture;

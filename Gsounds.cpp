@@ -1,6 +1,16 @@
 #include "Gsounds.h"
 
 
+Gsounds* Gsounds::m_instance = new Gsounds();
+
+
+Gsounds* Gsounds::getInstance()
+{
+    return m_instance;
+}
+
+
+
 Gsounds::Gsounds()
 {
     on=false;
@@ -8,7 +18,7 @@ Gsounds::Gsounds()
 }
 
 
-void Gsounds::initialiser()
+void Gsounds::ini()
 {
     FMOD_System_Create(&system);
     FMOD_System_Init(system, 32, FMOD_INIT_3D_RIGHTHANDED, NULL);
@@ -18,12 +28,54 @@ void Gsounds::initialiser()
         if(sounds[i]->getType()=="music")
             sounds[i]->pause(music);
         else sounds[i]->pause(on);
+
+
+
+    //config file
+        std::ifstream file("config.ini", std::ios::in);
+
+    if(file)
+    {
+        std::string befor_read="",read_name="",read_name_before="";
+        std::string cur_read="";
+        int cur_int=0;
+
+        while(!file.eof())
+        {
+            read_name=cur_read.substr(0,cur_read.size()-1);//enleve le ":"
+
+            if(read_name_before=="sound")
+            {
+                file >> cur_int;
+                if(cur_int)
+                    on=true;
+                else on=false;
+            }
+            else if(read_name=="music")
+            {
+                file >> cur_int;
+                if(cur_int)
+                    music=true;
+                else music=false;
+            }
+
+            file >> cur_read;
+            befor_read=cur_read;
+            read_name_before=befor_read.substr(0,befor_read.size()-1);//enleve le ":"
+
+        }
+
+        std::cerr<<std::endl;
+        file.close();
+    }
+    else
+        std::cerr << "can't open file (config settings)" << std::endl;
 }
 
-void Gsounds::reinitialiser()
+void Gsounds::reini()
 {
-    fermer();
-    initialiser();
+    close();
+    ini();
 }
 void Gsounds::play(std::string nom)
 {
@@ -84,100 +136,12 @@ void Gsounds::volume(std::string nom, float v)
 
 void Gsounds::loads()
 {
-    addSound("data/sounds/jump1.wav");
-    addSound("data/sounds/jump2.wav");
-    addSound("data/sounds/hurt.wav");
-    addSound("data/sounds/lilian_die.wav");
-    addSound("data/sounds/lilian_punch.wav");
-    addSound("data/sounds/lilian_punch2.wav");
-    addSound("data/sounds/lilian_punch3.wav");
-    addSound("data/sounds/rollo_turbo.wav");
-    addSound("data/sounds/rollo_attack.wav");
-    addSound("data/sounds/rolloG_attack.wav");
-    addSound("data/sounds/rolloG_attack2.wav");
-    addSound("data/sounds/nova.wav");
-    addSound("data/sounds/bubble.wav");
-    addSound("data/sounds/tremblement.wav");
-
-
-    addSound("data/sounds/sifflement.wav");
-    addSound("data/sounds/sifflement2.wav");
-
-
-    addSound("data/sounds/bonus.mp3");
-    addSound("data/sounds/rubis.wav");
-    addSound("data/sounds/secret.wav");
-    addSound("data/sounds/bonusnova.wav");
-    addSound("data/sounds/reload.wav");
-    addSound("data/sounds/bonusboost.wav");
-    addSound("data/sounds/button.wav");
-    addSound("data/sounds/mechanic.wav");
-    addSound("data/sounds/mechanic2s.wav");
-    addSound("data/sounds/champi.wav");
-    addSound("data/sounds/goutte.wav");
-    addSound("data/sounds/futuristic_wave.mp3");
-    addSound("data/sounds/glow1.wav");
-    addSound("data/sounds/glow2.wav");
-    addSound("data/sounds/vie.wav");
-
-    addSound("data/sounds/explosion.wav");
-    addSound("data/sounds/explosion1.wav");
-
-    addSound("data/sounds/walkdirt1.wav");
-    addSound("data/sounds/walkdirt2.wav");
-    addSound("data/sounds/walkdirt3.wav");
-    addSound("data/sounds/walkdirt4.wav");
-
-    addSound("data/sounds/walkwood1.wav");
-    addSound("data/sounds/walkwood2.wav");
-
-    addSound("data/sounds/walkrock1.wav");
-    addSound("data/sounds/walkrock2.wav");
-
-    addSound("data/sounds/walkmetal1.wav");
-    addSound("data/sounds/walkmetal2.wav");
-
-    addSound("data/sounds/walkwater1.wav");
-    addSound("data/sounds/walkwater2.wav");
-
-    addSound("data/sounds/swimwater1.wav");
-
-    addSound("data/sounds/watermove.wav");
-
-    addSound("data/sounds/bouton.wav");
-    addSound("data/sounds/back.wav");
-    addSound("data/sounds/cursor.wav");
-    addSound("data/sounds/chat.wav");
-
-
-    addSound("data/sounds/forest.wav");
-    addSound("data/sounds/water.wav");
-    addSound("data/sounds/acqua.wav");
-    addSound("data/sounds/eau.wav");
-    addSound("data/sounds/world_gate.wav");
-    addSound("data/sounds/beach.mp3");
-    addSound("data/sounds/seagull.mp3");
-    addSound("data/sounds/OOT_Fire.wav");
-
-
-
-    addSound("data/sounds/gate_open.wav");
-    addSound("data/sounds/mushroom.wav");
-
-    addSound("data/sounds/monstre_hurt.wav");
-    addSound("data/sounds/monstre_hurt2.wav");
-    addSound("data/sounds/monstre_die.wav");
-    addSound("data/sounds/monstre_pull.wav");
-    addSound("data/sounds/zombie_die.wav");
-    addSound("data/sounds/zombie_attack.wav");
-    addSound("data/sounds/zombie_groan.wav");
-    addSound("data/sounds/zombie_groan2.wav");
-
-    addSound("data/sounds/bird_hurt.wav");
-    addSound("data/sounds/bird_die.wav");
-
-    addSound("data/sounds/slimjump.wav");
-    addSound("data/sounds/bounce.wav");
+    addSound("../data/sounds/bounce.wav");
+    addSound("../data/sounds/chat.wav");
+    addSound("../data/sounds/lava_loop.wav");
+    addSound("../data/sounds/lavabubble.wav");
+    addSound("../data/sounds/fire.mp3");
+    addSound("../data/sounds/metal_impact.mp3");
 }
 
 void Gsounds::addSound(std::string chemin)
@@ -272,7 +236,7 @@ void Gsounds::freeAll()
     sounds.clear();
 }
 
-void Gsounds::fermer()
+void Gsounds::close()
 {
     freeAll();
     FMOD_System_Close(system);

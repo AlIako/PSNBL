@@ -8,8 +8,16 @@ void Game::ini()
 {
     grabCursor=true;
 
+    //video
     m_video=Video::getInstance();
     m_video->ini();
+
+    //sound
+    Gsounds::getInstance()->ini();
+    Gsounds::getInstance()->loads();
+
+
+
 
     unsigned int ind=playerList.size();
     playerList.push_back(new Player());
@@ -94,6 +102,8 @@ void Game::play()
                         Vector3D dir=Vector3D(0,0,sin((-m_camera.getBeta()+8*0)*M_PI/180))+playerList[0]->getDir();
                         dir=(m_camera.getTarget()-(playerList[0]->getPos()+Vector3D(0,0,1))).normalize();
                         playerList[0]->linkRope(m_map.createRope(playerList[0]->getPos(),dir));
+
+                        Gsounds::getInstance()->play("../data/sounds/bounce.wav");
 
                         infosSocket s;
                         s.confirmationID=-1;
@@ -237,6 +247,8 @@ void Game::play()
         updateTimes();
         updateMultiplayer();
         m_online->update();
+
+        Gsounds::getInstance()->update(m_camera.getPos().toLeft(),Vector3D(0,0,0),m_camera.getDir().toLeft(),Vector3D(0,0,1));
 
         m_video->update(ft);
         m_map.update(ft);
@@ -818,6 +830,8 @@ void Game::close()
         SDL_Delay(250);
     }
     m_online->close();
+
+    Gsounds::getInstance()->close();
     m_video->close();
 
     cerr<<"Exited cleanly.";

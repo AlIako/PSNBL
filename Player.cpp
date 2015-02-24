@@ -39,7 +39,7 @@ void Player::update(double functionTime)
         {
             if(m_colliding[i]->getType()=="bonus")
             {
-                m_colliding[i]->setLife(0);
+                m_colliding[i]->loseLife(m_colliding[i]->getLife());
                 if(Online::getInstance()!=NULL)
                 {
                     infosSocket s;

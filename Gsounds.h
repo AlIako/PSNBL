@@ -10,9 +10,10 @@
 class Gsounds
 {
     public:
-    Gsounds();
-    void initialiser();
-    void reinitialiser();
+    static Gsounds* getInstance();
+
+    void ini();
+    void reini();
     void play(std::string nom);
     void play(std::string nom, int rel,int dmin, int dmax);
     void stopMusic();
@@ -26,14 +27,20 @@ class Gsounds
     Sound* getSound(string nom);
     void freeSound(std::string chemin);
     void freeAll();
-    void fermer();
+    void close();
     void active(bool a);
     void activeZik(bool a);
     void save();
 
     bool on;
     bool music;
+
+
     private:
+    Gsounds();
+    static Gsounds* m_instance;
+
+
     FMOD_SYSTEM *system;
     std::vector<Sound*> sounds;
     FMOD_VECTOR listenerp;
