@@ -202,6 +202,7 @@ void Game::play()
 
                         m_map.restart();
 
+                        m_interface.setTarget(playerList[0]);
                         m_camera.setCible(playerList[0]);
                         m_camera.setMode("play");
                         m_mode="play";
@@ -239,6 +240,8 @@ void Game::play()
 
         m_video->update(ft);
         m_map.update(ft);
+
+        m_interface.setMode(m_mode);
         m_interface.update(ft);
 
         updateCamMode();
@@ -296,15 +299,20 @@ void Game::updateCamMode()
 
 
         //camera mode
+        Player* pTarget=NULL;
         Object* p=m_camera.getCible();
         for(unsigned int i=1, count=playerList.size();i<count;i++)
         {
             if(playerList[i]->getLife()>0)
+            {
                 p=playerList[i];
+                pTarget=playerList[i];
+            }
         }
         m_mode="spectate";
         m_camera.setMode("spectate");
         m_camera.setCible(p);
+        m_interface.setTarget(pTarget);
     }
 }
 
@@ -312,6 +320,7 @@ void Game::switchSpectate(int d)
 {
     int id=0;
     Object* p=m_camera.getCible();
+    Player* pTarget=NULL;
 
     //find which id we have now
     for(unsigned int i=0, count=playerList.size();i<count;i++)
@@ -329,6 +338,7 @@ void Game::switchSpectate(int d)
         {
             foundPl=true;
             p=playerList[tempI];
+            pTarget=playerList[tempI];
         }
     }
     for(int i=0;i<id;i++)
@@ -337,9 +347,11 @@ void Game::switchSpectate(int d)
         {
             foundPl=true;
             p=playerList[i];
+            pTarget=playerList[i];
         }
     }
     m_camera.setCible(p);
+    m_interface.setTarget(pTarget);
 }
 
 
@@ -385,7 +397,11 @@ void Game::updateMultiplayer()
             s.type=13;
             s.confirmationID=m_online->nextConfirmationID();
 
-            int namewritten=-1;
+            s.variable[1]=m_chat.msgToSend[i].user;
+            if(m_chat.msgToSend[i].user>=0)
+                s.variable[1]=playerList[0]->getIdOnline();
+
+            int namewritten=0;
             std::string nametoWrite=playerList[0]->getOnlineName();
             for(int j=0;j<TEXT_SIZE;j++)
             {
@@ -482,18 +498,31 @@ void Game::updateMultiplayer()
                     player=playerList[ind];
                     cerr<<"creating new player, id online: "<<idPlayer<<endl;
 
-                    //chat message
+                    /*//chat message
                     stringstream ss;
                     ss << "Player ";
                     ss << idPlayer << " joined.";
                     char* tempChar=stringtochar(ss.str());
                     m_chat.recieveMessage(tempChar,0,-2);
-                    delete tempChar;
+                    delete tempChar;*/
                 }
                 else if(s.type==5)//you just connected and got response from server and your id
                 {
                     cerr<<"setting your online id to "<<idPlayer<<endl;
                     playerList[0]->setIdOnline(idPlayer);
+
+                    //send your name, son.
+                    infosSocket nameSocket;
+                    nameSocket.confirmationID=m_online->nextConfirmationID();
+                    nameSocket.type=14;//name
+                    std::string nameToWrite=playerList[0]->getOnlineName();
+                    for(int j=0;j<TEXT_SIZE;j++)
+                    {
+                        if(j<=(int)nameToWrite.size())
+                            nameSocket.text[j]=nameToWrite[j];
+                        else nameSocket.text[j]='\0';
+                    }
+                    m_online->sendSocket(nameSocket);
                 }
                 //if we found/created the player that sent us this message
                 //we can finaly handle the received messages
@@ -515,6 +544,7 @@ void Game::updateMultiplayer()
                     11:socket confirmation
                     12:disconnect
                     13:chat msg
+                    14: name
                     */
                     //player position and angle and life
                     if(s.type==1)
@@ -546,8 +576,29 @@ void Game::updateMultiplayer()
                     //player disconnected
                     if(s.type==12)
                     {
-                        cerr<<"Player "<<s.variable[0]<< " disconnected. Deleting it from list."<<endl;
+                        //chat msg
+                        stringstream ss;
+                        ss << "Player ";
+                        ss << player->getOnlineName() << " left.";
+                        char* tempChar=stringtochar(ss.str());
+
+                        m_chat.recieveMessage(tempChar,0,-2);
+                        delete tempChar;
+
+                        //if server left
+                        if(s.variable[0]==0)
+                        {
+                            stringstream ss2;
+                            ss2 << "Server offline. You're alone.";
+                            char* tempChar2=stringtochar(ss2.str());
+
+                            m_chat.recieveMessage(tempChar2,0,-2);
+                            delete tempChar2;
+                        }
+
+
                         //delete player from player list
+                        cerr<<"Player "<<s.variable[0]<< " disconnected. Deleting it from list."<<endl;
                         for(unsigned int j=0;j<playerList.size();j++)
                         {
                             if(playerList[j]->getIdOnline()==s.variable[0])
@@ -564,6 +615,7 @@ void Game::updateMultiplayer()
                     if(s.type==6)
                     {
                         m_map.restart();
+                        m_interface.setTarget(playerList[0]);
                         m_camera.setCible(playerList[0]);
                         m_camera.setMode("play");
                         m_mode="play";
@@ -673,6 +725,7 @@ void Game::updateMultiplayer()
                                 {
                                     playerList[0]->resurrect();
                                     playerList[0]->setPos(pos);
+                                    m_interface.setTarget(playerList[0]);
                                     m_camera.setCible(playerList[0]);
                                     m_camera.setMode("play");
                                     m_mode="play";
@@ -681,23 +734,54 @@ void Game::updateMultiplayer()
                             o->setLife(0);
                         }
                     }
-                    if(s.type==12)
-                    {
-                        stringstream ss;
-                        ss << "Player ";
-                        ss << player->getIdOnline() << " left.";
-                        char* tempChar=stringtochar(ss.str());
-
-                        m_chat.recieveMessage(tempChar,0,-2);
-
-                        delete tempChar;
-                    }
                     //chat msg
                     if(s.type==13)
                     {
                         cerr<<"Message reçu: "<<s.text<<endl;
-                        //m_chat.newMessage(s.text,s.variable[0]);
-                        m_chat.recieveMessage(s.text,0,s.variable[0]);
+
+                        std::ostringstream oss;
+
+                        if(s.variable[1]>=0)
+                            oss << player->getOnlineName()<<": ";
+                        oss << s.text;
+                        char* tempChar=stringtochar(oss.str());
+                        m_chat.recieveMessage(tempChar,0,s.variable[1]);
+                        delete tempChar;
+                    }
+                    //get name
+                    if(s.type==14)
+                    {
+                        std::string nameNoO=nameNoEnd(s.text,TEXT_SIZE);
+                        cerr <<"Name "<<nameNoO<< " received."<<endl;
+                        if(player->getOnlineName()=="unnamed")
+                        {
+                            if(nameNoO!="unnamed")
+                            {
+                                //chat message
+                                stringstream ss;
+                                ss << "Player "<< nameNoO << " joined.";
+                                char* tempChar=stringtochar(ss.str());
+                                m_chat.recieveMessage(tempChar,0,-2);
+                                delete tempChar;
+                            }
+
+                            //if you didn't have this name, send yours back (be polite ffs è_é)
+                            cerr<<"Sending my name back"<<endl;
+
+                            infosSocket nameSocket;
+                            nameSocket.confirmationID=m_online->nextConfirmationID();
+                            nameSocket.type=14;//name
+                            std::string nameToWrite=playerList[0]->getOnlineName();
+                            for(int j=0;j<TEXT_SIZE;j++)
+                            {
+                                if(j<(int)nameToWrite.size())
+                                    nameSocket.text[j]=nameToWrite[j];
+                                else nameSocket.text[j]='\0';
+                            }
+                            m_online->sendSocket(nameSocket);
+                        }
+
+                        player->setOnlineName(nameNoO);
                     }
                 }
             }

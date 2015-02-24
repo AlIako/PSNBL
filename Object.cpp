@@ -1,5 +1,5 @@
 #include "Object.h"
-#define CD_LOSE_LIFE 1000
+#define CD_LOSE_LIFE 100
 
 
 Object::Object()
@@ -27,6 +27,7 @@ Object::Object()
     ft=0;
 
     m_idOnline=-1;
+    m_onlineName="unnamed";
 }
 
 void Object::resurrect()
@@ -64,7 +65,7 @@ void Object::update(double functionTime)
             if(m_colliding[i]->getType()=="lava")
             {
                 if(getDestructible())
-                    loseLife(30);
+                    loseLife(3);
             }
         }
         m_colliding.clear();

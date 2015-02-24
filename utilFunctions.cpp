@@ -21,3 +21,14 @@ double myDoubleRand(double min, double max)
 {
     return (double) (min + ((float) rand() / RAND_MAX * (max - min + 1.000)));
 }
+
+
+std::string nameNoEnd(char* c, int size)
+{
+    std::string s="";
+    for(int i=0;i<size;i++)
+        if(c[i]!='\0')
+            s+=c[i];
+        else break;
+    return s;
+}

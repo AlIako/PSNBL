@@ -13,13 +13,13 @@ void* handleConnections(void* data)
 
     if (error)
     {
-        return false; //For some reason we couldn't start Winsock
+        //return false; //For some reason we couldn't start Winsock
     }
 
     if (w.wVersion != 0x0202) //Wrong Winsock version?
     {
         WSACleanup ();
-        return false;
+        //return false;
     }
     SOCKADDR_IN addr; // The address structure for a TCP socket
     SOCKET s;
@@ -47,7 +47,7 @@ void* handleConnections(void* data)
         if (s == INVALID_SOCKET)
         {
             cerr << "Couldn't create the socket"<<endl;
-            return false; //Don't continue if we couldn't create a //socket!!
+            //return false; //Don't continue if we couldn't create a //socket!!
         }
 
         if (bind(s, (LPSOCKADDR)&addr, sizeof(addr)) == SOCKET_ERROR)
@@ -55,7 +55,7 @@ void* handleConnections(void* data)
             cerr << "Couldn't bind"<<endl;
            //We couldn't bind (this will happen if you try to bind to the same
            //socket more than once)
-            return false;
+            //return false;
         }
         while(/* *(params->connectionEstablished)==false || */true)
         {

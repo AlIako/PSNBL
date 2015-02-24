@@ -12,13 +12,15 @@ void* clientConnectThread(void* data)
 
     //Did something happen?
     if (error)
-        return false;
+    {
+        //return false;
+    }
 
     //Did we get the right Winsock version?
     if (wsadata.wVersion != 0x0202)
     {
         WSACleanup(); //Clean up Winsock
-        return false;
+        //return false;
     }
 
     //Fill out the information needed to initialize a socket…
@@ -45,7 +47,7 @@ void* clientConnectThread(void* data)
         if (*params->newsockfd <0)
         {
             cerr << "Couldn't create the socket"<<endl;
-            return false; //Couldn't create the socket
+            //return false; //Couldn't create the socket
         }
 
 
