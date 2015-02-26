@@ -3,6 +3,9 @@
 #include <cmath>
 #include "Character.h"
 #include "Rope.h"
+#include "SpellRope.h"
+#include "SpellJump.h"
+#include "SpellLongJump.h"
 
 enum DIRECTION { DOWN, LEFT, UP, RIGHT, KEY_E};
 
@@ -32,6 +35,10 @@ class Player: public Object
 
     virtual void resurrect();
 
+    //spells
+    void addSpell(Spell* s);
+    Spell* getSpell(string s);
+
     private:
     Vector3D m_startpos;
 
@@ -42,6 +49,8 @@ class Player: public Object
     Rope* m_rope;
 
     bool m_jumping;
+
+    vector<Spell*> m_spells;
 };
 
 #endif // PLAYER_H_INCLUDED

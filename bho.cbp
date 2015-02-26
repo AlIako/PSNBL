@@ -5,7 +5,7 @@
 		<Option title="bho" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
-		<Option virtualFolders="Audio\;functions\;Game\;Interface\;Object\;Online\;Render\;Game\Pattern\;Object\Lava\;" />
+		<Option virtualFolders="Audio\;functions\;Game\;Interface\;Object\;Online\;Render\;Game\Pattern\;Object\Lava\;Game\State\;Game\Spell\;" />
 		<Build>
 			<Target title="Debug">
 				<Option output="bin/bho" prefix_auto="1" extension_auto="1" />
@@ -270,6 +270,42 @@
 		</Unit>
 		<Unit filename="Sound.h">
 			<Option virtualFolder="Audio/" />
+		</Unit>
+		<Unit filename="Spell.cpp">
+			<Option virtualFolder="Game/Spell/" />
+		</Unit>
+		<Unit filename="Spell.h">
+			<Option virtualFolder="Game/Spell/" />
+		</Unit>
+		<Unit filename="SpellJump.cpp">
+			<Option virtualFolder="Game/Spell/" />
+		</Unit>
+		<Unit filename="SpellJump.h">
+			<Option virtualFolder="Game/Spell/" />
+		</Unit>
+		<Unit filename="SpellLongJump.cpp">
+			<Option virtualFolder="Game/Spell/" />
+		</Unit>
+		<Unit filename="SpellLongJump.h">
+			<Option virtualFolder="Game/Spell/" />
+		</Unit>
+		<Unit filename="SpellPullUp.cpp">
+			<Option virtualFolder="Game/Spell/" />
+		</Unit>
+		<Unit filename="SpellPullUp.h">
+			<Option virtualFolder="Game/Spell/" />
+		</Unit>
+		<Unit filename="SpellRope.cpp">
+			<Option virtualFolder="Game/Spell/" />
+		</Unit>
+		<Unit filename="SpellRope.h">
+			<Option virtualFolder="Game/Spell/" />
+		</Unit>
+		<Unit filename="State.cpp">
+			<Option virtualFolder="Game/State/" />
+		</Unit>
+		<Unit filename="State.h">
+			<Option virtualFolder="Game/State/" />
 		</Unit>
 		<Unit filename="Texte.cpp">
 			<Option virtualFolder="Interface/" />

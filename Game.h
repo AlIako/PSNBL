@@ -9,7 +9,7 @@
 #include "GTime.h"
 #include "Chat.h"
 #include "Interface.h"
-
+#include "SpellRope.h"
 
 class Game
 {
@@ -21,6 +21,9 @@ class Game
 
 
     void play();
+
+    bool castSpell(Player* p, string spell, Vector3D param1=Vector3D(0,0,0));
+    void playPlayerSound(Player* p,string sound);
 
     void updateCamMode();
     void switchSpectate(int d);
@@ -53,6 +56,10 @@ class Game
     bool grabCursor;
 
     std::string m_mode;//playing, death(spectate)
+
+
+    //temporary bool, needs to be done in a better way
+    bool shiftPushed;
 };
 
 

@@ -6,6 +6,8 @@ Game::Game()
 
 void Game::ini()
 {
+    shiftPushed=false;
+
     grabCursor=true;
 
     //video
@@ -18,7 +20,7 @@ void Game::ini()
 
 
 
-
+    //player ini
     unsigned int ind=playerList.size();
     playerList.push_back(new Player());
     playerList[ind]->ini();
@@ -66,6 +68,54 @@ void Game::ini()
 
 }
 
+void Game::playPlayerSound(Player* p,string sound)
+{
+    if(Gsounds::getInstance()->getSound(sound)!=NULL)
+    {
+
+        if(p==playerList[0])//if current player, normal sound
+            Gsounds::getInstance()->play(sound);
+        else//if other player, sound 3D
+        {
+            Gsounds::getInstance()->getSound(sound)->setPos(p->getPos().toLeft());
+            Gsounds::getInstance()->play(sound,1,20,80);
+        }
+    }
+}
+bool Game::castSpell(Player* p, string spell, Vector3D param1)
+{
+    if(p!=NULL)
+    {
+        Spell* s=p->getSpell(spell);
+        if(s!=NULL)
+        {
+            if(s->cast())
+            {
+                if(s->getName()=="rope")
+                {
+                    p->linkRope(m_map.createRope(p->getPos(),param1));
+
+                    playPlayerSound(p,"../data/sounds/bounce.wav");
+                }
+                else if(s->getName()=="jump")
+                {
+                    p->jump();
+                    //Gsounds::getInstance()->play("../data/sounds/bounce.wav");
+                }
+                else if(s->getName()=="longjump")
+                {
+                    p->setVel(p->getVel()+p->getDir()*2);
+                    p->jump();
+                    playPlayerSound(p,"../data/sounds/boost.wav");
+                    //Gsounds::getInstance()->play("../data/sounds/bounce.wav");
+                }
+                return true;//spell cast successfull
+            }
+        }
+    }
+    return false;
+}
+
 void Game::play()
 {
     ini();
@@ -99,24 +149,24 @@ void Game::play()
                 {
                     if(m_mode=="play")
                     {
-                        Vector3D dir=Vector3D(0,0,sin((-m_camera.getBeta()+8*0)*M_PI/180))+playerList[0]->getDir();
-                        dir=(m_camera.getTarget()-(playerList[0]->getPos()+Vector3D(0,0,1))).normalize();
-                        playerList[0]->linkRope(m_map.createRope(playerList[0]->getPos(),dir));
+                        Vector3D dir=(m_camera.getTarget()-(playerList[0]->getPos()+Vector3D(0,0,1))).normalize();
 
-                        Gsounds::getInstance()->play("../data/sounds/bounce.wav");
+                        if(castSpell(playerList[0],"rope",dir))
+                        {
+                            infosSocket s;
+                            s.confirmationID=-1;
+                            s.type=2;
 
-                        infosSocket s;
-                        s.confirmationID=-1;
-                        s.type=2;
+                            s.variable[1]=playerList[0]->getPos().X;
+                            s.variable[2]=playerList[0]->getPos().Y;
+                            s.variable[3]=playerList[0]->getPos().Z;
+                            s.variable[4]=dir.X;
+                            s.variable[5]=dir.Y;
+                            s.variable[6]=dir.Z;
 
-                        s.variable[1]=playerList[0]->getPos().X;
-                        s.variable[2]=playerList[0]->getPos().Y;
-                        s.variable[3]=playerList[0]->getPos().Z;
-                        s.variable[4]=dir.X;
-                        s.variable[5]=dir.Y;
-                        s.variable[6]=dir.Z;
+                            m_online->sendSocket(s);//add socket to queue
+                        }
 
-                        m_online->sendSocket(s);//add socket to queue
                     }
                     else if(m_mode=="spectate")
                     {
@@ -164,8 +214,26 @@ void Game::play()
                     playerList[0]->pressKey(KEY_E,true);
                     break;
                     case SDLK_SPACE:
-                    playerList[0]->jump();
+                    if(shiftPushed)
+                    {
+                        if(castSpell(playerList[0],"longjump"))
+                        {
+                            infosSocket s;
+                            s.confirmationID=-1;
+                            s.type=15;
 
+                            s.variable[1]=playerList[0]->getPos().X;
+                            s.variable[2]=playerList[0]->getPos().Y;
+                            s.variable[3]=playerList[0]->getPos().Z;
+
+                            m_online->sendSocket(s);//add socket to queue
+                        }
+
+                    }
+                    else
+                        castSpell(playerList[0],"jump");
+
+                    //unlink rope
                     infosSocket s;
                     s.confirmationID=-1;
                     s.type=3;
@@ -173,6 +241,10 @@ void Game::play()
                     break;
                     case SDLK_ESCAPE:
                     playLoop = false;
+                    break;
+
+                    case SDLK_LSHIFT:
+                        shiftPushed=true;
                     break;
                     default:
                     break;
@@ -236,6 +308,9 @@ void Game::play()
                         SDL_WM_GrabInput(SDL_GRAB_ON);
                         grabCursor=true;
                     }
+                    break;
+                    case SDLK_LSHIFT:
+                        shiftPushed=false;
                     break;
                     default:
                     break;
@@ -557,6 +632,7 @@ void Game::updateMultiplayer()
                     12:disconnect
                     13:chat msg
                     14: name
+                    15: longjump
                     */
                     //player position and angle and life
                     if(s.type==1)
@@ -568,9 +644,10 @@ void Game::updateMultiplayer()
                     //hook
                     if(s.type==2)
                     {
-                        Vector3D pos=Vector3D(s.variable[1],s.variable[2],s.variable[3]);
+                        player->setPos(Vector3D(s.variable[1],s.variable[2],s.variable[3]));
                         Vector3D dir=Vector3D(s.variable[4],s.variable[5],s.variable[6]);
-                        player->linkRope(m_map.createRope(pos,dir));
+
+                        castSpell(player,"rope",dir);
                     }
                     //unhook
                     if(s.type==3)
@@ -794,6 +871,11 @@ void Game::updateMultiplayer()
                         }
 
                         player->setOnlineName(nameNoO);
+                    }
+                    //long jump
+                    if(s.type==15)
+                    {
+                        playPlayerSound(player,"../data/sounds/boost.wav");
                     }
                 }
             }

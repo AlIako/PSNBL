@@ -574,10 +574,10 @@
 1424604726 source:d:\programmation\bho\freetype.cpp
 	"freetype.h"
 
-1424902910 source:d:\programmation\bho\game.cpp
+1424968082 source:d:\programmation\bho\game.cpp
 	"Game.h"
 
-1424729977 d:\programmation\bho\game.h
+1424968022 d:\programmation\bho\game.h
 	<SDL.h>
 	<GL/glew.h>
 	"Video.h"
@@ -587,6 +587,7 @@
 	"GTime.h"
 	"Chat.h"
 	"Interface.h"
+	"SpellRope.h"
 
 1422479487 d:\programmation\bho\map.h
 	<vector>
@@ -597,10 +598,13 @@
 	"Rope.h"
 	"Phase.h"
 
-1424620095 d:\programmation\bho\player.h
+1424965603 d:\programmation\bho\player.h
 	<cmath>
 	"Character.h"
 	"Rope.h"
+	"SpellRope.h"
+	"SpellJump.h"
+	"SpellLongJump.h"
 
 1419426142 d:\programmation\bho\rope.h
 	"Object.h"
@@ -655,7 +659,7 @@
 	"Video.h"
 	"Player.h"
 
-1424815725 source:d:\programmation\bho\gsounds.cpp
+1424967336 source:d:\programmation\bho\gsounds.cpp
 	"Gsounds.h"
 
 1422478367 source:d:\programmation\bho\gtexture.cpp
@@ -714,7 +718,7 @@
 1424544890 source:d:\programmation\bho\phase.cpp
 	"Phase.h"
 
-1424813572 source:d:\programmation\bho\player.cpp
+1424968338 source:d:\programmation\bho\player.cpp
 	"Player.h"
 
 1422478602 source:d:\programmation\bho\rope.cpp
@@ -767,4 +771,41 @@
 
 1422478608 source:d:\programmation\bho\wall.cpp
 	"Wall.h"
+
+1424964498 source:d:\programmation\bho\spell.cpp
+	"Spell.h"
+
+1424964516 d:\programmation\bho\spell.h
+	<string>
+	"GTime.h"
+
+1424963202 source:d:\programmation\bho\state.cpp
+	"State.h"
+
+1424963899 d:\programmation\bho\state.h
+	"GTime.h"
+
+1424963528 source:d:\programmation\bho\spellrope.cpp
+	"SpellRope.h"
+
+1424964464 d:\programmation\bho\spellrope.h
+	"Spell.h"
+
+1424965711 d:\programmation\bho\spelljump.h
+	"Spell.h"
+
+1424965724 d:\programmation\bho\spelllongjump.h
+	"Spell.h"
+
+1424965704 source:d:\programmation\bho\spelljump.cpp
+	"SpellJump.h"
+
+1424965721 source:d:\programmation\bho\spelllongjump.cpp
+	"SpellLongJump.h"
+
+1424968268 source:d:\programmation\bho\spellpullup.cpp
+	"SpellPullUp.h"
+
+1424968274 d:\programmation\bho\spellpullup.h
+	"Spell.h"
 

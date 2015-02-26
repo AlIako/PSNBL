@@ -71,14 +71,17 @@ void Player::update(double functionTime)
 }
 void Player::jump()
 {
-    if(!m_jumping && (fabs(m_velocity.Z)<0.1 || ropeHooked()))
+    if(m_life>0)
     {
-        m_jumping=true;
+        if(!m_jumping && (fabs(m_velocity.Z)<0.1 || ropeHooked()))
+        {
+            m_jumping=true;
 
-        if(m_velocity.Z<0.4)
-            setVel(Vector3D(getVel().X,getVel().Y,0.4));
+            if(m_velocity.Z<0.4)
+                setVel(Vector3D(getVel().X,getVel().Y,0.4));
 
-        unlinkRope();
+            unlinkRope();
+        }
     }
 }
 
@@ -130,6 +133,11 @@ void Player::ini()
         GTexture::getInstance()->addTexture("../data/textures/chardead.png");
         m_textureDead=GTexture::getInstance()->getTexture("../data/textures/chardead.png");
     }
+
+    //spells
+    addSpell(new SpellRope());
+    addSpell(new SpellJump());
+    addSpell(new SpellLongJump());
 }
 
 void Player::draw()
@@ -249,7 +257,7 @@ void Player::move()
     }
 
     //hook
-    if(m_pressed[KEY_E])
+    if(m_pressed[KEY_E] && getSpell("pullup")!=NULL)
     {
         pullUpRope();
     }
@@ -260,7 +268,7 @@ void Player::move()
     double maxspeed=0.1;
 
 
-    if(!ropeHooked())
+    if(!ropeHooked() && false)
     {
         //speed limit
         if(m_velocity.X>maxspeed)
@@ -279,8 +287,35 @@ void Player::move()
     m_velocity.X/=1.1;
     m_velocity.Y/=1.1;
 }
+void Player::addSpell(Spell* s)
+{
+    if(s!=NULL)
+    {
+        bool spellFound=false;
+        for(unsigned int i=0;i<m_spells.size();i++)
+        {
+            if(m_spells[i]->getName()==s->getName())
+            {
+                m_spells[i]=s;
+                spellFound=true;
+            }
+        }
 
-
+        if(!spellFound)
+        {
+            m_spells.push_back(s);
+        }
+    }
+}
+Spell* Player::getSpell(string s)
+{
+    for(unsigned int i=0;i<m_spells.size();i++)
+    {
+        if(m_spells[i]->getName()==s)
+            return m_spells[i];
+    }
+    return NULL;
+}
 
 
 

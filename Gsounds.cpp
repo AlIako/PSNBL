@@ -136,6 +136,7 @@ void Gsounds::volume(std::string nom, float v)
 
 void Gsounds::loads()
 {
+    addSound("../data/sounds/boost.wav");
     addSound("../data/sounds/bounce.wav");
     addSound("../data/sounds/chat.wav");
     addSound("../data/sounds/lava_loop.wav");
