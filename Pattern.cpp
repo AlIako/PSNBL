@@ -35,7 +35,7 @@ void Pattern::calculHighestZ()
     {
         if((*m_objects)[i]->getType()!="wall" && (*m_objects)[i]->getType()!="lava")
         {
-            if((*m_objects)[i]->getPos().Z+(*m_objects)[i]->getSize().Z>m_highestZ)
+            if((*m_objects)[i]->getPos().Z+(*m_objects)[i]->getSize().Z*2>m_highestZ)
                 m_highestZ=(*m_objects)[i]->getPos().Z+(*m_objects)[i]->getSize().Z*2;
         }
     }
@@ -47,7 +47,7 @@ void Pattern::ini(double startZ, std::vector<Object*>* objects)
     m_objects=objects;
 
 
-    cerr<<"ini pattern "<<m_name<<". start Z is: "<<startZ <<endl;
+    //cerr<<"ini pattern "<<m_name<<". start Z is: "<<startZ <<endl;
     m_finished=false;
 
     //find walls and lava

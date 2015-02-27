@@ -7,6 +7,7 @@
 #include "SpellJump.h"
 #include "SpellLongJump.h"
 #include "SpellPullUp.h"
+#include "SpellRopeBoost.h"
 
 enum DIRECTION { DOWN, LEFT, UP, RIGHT, KEY_E};
 

@@ -6,7 +6,7 @@ SpellRope::SpellRope()
 {
     m_name="rope";
     m_required="nothing";
-    m_cooldown=1000;
+    m_cooldown=500;
 }
 
 

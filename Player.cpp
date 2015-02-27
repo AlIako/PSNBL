@@ -151,7 +151,8 @@ void Player::ini()
     addSpell(new SpellRope());
     addSpell(new SpellJump());
     addSpell(new SpellLongJump());
-    addSpell(new SpellPullUp());
+    //addSpell(new SpellPullUp());
+    //addSpell(new SpellRopeBoost());
 }
 
 void Player::draw()
@@ -260,7 +261,7 @@ void Player::move()
     {
         if(ropeHooked())
         {
-            if(m_gasing)
+            if(m_gasing && getSpell("ropeboost")!=NULL)
             {
                 moveXY(&m_velocity);
 

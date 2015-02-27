@@ -1,6 +1,7 @@
 #ifndef INTERFACE_H_INCLUDED
 #define INTERFACE_H_INCLUDED
 #include "LifeBar.h"
+#include "Crosshair.h"
 #include "Texte.h"
 
 class Interface
@@ -25,6 +26,7 @@ private:
 
     Player* m_target;
     LifeBar m_lifebar;
+    Crosshair m_crosshair;
 
     Texte m_playerName;
     Texte m_fps;

@@ -12,6 +12,8 @@ void Interface::ini()
     m_font.init("../data/fonts/arial.TTF", 16);
 
     m_lifebar.ini();
+    m_crosshair.ini();
+
     m_playerName.ini(Video::getInstance()->getWidth(),Video::getInstance()->getHeight(),&m_font);
     m_playerName.setX(0.05);
     m_playerName.setY(0.92);
@@ -24,6 +26,9 @@ void Interface::ini()
 
 void Interface::draw()
 {
+    if(m_mode=="play")
+        m_crosshair.draw();
+
     m_lifebar.draw();
     m_playerName.draw(255,255,255);
     m_fps.draw(255,255,255);
@@ -74,7 +79,10 @@ void Interface::drawScreenEffect(std::string path)
 
 void Interface::update(double functionTime)
 {
+    m_crosshair.update(functionTime);
+
     m_lifebar.update(functionTime,m_target);
+
     if(m_target!=NULL)
     {
         std::ostringstream oss;

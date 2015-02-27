@@ -8,7 +8,6 @@
 #include <string>
 #include <vector>
 #include "Fog.h"
-#include "version.h"
 #include "utilFunctions.h"
 
 class Video
