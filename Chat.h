@@ -21,6 +21,7 @@ class Chat
     public:
     Chat();
     void activate(int largeur, int hauteur, const char* t);
+    void submitCurrentMsg();
     void addMessage();
     void newMessage(string m, int iduser);
     void openTextBox(int iduser, double x);
@@ -40,6 +41,7 @@ class Chat
     void setSide(int side);
     void soundMsg();
 
+    std::vector<string> commands;
     std::vector<message> msgToSend;
     message nextMessage;
 

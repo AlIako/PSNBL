@@ -22,6 +22,8 @@ class Game
 
     void play();
 
+    void handleCommands();
+
     bool castSpell(Player* p, string spell, Vector3D param1=Vector3D(0,0,0));
     void playPlayerSound(Player* p,string sound);
 
@@ -61,6 +63,9 @@ class Game
     GTime m_fpsTime;
     //temporary bool, needs to be done in a better way
     bool shiftPushed;
+
+
+    bool alreadyDead;
 };
 
 

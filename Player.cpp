@@ -28,6 +28,8 @@ Player::Player()
     m_gasing=false;
 
     m_maxspeed=0.1;
+
+    m_deathCause=0;
 }
 
 void Player::update(double functionTime)
@@ -54,6 +56,10 @@ void Player::update(double functionTime)
 
                     Online::getInstance()->sendSocket(s);
                 }
+            }
+            else if(m_colliding[i]->getType()=="lava")
+            {
+                m_deathCause=1;
             }
         }
     }

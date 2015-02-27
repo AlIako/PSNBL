@@ -146,6 +146,13 @@ bool Vector3D::isNull(double value)
 {
     return X==value && Y==value && Z==value;
 }
+
+std::string Vector3D::toString()
+{
+    std::stringstream ss;
+    ss << "X: "<< X <<", Y: " << Y << ", Z: " << Z;
+    return ss.str();
+}
 void Vector3D::write(std::string nom)
 {
     if(nom!="")

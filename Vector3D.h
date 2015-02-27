@@ -2,6 +2,7 @@
 #define VECTOR3D_H
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <string>
 #include <cmath>
 /* Implémentation intuitive d'une classe Vector3D pour les lecteurs du cours
@@ -43,6 +44,7 @@ public:
     Vector3D crossProduct(const Vector3D & v)const;
     double length()const;
     bool isNull(double value=0);
+    std::string toString();
     void write(std::string nom="");
     Vector3D toLeft();
     Vector3D & normalize();

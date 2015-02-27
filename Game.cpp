@@ -86,6 +86,60 @@ void Game::playPlayerSound(Player* p,string sound)
         }
     }
 }
+
+void Game::handleCommands()
+{
+    for(unsigned int i=0;i<m_chat.commands.size();i++)
+    {
+        string c=m_chat.commands[i];
+        if(c=="/restart" || c=="/reset" || c=="/Reset" || c=="/Restart" || c=="/R" || c=="/r")
+        {
+            if(Online::getInstance()->inControl())
+            {
+                infosSocket s;
+                s.confirmationID=m_online->nextConfirmationID();
+                s.type=6;
+                m_online->sendSocket(s);//add socket to queue
+
+
+                m_map.restart();
+
+                m_interface.setTarget(playerList[0]);
+                m_camera.setCible(playerList[0]);
+                m_camera.setMode("play");
+                m_mode="play";
+
+                m_chat.newMessage("Map reset.",-2);
+            }
+        }
+        else if(c=="/kill" || c=="/suicide")
+        {
+            playerList[0]->setLife(0);
+            playerList[0]->setDeathCause(2);
+        }
+        else if(c=="/pos" || c=="/position")
+        {
+            //command not found
+            stringstream ss;
+            ss << "Current position is "<<playerList[0]->getPos().toString();
+            char* tempChar=stringtochar(ss.str());
+            m_chat.recieveMessage(tempChar,0,-2);
+            delete tempChar;
+        }
+        else
+        {
+            //command not found
+            stringstream ss;
+            ss << "\""<< c << "\" command not found.";
+            char* tempChar=stringtochar(ss.str());
+            m_chat.recieveMessage(tempChar,0,-2);
+            delete tempChar;
+        }
+    }
+    m_chat.commands.clear();
+}
+
+
 bool Game::castSpell(Player* p, string spell, Vector3D param1)
 {
     if(p!=NULL)
@@ -198,6 +252,10 @@ void Game::play()
                 case SDL_KEYDOWN:
                 switch(event.key.keysym.sym)
                 {
+                    case SDLK_KP_ENTER:
+                    if(m_chat.active())
+                        m_chat.openTextBox(playerList[0]->getIdOnline(),0.1);
+                    break;
                     case SDLK_RETURN:
                     if(m_chat.active())
                         m_chat.openTextBox(playerList[0]->getIdOnline(),0.1);
@@ -259,6 +317,10 @@ void Game::play()
                 case SDL_KEYUP:
                 switch(event.key.keysym.sym)
                 {
+                    case SDLK_KP_ENTER:
+                    if(m_chat.active())
+                        m_chat.enterUp();
+                    break;
                     case SDLK_RETURN:
                     if(m_chat.active())
                         m_chat.enterUp();
@@ -279,26 +341,8 @@ void Game::play()
                     playerList[0]->pressKey(KEY_E,false);
                     break;
                     case SDLK_r:
-                    if(Online::getInstance()->inControl())
-                    {
-                        infosSocket s;
-                        s.confirmationID=m_online->nextConfirmationID();
-                        s.type=6;
-                        m_online->sendSocket(s);//add socket to queue
-
-
-                        m_map.restart();
-
-                        m_interface.setTarget(playerList[0]);
-                        m_camera.setCible(playerList[0]);
-                        m_camera.setMode("play");
-                        m_mode="play";
-
-                        m_chat.newMessage("Map reset.",-2);
-                    }
                     break;
                     case SDLK_k:
-                    playerList[0]->setLife(0);
                     break;
                     case SDLK_c:
                     if(grabCursor)
@@ -338,8 +382,33 @@ void Game::play()
 
         m_interface.setMode(m_mode);
         m_interface.update(ft);
+        handleCommands();
 
         updateCamMode();
+
+        //you just died
+        if(playerList[0]->getLife()<=0 && !alreadyDead)
+        {
+            alreadyDead=true;
+
+
+            //send chat msg
+            stringstream ss;
+            int dc=playerList[0]->getDeathCause();
+
+            if(dc==0)
+                ss << playerList[0]->getOnlineName() << " mysteriously died.";
+            else if(dc==1)
+                ss << playerList[0]->getOnlineName() << " burned to death.";
+            else if(dc==2)
+                ss << playerList[0]->getOnlineName() << " committed suicide.";
+
+            char* tempChar=stringtochar(ss.str());
+            m_chat.newMessage(tempChar,-2);
+            delete tempChar;
+        }
+        else if(playerList[0]->getLife()>0)
+            alreadyDead=false;
 
 
         //draw
@@ -392,17 +461,6 @@ void Game::updateCamMode()
 {
     if(m_camera.getCible()->getLife()<=0)
     {
-        //if you just died, chat message
-        if(m_camera.getMode()=="play")
-        {
-            stringstream ss;
-            ss << playerList[0]->getOnlineName() << " died in hell.";
-            char* tempChar=stringtochar(ss.str());
-            m_chat.newMessage(tempChar,-2);
-            delete tempChar;
-        }
-
-
         //camera mode
         Player* pTarget=NULL;
         Object* p=m_camera.getCible();

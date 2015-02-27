@@ -89,6 +89,33 @@ void Chat::enterUp()
 {
     up=true;
 }
+void Chat::submitCurrentMsg()
+{
+    if(m_writing && up)
+    {
+        up=false;
+        if(!ons && !vide(nextMessage.msg))
+        {
+            lastId++;
+            nextMessage.id=lastId;
+            nextMessage.apparu.reset();
+            nextMessage.user=curuser;
+            nextMessage.text->setTexte(nextMessage.msg);
+
+            if(nextMessage.msg.find("/")==0)//if command
+            {
+                commands.push_back(nextMessage.msg);
+            }
+            else
+            {
+                m_messages.push_back(nextMessage);
+                msgToSend.push_back(nextMessage);
+            }
+            soundMsg();
+        }
+        closeTextBox();
+    }
+}
 void Chat::checkKeyboard()
 {
     bool addChar=false;
@@ -102,23 +129,11 @@ void Chat::checkKeyboard()
             case SDL_KEYDOWN:
             switch (event.key.keysym.sym)
             {
+                case SDLK_KP_ENTER:
+                    submitCurrentMsg();
+                break;
                 case SDLK_RETURN:
-                if(m_writing && up)
-                {
-                    up=false;
-                    if(!ons && !vide(nextMessage.msg))
-                    {
-                        lastId++;
-                        nextMessage.id=lastId;
-                        nextMessage.apparu.reset();
-                        nextMessage.user=curuser;
-                        nextMessage.text->setTexte(nextMessage.msg);
-                        m_messages.push_back(nextMessage);
-                        msgToSend.push_back(nextMessage);
-                        soundMsg();
-                    }
-                    closeTextBox();
-                }
+                    submitCurrentMsg();
                 break;
                 case SDLK_LEFT:
                 if(curseur>0) curseur--;
@@ -161,6 +176,9 @@ void Chat::checkKeyboard()
             case SDL_KEYUP:
             switch (event.key.keysym.sym)
             {
+                case SDLK_KP_ENTER:
+                up=true;
+                break;
                 case SDLK_RETURN:
                 up=true;
                 break;
