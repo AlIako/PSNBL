@@ -7,7 +7,7 @@
 Player::Player()
 {
     m_texture=NULL;
-    m_startpos=Vector3D(-MAPSIZE/1.5,-MAPSIZE/1.5,20);
+    m_startpos=Vector3D(2,-45,30);
     m_position=m_startpos;
 
     m_rotation.Z=0;
@@ -25,6 +25,9 @@ Player::Player()
     m_type="player";
 
     m_jumping=false;
+    m_gasing=false;
+
+    m_maxspeed=0.1;
 }
 
 void Player::update(double functionTime)
@@ -62,25 +65,35 @@ void Player::update(double functionTime)
 
         if(ropeHooked())
         {
-            m_jumping=false;
-            m_rope->pullMe(this);
+            //m_jumping=false;
+            if(m_onTopOf==NULL)
+                m_rope->pullMe(this);
         }
     }
 
     Object::update(functionTime);
+
+    if(m_onTopOf!=NULL)
+        m_jumping=false;
 }
 void Player::jump()
 {
     if(m_life>0)
     {
-        if(!m_jumping && (fabs(m_velocity.Z)<0.1 || ropeHooked()))
+        if(m_onTopOf!=NULL && !m_jumping && (fabs(m_velocity.Z)<0.1 || ropeHooked()))
         {
             m_jumping=true;
 
             if(m_velocity.Z<0.4)
                 setVel(Vector3D(getVel().X,getVel().Y,0.4));
 
-            unlinkRope();
+
+            //re set rope distance to actual distance
+            if(m_rope!=NULL)
+            {
+                m_rope->setNowDistance();
+            }
+            //unlinkRope();
         }
     }
 }
@@ -138,6 +151,7 @@ void Player::ini()
     addSpell(new SpellRope());
     addSpell(new SpellJump());
     addSpell(new SpellLongJump());
+    addSpell(new SpellPullUp());
 }
 
 void Player::draw()
@@ -227,66 +241,85 @@ void Player::move()
         m_pressed[RIGHT]=false;
         m_pressed[KEY_E]=false;
     }
-    //m_direction.write();
 
-    if(ropeHooked())
-        m_speed*=2;
+    //hook
+    if(m_pressed[KEY_E] && getSpell("pullup")!=NULL)
+        pullUpRope();
+
+    //movement on ground
+    if(m_onTopOf!=NULL)
+    {
+        moveXY(&m_movementVelocity);
+        //friction on ground
+        m_movementVelocity.X/=1.1;
+        m_movementVelocity.Y/=1.1;
+        m_velocity.X/=1.1;
+        m_velocity.Y/=1.1;
+    }
+    else//movement in the air
+    {
+        if(ropeHooked())
+        {
+            if(m_gasing)
+            {
+                moveXY(&m_velocity);
+
+                const double spd=1.03;
+                m_velocity.X/=spd;
+                m_velocity.Y/=spd;
+            }
+            else
+            {
+                moveXY(&m_movementVelocity);
+                m_movementVelocity.X/=1.1;
+                m_movementVelocity.Y/=1.1;
+            }
+        }
+        else
+        {
+            moveXY(&m_movementVelocity);
+            m_movementVelocity.X/=1.1;
+            m_movementVelocity.Y/=1.1;
+        }
+    }
+}
+
+void Player::moveXY(Vector3D* vel)
+{
+    //Vector3D m_saveVel=m_movementVelocity;
 
     if(m_pressed[UP])
     {
-        m_velocity.X+=m_speed*m_direction.X*ft;
-        m_velocity.Y+=m_speed*m_direction.Y*ft;
+        vel->X+=m_speed*m_direction.X*ft;
+        vel->Y+=m_speed*m_direction.Y*ft;
         //m_position.Z+=m_speed*m_direction.Z;
     }
     if(m_pressed[DOWN])
     {
-        m_velocity.X-=m_speed*m_direction.X*ft;
-        m_velocity.Y-=m_speed*m_direction.Y*ft;
+        vel->X-=m_speed*m_direction.X*ft;
+        vel->Y-=m_speed*m_direction.Y*ft;
         //m_position.Z-=m_speed*m_direction.Z;
     }
     if(m_pressed[RIGHT])
     {
-        m_velocity.X+=m_direction.Y*m_speed*ft;
-        m_velocity.Y-=m_direction.X*m_speed*ft;
+        vel->X+=m_direction.Y*m_speed*ft;
+        vel->Y-=m_direction.X*m_speed*ft;
     }
     if(m_pressed[LEFT])
     {
-        m_velocity.X-=m_direction.Y*m_speed*ft;
-        m_velocity.Y+=m_direction.X*m_speed*ft;
+        vel->X-=m_direction.Y*m_speed*ft;
+        vel->Y+=m_direction.X*m_speed*ft;
 
     }
 
-    //hook
-    if(m_pressed[KEY_E] && getSpell("pullup")!=NULL)
+    /*double newLength=Vector3D(m_movementVelocity.X,m_movementVelocity.Y,0).length();
+    double oldLength=Vector3D(m_saveVel.X,m_saveVel.Y,0).length();
+    if(newLength>m_maxspeed && newLength>oldLength)//if we're too fast and new velocity greater than old
     {
-        pullUpRope();
-    }
-
-    if(ropeHooked())
-        m_speed/=2;
-
-    double maxspeed=0.1;
-
-
-    if(!ropeHooked() && false)
-    {
-        //speed limit
-        if(m_velocity.X>maxspeed)
-            m_velocity.X=maxspeed;
-        else if(m_velocity.X<-maxspeed)
-            m_velocity.X=-maxspeed;
-
-        if(m_velocity.Y>maxspeed)
-            m_velocity.Y=maxspeed;
-        else if(m_velocity.Y<-maxspeed)
-            m_velocity.Y=-maxspeed;
-    }
-
-
-    //friction
-    m_velocity.X/=1.1;
-    m_velocity.Y/=1.1;
+        m_movementVelocity=m_saveVel;
+    }*/
 }
+
 void Player::addSpell(Spell* s)
 {
     if(s!=NULL)

@@ -15,6 +15,10 @@ void Interface::ini()
     m_playerName.ini(Video::getInstance()->getWidth(),Video::getInstance()->getHeight(),&m_font);
     m_playerName.setX(0.05);
     m_playerName.setY(0.92);
+
+    m_fps.ini(Video::getInstance()->getWidth(),Video::getInstance()->getHeight(),&m_font);
+    m_fps.setX(0.85);
+    m_fps.setY(0.92);
 }
 
 
@@ -22,6 +26,7 @@ void Interface::draw()
 {
     m_lifebar.draw();
     m_playerName.draw(255,255,255);
+    m_fps.draw(255,255,255);
 }
 
 void Interface::drawScreenEffect(std::string path)
@@ -80,4 +85,14 @@ void Interface::update(double functionTime)
         m_playerName.setTexte(oss.str());
     }
 }
+
+
+void Interface::setFPS(int fps)
+{
+    std::ostringstream oss;
+    oss << "FPS: ";
+    oss << fps;
+    m_fps.setTexte(oss.str());
+}
+
 

@@ -6,6 +6,9 @@ Game::Game()
 
 void Game::ini()
 {
+    m_fps=0;
+    m_fpsTime.reset();
+
     shiftPushed=false;
 
     grabCursor=true;
@@ -31,6 +34,7 @@ void Game::ini()
     m_interface.ini();
     //chat
     m_chat.activate(m_video->getWidth(), m_video->getHeight(), "../data/fonts/arial.TTF");
+    m_chat.setSide(0);
 
     //online
     m_online=Online::getInstance();
@@ -104,7 +108,7 @@ bool Game::castSpell(Player* p, string spell, Vector3D param1)
                 }
                 else if(s->getName()=="longjump")
                 {
-                    p->setVel(p->getVel()+p->getDir()*2);
+                    p->setVel(p->getVel()+p->getDir()/3.0);
                     p->jump();
                     playPlayerSound(p,"../data/sounds/boost.wav");
                     //Gsounds::getInstance()->play("../data/sounds/bounce.wav");
@@ -196,7 +200,7 @@ void Game::play()
                 {
                     case SDLK_RETURN:
                     if(m_chat.active())
-                        m_chat.openTextBox(playerList[0]->getIdOnline(),0.5);
+                        m_chat.openTextBox(playerList[0]->getIdOnline(),0.1);
                     break;
                     case SDLK_a:
                     playerList[0]->pressKey(LEFT,true);
@@ -244,6 +248,7 @@ void Game::play()
                     break;
 
                     case SDLK_LSHIFT:
+                        playerList[0]->setGasing(true);
                         shiftPushed=true;
                     break;
                     default:
@@ -310,6 +315,7 @@ void Game::play()
                     }
                     break;
                     case SDLK_LSHIFT:
+                        playerList[0]->setGasing(false);
                         shiftPushed=false;
                     break;
                     default:
@@ -318,6 +324,7 @@ void Game::play()
                 break;
             }
         }
+
         //update stuff
         updateTimes();
         updateMultiplayer();
@@ -327,6 +334,7 @@ void Game::play()
 
         m_video->update(ft);
         m_map.update(ft);
+
 
         m_interface.setMode(m_mode);
         m_interface.update(ft);
@@ -362,6 +370,16 @@ void Game::play()
 
 
         m_video->afterDraw();
+
+        //fps calcul
+        m_fps++;
+        m_fpsTime.couler();
+        if(m_fpsTime.ecouler(1000))
+        {
+            m_interface.setFPS(m_fps);
+            m_fps=0;
+            m_fpsTime.reset();
+        }
 
         SDL_Delay(10);
     }

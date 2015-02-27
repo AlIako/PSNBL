@@ -40,6 +40,9 @@ void Rope::update(double functionTime)
                 m_block=false;
                 m_end=m_position;
 
+                if(linkedTo!=NULL)
+                    m_start=linkedTo->getPos();
+
                 //cerr<<"distance: "<<m_distance<<endl;
             }
             else
@@ -86,17 +89,27 @@ void Rope::update(double functionTime)
         m_start=simulLinked.getPos();
 }
 
+void Rope::setNowDistance()
+{
+    if(linkedTo!=NULL)
+        m_distance=(m_end-linkedTo->getPos()).length();
+}
+
 void Rope::pullMe(Object* o)
 {
     //pull your player
     if ((m_end-o->getPos()).length() > m_distance )
         // we're past the end of our rope -> pull the avatar back in
-        o->setVel(o->getVel()+(m_end-o->getPos()).normalize()*ft/40);
+    {
+        //simulate the pull
+        //the linked object must stay within the range.
+        o->setVel(o->getVel()+(m_end-o->getPos()).normalize()*ft/40*2);
+    }
 }
 void Rope::pullUp()
 {
     //cerr<<"pull up rope: "<< m_distance << endl;
-    m_distance-=ft;
+    m_distance-=ft/10.0;
     if(m_distance<1)
         m_distance=1;
 }
@@ -144,6 +157,8 @@ void Rope::draw()
 {
     if(linkedTo!=NULL)
     {
+        glEnable(GL_CULL_FACE);
+
         const Vector3D m_taille=m_size;
         const double mosaic=0.5;
 
@@ -202,6 +217,7 @@ void Rope::draw()
 
         glPopMatrix();
 
+        glDisable(GL_CULL_FACE);
     }
 }
 

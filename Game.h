@@ -57,7 +57,8 @@ class Game
 
     std::string m_mode;//playing, death(spectate)
 
-
+    int m_fps;
+    GTime m_fpsTime;
     //temporary bool, needs to be done in a better way
     bool shiftPushed;
 };

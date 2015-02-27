@@ -28,6 +28,10 @@ Object::Object()
 
     m_idOnline=-1;
     m_onlineName="unnamed";
+
+    m_onTopOf=NULL;
+
+    m_visible=true;
 }
 
 void Object::resurrect()
@@ -57,6 +61,14 @@ void Object::update(double functionTime)
     if(m_position.Z<=-50)
         m_life=0;
 
+
+    bool wasOnTop=false;
+    if(m_onTopOf!=NULL)
+    {
+        wasOnTop=true;
+        //m_onTopOf->setVisible(true);
+        m_onTopOf=NULL;
+    }
     if(m_collided)
     {
         m_collided=false;
@@ -66,6 +78,17 @@ void Object::update(double functionTime)
             {
                 if(getDestructible())
                     loseLife(3);
+            }
+            else if(m_colliding[i]->getType()=="block")
+            {
+                if(m_colliding[i]->getPos().Z+m_colliding[i]->getSize().Z*2<=m_position.Z)
+                {
+                    m_onTopOf=m_colliding[i];
+
+                    if(!wasOnTop)//landing -> stop Z velocity
+                        m_velocity.Z=0;
+                    //m_onTopOf->setVisible(false);
+                }
             }
         }
         m_colliding.clear();
@@ -101,9 +124,19 @@ void Object::applyPhysics()
 void Object::applyPhysics(int x, int y, int z)
 {
     if(x)
+        m_position.X+=m_velocity.X+m_movementVelocity.X;
+    if(y)
+        m_position.Y+=m_velocity.Y+m_movementVelocity.Y;
+    /*if(x)
         m_position.X+=m_velocity.X;
     if(y)
-        m_position.Y+=m_velocity.Y;
+        m_position.Y+=m_velocity.Y;*/
+    /*if(x)
+        m_position.X+=m_velocity.X*m_movementVelocity.X;
+    if(y)
+        m_position.Y+=m_velocity.Y*m_movementVelocity.Y;*/
+
+
     if(z)
         m_position.Z+=m_velocity.Z;
 }
@@ -158,7 +191,10 @@ bool Object::collision(Object* o)
 }
 
 
-
+bool Object::onGround()
+{
+    return m_onTopOf!=NULL;
+}
 
 
 

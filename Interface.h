@@ -16,6 +16,8 @@ public:
     void setTarget(Player* p) {m_target=p;}
     void setMode(std::string m) {m_mode=m;}
 
+    void setFPS(int fps);
+
 private:
     freetype::font_data m_font;
 
@@ -25,6 +27,7 @@ private:
     LifeBar m_lifebar;
 
     Texte m_playerName;
+    Texte m_fps;
 };
 
 

@@ -1,11 +1,11 @@
 # depslib dependency file v1.0
-1422478350 source:d:\programmation\bho\block.cpp
+1425050858 source:d:\programmation\bho\block.cpp
 	"Block.h"
 
 1419768271 d:\programmation\bho\block.h
 	"Object.h"
 
-1424813501 d:\programmation\bho\object.h
+1425055889 d:\programmation\bho\object.h
 	"Vector3D.h"
 	"GTexture.h"
 	"GTime.h"
@@ -504,7 +504,7 @@
 1419253502 d:\programmation\bho\character.h
 	"Object.h"
 
-1424812477 source:d:\programmation\bho\chat.cpp
+1424992844 source:d:\programmation\bho\chat.cpp
 	"Chat.h"
 
 1424812472 d:\programmation\bho\chat.h
@@ -554,12 +554,12 @@
 	<GL/glew.h>
 	<cmath>
 
-1424895055 d:\programmation\bho\version.h
+1424989867 d:\programmation\bho\version.h
 
 1424802391 source:d:\programmation\bho\client.cpp
 	"Client.h"
 
-1419623611 source:d:\programmation\bho\collision.cpp
+1425052239 source:d:\programmation\bho\collision.cpp
 	"Collision.h"
 
 1419530252 d:\programmation\bho\collision.h
@@ -574,10 +574,10 @@
 1424604726 source:d:\programmation\bho\freetype.cpp
 	"freetype.h"
 
-1424968082 source:d:\programmation\bho\game.cpp
+1425062986 source:d:\programmation\bho\game.cpp
 	"Game.h"
 
-1424968022 d:\programmation\bho\game.h
+1425051404 d:\programmation\bho\game.h
 	<SDL.h>
 	<GL/glew.h>
 	"Video.h"
@@ -598,15 +598,16 @@
 	"Rope.h"
 	"Phase.h"
 
-1424965603 d:\programmation\bho\player.h
+1425062859 d:\programmation\bho\player.h
 	<cmath>
 	"Character.h"
 	"Rope.h"
 	"SpellRope.h"
 	"SpellJump.h"
 	"SpellLongJump.h"
+	"SpellPullUp.h"
 
-1419426142 d:\programmation\bho\rope.h
+1425058567 d:\programmation\bho\rope.h
 	"Object.h"
 
 1419359375 d:\programmation\bho\wall.h
@@ -651,7 +652,7 @@
 1419815374 d:\programmation\bho\pathookaround.h
 	"Pattern.h"
 
-1424800443 d:\programmation\bho\interface.h
+1425051296 d:\programmation\bho\interface.h
 	"LifeBar.h"
 	"Texte.h"
 
@@ -668,7 +669,7 @@
 1419257456 source:d:\programmation\bho\gtime.cpp
 	"GTime.h"
 
-1424800509 source:d:\programmation\bho\interface.cpp
+1425051476 source:d:\programmation\bho\interface.cpp
 	"Interface.h"
 
 1424815259 source:d:\programmation\bho\lava.cpp
@@ -683,7 +684,7 @@
 1424714461 source:d:\programmation\bho\map.cpp
 	"Map.h"
 
-1424799784 source:d:\programmation\bho\object.cpp
+1425056751 source:d:\programmation\bho\object.cpp
 	"Object.h"
 
 1424623779 source:d:\programmation\bho\online.cpp
@@ -709,19 +710,19 @@
 1422478568 source:d:\programmation\bho\patmidblocks.cpp
 	"PatMidBlocks.h"
 
-1422478580 source:d:\programmation\bho\patstill.cpp
+1425058007 source:d:\programmation\bho\patstill.cpp
 	"PatStill.h"
 
-1422478957 source:d:\programmation\bho\pattern.cpp
+1425057925 source:d:\programmation\bho\pattern.cpp
 	"Pattern.h"
 
 1424544890 source:d:\programmation\bho\phase.cpp
 	"Phase.h"
 
-1424968338 source:d:\programmation\bho\player.cpp
+1425063193 source:d:\programmation\bho\player.cpp
 	"Player.h"
 
-1422478602 source:d:\programmation\bho\rope.cpp
+1425061540 source:d:\programmation\bho\rope.cpp
 	"Rope.h"
 
 1424706198 source:d:\programmation\bho\sdlglutils.cpp
@@ -797,7 +798,7 @@
 1424965724 d:\programmation\bho\spelllongjump.h
 	"Spell.h"
 
-1424965704 source:d:\programmation\bho\spelljump.cpp
+1425050909 source:d:\programmation\bho\spelljump.cpp
 	"SpellJump.h"
 
 1424965721 source:d:\programmation\bho\spelllongjump.cpp

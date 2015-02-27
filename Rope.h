@@ -13,6 +13,8 @@ class Rope: public Object
     virtual void ini();
     virtual void draw();
 
+    void setNowDistance();
+
     void pullUp();
     void pullDown();
 

@@ -23,6 +23,7 @@ void Pattern::update(double functionTime)
     if(m_lava->getPos().Z+m_lava->getSize().Z*2>=m_highestZ)
     {
         cerr<<"pattern "<<m_name<<" finished!"<<endl;
+        cerr<<"lava level  "<<m_lava->getPos().Z+m_lava->getSize().Z*2<<" >"<<m_highestZ<<endl;
         m_finished=true;
     }
 }

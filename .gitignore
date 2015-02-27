@@ -1,11 +1,11 @@
 /obj
 /archives
 /client
-psnblal.cbp
-psnblal.depend
-psnblal.layout
-psnblal.cbp.cbTemp
-psnblal.layout.cbTemp
+bho.cbp
+bho.depend
+bho.layout
+bho.cbp.cbTemp
+bho.layout.cbTemp
 bin/psnblal.exe
 bin/stderr.txt
 bin/stdout.txt

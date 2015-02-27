@@ -6,6 +6,7 @@
 #include "SpellRope.h"
 #include "SpellJump.h"
 #include "SpellLongJump.h"
+#include "SpellPullUp.h"
 
 enum DIRECTION { DOWN, LEFT, UP, RIGHT, KEY_E};
 
@@ -21,6 +22,7 @@ class Player: public Object
     virtual void ini();
     virtual void draw();
 
+
     void jump();
 
     void pullUpRope();
@@ -32,8 +34,15 @@ class Player: public Object
     void pressKey(DIRECTION k, bool pressed);
 
     void move();
+    void moveXY(Vector3D* vel);
 
     virtual void resurrect();
+
+    //set
+    void setGasing(bool g){m_gasing=g;}
+
+    //get
+    bool getGasing() {return m_gasing;}
 
     //spells
     void addSpell(Spell* s);
@@ -48,7 +57,10 @@ class Player: public Object
 
     Rope* m_rope;
 
+    double m_maxspeed;
+
     bool m_jumping;
+    bool m_gasing;
 
     vector<Spell*> m_spells;
 };

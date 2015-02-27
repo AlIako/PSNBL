@@ -27,12 +27,15 @@ class Object
     virtual void loseLife(double value);
 
     void applyPhysics();
-    void applyPhysics(int x, int y, int z);
+    virtual void applyPhysics(int x, int y, int z);
 
     bool collidedWithType(std::string t);
     bool collidedWithHookable();
 
     void rotate(Vector3D v) {m_rotation+=v; }
+
+    bool onGround();
+    Object* onTopOf() { return m_onTopOf;}
 
     //set
     void setPos(Vector3D v) {m_position=v;}
@@ -46,7 +49,6 @@ class Object
     void setTransparency(bool t) {m_transparency=t;}
     void setBlock(bool b) {m_block=b;}
     void setDestructible(bool b) {m_destructible=b;}
-    void setOnground(bool b) {m_onground=b;}
     void setIdOnline(int i) { m_idOnline=i;}
     void setOnlineName(std::string s) {m_onlineName=s;}
     void collide(std::vector<Object*> v, std::vector<int> t) {m_collided=true; m_colliding=v; m_colTypes=t;}
@@ -54,6 +56,7 @@ class Object
     void setLife(double l) {m_life=l;}
     void setLifeMax(double l) {m_lifeMax=l;}
     void setHookable(bool h) {m_hookable=h;}
+    void setVisible(bool v) {m_visible=v;}
 
 
     //get
@@ -68,7 +71,6 @@ class Object
     bool getTransparency() {return m_transparency; }
     bool getBlock() {return m_block; }
     bool getDestructible() {return m_destructible; }
-    bool getOnground() {return m_onground; }
     double getLife() {return m_life; }
     double getLifeMax() {return m_lifeMax; }
     int getIdOnline() {return m_idOnline;}
@@ -83,7 +85,9 @@ class Object
     std::string m_name;
     Vector3D m_direction;
     Vector3D m_velocity;
+    Vector3D m_movementVelocity;
 
+    bool m_visible;
     bool m_physical;
     bool m_transparency;
     bool m_block;
@@ -98,7 +102,6 @@ class Object
     GTime last_lose_life;
 
     bool m_gravity;
-    bool m_onground;
 
     bool m_collided;
     std::vector<Object*> m_colliding;
@@ -108,6 +111,8 @@ class Object
     std::string m_onlineName;
 
     bool m_hookable;
+
+    Object* m_onTopOf;
 };
 
 #endif // OBJECT_H_INCLUDED

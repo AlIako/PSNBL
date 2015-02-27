@@ -6,7 +6,7 @@ SpellJump::SpellJump()
 {
     m_name="jump";
     m_required="nothing";
-    m_cooldown=1000;
+    m_cooldown=100;
 }
 
 
