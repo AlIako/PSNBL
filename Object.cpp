@@ -201,6 +201,60 @@ bool Object::onGround()
 
 
 
+void Object::readObj(ifstream* fichier1)
+{
+    std::string befor_read="",read_name_before="";
+    std::string cur_read="";
+    int cur_int=0;
+    double cur_double=0;
+
+    while(befor_read!="@")
+    {
+        if(read_name_before=="x")
+            *fichier1 >> m_position.X;
+        else if(read_name_before=="y")
+            *fichier1 >> m_position.Y;
+        else if(read_name_before=="z")
+            *fichier1 >> m_position.Z;
+        else if(read_name_before=="t")
+        {
+            *fichier1 >> cur_double;
+            setSize(Vector3D(cur_double,cur_double,cur_double));
+        }
+        else if(read_name_before=="tx")
+        {
+            *fichier1 >> cur_double;
+            m_size.X=cur_double;
+            if(m_type=="rock")
+                setSize(Vector3D(m_size.X,m_size.X,m_size.X));
+            else if(m_type=="cylindre")
+                setSize(Vector3D(m_size.X,m_size.X,m_size.Z));
+            else if(m_type=="cone")
+                setSize(Vector3D(m_size.X,m_size.X,m_size.Z));
+            setSize(Vector3D(m_size.X,m_size.Y,m_size.Z));
+        }
+        else if(read_name_before=="ty")
+        {
+            *fichier1 >> m_size.Y;
+            setSize(Vector3D(m_size.X,m_size.Y,m_size.Z));
+        }
+        else if(read_name_before=="tz")
+        {
+            *fichier1 >> m_size.Z;
+            setSize(Vector3D(m_size.X,m_size.Y,m_size.Z));
+        }
+        else if(read_name_before=="text")
+        {
+            *fichier1 >> cur_read;
+            GTexture::getInstance()->addTexture("../"+cur_read);
+            setTexture(GTexture::getInstance()->getTexture("../"+cur_read));
+        }
+
+        *fichier1 >> cur_read;
+        befor_read=cur_read;
+        read_name_before=befor_read.substr(0,befor_read.size()-1);//enleve le ":"
+    }
+}
 
 
 

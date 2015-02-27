@@ -1,0 +1,34 @@
+@ settings: mode: perso jumps: 1 skybox: blue meteo: stars meteo: sun meteo: cloudy lighting: 1 world: 0 music: data/music/Overworld.mid
+@ heros: id: 1 x: 50 y: 50 z: 8 tx: 0.4 ty: 0.4 tz: 0.8 p: 1 vie: 10 md2: data/models/md2/lili-corps.md2 md2: data/models/md2/lili-short.md2 md2: data/models/md2/lili-top.md2 md2: data/models/md2/lili-hair.md2 scale_mesh: 1.2
+@ block: id: 3 x: 52 y: 100 z: 2 tx: 50 ty: 2 tz: 1000 text: data/textures/hellrock_static.png vie: 1 mosaic: 8
+@ block: id: 4 x: 100 y: 52 z: 2 tx: 2 ty: 50 tz: 1000 text: data/textures/hellrock_static.png vie: 1 mosaic: 8
+@ block: id: 5 y: 52 z: 2 tx: 2 ty: 50 tz: 1000 text: data/textures/hellrock_static.png vie: 1 mosaic: 8
+@ block: id: 6 x: 52 z: 2 tx: 50 ty: 2 tz: 1000 text: data/textures/hellrock_static.png vie: 1 mosaic: 8
+@ block: id: 7 x: 45 y: 50 z: 13 t: 1 text: data/textures/bedrock.png vie: 1
+@ block: id: 8 x: 39 y: 50 z: 6 tx: 1.5 ty: 1.5 tz: 1 text: data/textures/bedrock.png vie: 1
+@ block: id: 9 x: 23 y: 50 z: 6 tx: 1.5 ty: 1.5 tz: 1 text: data/textures/bedrock.png vie: 1
+@ block: id: 10 x: 31 y: 50 z: 13 t: 1 text: data/textures/bedrock.png vie: 1
+@ block: id: 11 x: 15 y: 50 z: 14 t: 1 text: data/textures/bedrock.png vie: 1
+@ block: id: 12 x: 5 y: 50 z: 6 tx: 3 ty: 3 tz: 1 text: data/textures/bedrock.png vie: 1
+@ block: id: 13 x: 5 y: 44 z: 6 tx: 3 ty: 3 tz: 1 text: data/textures/bedrock.png vie: 1
+@ block: id: 14 x: 5 y: 38 z: 6 tx: 3 ty: 3 tz: 2 text: data/textures/bedrock.png vie: 1
+@ block: id: 15 x: 12 y: 26 z: 17 t: 1.5 text: data/textures/bedrock.png vie: 1
+@ block: id: 16 x: 24 y: 14 z: 7 tx: 3 ty: 3 tz: 2 text: data/textures/bedrock.png vie: 1
+@ block: id: 17 x: 34 y: 15 z: 7 tx: 3 ty: 3 tz: 2 text: data/textures/bedrock.png vie: 1
+@ block: id: 18 x: 44 y: 13 z: 7 tx: 3 ty: 3 tz: 2 text: data/textures/bedrock.png vie: 1
+@ block: id: 19 x: 51 y: 15 z: 8 tx: 3 ty: 3 tz: 2 text: data/textures/bedrock.png vie: 1
+@ block: id: 20 x: 59 y: 15 z: 10 tx: 3 ty: 3 tz: 2 text: data/textures/bedrock.png vie: 1
+@ block: id: 21 x: 75 y: 22 z: 10 tx: 3 ty: 3 tz: 2 text: data/textures/bedrock.png vie: 1
+@ block: id: 22 x: 85 y: 35 z: 10 tx: 3 ty: 3 tz: 2 text: data/textures/bedrock.png vie: 1
+@ block: id: 23 x: 84 y: 43 z: 11 tx: 3 ty: 3 tz: 2 text: data/textures/bedrock.png vie: 1
+@ block: id: 24 x: 77 y: 57 z: 24 t: 1.5 text: data/textures/bedrock.png vie: 1
+@ block: id: 25 x: 80 y: 78 z: 13 tx: 3 ty: 3 tz: 2 text: data/textures/bedrock.png vie: 1
+@ block: id: 26 x: 71 y: 78 z: 13 tx: 6 tz: 2 text: data/textures/bedrock.png vie: 1
+@ block: id: 27 x: 60 y: 82 z: 13 tx: 6 tz: 2 text: data/textures/bedrock.png vie: 1
+@ block: id: 28 x: 48 y: 86 z: 14 tx: 6 tz: 2 text: data/textures/bedrock.png vie: 1
+@ block: id: 29 x: 37 y: 82 z: 14.5 tx: 6 tz: 2 text: data/textures/bedrock.png vie: 1
+@ block: id: 30 x: 33 y: 71 z: 24 t: 1.5 text: data/textures/bedrock.png vie: 1
+@ block: id: 31 x: 15 y: 66 z: 15 tx: 3 ty: 3 tz: 2 text: data/textures/bedrock.png vie: 1
+@ block: id: 32 x: 28 y: 55 z: 26 t: 1.5 text: data/textures/bedrock.png vie: 1
+@ block: id: 33 x: 36 y: 39 z: 26 t: 1.5 text: data/textures/bedrock.png vie: 1
+@ ter_set: xmax: 100 ymax: 100 zmax: 50

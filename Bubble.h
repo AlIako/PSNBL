@@ -11,8 +11,6 @@ class Bubble: public Object
     virtual void update(double functionTime);
     virtual void draw();
 
-    void setTexture(Texture* t) {m_texture=t;}
-
     bool goingUp;
 
     double speedDie;
@@ -20,7 +18,6 @@ class Bubble: public Object
     int timeToPop;
 
     private:
-    Texture* m_texture;
 
     GTime timeTilPop;
 

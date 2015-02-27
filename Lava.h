@@ -14,7 +14,6 @@ class Lava: public Object
     private:
     vector<Bubble> m_bubbles;
     vector<Bubble> m_steam;
-    Texture* m_texture;
     double mosaic;
 
     Vector3D txtcord;

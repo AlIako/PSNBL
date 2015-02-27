@@ -37,6 +37,9 @@ class Object
     bool onGround();
     Object* onTopOf() { return m_onTopOf;}
 
+
+    virtual void readObj(ifstream* fichier1);
+
     //set
     void setPos(Vector3D v) {m_position=v;}
     void setRot(Vector3D v) {m_rotation=v;}
@@ -57,6 +60,7 @@ class Object
     void setLifeMax(double l) {m_lifeMax=l;}
     void setHookable(bool h) {m_hookable=h;}
     void setVisible(bool v) {m_visible=v;}
+    void setTexture(Texture* t){m_texture=t;}
 
 
     //get
@@ -78,6 +82,8 @@ class Object
     bool isHookable() { return m_hookable; }
 
     protected:
+    Texture* m_texture;
+
     Vector3D m_position;
     Vector3D m_rotation;
     Vector3D m_size;

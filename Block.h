@@ -11,7 +11,6 @@ class Block: public Object
     virtual void draw();
 
     protected:
-    Texture* m_texture;
     double mosaic;
 
     int m_r;

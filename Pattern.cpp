@@ -64,6 +64,60 @@ void Pattern::ini(double startZ, std::vector<Object*>* objects)
     calculHighestZ();
 }
 
+void Pattern::loadPattern()
+{
+    char* tempchemin=stringtochar("../data/patterns/"+m_name+".txt");
+    cerr<<"loading pattern file "<< "../data/patterns/"<<m_name<<".txt" <<endl;
+
+    std::ifstream in(tempchemin, std::ifstream::ate | std::ifstream::binary);
+    int sizeMap=in.tellg();
+    cerr<<"size map "<<tempchemin <<": "<<sizeMap<<endl;
+
+
+    ifstream fichier1(tempchemin, ios::in);
+    delete tempchemin;
+    tempchemin=NULL;
+
+
+    if(fichier1)
+    {
+        std::string befor_read="",read_name="",read_name_before="";
+        std::string cur_read="";
+        int ind=-1;
+
+        while(!fichier1.eof())
+        {
+            //fichier1 >> cur_read;
+            read_name=cur_read.substr(0,cur_read.size()-1);//enleve le ":"
+
+            if(read_name=="block")
+            {
+                ind=(*m_objects).size();
+                (*m_objects).push_back(new Block());
+                (*m_objects)[ind]->ini();
+                (*m_objects)[ind]->readObj(&fichier1);
+                (*m_objects)[ind]->setPos((*m_objects)[ind]->getPos()+Vector3D(-50,-50,m_startZ));
+
+                //actually we dont want that one (walls)
+                if((*m_objects)[ind]->getSize().Z>=1000)
+                {
+                    delete (*m_objects)[ind];
+                    (*m_objects).pop_back();
+                }
+            }
+            fichier1 >> cur_read;
+            befor_read=cur_read;
+            read_name_before=befor_read.substr(0,befor_read.size()-1);//enleve le ":"
+
+        }
+
+        fichier1.close();
+    }
+    else
+        cerr << "can't open file (pattern file)" << endl;
+
+
+}
 
 int Pattern::getPID()
 {
@@ -80,6 +134,8 @@ int Pattern::getPID()
     if(m_name=="PatLetsGo")
         return 6;
     if(m_name=="PatHookAround")
+        return 7;
+    if(m_name=="PatEasy")
         return 7;
     return 0;
 }

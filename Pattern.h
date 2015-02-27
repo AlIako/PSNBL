@@ -13,6 +13,7 @@ class Pattern
     virtual void update(double functionTime);
 
     virtual void ini(double startZ, std::vector<Object*>* objects);
+    void loadPattern();
     virtual void start();
 
     void calculHighestZ();
