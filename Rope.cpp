@@ -98,12 +98,16 @@ void Rope::setNowDistance()
 void Rope::pullMe(Object* o)
 {
     //pull your player
-    if ((m_end-o->getPos()).length() > m_distance )
+    double distToOutside=(m_end-o->getPos()).length()-m_distance;
+    if (distToOutside>0)
         // we're past the end of our rope -> pull the avatar back in
     {
         //simulate the pull
+        Vector3D dirToEnd=(m_end-o->getPos()).normalize();
         //the linked object must stay within the range.
-        o->setVel(o->getVel()+(m_end-o->getPos()).normalize()*ft/40*2);
+        o->setVel(o->getVel()+dirToEnd*ft/40*2);
+
+        o->setPos(o->getPos()+dirToEnd*distToOutside);
     }
 }
 void Rope::pullUp()

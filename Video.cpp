@@ -100,16 +100,16 @@ void Video::ini()
 
 
 
-    const unsigned char* glver = glGetString(GL_VERSION);
+    /*const unsigned char* glver = glGetString(GL_VERSION);
     std::cerr <<"Opengl Version: "<< glver<<std::endl;
 
 
     //glew
-    glewInit();
+    //glewInit();
     //shaders
     programID = LoadShaders( "../shaders/vertexShader.vsh", "../shaders/fragmentShader.fsh" );
     programIDRed = LoadShaders( "../shaders/vertexShaderRed.vsh", "../shaders/fragmentShaderRed.fsh" );
-    programIDBlur = LoadShaders( "../shaders/vertexShaderBlur.vsh", "../shaders/fragmentShaderBlur.fsh" );
+    programIDBlur = LoadShaders( "../shaders/vertexShaderBlur.vsh", "../shaders/fragmentShaderBlur.fsh" );*/
 }
 
 //shaders

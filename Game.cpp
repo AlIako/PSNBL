@@ -341,6 +341,23 @@ void Game::play()
                     playerList[0]->pressKey(KEY_E,false);
                     break;
                     case SDLK_r:
+                    if(playerList.size()==1 && Online::getInstance()->inControl())//if youre alone its ok
+                    {
+                        infosSocket s;
+                        s.confirmationID=m_online->nextConfirmationID();
+                        s.type=6;
+                        m_online->sendSocket(s);//add socket to queue
+
+
+                        m_map.restart();
+
+                        m_interface.setTarget(playerList[0]);
+                        m_camera.setCible(playerList[0]);
+                        m_camera.setMode("play");
+                        m_mode="play";
+
+                        m_chat.newMessage("Map reset.",-2);
+                    }
                     break;
                     case SDLK_k:
                     break;
