@@ -1,5 +1,14 @@
 #include "Tracer.h"
 
+
+Trace::Trace(string m)
+{
+    channel="";
+    msg=m;
+    sent=false;
+    id=-1;
+}
+
 Tracer* Tracer::m_instance = new Tracer();
 
 
@@ -22,44 +31,81 @@ Tracer::Tracer()
 
 void Tracer::trace(string channel, string output, int timeLapse, int id)
 {
-    bool authorizeNewTrace=false;
-    Trace* toSend=new Trace(output);
-    toSend->channel=channel;
-
-    if(channelOn(channel))
+    if(m_enabled)
     {
-        if(id!=-1)//for renewal each x seconds
-        {
-            Trace* sentTrace=getTrace(id);
-            if(sentTrace!=NULL)//already sent
-            {
-                sentTrace->timeSent.couler();
-                if(sentTrace->timeSent.ecouler(timeLapse))
-                {
-                    sentTrace->timeSent.reset();
-                    authorizeNewTrace=true;
-                }
-            }
-            else//didnt send yet
-                m_sent.push_back(toSend);
-        }
-        else
-            authorizeNewTrace=true;
-    }
+        bool authorizeNewTrace=false;
+        Trace* toSend=new Trace(output);
+        toSend->channel=channel;
+        toSend->id=id;
+        toSend->sent=false;
 
-    if(authorizeNewTrace)
-        m_traces.push_back(toSend);
+        if(channelOn(channel))
+        {
+            if(id!=-1)//for renewal each x seconds
+            {
+                Trace* sentTrace=getTrace(id,channel);
+                if(sentTrace!=NULL)//already sent
+                {
+                    sentTrace->timeSent.couler();
+                    if(sentTrace->timeSent.ecouler(timeLapse))
+                    {
+                        sentTrace->msg=output;
+                        sentTrace->sent=false;
+                        sentTrace->timeSent.reset();
+                    }
+                }
+                else
+                    authorizeNewTrace=true;
+            }
+            else
+                authorizeNewTrace=true;
+        }
+
+        if(authorizeNewTrace)
+            m_traces.push_back(toSend);
+    }
+}
+
+void Tracer::afterFetch()
+{
+    for(unsigned int i=0;i<m_traces.size();i++)
+        if(m_traces[i]->id==-1)
+        {
+            delete m_traces[i];
+
+            for(unsigned int j=i;j<m_traces.size()-1;j++)
+                m_traces[j]=m_traces[j+1];
+            if(m_traces.size()>0)
+                m_traces.pop_back();
+        }
 }
 
 
 Trace* Tracer::getTrace(int id, string ch)
 {
-    for(unsigned int i=0;i<m_sent.size();i++)
-        if(m_sent[i]->id==id && (ch=="" || ch==m_sent[i]->channel))
-            return m_sent[i];
+    for(unsigned int i=0;i<m_traces.size();i++)
+        if(m_traces[i]->id==id && (ch=="" || ch==m_traces[i]->channel))
+            return m_traces[i];
     return NULL;
 }
 
+void Tracer::addChannel(string ch)
+{
+    m_channels.push_back(ch);
+    m_channelsSize+=1;
+}
+
+void Tracer::reset()
+{
+    m_channels.clear();
+    m_channelsSize=0;
+    m_traces.clear();
+}
+void Tracer::clearChannels()
+{
+    m_channels.clear();
+    m_channelsSize=0;
+}
 
 
 

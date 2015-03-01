@@ -12,7 +12,7 @@ using namespace std;
 class Trace
 {
 public:
-    Trace(string m){msg=m;}
+    Trace(string m);
     string msg;
     string channel;
     bool sent;
@@ -30,6 +30,11 @@ class Tracer
 
 
     void trace(string channel, string output, int timeLapse=0, int id=-1);
+    void afterFetch();
+
+    void addChannel(string ch);
+    void reset();
+    void clearChannels();
 
     bool channelOn(string channel);
     Trace* getTrace(int id, string ch="");
@@ -43,7 +48,6 @@ class Tracer
     vector<string> m_channels;
     unsigned int m_channelsSize;
     vector<Trace*> m_traces;
-    vector <Trace*> m_sent;
 
     bool m_enabled;
 };

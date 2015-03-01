@@ -107,6 +107,7 @@ void Rope::pullMe(Object* o)
     {
         Vector3D dirToEnd=(m_end-o->getPos()).normalize();
         Vector3D newVel=o->getVel()+dirToEnd*ft/40*2;
+        Vector3D newPos=o->getPos()+dirToEnd*distToOutside;
 
         //trouver la tangeante la plus proche de la vitesse
         //tangeante= intersetion du plan des tangeante avec plan de vitesse
@@ -117,13 +118,24 @@ void Rope::pullMe(Object* o)
         Vector3D vit=o->getVel();
         Vector3D playerPos=o->getPos();
         //trouver plan de vitesse/rope
-        //(rope.x-vit.x)*(x-playerPos.x) + (rope.y-vit.y)*(y-playerPos.y) + (rope.z-vit.z)*(z-playerPos.z) = 0
-        //(rope.x-vit.x)*x + (rope.y-vit.y)*y + (rope.z-vit.z)*z
-        //+(rope.x-vit.x)*playerPos.x + (rope.y-vit.y)*playerPos.y + (rope.z-vit.z)*playerPos.z=0
+        /*(rope.x-vit.x)*(x-playerPos.x) + (rope.y-vit.y)*(y-playerPos.y) + (rope.z-vit.z)*(z-playerPos.z) = 0
+        (rope.x-vit.x)*x + (rope.y-vit.y)*y + (rope.z-vit.z)*z
+        +(rope.x-vit.x)*playerPos.x + (rope.y-vit.y)*playerPos.y + (rope.z-vit.z)*playerPos.z=0
+
         double a1=rope.X-vit.X;
         double b1=rope.Y-vit.Y;
         double c1=rope.Z-vit.Z;
         double d1=-((rope.X-vit.X)*playerPos.X + (rope.Y-vit.Y)*playerPos.Y + (rope.Z-vit.Z)*playerPos.Z);
+        */
+        /*
+        (rope.Y*vit.Z-rope.Z*vit.Y)*(x-playerPos.X)+(rope.Z*vit.X-rope.X*vit.Z)(y-playerPos.Y)+(rope.X*vit.Y-rope.Y*vit.X)(z-playerPos.Z)=0
+        */
+
+
+        double a1=(rope.Y*vit.Z-rope.Z*vit.Y);
+        double b1=(rope.Z*vit.X-rope.X*vit.Z);
+        double c1=(rope.X*vit.Y-rope.Y*vit.X);
+        double d1=-(a1*playerPos.X + b1*playerPos.Y + c1*playerPos.Z);
 
 
 
@@ -134,12 +146,10 @@ void Rope::pullMe(Object* o)
          (rope.z*vitesse.x-rope.x*vitesse.z)(y-playerPos.y)  +
           (rope.x*vitesse.y-rope.y*vitesse.x)(z-playerPos.z)=0
         */
-        double a2=(rope.Y*vit.Z-rope.Z*vit.Y);
-        double b2=(rope.Z*vit.X-rope.X*vit.Z);
-        double c2=(rope.X*vit.Y-rope.Y*vit.X);
-        double d2=-((rope.Y*vit.Z-rope.Z*vit.Y)*playerPos.X +
-                    (rope.Z*vit.X-rope.X*vit.Z) +
-                    (rope.X*vit.Y-rope.Y*vit.X)*playerPos.Z);
+        double a2=rope.X;
+        double b2=rope.Y;
+        double c2=rope.Z;
+        double d2=-(a2*playerPos.X + b2*playerPos.Y + c2*playerPos.Z);
 
 
         //trouver intersection
@@ -151,7 +161,7 @@ void Rope::pullMe(Object* o)
         z = ((b2/b1)*(a1x+d1) -a2x -d2)/(c2 - c1*b2/b1)
         */
         Vector3D inter=Vector3D(0,0,0);
-        inter.X=1;
+        inter.X=vit.X;
         inter.Z = ((b2/b1)*(a1*inter.X+d1) -a2*inter.X -d2)/(c2 - c1*b2/b1);
         inter.Y = (-c1*inter.Z -a1*inter.X -d1) / b1;
         inter=inter.normalize();
@@ -163,10 +173,24 @@ void Rope::pullMe(Object* o)
             newVel=inter;
         else newVel=interInverse;
 
-        //Tracer::getInstance()->trace("rope","tan:"+newVel.toString(),500,0);
-        Tracer::getInstance()->trace("rope","tan:"+newVel.toString(),300,0);
 
-        newVel/=2.0;
+
+        //Tracer::getInstance()->trace("rope","tan:"+newVel.toString(),300,0);
+        std::stringstream ss;
+        ss << "a1: "<< a1 <<", b1: " << b1 << ", c1: " << c1 << ", d1: " << d1;
+        //Tracer::getInstance()->trace("rope",ss.str(),1000,0);
+
+        std::stringstream ss2;
+        ss2 << "a2: "<< a2 <<", b2: " << b2 << ", c2: " << c2 << ", d2: " << d2;
+        Tracer::getInstance()->trace("rope",ss2.str(),1000,1);
+
+
+
+
+
+
+
+        newVel/=3.0;
 
         //apply
 

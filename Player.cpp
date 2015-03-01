@@ -102,6 +102,8 @@ void Player::jump()
                 m_rope->setNowDistance();
             }
             //unlinkRope();
+
+            Tracer::getInstance()->trace("player","jump");
         }
     }
 }

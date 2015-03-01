@@ -97,9 +97,13 @@ void Game::handleTracer()
     {
         for(unsigned int i=0;i<traces->size();i++)
         {
-            m_chat.newMessage((*traces)[i]->msg,-1);
+            if(!(*traces)[i]->sent)
+            {
+                (*traces)[i]->sent=true;
+                m_chat.newMessage((*traces)[i]->msg,-1);
+            }
         }
-        traces->clear();
+        Tracer::getInstance()->afterFetch();
     }
 }
 
@@ -141,6 +145,38 @@ void Game::handleCommands()
             char* tempChar=stringtochar(ss.str());
             m_chat.recieveMessage(tempChar,0,-2);
             delete tempChar;
+        }
+        else if(c.find("/tracer")!=string::npos)
+        {
+            if(c.find("enable")!=string::npos)
+            {
+                Tracer::getInstance()->enable();
+                m_chat.recieveMessage("Tracer enabled.",0,-2);
+            }
+            else if(c.find("disable")!=string::npos)
+            {
+                Tracer::getInstance()->disable();
+                m_chat.recieveMessage("Tracer disabled.",0,-2);
+            }
+            else if(c.find("clear channels")!=string::npos)
+            {
+                Tracer::getInstance()->clearChannels();
+                m_chat.recieveMessage("Tracer channels cleared.",0,-2);
+            }
+            else if(c.find("reset")!=string::npos)
+            {
+                Tracer::getInstance()->reset();
+                m_chat.recieveMessage("Tracer channels cleared.",0,-2);
+            }
+            else if(c.find("add")!=string::npos)
+            {
+                string ch=c.substr(c.find("add")+4,c.size());
+                Tracer::getInstance()->addChannel(ch);
+
+                char* tempChar=stringtochar("Tracer Channel "+ch+" added.");
+                m_chat.recieveMessage(tempChar,0,-2);
+                delete tempChar;
+            }
         }
         else
         {
