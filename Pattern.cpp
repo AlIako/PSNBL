@@ -136,7 +136,7 @@ int Pattern::getPID()
     if(m_name=="PatHookAround")
         return 7;
     if(m_name=="PatEasy")
-        return 7;
+        return 8;
     return 0;
 }
 

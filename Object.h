@@ -6,6 +6,7 @@
 #include "DRDampingSpring.h"
 #include "Online.h"
 #include "Gsounds.h"
+#include "Tracer.h"
 
 class Object
 {

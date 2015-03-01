@@ -31,6 +31,8 @@ class Rope: public Object
     Vector3D m_end;
     double m_distance;
 
+    bool m_smallBoost;
+
     Object* linkedTo;
     Object simulLinked;
 };

@@ -30,6 +30,8 @@ Player::Player()
     m_maxspeed=0.1;
 
     m_deathCause=0;
+
+    //if (this->m_name == "Lilian") m_life = 10000000000000;
 }
 
 void Player::update(double functionTime)
@@ -271,9 +273,8 @@ void Player::move()
             {
                 moveXY(&m_velocity);
 
-                const double spd=1.03;
-                m_velocity.X/=spd;
-                m_velocity.Y/=spd;
+                m_velocity.X/=1.03;
+                m_velocity.Y/=1.03;
             }
             else
             {
@@ -282,9 +283,8 @@ void Player::move()
                 m_movementVelocity.Y/=1.1;*/
                 moveXY(&m_velocity);
 
-                const double spd=1.03;
-                m_velocity.X/=spd;
-                m_velocity.Y/=spd;
+                m_velocity.X/=1.03;
+                m_velocity.Y/=1.03;
             }
         }
         else
@@ -292,6 +292,9 @@ void Player::move()
             moveXY(&m_movementVelocity);
             m_movementVelocity.X/=1.1;
             m_movementVelocity.Y/=1.1;
+
+            m_velocity.X/=1.01;
+            m_velocity.Y/=1.01;
         }
     }
 }

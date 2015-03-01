@@ -28,6 +28,7 @@ void Rope::update(double functionTime)
     {
         m_end=m_position;
         m_distance=distance2V(m_start,m_end);
+
         //collide
         if(m_collided)
         {
@@ -38,6 +39,7 @@ void Rope::update(double functionTime)
                 m_velocity=Vector3D(0,0,0);
                 m_physical=false;
                 m_block=false;
+                m_smallBoost=false;
                 m_end=m_position;
 
                 if(linkedTo!=NULL)
@@ -98,17 +100,87 @@ void Rope::setNowDistance()
 void Rope::pullMe(Object* o)
 {
     //pull your player
-    double distToOutside=(m_end-o->getPos()).length()-m_distance;
-    if (distToOutside>0)
-        // we're past the end of our rope -> pull the avatar back in
-    {
-        //simulate the pull
-        Vector3D dirToEnd=(m_end-o->getPos()).normalize();
-        //the linked object must stay within the range.
-        o->setVel(o->getVel()+dirToEnd*ft/40*2);
+    double distToOutside=(m_end-o->getPos()).length()-(m_distance-2);
 
-        o->setPos(o->getPos()+dirToEnd*distToOutside);
+    m_smallBoost=true;
+    if (distToOutside>0 || 1)// we're past the end of our rope -> pull the avatar back in
+    {
+        Vector3D dirToEnd=(m_end-o->getPos()).normalize();
+        Vector3D newVel=o->getVel()+dirToEnd*ft/40*2;
+
+        //trouver la tangeante la plus proche de la vitesse
+        //tangeante= intersetion du plan des tangeante avec plan de vitesse
+        //plan = ax + by + cz = 0
+
+
+        Vector3D rope=dirToEnd;
+        Vector3D vit=o->getVel();
+        Vector3D playerPos=o->getPos();
+        //trouver plan de vitesse/rope
+        //(rope.x-vit.x)*(x-playerPos.x) + (rope.y-vit.y)*(y-playerPos.y) + (rope.z-vit.z)*(z-playerPos.z) = 0
+        //(rope.x-vit.x)*x + (rope.y-vit.y)*y + (rope.z-vit.z)*z
+        //+(rope.x-vit.x)*playerPos.x + (rope.y-vit.y)*playerPos.y + (rope.z-vit.z)*playerPos.z=0
+        double a1=rope.X-vit.X;
+        double b1=rope.Y-vit.Y;
+        double c1=rope.Z-vit.Z;
+        double d1=-((rope.X-vit.X)*playerPos.X + (rope.Y-vit.Y)*playerPos.Y + (rope.Z-vit.Z)*playerPos.Z);
+
+
+
+        //trouver plan des tangeantes
+
+        /*
+        (rope.y*vit.z-rope.z*vitesse.y)(x-playerPos.x)  +
+         (rope.z*vitesse.x-rope.x*vitesse.z)(y-playerPos.y)  +
+          (rope.x*vitesse.y-rope.y*vitesse.x)(z-playerPos.z)=0
+        */
+        double a2=(rope.Y*vit.Z-rope.Z*vit.Y);
+        double b2=(rope.Z*vit.X-rope.X*vit.Z);
+        double c2=(rope.X*vit.Y-rope.Y*vit.X);
+        double d2=-((rope.Y*vit.Z-rope.Z*vit.Y)*playerPos.X +
+                    (rope.Z*vit.X-rope.X*vit.Z) +
+                    (rope.X*vit.Y-rope.Y*vit.X)*playerPos.Z);
+
+
+        //trouver intersection
+        /*
+        P1: a1x + b1y + c1z + d1 = 0
+        P2: a2x + b2y + c2z + d2 = 0
+
+        y = (-c1z -a1x -d1) / b1
+        z = ((b2/b1)*(a1x+d1) -a2x -d2)/(c2 - c1*b2/b1)
+        */
+        Vector3D inter=Vector3D(0,0,0);
+        inter.X=1;
+        inter.Z = ((b2/b1)*(a1*inter.X+d1) -a2*inter.X -d2)/(c2 - c1*b2/b1);
+        inter.Y = (-c1*inter.Z -a1*inter.X -d1) / b1;
+        inter=inter.normalize();
+
+        //choisir celui le plus proche de vitesse
+        Vector3D interInverse=-1*inter;
+
+        if((inter-vit).length()<(interInverse-vit).length())
+            newVel=inter;
+        else newVel=interInverse;
+
+        //Tracer::getInstance()->trace("rope","tan:"+newVel.toString(),500,0);
+        Tracer::getInstance()->trace("rope","tan:"+newVel.toString(),300,0);
+
+        newVel/=2.0;
+
+        //apply
+
+        //o->setVel(Vector3D(0,0,0));
+        //o->setPos(o->getPos()+newVel);
+
+
+        o->setVel(newVel);
+        //o->setVel(o->getVel().normalize()*velNorm);
+
+        //if(m_smallBoost)//dont teleport back at first, we want the player to have a small boost
+        //    o->setPos(newPos);
     }
+    else m_smallBoost=true;//player back in->small boost finished
 }
 void Rope::pullUp()
 {

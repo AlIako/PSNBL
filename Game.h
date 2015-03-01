@@ -10,6 +10,8 @@
 #include "Chat.h"
 #include "Interface.h"
 #include "SpellRope.h"
+#include "Tracer.h"
+
 
 class Game
 {
@@ -23,6 +25,7 @@ class Game
     void play();
 
     void handleCommands();
+    void handleTracer();
 
     bool castSpell(Player* p, string spell, Vector3D param1=Vector3D(0,0,0));
     void playPlayerSound(Player* p,string sound);

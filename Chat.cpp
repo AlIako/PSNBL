@@ -271,7 +271,7 @@ void Chat::draw()
         glDisable(GL_DEPTH_TEST);
         glColor4ub(255,255,255,255);
         int compteur=0;
-        for(int i=m_messages.size()-1;i>=0;i--)
+        for(int i=m_messages.size()-1;i>=0 && compteur<=10;i--)
         {
             compteur++;
             m_messages[i].apparu.couler();

@@ -205,7 +205,6 @@ void Object::readObj(ifstream* fichier1)
 {
     std::string befor_read="",read_name_before="";
     std::string cur_read="";
-    int cur_int=0;
     double cur_double=0;
 
     while(befor_read!="@")

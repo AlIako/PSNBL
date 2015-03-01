@@ -35,6 +35,8 @@ void Game::ini()
     //chat
     m_chat.activate(m_video->getWidth(), m_video->getHeight(), "../data/fonts/arial.TTF");
     m_chat.setSide(0);
+    //tracer
+    Tracer::getInstance()->enable();
 
     //online
     m_online=Online::getInstance();
@@ -84,6 +86,20 @@ void Game::playPlayerSound(Player* p,string sound)
             Gsounds::getInstance()->getSound(sound)->setPos(p->getPos().toLeft());
             Gsounds::getInstance()->play(sound,1,20,80);
         }
+    }
+}
+
+void Game::handleTracer()
+{
+    //traces
+    vector<Trace*>* traces=Tracer::getInstance()->getTraces();
+    if(traces->size()>0)
+    {
+        for(unsigned int i=0;i<traces->size();i++)
+        {
+            m_chat.newMessage((*traces)[i]->msg,-1);
+        }
+        traces->clear();
     }
 }
 
@@ -400,6 +416,7 @@ void Game::play()
         m_interface.setMode(m_mode);
         m_interface.update(ft);
         handleCommands();
+        handleTracer();
 
         updateCamMode();
 
@@ -435,7 +452,6 @@ void Game::play()
 
 
         //glUseProgram(m_video->programIDRed);
-        //glUseProgram(m_video->programID);
 
         if(m_mode!="play")
             playerList[0]->draw();
@@ -443,9 +459,11 @@ void Game::play()
             playerList[i]->draw();
 
 
-        //glUseProgram(m_video->programIDBlur);
+        //glUseProgram(m_video->programIDWave);
 
         m_map.draw();
+
+        //glUseProgram(m_video->programID);
 
         if(m_camera.getPos().Z<=m_map.getLava()->getPos().Z+m_map.getLava()->getSize().Z*2)
             m_interface.drawScreenEffect("../data/textures/lava.png");

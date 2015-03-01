@@ -92,6 +92,7 @@ void Interface::update(double functionTime)
 
         m_playerName.setTexte(oss.str());
     }
+
 }
 
 
