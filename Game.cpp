@@ -178,6 +178,13 @@ void Game::handleCommands()
                 delete tempChar;
             }
         }
+        else if(c.find("/p")!=string::npos)
+        {
+            if(c.find("gh")!=string::npos)
+            {
+                playerList[0]->setPos(Vector3D(0,0,300)+playerList[0]->getPos());
+            }
+        }
         else
         {
             //command not found

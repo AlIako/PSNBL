@@ -162,7 +162,7 @@ void Player::ini()
     addSpell(new SpellJump());
     addSpell(new SpellLongJump());
     addSpell(new SpellPullUp());
-    //addSpell(new SpellRopeBoost());
+    addSpell(new SpellRopeBoost());
 }
 
 void Player::draw()
@@ -275,18 +275,18 @@ void Player::move()
             {
                 moveXY(&m_velocity);
 
-                m_velocity.X/=1.03;
-                m_velocity.Y/=1.03;
+                m_velocity.X/=1.01;
+                m_velocity.Y/=1.01;
             }
             else
             {
-                /*moveXY(&m_movementVelocity);
-                m_movementVelocity.X/=1.1;
-                m_movementVelocity.Y/=1.1;*/
-                moveXY(&m_velocity);
+            m_speed/=4.0;
 
-                m_velocity.X/=1.03;
-                m_velocity.Y/=1.03;
+            moveXY(&m_velocity);
+            m_velocity.X/=1.01;
+            m_velocity.Y/=1.01;
+
+            m_speed*=4.0;
             }
         }
         else

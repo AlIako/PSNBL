@@ -100,12 +100,14 @@ void Rope::setNowDistance()
 void Rope::pullMe(Object* o)
 {
     //pull your player
-    double distToOutside=(m_end-o->getPos()).length()-(m_distance-2);
+    double distToOutside=(m_end-o->getPos()).length()-(m_distance-2+2);
 
     m_smallBoost=true;
-    if (distToOutside>0 || 1)// we're past the end of our rope -> pull the avatar back in
+    if (distToOutside>0)// we're past the end of our rope -> pull the avatar back in
     {
         Vector3D dirToEnd=(m_end-o->getPos()).normalize();
+        Vector3D oldVel=o->getVel();
+        double velNorm=oldVel.length();
         Vector3D newVel=o->getVel()+dirToEnd*ft/40*2;
         Vector3D newPos=o->getPos()+dirToEnd*distToOutside;
 
@@ -117,6 +119,8 @@ void Rope::pullMe(Object* o)
         Vector3D rope=dirToEnd;
         Vector3D vit=o->getVel();
         Vector3D playerPos=o->getPos();
+
+        vit=vit.normalize();
         //trouver plan de vitesse/rope
         /*(rope.x-vit.x)*(x-playerPos.x) + (rope.y-vit.y)*(y-playerPos.y) + (rope.z-vit.z)*(z-playerPos.z) = 0
         (rope.x-vit.x)*x + (rope.y-vit.y)*y + (rope.z-vit.z)*z
@@ -149,7 +153,7 @@ void Rope::pullMe(Object* o)
         double a2=rope.X;
         double b2=rope.Y;
         double c2=rope.Z;
-        double d2=-(a2*playerPos.X + b2*playerPos.Y + c2*playerPos.Z);
+        //double d2=-(a2*playerPos.X + b2*playerPos.Y + c2*playerPos.Z);
 
 
         //trouver intersection
@@ -161,9 +165,15 @@ void Rope::pullMe(Object* o)
         z = ((b2/b1)*(a1x+d1) -a2x -d2)/(c2 - c1*b2/b1)
         */
         Vector3D inter=Vector3D(0,0,0);
-        inter.X=vit.X;
+        /*inter.X=vit.X;
         inter.Z = ((b2/b1)*(a1*inter.X+d1) -a2*inter.X -d2)/(c2 - c1*b2/b1);
-        inter.Y = (-c1*inter.Z -a1*inter.X -d1) / b1;
+        inter.Y = (-c1*inter.Z -a1*inter.X -d1) / b1;*/
+
+        inter.X=b1*c2 - c1*b2;
+        inter.Y =a2*c1 - c2*a1;
+        inter.Z = a1*b2 - b1*a2;
+
+
         inter=inter.normalize();
 
         //choisir celui le plus proche de vitesse
@@ -180,9 +190,9 @@ void Rope::pullMe(Object* o)
         ss << "a1: "<< a1 <<", b1: " << b1 << ", c1: " << c1 << ", d1: " << d1;
         //Tracer::getInstance()->trace("rope",ss.str(),1000,0);
 
-        std::stringstream ss2;
+        /*std::stringstream ss2;
         ss2 << "a2: "<< a2 <<", b2: " << b2 << ", c2: " << c2 << ", d2: " << d2;
-        Tracer::getInstance()->trace("rope",ss2.str(),1000,1);
+        Tracer::getInstance()->trace("rope",ss2.str(),1000,1);*/
 
 
 
@@ -197,12 +207,12 @@ void Rope::pullMe(Object* o)
         //o->setVel(Vector3D(0,0,0));
         //o->setPos(o->getPos()+newVel);
 
-
+        //newVel+=o->getVel();
         o->setVel(newVel);
-        //o->setVel(o->getVel().normalize()*velNorm);
+        o->setVel(o->getVel().normalize()*velNorm);
 
-        //if(m_smallBoost)//dont teleport back at first, we want the player to have a small boost
-        //    o->setPos(newPos);
+        if(m_smallBoost)//dont teleport back at first, we want the player to have a small boost
+            o->setPos(newPos);
     }
     else m_smallBoost=true;//player back in->small boost finished
 }
