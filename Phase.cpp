@@ -57,10 +57,7 @@ void Phase::nextPattern()
     if(m_patternQueue.size()>0)
     {
         delete m_patternQueue[0];
-        for(unsigned int i=0, count=m_patternQueue.size()-1;i<count;i++)
-            m_patternQueue[i]=m_patternQueue[i+1];
-        m_patternQueue.pop_back();
-
+        m_patternQueue.erase(m_patternQueue.begin());
     }
     //size changed so check again
     if(m_patternQueue.size()>0)

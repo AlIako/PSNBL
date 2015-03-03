@@ -72,11 +72,7 @@ void Tracer::afterFetch()
         if(m_traces[i]->id==-1)
         {
             delete m_traces[i];
-
-            for(unsigned int j=i;j<m_traces.size()-1;j++)
-                m_traces[j]=m_traces[j+1];
-            if(m_traces.size()>0)
-                m_traces.pop_back();
+            m_traces.erase(m_traces.begin()+i);
         }
 }
 

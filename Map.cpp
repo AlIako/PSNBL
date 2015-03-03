@@ -45,9 +45,7 @@ void Map::update(double functionTime)
                 increaseLavaSpeed();
             }
             //delete m_objects[i];
-            for(unsigned int j=i;j<count-1;j++)
-                m_objects[j]=m_objects[j+1];
-            m_objects.pop_back();
+            m_objects.erase(m_objects.begin()+i);
         }
     }
     //players

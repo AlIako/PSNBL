@@ -167,9 +167,8 @@ void Gsounds::addMusic(std::string chemin)
             found=true;
             sounds[i]->pause(false);
             sounds[i]->free();
-            for(unsigned int j=i;j<sounds.size()-1;j++)
-                sounds[j]=sounds[j+1];
-            sounds.pop_back();
+
+            sounds.erase(sounds.begin()+i);
 
         }
     if(!found || 1)
@@ -208,9 +207,7 @@ void Gsounds::freeSound(std::string chemin)
             sounds[i]->free();
             delete sounds[i];
             sounds[i]=NULL;
-            for(unsigned int j=i;j<sounds.size()-1;j++)
-                sounds[j]=sounds[j+1];
-            sounds.pop_back();
+            sounds.erase(sounds.begin()+i);
             found=true;
         }
     }
@@ -224,9 +221,7 @@ void Gsounds::stopMusic()
             sounds[i]->free();
             delete sounds[i];
             sounds[i]=NULL;
-            for(unsigned int j=i;j<sounds.size()-1;j++)
-                sounds[j]=sounds[j+1];
-            sounds.pop_back();
+            sounds.erase(sounds.begin()+i);
         }
     }
 }

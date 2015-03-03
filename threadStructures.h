@@ -1,8 +1,8 @@
 #ifndef THREADSTRUCTURES_H_INCLUDED
 #define THREADSTRUCTURES_H_INCLUDED
 
-#define SERV_WAIT_SEND 10
-#define SERV_WAIT_RECEIVE 5
+#define SERV_WAIT_SEND 7
+#define SERV_WAIT_RECEIVE 2
 
 #define CLIENT_WAIT_SEND 60
 #define CLIENT_WAIT_RECEIVE 10
@@ -34,6 +34,8 @@ struct thread_params
     sem_t *mutex;
 
     bool tcp;
+
+    bool* modifArray;
 
     std::vector<infosSocket>* socketsReceived;
     std::vector<infosClient>* clients;

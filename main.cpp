@@ -15,7 +15,18 @@ int main ( int argc, char** argv )
     cerr<<"Start main"<<endl;
     srand (time(NULL));
 
+    vector<int> test;
 
+    test.clear();
+
+    //test.erase(test.begin());
+
+    for(unsigned int i=0;i<test.size();i++)
+    {
+        cerr<<"t:"<<test[i]<<endl;
+    }
+
+    //
     Game game;
 
     game.play();

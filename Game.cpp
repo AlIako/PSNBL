@@ -847,10 +847,7 @@ void Game::updateMultiplayer()
                             if(playerList[j]->getIdOnline()==s.variable[0])
                             {
                                 delete playerList[j];
-                                for(unsigned int k=j;k<playerList.size()-1;k++)
-                                    playerList[k]=playerList[k+1];
-                                if(playerList.size()>0)
-                                    playerList.pop_back();
+                                playerList.erase(playerList.begin()+j);
                             }
                         }
                     }

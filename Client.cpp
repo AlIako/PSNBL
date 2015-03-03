@@ -211,10 +211,8 @@ void* clientReceiveThread(void* data)
                     if(sw.socket.confirmationID==infosRecu.confirmationID)
                     {
                         cerr<<"important socket "<< infosRecu.confirmationID<< " deleted."<<endl;
-                        for(unsigned int k=j;k<(*params->socketWrappersToSend).size()-1;k++)
-                            (*params->socketWrappersToSend)[k]=(*params->socketWrappersToSend)[k+1];
-                        if((*params->socketWrappersToSend).size()>0)
-                            (*params->socketWrappersToSend).pop_back();
+
+                        (*params->socketWrappersToSend).erase((*params->socketWrappersToSend).begin()+j);
                     }
                 }
             }
@@ -269,10 +267,7 @@ void* clientSendThread(void* data)
                         cerr<<"confirmation "<< infosS.confirmationID<< "sent!"<<endl;
 
 
-                    for(unsigned int i=0;i<(*params->socketWrappersToSend).size()-1;i++)
-                        (*params->socketWrappersToSend)[i]=(*params->socketWrappersToSend)[i+1];
-                    if((*params->socketWrappersToSend).size()>0)
-                        (*params->socketWrappersToSend).pop_back();
+                    (*params->socketWrappersToSend).erase((*params->socketWrappersToSend).begin());
                 }
                 else//if socket NEEDS confirmation, put it at the end of the queue, so that it will be sent again
                 {

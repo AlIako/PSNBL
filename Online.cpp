@@ -107,11 +107,8 @@ infosSocket Online::getNextSocketRemove()
 {
     infosSocket s=getNextSocket();
 
-    for(int i=0;i<(int)socketsReceived.size()-1;i++)
-        socketsReceived[i]=socketsReceived[i+1];
     if(socketsReceived.size()>0)
-        socketsReceived.pop_back();
-
+        socketsReceived.erase(socketsReceived.begin());
 
     return s;
 }
@@ -137,6 +134,7 @@ void Online::ini()
         paramsHandleConnectionsThread.clilen=new int;
         paramsHandleConnectionsThread.clientID=&clientID;
         paramsHandleConnectionsThread.mutex=&mutex;
+        paramsHandleConnectionsThread.modifArray=new bool(false);
 
         sem_init(&mutex, 0, 1);
 

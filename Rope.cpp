@@ -188,7 +188,7 @@ void Rope::pullMe(Object* o)
         //Tracer::getInstance()->trace("rope","tan:"+newVel.toString(),300,0);
         std::stringstream ss;
         ss << "a1: "<< a1 <<", b1: " << b1 << ", c1: " << c1 << ", d1: " << d1;
-        //Tracer::getInstance()->trace("rope",ss.str(),1000,0);
+        Tracer::getInstance()->trace("rope",ss.str(),100,0);
 
         /*std::stringstream ss2;
         ss2 << "a2: "<< a2 <<", b2: " << b2 << ", c2: " << c2 << ", d2: " << d2;

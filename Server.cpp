@@ -323,10 +323,7 @@ void* serverReceiveThread(void* data)
                     {
                         if((*params->clients)[j].id==infosRecu.variable[0])
                         {
-                            for(unsigned int k=j;k<(*params->clients).size()-1;k++)
-                                (*params->clients)[k]=(*params->clients)[k+1];
-                            if((*params->clients).size()>0)
-                                (*params->clients).pop_back();
+                            (*params->clients).erase((*params->clients).begin()+j);
                         }
                     }
                     //delete all sockets to send to this client
@@ -334,10 +331,7 @@ void* serverReceiveThread(void* data)
                     {
                         if((*params->socketWrappersToSend)[j].client.id==infosRecu.variable[0])
                         {
-                            for(unsigned int k=j;k<(*params->socketWrappersToSend).size()-1;k++)
-                                (*params->socketWrappersToSend)[k]=(*params->socketWrappersToSend)[k+1];
-                            if((*params->socketWrappersToSend).size()>0)
-                                (*params->socketWrappersToSend).pop_back();
+                            (*params->socketWrappersToSend).erase((*params->socketWrappersToSend).begin()+j);
                         }
                     }
                 }
@@ -421,17 +415,19 @@ void* serverReceiveThread(void* data)
                 //if I received confirmation, delete socket that needed this confirmation so it wont be sent again
                 if(infosRecu.type==11)
                 {
+                    //GO SEMAPHORE
+                    if((*params->modifArray))
+                        sem_wait(params->mutex);
+                    (*params->modifArray)=true;
+
                     cerr<<"received confirmation " << infosRecu.confirmationID<< "!"<<endl;
                     for(unsigned int j=0;j<(*params->socketWrappersToSend).size();j++)
                     {
-                        SocketWrapper sw=(*params->socketWrappersToSend)[j];
+                        SocketWrapper sw=(*params->socketWrappersToSend)[j];//THIS LINE CRASH
                         if(sw.socket.confirmationID==infosRecu.confirmationID && sw.client.id==infosRecu.variable[0])//same ID, same client
                         {
                             cerr<<"important socket "<< infosRecu.confirmationID<< " deleted."<<endl;
-                            for(unsigned int k=j;k<(*params->socketWrappersToSend).size()-1;k++)
-                                (*params->socketWrappersToSend)[k]=(*params->socketWrappersToSend)[k+1];
-                            if((*params->socketWrappersToSend).size()>0)
-                                (*params->socketWrappersToSend).pop_back();
+                            (*params->socketWrappersToSend).erase((*params->socketWrappersToSend).begin()+j);
                         }
                     }
                     cerr<<"list of important wrappers to send:"<<endl;
@@ -444,6 +440,10 @@ void* serverReceiveThread(void* data)
                         }
                     }
                     cerr<<endl;
+                    //END SEMAPHORE
+
+                    (*params->modifArray)=false;
+                    sem_post(params->mutex);
                 }
             }
         }
@@ -467,7 +467,9 @@ void* serverSendThread(void* data)
     //infinite while
     while(params!=NULL && *(params->threadOn))
     {
-        //sem_wait(params->mutex);
+        //GO SEMAPHORE
+        sem_wait(params->mutex);
+        (*params->modifArray)=true;
 
         //if there is something to send
         int nSendDirectly=(*params->socketWrappersToSend).size();
@@ -502,17 +504,14 @@ void* serverSendThread(void* data)
                     //if socket doenst need confirmation (or is a confirmation for a client that needs one), delete it from quere
                     if(infosS.confirmationID==-1 || infosS.type==11)//delete || true to make safe trnasmission work back
                     {
-                        for(unsigned int i=0;i<(*params->socketWrappersToSend).size()-1;i++)
-                            (*params->socketWrappersToSend)[i]=(*params->socketWrappersToSend)[i+1];
-                        if((*params->socketWrappersToSend).size()>0)
-                            (*params->socketWrappersToSend).pop_back();
+                        (*params->socketWrappersToSend).erase((*params->socketWrappersToSend).begin());
                     }
                     else//if socket NEEDS confirmation, put it at the end of the queue, so that it will be sent again
                     {
                         cerr<<"important socket "<<sw.socket.confirmationID <<" (type "<< (int)sw.socket.type<<") sent! puting it at the end of the queue"<<endl;
                         //send it a bit later
                         sw.untilSend.reset();
-                        sw.timeTilResend=100;
+                        sw.timeTilResend=200;
 
 
                         for(unsigned int i=0;i<(*params->socketWrappersToSend).size()-1;i++)
@@ -524,15 +523,18 @@ void* serverSendThread(void* data)
                 {
                     for(unsigned int i=0;i<(*params->socketWrappersToSend).size()-1;i++)
                         (*params->socketWrappersToSend)[i]=(*params->socketWrappersToSend)[i+1];
-                    (*params->socketWrappersToSend)[(*params->socketWrappersToSend).size()-1]=sw;
+                    (*params->socketWrappersToSend)[(*params->socketWrappersToSend).size()-1]=sw;//THIS LINE CRASH
                 }
             }
 
         }
 
+        //END SEMAPHORE
+
+        (*params->modifArray)=false;
+        sem_post(params->mutex);
         SDL_Delay(SERV_WAIT_SEND);
 
-        //sem_post(params->mutex);
     }
 
     close(*params->newsockfd);
