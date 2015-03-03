@@ -89,6 +89,13 @@ void Collision::collisionReaction(Object* o)
     }*/
 }
 
+bool Collision::testCollision(Object* o)
+{
+    for(unsigned int i=0, count=(*m_objects).size();i<count;i++)
+        if((*m_objects)[i]!=o && (*m_objects)[i]->getBlock() && o->collision((*m_objects)[i]))
+            return true;
+    return false;
+}
 
 
 void Collision::testCollision(Object* o, Object* pointer)

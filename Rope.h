@@ -23,6 +23,8 @@ class Rope: public Object
 
     bool isHooked() {return m_hooked;}
 
+    double getDistance(){return m_distance;}
+
     private:
     Texture* m_texture;
     bool m_hooked;

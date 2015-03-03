@@ -10,7 +10,11 @@ public:
     void ini();
     void draw();
     void update(double functionTime);
+    void setColor(int r, int g, int b){m_r=r;m_g=g;m_b=b;}
 private:
+    int m_r;
+    int m_g;
+    int m_b;
 };
 
 

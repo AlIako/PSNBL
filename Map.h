@@ -7,6 +7,7 @@
 #include "Lava.h"
 #include "Rope.h"
 #include "Phase.h"
+#include "Crosshair.h"
 
 enum{PHASE_LOBBY,PHASE_EASY,PHASE_MEDIUM,PHASE_HARD};
 enum{PAT_ONE,PAT_TWO,PAT_THREE,PAT_FOUR};
@@ -25,6 +26,8 @@ class Map
     void updateMap();
     void applyGravity(Object* o);
     void applyPhysics(Object* o);
+
+    void simulateRopeForCrosshair(Player* p, Vector3D target, Crosshair* ch);
 
     void restart();
     void erase();

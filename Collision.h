@@ -12,11 +12,14 @@ class Collision
     void simulatePhysics(Object* o);
     void collisionReaction(Object* o);
 
+    bool testCollision(Object* o);
     void testCollision(Object* o, Object* pointer);
     bool testCollisionColliding(Object* o);
 
 
     void setObjects(std::vector<Object*>* v) {m_objects=v;}
+
+    void collide(Object* o){o->collide(m_colliding,m_types);}
 
     bool isCollisionType(int t);
     bool collision() {return m_colliding.size()>0;}

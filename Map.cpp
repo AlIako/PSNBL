@@ -198,6 +198,37 @@ void Map::erase()
 }
 
 
+void Map::simulateRopeForCrosshair(Player* p, Vector3D target, Crosshair* ch)
+{
+    ch->setColor(155,155,155);
+
+    Rope r=Rope();
+    r.ini(p->getPos(),target);
+    r.setFT(ft);
+    r.setPos(p->getPos());
+
+    double distanceToReach=50;
+    double curDistance=0;
+
+    bool col=false;
+    Collision c;
+    c.setObjects(&m_objects);
+
+    while(curDistance<distanceToReach && !col)
+    {
+        r.setPos(r.getPos()+target);
+        curDistance+=1.0;
+
+        c.testCollision(&r,&r);
+        c.collide(&r);
+        if(r.collidedWithHookable())
+            col=true;
+
+    }
+
+    if(col)
+        ch->setColor(155,0,0);
+}
 
 
 

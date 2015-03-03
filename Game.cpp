@@ -487,6 +487,10 @@ void Game::play()
         else if(playerList[0]->getLife()>0)
             alreadyDead=false;
 
+        //crosshair
+        m_map.simulateRopeForCrosshair(playerList[0],
+                                       (m_camera.getTarget()-(playerList[0]->getPos()+Vector3D(0,0,1))).normalize(),
+                                       m_interface.getCrosshair());
 
         //draw
         m_video->beforeDraw();

@@ -62,6 +62,7 @@ class Object
     void setHookable(bool h) {m_hookable=h;}
     void setVisible(bool v) {m_visible=v;}
     void setTexture(Texture* t){m_texture=t;}
+    void setFT(int f){ft=f;}
 
 
     //get
@@ -81,6 +82,7 @@ class Object
     int getIdOnline() {return m_idOnline;}
     std::string getOnlineName() { return m_onlineName;}
     bool isHookable() { return m_hookable; }
+    bool collided(){return m_collided;}
 
     protected:
     Texture* m_texture;

@@ -19,6 +19,9 @@ public:
 
     void setFPS(int fps);
 
+
+    Crosshair* getCrosshair(){return &m_crosshair;}
+
 private:
     freetype::font_data m_font;
 

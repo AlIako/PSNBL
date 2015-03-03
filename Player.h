@@ -46,6 +46,7 @@ class Player: public Object
     //get
     bool getGasing() {return m_gasing;}
     int getDeathCause() {return m_deathCause;}
+    Rope* getRope() {return m_rope;}
 
     //spells
     void addSpell(Spell* s);
