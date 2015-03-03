@@ -1,5 +1,8 @@
 #include "Server.h"
 
+#define SERV_WAIT_SEND 7
+#define SERV_WAIT_RECEIVE 2
+
 void* handleConnections(void* data)
 {
     cerr << "Begin handle connections thread"<<endl;

@@ -109,7 +109,6 @@ void Rope::pullMe(Object* o)
         Vector3D oldVel=o->getVel();
         double velNorm=oldVel.length();
         Vector3D newVel=o->getVel()+dirToEnd*ft/40*2;
-        Vector3D newPos=o->getPos()+dirToEnd*distToOutside;
 
         //trouver la tangeante la plus proche de la vitesse
         //tangeante= intersetion du plan des tangeante avec plan de vitesse
@@ -209,10 +208,10 @@ void Rope::pullMe(Object* o)
 
         //newVel+=o->getVel();
         o->setVel(newVel);
-        o->setVel(o->getVel().normalize()*velNorm);
+        o->setVel(o->getVel().normalize()*velNorm+rope.normalize()/50.0);
 
-        if(m_smallBoost)//dont teleport back at first, we want the player to have a small boost
-            o->setPos(newPos);
+        //if(m_smallBoost)//dont teleport back at first, we want the player to have a small boost
+        //    o->setPos(newPos);
     }
     else m_smallBoost=true;//player back in->small boost finished
 }

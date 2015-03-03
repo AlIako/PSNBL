@@ -1,11 +1,6 @@
 #ifndef THREADSTRUCTURES_H_INCLUDED
 #define THREADSTRUCTURES_H_INCLUDED
 
-#define SERV_WAIT_SEND 7
-#define SERV_WAIT_RECEIVE 2
-
-#define CLIENT_WAIT_SEND 60
-#define CLIENT_WAIT_RECEIVE 10
 
 #include "SocketWrapper.h"
 

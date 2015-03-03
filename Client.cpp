@@ -1,5 +1,8 @@
 #include "Client.h"
 
+#define CLIENT_WAIT_SEND 60
+#define CLIENT_WAIT_RECEIVE 10
+
 void* clientConnectThread(void* data)
 {
     thread_params* params;
