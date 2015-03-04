@@ -89,14 +89,14 @@ void Map::applyGravity(Object* o)
 void Map::applyPhysics(Object* o)
 {
     //simulate physics
-    Collision c;
-    c.setObjects(&m_objects);
-    c.simulatePhysics(o);
+    Collision::getInstance()->simulatePhysics(o);
 }
 
 void Map::ini()
 {
     //cerr << "ini map"<<endl;
+
+    Collision::getInstance()->setObjects(&m_objects);
 
     //walls
     unsigned int ind=0;
@@ -211,16 +211,14 @@ void Map::simulateRopeForCrosshair(Player* p, Vector3D target, Crosshair* ch)
     double curDistance=0;
 
     bool col=false;
-    Collision c;
-    c.setObjects(&m_objects);
 
-    while(curDistance<distanceToReach && !col)
+    while(0&&curDistance<distanceToReach && !col)
     {
         r.setPos(r.getPos()+target);
         curDistance+=1.0;
 
-        c.testCollision(&r,&r);
-        c.collide(&r);
+        Collision::getInstance()->testCollision(&r,&r);
+         Collision::getInstance()->collide(&r);
         if(r.collidedWithHookable())
             col=true;
 

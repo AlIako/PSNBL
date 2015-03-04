@@ -7,7 +7,7 @@ enum{COL_GRAVITY,COL_MOVEMENT_X,COL_MOVEMENT_Y};
 class Collision
 {
     public:
-    Collision();
+    static Collision* getInstance();
 
     void simulatePhysics(Object* o);
     void collisionReaction(Object* o);
@@ -25,6 +25,9 @@ class Collision
     bool collision() {return m_colliding.size()>0;}
 
     private:
+    Collision();
+    static Collision* m_instance;
+
     std::vector<Object*>* m_objects;
     std::vector<Object*> m_colliding;
     std::vector<int> m_types;

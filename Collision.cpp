@@ -1,5 +1,12 @@
 #include "Collision.h"
 
+Collision* Collision::m_instance = new Collision();
+
+
+Collision* Collision::getInstance()
+{
+    return m_instance;
+}
 
 
 Collision::Collision()
@@ -15,6 +22,8 @@ Collision::Collision()
 
 void Collision::simulatePhysics(Object* o)
 {
+    m_types.clear();
+    m_colliding.clear();
     //do a first simulation and get all colliding objects
     Object simO=*o;
     simO.applyPhysics();
