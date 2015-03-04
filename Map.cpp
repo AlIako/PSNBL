@@ -98,6 +98,16 @@ void Map::ini()
 
     Collision::getInstance()->setObjects(&m_objects);
 
+    createWalls();
+
+    m_phase.ini(&m_objects);
+    m_phase.iniMap();
+
+
+}
+
+void Map::createWalls()
+{
     //walls
     unsigned int ind=0;
     m_objects.push_back(new Wall());
@@ -137,12 +147,6 @@ void Map::ini()
     m_objects[ind]->ini();
     m_objects[ind]->setPos(Vector3D(0,0,2));
     m_objects[ind]->setSize(Vector3D(MAPSIZE,MAPSIZE,2));
-
-
-    m_phase.ini(&m_objects);
-    m_phase.iniMap();
-
-
 }
 
 void Map::increaseLavaSpeed()
@@ -229,6 +233,28 @@ void Map::simulateRopeForCrosshair(Player* p, Vector3D target, Crosshair* ch)
 }
 
 
+void Map::saveMap(string path)
+{
+    //écrire map
 
+    char* tempchemin=stringtochar(path);
+    ofstream fichier(tempchemin, ios::out | ios::trunc);  // ouverture en écriture avec effacement du fichier ouvert
+    delete tempchemin;
+    tempchemin=NULL;
+
+    if(fichier)
+    {
+        string ch="";
+
+        for(unsigned int i=6;i<m_objects.size();i++)
+        {
+            fichier << m_objects[i]->writeObj();
+            fichier << endl;
+        }
+        fichier.close();
+    }
+    else
+        cerr << "can't open file." << endl;
+}
 
 

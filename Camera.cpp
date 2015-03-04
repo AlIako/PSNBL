@@ -37,7 +37,7 @@ void Camera::look()
         m_target.X,m_target.Y,m_target.Z,
         0,0,1);
     }
-    else if(m_mode=="spectate")
+    else if(m_mode=="spectate" || m_mode=="editor")
     {
         if(m_cible!=NULL)
         {

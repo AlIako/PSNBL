@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "Editor.h"
 
 /*
 //template
@@ -15,21 +16,20 @@ int main ( int argc, char** argv )
     cerr<<"Start main"<<endl;
     srand (time(NULL));
 
-    vector<int> test;
 
-    test.clear();
+    bool playGame=true;
+    playGame=false;
 
-    //test.erase(test.begin());
-
-    for(unsigned int i=0;i<test.size();i++)
+    if(playGame)
     {
-        cerr<<"t:"<<test[i]<<endl;
+        Game game;
+        game.play();
     }
-
-    //
-    Game game;
-
-    game.play();
+    else
+    {
+        Editor Editor;
+        Editor.play();
+    }
 
     return 0;
 }

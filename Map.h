@@ -20,6 +20,8 @@ class Map
     void ini();
     void draw();
 
+    void createWalls();
+
     Rope* createRope(Vector3D start, Vector3D target);
 
     void update(double functionTime);
@@ -39,6 +41,8 @@ class Map
 
     Phase* getPhase() {return &m_phase;}
     std::vector<Object*>* getObjects() {return &m_objects;}
+
+    void saveMap(string path);
 
     vector<Player*>* playerList;
 

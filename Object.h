@@ -40,6 +40,7 @@ class Object
 
 
     virtual void readObj(ifstream* fichier1);
+    virtual string writeObj();
 
     //set
     void setPos(Vector3D v) {m_position=v;}

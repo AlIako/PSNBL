@@ -158,11 +158,11 @@ void Player::ini()
     }
 
     //spells
-    addSpell(new SpellRope());
-    addSpell(new SpellJump());
-    addSpell(new SpellLongJump());
-    addSpell(new SpellPullUp());
-    addSpell(new SpellRopeBoost());
+    //addSpell(new SpellRope());
+    //addSpell(new SpellJump());
+    //addSpell(new SpellLongJump());
+    //addSpell(new SpellPullUp());
+    //addSpell(new SpellRopeBoost());
 }
 
 void Player::draw()
@@ -326,7 +326,6 @@ void Player::moveXY(Vector3D* vel)
     {
         vel->X-=m_direction.Y*m_speed*ft;
         vel->Y+=m_direction.X*m_speed*ft;
-
     }
 
     /*double newLength=Vector3D(m_movementVelocity.X,m_movementVelocity.Y,0).length();

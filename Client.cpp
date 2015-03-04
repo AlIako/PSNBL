@@ -207,6 +207,11 @@ void* clientReceiveThread(void* data)
             //if I received confirmation, delete socket that needed this confirmation so it wont be sent again
             if(infosRecu.type==11)
             {
+                //GO SEMAPHORE
+                if((*params->modifArray))
+                    sem_wait(params->mutex);
+                (*params->modifArray)=true;
+
                 cerr<<"received confirmation " << infosRecu.confirmationID<< "!"<<endl;
                 for(unsigned int j=0;j<(*params->socketWrappersToSend).size();j++)
                 {
@@ -218,6 +223,12 @@ void* clientReceiveThread(void* data)
                         (*params->socketWrappersToSend).erase((*params->socketWrappersToSend).begin()+j);
                     }
                 }
+
+
+                //END SEMAPHORE
+
+                (*params->modifArray)=false;
+                sem_post(params->mutex);
             }
         }
 
@@ -237,7 +248,9 @@ void* clientSendThread(void* data)
 
     while(params!=NULL && *(params->threadOn))
     {
-        //sem_wait(params->mutex);
+        //GO SEMAPHORE
+        sem_wait(params->mutex);
+        (*params->modifArray)=true;
 
         //if there is something to send
         if((*params->socketWrappersToSend).size()>0)
@@ -293,6 +306,8 @@ void* clientSendThread(void* data)
             }
         }
 
+        (*params->modifArray)=false;
+        sem_post(params->mutex);
         SDL_Delay(CLIENT_WAIT_SEND);
         //sem_post(params->mutex);
     }

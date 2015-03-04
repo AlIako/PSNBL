@@ -1,0 +1,1 @@
+@ block: z: 20 t: 0.5 text: ../data/textures/bedrock.png

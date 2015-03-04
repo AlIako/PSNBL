@@ -199,6 +199,44 @@ bool Object::onGround()
 
 
 
+string Object::writeObj()
+{
+
+    std::ostringstream oss;
+
+    //classe
+    oss << "@ " << m_type << ":";
+
+    //x
+    if(m_position.X!=0)
+        oss<<" x: " << m_position.X;
+
+    //y
+    if(m_position.Y!=0)
+        oss<<" y: " << m_position.Y;
+
+    //z
+    if(m_position.Z!=0)
+        oss<<" z: " << m_position.Z;
+
+    //taille
+    if(m_size.X==m_size.Y && m_size.X==m_size.Z)
+        oss<<" t: " << m_size.X;
+    else
+    {
+        if(m_size.X!=0.5)
+            oss << " tx: " << m_size.X;
+        if(m_size.Y!=0.5)
+            oss << " ty: " << m_size.Y;
+        if(m_size.Z!=0.5)
+            oss << " tz: " << m_size.Z;
+    }
+    //texture
+    if(m_texture!=NULL)
+        oss<<" text: " << m_texture->getChemin();
+
+    return oss.str();
+}
 
 
 void Object::readObj(ifstream* fichier1)
