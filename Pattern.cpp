@@ -105,6 +105,14 @@ void Pattern::loadPattern()
                     (*m_objects).pop_back();
                 }
             }
+            else if(read_name=="bonus")
+            {
+                ind=(*m_objects).size();
+                (*m_objects).push_back(new Bonus());
+                (*m_objects)[ind]->ini();
+                (*m_objects)[ind]->readObj(&fichier1);
+                (*m_objects)[ind]->setPos((*m_objects)[ind]->getPos()+Vector3D(0,0,m_startZ));
+            }
             fichier1 >> cur_read;
             befor_read=cur_read;
             read_name_before=befor_read.substr(0,befor_read.size()-1);//enleve le ":"

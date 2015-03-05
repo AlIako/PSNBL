@@ -148,6 +148,24 @@ void Editor::play()
                     case SDLK_e:
                     break;
                     case SDLK_r:
+                    if(1)//if I dont do that, compiler gives error... WTF?
+                    {
+                        string curType=curObj->getType();
+                        delete curObj;
+
+                        if(curType=="block")
+                        {
+                            curObj=new Bonus();
+                            curObj->setName("rez");
+                        }
+                        else
+                            curObj=new Block();
+                        curObj->ini();
+                        curObj->setPos(posCur);
+                        curObj->setSize(Vector3D(1,1,1));
+
+                        m_camera.setCible(curObj);
+                    }
                     break;
                     case SDLK_f:
                         if(showCur)

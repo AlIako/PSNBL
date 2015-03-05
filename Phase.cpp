@@ -264,7 +264,7 @@ void Phase::iniMap()
         }
 
         //always at the end of a phase
-        addPatternToQueue(5);
+        //addPatternToQueue(5);
 
         //start with first pattern in queue
         m_pattern=m_patternQueue[0];

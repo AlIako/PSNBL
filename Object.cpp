@@ -31,6 +31,8 @@ Object::Object()
 
     m_onTopOf=NULL;
 
+    m_texture=NULL;
+
     m_visible=true;
 }
 
@@ -288,6 +290,10 @@ void Object::readObj(ifstream* fichier1)
             *fichier1 >> cur_read;
             GTexture::getInstance()->addTexture(cur_read);
             setTexture(GTexture::getInstance()->getTexture(cur_read));
+        }
+        else if(read_name_before=="name")
+        {
+            *fichier1 >> m_name;
         }
 
         *fichier1 >> cur_read;

@@ -12,6 +12,8 @@ class Bonus: public Object
     virtual void draw();
     virtual void loseLife(double value);
 
+    virtual string writeObj();
+
     private:
     Texture* m_texture;
 };

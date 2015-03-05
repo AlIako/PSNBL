@@ -64,12 +64,8 @@ void PatStill::ini(double startZ, std::vector<Object*>* objects)
 
 
 
-    /*ind=(*m_objects).size();
-    (*m_objects).push_back(new Block());
-    (*m_objects)[ind]->ini();
-    (*m_objects)[ind]->setPos(Vector3D(2,-40,startZ+40));
-    (*m_objects)[ind]->setSize(Vector3D(1,10,1));*/
-
+    /*
+    //to hook around
     ind=(*m_objects).size();
     (*m_objects).push_back(new Block());
     (*m_objects)[ind]->ini();
@@ -92,11 +88,27 @@ void PatStill::ini(double startZ, std::vector<Object*>* objects)
     (*m_objects).push_back(new Block());
     (*m_objects)[ind]->ini();
     (*m_objects)[ind]->setPos(Vector3D(-20,0,startZ+40));
-    (*m_objects)[ind]->setSize(Vector3D(2,2,4));
+    (*m_objects)[ind]->setSize(Vector3D(2,2,4));*/
+
+
+    //bridge
+    ind=(*m_objects).size();
+    (*m_objects).push_back(new Block());
+    (*m_objects)[ind]->ini();
+    (*m_objects)[ind]->setPos(Vector3D(0,0,startZ+16));
+    (*m_objects)[ind]->setSize(Vector3D(2,40,1));
+
+    //bonus rez
+    ind=(*m_objects).size();
+    (*m_objects).push_back(new Bonus());
+    (*m_objects)[ind]->setName("rez");
+    (*m_objects)[ind]->ini();
+    (*m_objects)[ind]->setPos(Vector3D(0,0,startZ+18));
 
 
     calculHighestZ();
-    m_highestZ-=45;
+    m_highestZ-=25;
+    m_highestZ=startZ+5;
 }
 
 
