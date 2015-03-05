@@ -167,6 +167,22 @@ void Editor::play()
                         m_camera.setCible(curObj);
                     }
                     break;
+                    case SDLK_LSHIFT:
+                    if(1)//if I dont do that, compiler gives error... WTF?
+                    {
+                        //delete colliding objects
+                        std::vector<Object*>* os=m_map.getObjects();
+
+                        for(unsigned int i=0;i<os->size();i++)
+                        {
+                            if(curObj->collision((*os)[i]))
+                            {
+                                delete (*os)[i];
+                                os->erase(os->begin()+i);
+                            }
+                        }
+                    }
+                    break;
                     case SDLK_f:
                         if(showCur)
                             showCur=false;
@@ -209,8 +225,6 @@ void Editor::play()
                         SDL_WM_GrabInput(SDL_GRAB_ON);
                         grabCursor=true;
                     }
-                    break;
-                    case SDLK_LSHIFT:
                     break;
                     default:
                     break;
