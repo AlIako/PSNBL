@@ -158,9 +158,9 @@ void Player::ini()
     }
 
     //spells
-    //addSpell(new SpellRope());
-    //addSpell(new SpellJump());
-    //addSpell(new SpellLongJump());
+    addSpell(new SpellRope());
+    addSpell(new SpellJump());
+    addSpell(new SpellLongJump());
     //addSpell(new SpellPullUp());
     //addSpell(new SpellRopeBoost());
 }

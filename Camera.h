@@ -21,11 +21,13 @@ class Camera
     void onMouseMotion(const SDL_MouseMotionEvent & event);
 
     void updateTime(double fonction_temps);
+    void zoom(double z);
 
     double getAlpha() { return m_alpha; }
     double getBeta() { return m_beta; }
     void setMode(std::string m){m_mode=m;}
     std::string getMode() {return m_mode;}
+    void setDist(double d){m_distToCible=d;}
 
     private:
     Vector3D m_position;
@@ -38,6 +40,8 @@ class Camera
     double m_beta;
     double m_sensibility;
     std::string m_mode;
+
+    double m_distToCible;
 };
 
 

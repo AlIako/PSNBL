@@ -96,7 +96,7 @@ void Pattern::loadPattern()
                 (*m_objects).push_back(new Block());
                 (*m_objects)[ind]->ini();
                 (*m_objects)[ind]->readObj(&fichier1);
-                (*m_objects)[ind]->setPos((*m_objects)[ind]->getPos()+Vector3D(-50,-50,m_startZ));
+                (*m_objects)[ind]->setPos((*m_objects)[ind]->getPos()+Vector3D(0,0,m_startZ));
 
                 //actually we dont want that one (walls)
                 if((*m_objects)[ind]->getSize().Z>=1000)

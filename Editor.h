@@ -43,6 +43,7 @@ class Editor
 
     Vector3D posCur;
     Object* curObj;
+    bool showCur;
 };
 
 

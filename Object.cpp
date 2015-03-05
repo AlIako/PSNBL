@@ -245,8 +245,11 @@ void Object::readObj(ifstream* fichier1)
     std::string cur_read="";
     double cur_double=0;
 
-    while(befor_read!="@")
+    int maxIteration=1000;
+
+    while(befor_read!="@" && maxIteration>0)
     {
+        maxIteration--;
         if(read_name_before=="x")
             *fichier1 >> m_position.X;
         else if(read_name_before=="y")
@@ -283,8 +286,8 @@ void Object::readObj(ifstream* fichier1)
         else if(read_name_before=="text")
         {
             *fichier1 >> cur_read;
-            GTexture::getInstance()->addTexture("../"+cur_read);
-            setTexture(GTexture::getInstance()->getTexture("../"+cur_read));
+            GTexture::getInstance()->addTexture(cur_read);
+            setTexture(GTexture::getInstance()->getTexture(cur_read));
         }
 
         *fichier1 >> cur_read;

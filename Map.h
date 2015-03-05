@@ -42,7 +42,10 @@ class Map
     Phase* getPhase() {return &m_phase;}
     std::vector<Object*>* getObjects() {return &m_objects;}
 
+    void loadPat(string path);
     void saveMap(string path);
+
+    void deleteLastObj();
 
     vector<Player*>* playerList;
 

@@ -15,6 +15,8 @@ void Editor::ini()
     m_video=Video::getInstance();
     m_video->ini();
 
+    m_camera.setDist(15);
+
     //sound
     Gsounds::getInstance()->ini();
     Gsounds::getInstance()->loads();
@@ -24,12 +26,13 @@ void Editor::ini()
     m_interface.ini();
 
     m_map.createWalls();
+    m_map.loadPat("../data/patterns/newPat.txt");
 
     posCur=Vector3D(0,0,0);
     curObj=new Block();
     curObj->ini();
     curObj->setPos(Vector3D(0,0,0));
-    curObj->setSize(Vector3D(0.5,0.5,0.5));
+    curObj->setSize(Vector3D(1,1,1));
 
 
     m_camera.setCible(curObj);
@@ -47,6 +50,9 @@ void Editor::play()
     SDL_Event event;
 
     playLoop=true;
+
+    double cur_incr=0.5;
+    showCur=true;
 
     while (playLoop)
     {
@@ -76,6 +82,10 @@ void Editor::play()
                 if(event.button.button==SDL_BUTTON_RIGHT)
                 {
                 }
+                else if(event.button.button==SDL_BUTTON_WHEELUP)
+                    m_camera.zoom(0.7);
+                else if(event.button.button==SDL_BUTTON_WHEELDOWN)
+                    m_camera.zoom(-0.7);
                 break;
 
                 case SDL_KEYDOWN:
@@ -124,6 +134,9 @@ void Editor::play()
                     case SDLK_RETURN:
                         m_map.saveMap("../data/patterns/newPat.txt");
                     break;
+                    case SDLK_BACKSPACE:
+                        m_map.deleteLastObj();
+                    break;
                     case SDLK_a:
                     break;
                     case SDLK_d:
@@ -136,7 +149,34 @@ void Editor::play()
                     break;
                     case SDLK_r:
                     break;
+                    case SDLK_f:
+                        if(showCur)
+                            showCur=false;
+                        else showCur=true;
+                    break;
+                    case SDLK_t:
+                        curObj->setSize(Vector3D(curObj->getSize().X+cur_incr,curObj->getSize().Y,curObj->getSize().Z));
+                    break;
+                    case SDLK_y:
+                        curObj->setSize(Vector3D(curObj->getSize().X,curObj->getSize().Y+cur_incr,curObj->getSize().Z));
+                    break;
+                    case SDLK_u:
+                        curObj->setSize(Vector3D(curObj->getSize().X,curObj->getSize().Y,curObj->getSize().Z+cur_incr));
+                    break;
+                    case SDLK_h:
+                        curObj->setSize(Vector3D(curObj->getSize().X-cur_incr,curObj->getSize().Y,curObj->getSize().Z));
+                    break;
+                    case SDLK_j:
+                        curObj->setSize(Vector3D(curObj->getSize().X,curObj->getSize().Y-cur_incr,curObj->getSize().Z));
+                    break;
                     case SDLK_k:
+                        curObj->setSize(Vector3D(curObj->getSize().X,curObj->getSize().Y,curObj->getSize().Z-cur_incr));
+                    break;
+                    case SDLK_UP:
+                    cur_incr*=2.0;
+                    break;
+                    case SDLK_DOWN:
+                    cur_incr/=2.0;
                     break;
                     case SDLK_c:
                     if(grabCursor)
@@ -177,9 +217,10 @@ void Editor::play()
 
         m_map.draw();
 
-        curObj->draw();
+        if(showCur)
+            curObj->draw();
 
-        m_interface.draw();
+        //m_interface.draw();
 
 
         m_video->afterDraw();

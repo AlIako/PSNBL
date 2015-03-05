@@ -257,4 +257,63 @@ void Map::saveMap(string path)
         cerr << "can't open file." << endl;
 }
 
+void Map::loadPat(string path)
+{
+    char* tempchemin=stringtochar(path);
+
+    std::ifstream in(tempchemin, std::ifstream::ate | std::ifstream::binary);
+
+
+    ifstream fichier1(tempchemin, ios::in);
+    delete tempchemin;
+    tempchemin=NULL;
+
+
+    if(fichier1)
+    {
+        std::string befor_read="",read_name="",read_name_before="";
+        std::string cur_read="";
+        int ind=-1;
+
+        while(!fichier1.eof())
+        {
+            //fichier1 >> cur_read;
+            read_name=cur_read.substr(0,cur_read.size()-1);//enleve le ":"
+
+            if(read_name=="block")
+            {
+                ind=m_objects.size();
+                m_objects.push_back(new Block());
+                m_objects[ind]->ini();
+                m_objects[ind]->readObj(&fichier1);
+
+                //actually we dont want that one (walls)
+                if(m_objects[ind]->getSize().Z>=1000)
+                {
+                    delete m_objects[ind];
+                    m_objects.pop_back();
+                }
+            }
+            fichier1 >> cur_read;
+            befor_read=cur_read;
+            read_name_before=befor_read.substr(0,befor_read.size()-1);//enleve le ":"
+
+
+        }
+
+        fichier1.close();
+    }
+    else
+        cerr << "can't open file (pattern file)" << endl;
+}
+
+
+void Map::deleteLastObj()
+{
+    if(m_objects.size()>0)
+    {
+        delete m_objects[m_objects.size()-1];
+        m_objects.pop_back();
+    }
+}
 

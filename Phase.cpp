@@ -201,15 +201,17 @@ void Phase::iniMap()
             for(int i=0;i<2-1;i++)
             {
                 randomizer=myIntRand(0,400);
+
+                addPatternToQueue(8);
                 //next pattern are random
-                if(randomizer>300)
+                /*if(randomizer>300)
                     addPatternToQueue(2);
                 else if(randomizer>200)
                     addPatternToQueue(3);
                 else if(randomizer>100)
                     addPatternToQueue(6);
                 else if(randomizer>0)
-                    addPatternToQueue(4);
+                    addPatternToQueue(4);*/
             }
         }
         else if(m_name=="medium")

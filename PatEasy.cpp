@@ -15,7 +15,7 @@ void PatEasy::ini(double startZ, std::vector<Object*>* objects)
     loadPattern();
 
     m_highestZ=startZ;
-    m_highestZ+=20;
+    m_highestZ+=200;
 }
 
 
