@@ -1,0 +1,4 @@
+@ block: x: -9 z: 6 tx: 1.5 ty: 1.5 tz: 4.5 text: ../data/textures/bedrock.png
+@ block: x: -15 z: 6 tx: 1.5 ty: 1.5 tz: 5.5 text: ../data/textures/bedrock.png
+@ block: x: -21 z: 6 tx: 1.5 ty: 1.5 tz: 6.5 text: ../data/textures/bedrock.png
+@ block: x: -27 z: 6 tx: 1.5 ty: 1.5 tz: 7.5 text: ../data/textures/bedrock.png

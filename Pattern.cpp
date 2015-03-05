@@ -137,6 +137,8 @@ int Pattern::getPID()
         return 7;
     if(m_name=="PatEasy")
         return 8;
+    if(m_name=="PatNew")
+        return 9;
     return 0;
 }
 

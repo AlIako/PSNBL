@@ -26,12 +26,12 @@ void Editor::ini()
     m_interface.ini();
 
     m_map.createWalls();
-    m_map.loadPat("../data/patterns/newPat.txt");
+    m_map.loadPat("../data/patterns/PatNew.txt");
 
-    posCur=Vector3D(0,0,0);
+    posCur=Vector3D(0,0,19);
     curObj=new Block();
     curObj->ini();
-    curObj->setPos(Vector3D(0,0,0));
+    curObj->setPos(posCur);
     curObj->setSize(Vector3D(1,1,1));
 
 
@@ -132,7 +132,7 @@ void Editor::play()
                     case SDLK_KP_ENTER:
                     break;
                     case SDLK_RETURN:
-                        m_map.saveMap("../data/patterns/newPat.txt");
+                        m_map.saveMap("../data/patterns/PatNew.txt");
                     break;
                     case SDLK_BACKSPACE:
                         m_map.deleteLastObj();
@@ -214,6 +214,23 @@ void Editor::play()
         m_video->beforeDraw();
 
         m_camera.look();
+
+
+        //origin
+        glDisable(GL_TEXTURE_2D);
+        glColor4b(255,0,0,255);
+        glTranslated(0,0,19);
+        glBegin(GL_LINES);
+        glVertex3d(0,0,0);
+        glVertex3d(1,0,0);
+        glVertex3d(0,0,0);
+        glVertex3d(0,1,0);
+        glVertex3d(0,0,0);
+        glVertex3d(0,0,1);
+        glEnd();
+        glTranslated(0,0,-19);
+        glEnable(GL_TEXTURE_2D);
+
 
         m_map.draw();
 

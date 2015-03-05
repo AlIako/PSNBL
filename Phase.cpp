@@ -202,7 +202,7 @@ void Phase::iniMap()
             {
                 randomizer=myIntRand(0,400);
 
-                addPatternToQueue(8);
+                addPatternToQueue(9);
                 //next pattern are random
                 /*if(randomizer>300)
                     addPatternToQueue(2);
@@ -327,6 +327,10 @@ void Phase::addPatternToQueue(int p)
     else if(p==8)
     {
         m_patternQueue.push_back(new PatEasy());
+    }
+    else if(p==9)
+    {
+        m_patternQueue.push_back(new PatNew());
     }
 
     iniLastPattern();

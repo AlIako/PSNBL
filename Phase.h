@@ -8,6 +8,7 @@
 #include "PatLetsGo.h"
 #include "PatHookAround.h"
 #include "PatEasy.h"
+#include "PatNew.h"
 #include "Online.h"
 
 class Phase
