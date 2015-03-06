@@ -26,9 +26,10 @@ void Editor::ini()
     m_interface.ini();
 
     m_map.createWalls();
+    m_map.translateAll(Vector3D(0,0,-15));
     m_map.loadPat("../data/patterns/PatNew.txt");
 
-    posCur=Vector3D(0,0,19);
+    posCur=Vector3D(0,0,0);
     curObj=new Block();
     curObj->ini();
     curObj->setPos(posCur);
@@ -151,12 +152,23 @@ void Editor::play()
                     if(1)//if I dont do that, compiler gives error... WTF?
                     {
                         string curType=curObj->getType();
+                        string curName=curObj->getName();
                         delete curObj;
 
                         if(curType=="block")
                         {
                             curObj=new Bonus();
                             curObj->setName("rez");
+                        }
+                        else if(curType=="bonus" && curName=="rez")
+                        {
+                            curObj=new Bonus();
+                            curObj->setName("rope");
+                        }
+                        else if(curType=="bonus" && curName=="rope")
+                        {
+                            curObj=new Bonus();
+                            curObj->setName("nextphase");
                         }
                         else
                             curObj=new Block();
@@ -175,7 +187,7 @@ void Editor::play()
 
                         for(unsigned int i=0;i<os->size();i++)
                         {
-                            if(curObj->collision((*os)[i]))
+                            if((*os)[i]->getSize().Z<1000 && curObj->collision((*os)[i]))
                             {
                                 delete (*os)[i];
                                 os->erase(os->begin()+i);
@@ -251,7 +263,7 @@ void Editor::play()
         //origin
         glDisable(GL_TEXTURE_2D);
         glColor4b(255,0,0,255);
-        glTranslated(0,0,19);
+        glTranslated(0,0,0);
         glBegin(GL_LINES);
         glVertex3d(0,0,0);
         glVertex3d(1,0,0);
@@ -260,7 +272,7 @@ void Editor::play()
         glVertex3d(0,0,0);
         glVertex3d(0,0,1);
         glEnd();
-        glTranslated(0,0,-19);
+        glTranslated(0,0,0);
         glEnable(GL_TEXTURE_2D);
 
 

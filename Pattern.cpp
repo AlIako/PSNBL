@@ -94,8 +94,8 @@ void Pattern::loadPattern()
             {
                 ind=(*m_objects).size();
                 (*m_objects).push_back(new Block());
-                (*m_objects)[ind]->ini();
                 (*m_objects)[ind]->readObj(&fichier1);
+                (*m_objects)[ind]->ini();
                 (*m_objects)[ind]->setPos((*m_objects)[ind]->getPos()+Vector3D(0,0,m_startZ));
 
                 //actually we dont want that one (walls)
@@ -109,8 +109,8 @@ void Pattern::loadPattern()
             {
                 ind=(*m_objects).size();
                 (*m_objects).push_back(new Bonus());
-                (*m_objects)[ind]->ini();
                 (*m_objects)[ind]->readObj(&fichier1);
+                (*m_objects)[ind]->ini();
                 (*m_objects)[ind]->setPos((*m_objects)[ind]->getPos()+Vector3D(0,0,m_startZ));
             }
             fichier1 >> cur_read;
@@ -147,6 +147,8 @@ int Pattern::getPID()
         return 8;
     if(m_name=="PatNew")
         return 9;
+    if(m_name=="PatJump")
+        return 10;
     return 0;
 }
 

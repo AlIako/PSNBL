@@ -12,18 +12,32 @@ Bonus::Bonus()
     m_block=false;
 
     m_texture=NULL;
+    m_size=Vector3D(1,1,1);
 }
 
 
 
 void Bonus::ini()
 {
-    m_size=Vector3D(1,1,1);
     m_type="bonus";
     if(GTexture::getInstance())
     {
-        GTexture::getInstance()->addTexture("../data/textures/blue.jpg");
-        m_texture=GTexture::getInstance()->getTexture("../data/textures/blue.jpg");
+        if(m_name=="rez")
+        {
+            GTexture::getInstance()->addTexture("../data/textures/blue.jpg");
+            m_texture=GTexture::getInstance()->getTexture("../data/textures/blue.jpg");
+        }
+        else if(m_name=="rope")
+        {
+            GTexture::getInstance()->addTexture("../data/textures/rope.jpg");
+            m_texture=GTexture::getInstance()->getTexture("../data/textures/rope.jpg");
+        }
+        else if(m_name=="nextphase")
+        {
+            m_transparency=true;
+            GTexture::getInstance()->addTexture("../data/textures/redrock.png");
+            m_texture=GTexture::getInstance()->getTexture("../data/textures/redrock.png");
+        }
     }
 
     Object::ini();
@@ -49,16 +63,16 @@ void Bonus::draw()
 
     glColor3ub(255,255,255);
 
-    if(m_name=="rez")
+    if(m_texture!=NULL)
+        m_texture->bind();
+
+
+    glPushMatrix();
+    glTranslated(m_position.X,m_position.Y,m_position.Z);
+    glRotated(m_rotation.Z,0,0,1);
+
+    if(m_name=="rez" || m_name=="rope")
     {
-        if(m_texture!=NULL)
-            m_texture->bind();
-
-
-        glPushMatrix();
-        glTranslated(m_position.X,m_position.Y,m_position.Z);
-        glRotated(m_rotation.Z,0,0,1);
-
         glBegin(GL_QUADS);
 
         glNormal3d(0.0,1.0,0.0);
@@ -98,9 +112,27 @@ void Bonus::draw()
         glTexCoord2d(0,0);                          glVertex3d(-m_taille.X,m_taille.Y,-m_taille.Z*0);
 
         glEnd();
-
-        glPopMatrix();
     }
+    else if(m_name=="nextphase")
+    {
+        glTranslated(0,0,1);
+        glDisable(GL_CULL_FACE);
+        glDisable(GL_LIGHTING);
+
+        glBlendFunc(GL_SRC_ALPHA,GL_ONE);
+        glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+        glEnable(GL_BLEND);
+        glColor4f(1,1,1,0.5);
+        GLUquadric* params = gluNewQuadric();
+        gluQuadricTexture(params,GL_TRUE);
+        gluSphere(params,m_size.X*2,10,10);
+        gluDeleteQuadric(params);
+
+        glDisable(GL_BLEND);
+        glTranslated(0,0,-1);
+    }
+
+    glPopMatrix();
 }
 
 

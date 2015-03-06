@@ -31,6 +31,8 @@ class Map
 
     void simulateRopeForCrosshair(Player* p, Vector3D target, Crosshair* ch);
 
+    void translateAll(Vector3D t);
+
     void restart();
     void erase();
 

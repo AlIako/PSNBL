@@ -1,23 +1,26 @@
-@ block: x: -9 z: 6 tx: 1.5 ty: 1.5 tz: 4.5 text: ../data/textures/bedrock.png
-@ block: x: -15 z: 6 tx: 1.5 ty: 1.5 tz: 5.5 text: ../data/textures/bedrock.png
-@ block: x: -21 z: 6 tx: 1.5 ty: 1.5 tz: 6.5 text: ../data/textures/bedrock.png
-@ block: x: -27 z: 6 tx: 1.5 ty: 1.5 tz: 7.5 text: ../data/textures/bedrock.png
-@ block: x: -27 y: -6 z: 6 tx: 1.5 ty: 1.5 tz: 9.5 text: ../data/textures/bedrock.png
-@ block: x: -26 y: -14 z: 6 tx: 1.5 ty: 1.5 tz: 9.5 text: ../data/textures/bedrock.png
-@ block: x: -18 y: -18 z: 6 tx: 1.5 ty: 1.5 tz: 10.5 text: ../data/textures/bedrock.png
-@ block: x: -10 y: -21 z: 6 tx: 1.5 ty: 1.5 tz: 13 text: ../data/textures/bedrock.png
-@ block: x: -2 y: -25 z: 6 tx: 1.5 ty: 1.5 tz: 15.5 text: ../data/textures/bedrock.png
-@ block: x: 15 y: -22 z: 6 tx: 1.5 ty: 1.5 tz: 11.5 text: ../data/textures/bedrock.png
-@ block: x: 17 y: -15 z: 6 tx: 1.5 ty: 1.5 tz: 13.5 text: ../data/textures/bedrock.png
-@ block: x: 17 y: -8 z: 6 tx: 1.5 ty: 1.5 tz: 15.5 text: ../data/textures/bedrock.png
-@ block: x: 14 y: -23 z: 23 tx: 2.5 ty: 2 tz: 1.5 text: ../data/textures/bedrock.png
-@ block: x: 7 y: -38 z: 20 tx: 1 ty: 10 tz: 1 text: ../data/textures/bedrock.png
-@ block: x: 29 y: 11 z: 35 tx: 1 ty: 3.5 tz: 1 text: ../data/textures/bedrock.png
-@ block: x: 17 y: 11 z: 42 tx: 1 ty: 5.5 tz: 1 text: ../data/textures/bedrock.png
-@ block: x: 12 y: 5 z: 45 tx: 5.5 ty: 1 tz: 1 text: ../data/textures/bedrock.png
-@ block: z: 45 tx: 3.5 ty: 3.5 tz: 1 text: ../data/textures/bedrock.png
-@ bonus: z: 47 t: 1 name: rez
-@ block: x: 29 y: -2 z: 35 tx: 1 ty: 5 tz: 1 text: ../data/textures/bedrock.png
-@ block: x: 27 y: 15 z: 38 tx: 3 tz: 1 text: ../data/textures/bedrock.png
-@ block: x: 23 y: 16 z: 38 tx: 3 tz: 1 text: ../data/textures/bedrock.png
-@ block: x: 31 y: -8 z: 35 tx: 12.5 ty: 1 tz: 1 text: ../data/textures/bedrock.png
+@ block: y: 25 tx: 1 ty: 20.5 tz: 1 text: ../data/textures/bedrock.png
+@ bonus: y: 35 z: 2 t: 1 name: rope
+@ block: x: 16 y: 29 z: 22 t: 2 text: ../data/textures/bedrock.png
+@ block: x: 44 y: 16 tx: 11 ty: 5 tz: 2 text: ../data/textures/bedrock.png
+@ block: x: 42 y: -5 z: 22 tx: 2 ty: 2 tz: 2.5 text: ../data/textures/bedrock.png
+@ block: x: 45 y: -27 z: 9 tx: 6.5 ty: 7.5 tz: 2 text: ../data/textures/bedrock.png
+@ block: x: 31 y: -38 z: 26 tx: 2 ty: 2 tz: 2.5 text: ../data/textures/bedrock.png
+@ block: x: -30 y: -29 z: 47 tx: 2 ty: 2 tz: 2.5 text: ../data/textures/bedrock.png
+@ block: x: 13 y: -41 z: 18 tx: 7.5 ty: 7.5 tz: 2 text: ../data/textures/bedrock.png
+@ block: x: 6 y: -47 z: 20 tx: 4 ty: 7.5 tz: 4 text: ../data/textures/bedrock.png
+@ block: x: -6 y: -24 z: 14 tx: 4 ty: 3.5 tz: 4 text: ../data/textures/bedrock.png
+@ block: x: -10 y: -29 z: 19 tx: 4 ty: 3.5 tz: 4 text: ../data/textures/bedrock.png
+@ block: x: -12 y: -39 z: 20 tx: 4 ty: 6.5 tz: 4 text: ../data/textures/bedrock.png
+@ block: x: -1 y: -28 z: 10 tx: 2.5 ty: 2.5 tz: 4 text: ../data/textures/bedrock.png
+@ block: x: -40 y: -6 z: 36 tx: 3.5 ty: 3.5 tz: 1 text: ../data/textures/bedrock.png
+@ block: x: -40 y: -2 z: 36 tx: 1.5 ty: 1.5 tz: 3.5 text: ../data/textures/bedrock.png
+@ block: x: -40 y: 4 z: 36 tx: 1 ty: 1 tz: 5 text: ../data/textures/bedrock.png
+@ block: x: -22 y: 1 z: 68 tx: 2 ty: 2 tz: 3 text: ../data/textures/bedrock.png
+@ block: x: 46 y: -18 z: 4 tx: 4.5 ty: 3 tz: 3 text: ../data/textures/bedrock.png
+@ block: x: 22 y: -47 z: 16 tx: 2 ty: 2 tz: 1 text: ../data/textures/bedrock.png
+@ block: x: -36 y: -7 z: 27 tx: 5 ty: 7.5 tz: 1 text: ../data/textures/bedrock.png
+@ block: x: -36 y: -2 z: 27 tx: 3.5 ty: 3 tz: 3 text: ../data/textures/bedrock.png
+@ block: x: -38 y: -1 z: 30 tx: 1.5 ty: 3 tz: 3 text: ../data/textures/bedrock.png
+@ block: y: -1 z: 51 tx: 4 ty: 4 tz: 2 text: ../data/textures/bedrock.png
+@ bonus: y: -1 z: 55 t: 1 name: rez
+@ bonus: y: -1 z: 55 t: 1 name: nextphase

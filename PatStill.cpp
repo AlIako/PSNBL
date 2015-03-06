@@ -104,11 +104,18 @@ void PatStill::ini(double startZ, std::vector<Object*>* objects)
     (*m_objects)[ind]->setName("rez");
     (*m_objects)[ind]->ini();
     (*m_objects)[ind]->setPos(Vector3D(0,0,startZ+18));
+    //bonus nextphase
+    ind=(*m_objects).size();
+    (*m_objects).push_back(new Bonus());
+    (*m_objects)[ind]->setName("nextphase");
+    (*m_objects)[ind]->ini();
+    (*m_objects)[ind]->setPos(Vector3D(0,0,startZ+18));
 
 
     calculHighestZ();
     m_highestZ-=25;
     m_highestZ=startZ+5;
+    m_nextZ=m_highestZ+15;
 }
 
 

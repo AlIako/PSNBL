@@ -46,17 +46,24 @@ void Player::update(double functionTime)
         {
             if(m_colliding[i]->getType()=="bonus")
             {
-                m_colliding[i]->loseLife(m_colliding[i]->getLife());
-                if(Online::getInstance()!=NULL)
+                m_colliding[i]->loseLife(m_colliding[i]->getLife());//kill bonus
+                if(m_colliding[i]->getName()=="rez")
                 {
-                    infosSocket s;
-                    s.confirmationID=-1;
-                    s.type=10;
-                    s.variable[1]=m_colliding[i]->getPos().X;
-                    s.variable[2]=m_colliding[i]->getPos().Y;
-                    s.variable[3]=m_colliding[i]->getPos().Z;
+                    if(Online::getInstance()!=NULL)
+                    {
+                        infosSocket s;
+                        s.confirmationID=-1;
+                        s.type=10;
+                        s.variable[1]=m_colliding[i]->getPos().X;
+                        s.variable[2]=m_colliding[i]->getPos().Y;
+                        s.variable[3]=m_colliding[i]->getPos().Z;
 
-                    Online::getInstance()->sendSocket(s);
+                        Online::getInstance()->sendSocket(s);
+                    }
+                }
+                else if(m_colliding[i]->getName()=="rope")
+                {
+                    addSpell(new SpellRope());
                 }
             }
             else if(m_colliding[i]->getType()=="lava")
@@ -158,7 +165,7 @@ void Player::ini()
     }
 
     //spells
-    addSpell(new SpellRope());
+    //addSpell(new SpellRope());
     addSpell(new SpellJump());
     addSpell(new SpellLongJump());
     //addSpell(new SpellPullUp());

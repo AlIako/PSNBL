@@ -18,6 +18,7 @@ class Pattern
 
     void calculHighestZ();
     double getHighestZ() {return m_highestZ;}
+    double getNextZ() {return m_nextZ;}
     double getStartZ() {return m_startZ;}
     int getPID();
     bool finished() {return m_finished;}
@@ -36,6 +37,7 @@ class Pattern
     bool m_finished;
     double m_startZ;
     double m_highestZ;
+    double m_nextZ;//start Z for next pattern
 };
 
 #endif // PATTERN_H_INCLUDED

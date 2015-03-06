@@ -9,6 +9,7 @@
 #include "PatHookAround.h"
 #include "PatEasy.h"
 #include "PatNew.h"
+#include "PatJump.h"
 #include "Online.h"
 
 class Phase
@@ -52,6 +53,7 @@ class Phase
     double m_lavaspeed;
 
     double highestZ;
+    double nextZ;
 };
 
 

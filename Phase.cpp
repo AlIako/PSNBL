@@ -45,6 +45,7 @@ void Phase::ini(std::vector<Object*>* objects)
     if(m_lava==NULL)
         cerr<<"WARNING! lava not found"<<endl;
     highestZ=m_lava->getPos().Z+m_lava->getSize().Z;
+    nextZ=highestZ;
 
     if(!Online::getInstance()->inControl())
         m_name="waitingToReceive";
@@ -202,6 +203,7 @@ void Phase::iniMap()
             {
                 randomizer=myIntRand(0,400);
 
+                //addPatternToQueue(10);
                 addPatternToQueue(9);
                 //next pattern are random
                 /*if(randomizer>300)
@@ -332,6 +334,10 @@ void Phase::addPatternToQueue(int p)
     {
         m_patternQueue.push_back(new PatNew());
     }
+    else if(p==10)
+    {
+        m_patternQueue.push_back(new PatJump());
+    }
 
     iniLastPattern();
 }
@@ -342,8 +348,9 @@ void Phase::iniLastPattern()
     //ini those new patterns but dont start them yet
     if(m_patternQueue.size()>0)
     {
-        m_patternQueue[m_patternQueue.size()-1]->ini(highestZ,m_objects);
+        m_patternQueue[m_patternQueue.size()-1]->ini(nextZ,m_objects);
         highestZ=m_patternQueue[m_patternQueue.size()-1]->getHighestZ();
+        nextZ=m_patternQueue[m_patternQueue.size()-1]->getNextZ();
     }
 }
 

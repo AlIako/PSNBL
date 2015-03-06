@@ -28,7 +28,7 @@ void Map::update(double functionTime)
     updateMap();
 
     //objects
-    for(unsigned int i=0, count=m_objects.size();i<count;i++)
+    for(unsigned int i=0;i<m_objects.size();i++)
     {
         //update
         m_objects[i]->update(ft);
@@ -39,8 +39,8 @@ void Map::update(double functionTime)
         //if dead, delete from list
         if(m_objects[i]->getLife()<=0)
         {
-            //if a REZ bonus was taken, increase lava speed (phase is over)
-            if(m_objects[i]->getType()=="bonus" && m_objects[i]->getName()=="rez")
+            //if a NEXTPHASE bonus was taken, increase lava speed (phase is over)
+            if(m_objects[i]->getType()=="bonus" && m_objects[i]->getName()=="nextphase")
             {
                 increaseLavaSpeed();
             }
@@ -284,8 +284,8 @@ void Map::loadPat(string path)
             {
                 ind=m_objects.size();
                 m_objects.push_back(new Block());
-                m_objects[ind]->ini();
                 m_objects[ind]->readObj(&fichier1);
+                m_objects[ind]->ini();
 
                 //actually we dont want that one (walls)
                 if(m_objects[ind]->getSize().Z>=1000)
@@ -298,8 +298,8 @@ void Map::loadPat(string path)
             {
                 ind=m_objects.size();
                 m_objects.push_back(new Bonus());
-                m_objects[ind]->ini();
                 m_objects[ind]->readObj(&fichier1);
+                m_objects[ind]->ini();
             }
             fichier1 >> cur_read;
             befor_read=cur_read;
@@ -321,6 +321,15 @@ void Map::deleteLastObj()
     {
         delete m_objects[m_objects.size()-1];
         m_objects.pop_back();
+    }
+}
+
+
+void Map::translateAll(Vector3D t)
+{
+    for(unsigned int i=0;i<m_objects.size();i++)
+    {
+        m_objects[i]->setPos(m_objects[i]->getPos()+t);
     }
 }
 

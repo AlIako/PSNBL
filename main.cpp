@@ -18,7 +18,7 @@ int main ( int argc, char** argv )
 
 
     bool playGame=true;
-    playGame=false;
+    //playGame=false;
 
     if(playGame)
     {
