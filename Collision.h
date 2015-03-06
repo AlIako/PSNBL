@@ -1,5 +1,6 @@
 #ifndef COLLISION_H_INCLUDED
 #define COLLISION_H_INCLUDED
+class Collision;
 #include "Object.h"
 
 enum{COL_GRAVITY,COL_MOVEMENT_X,COL_MOVEMENT_Y};
@@ -19,7 +20,7 @@ class Collision
 
     void setObjects(std::vector<Object*>* v) {m_objects=v;}
 
-    void collide(Object* o){o->collide(m_colliding,m_types);}
+    void collide(Object* o);
 
     bool isCollisionType(int t);
     bool collision() {return m_colliding.size()>0;}

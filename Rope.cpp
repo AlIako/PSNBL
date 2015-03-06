@@ -103,9 +103,9 @@ void Rope::pullMe(Object* o)
     double distToOutside=(m_end-o->getPos()).length()-(m_distance-2+2);
 
     m_smallBoost=true;
+    Vector3D dirToEnd=(m_end-o->getPos()).normalize();
     if (distToOutside>0)// we're past the end of our rope -> pull the avatar back in
     {
-        Vector3D dirToEnd=(m_end-o->getPos()).normalize();
         Vector3D oldVel=o->getVel();
         double velNorm=oldVel.length();
         Vector3D newVel=o->getVel()+dirToEnd*ft/40*2;
@@ -117,10 +117,8 @@ void Rope::pullMe(Object* o)
 
 
         Vector3D rope=dirToEnd;
-        Vector3D vit=o->getVel();
+        Vector3D vit=o->getVel().normalize();
         Vector3D playerPos=o->getPos();
-
-        vit=vit.normalize();
         //trouver plan de vitesse/rope
         /*(rope.x-vit.x)*(x-playerPos.x) + (rope.y-vit.y)*(y-playerPos.y) + (rope.z-vit.z)*(z-playerPos.z) = 0
         (rope.x-vit.x)*x + (rope.y-vit.y)*y + (rope.z-vit.z)*z
@@ -173,7 +171,6 @@ void Rope::pullMe(Object* o)
         inter.Y =a2*c1 - c2*a1;
         inter.Z = a1*b2 - b1*a2;
 
-
         inter=inter.normalize();
 
         //choisir celui le plus proche de vitesse
@@ -188,7 +185,7 @@ void Rope::pullMe(Object* o)
         //Tracer::getInstance()->trace("rope","tan:"+newVel.toString(),300,0);
         std::stringstream ss;
         ss << "a1: "<< a1 <<", b1: " << b1 << ", c1: " << c1 << ", d1: " << d1;
-        Tracer::getInstance()->trace("rope",ss.str(),100,0);
+        //Tracer::getInstance()->trace("rope",ss.str(),100,0);
 
         /*std::stringstream ss2;
         ss2 << "a2: "<< a2 <<", b2: " << b2 << ", c2: " << c2 << ", d2: " << d2;
@@ -203,18 +200,31 @@ void Rope::pullMe(Object* o)
         newVel/=3.0;
 
         //apply
-
-        //o->setVel(Vector3D(0,0,0));
-        //o->setPos(o->getPos()+newVel);
-
-        //newVel+=o->getVel();
-        o->setVel(newVel);
-        o->setVel(o->getVel().normalize()*velNorm+rope.normalize()/50.0);
+        o->setVel(newVel.normalize()*velNorm);
+        //o->setVel((o->getVel()+newVel.normalize()*velNorm).normalize()*velNorm);
 
         if(m_smallBoost)//dont teleport back at first, we want the player to have a small boost
-            o->setPos(newPos);
+        {
+            //o->setPos(o->getPos()+rope*distToOutside);
+            Vector3D savePos=o->getPos();
+
+            o->setPos(o->getPos()+rope*distToOutside/200.0);
+
+            if(!Collision::getInstance()->testCollision(o))
+            {
+                setPos(newPos);
+                m_start=newPos;
+            }
+            else
+            {
+                //Tracer::getInstance()->trace("rope","setpos denied.");
+                o->setPos(savePos);
+            }
+        }
     }
     else m_smallBoost=true;//player back in->small boost finished
+
+    //o->setVel(o->getVel()+ft*dirToEnd/100.0);
 }
 void Rope::pullUp()
 {

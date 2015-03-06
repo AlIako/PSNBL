@@ -142,6 +142,10 @@ bool Collision::isCollisionType(int t)
 
 
 
+void Collision::collide(Object* o)
+{
+    o->collide(m_colliding,m_types);
+}
 
 
 

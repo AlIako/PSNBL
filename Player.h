@@ -37,6 +37,8 @@ class Player: public Object
     void move();
     void moveXY(Vector3D* vel);
 
+    void updateRope();
+
     virtual void resurrect();
 
     //set

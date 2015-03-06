@@ -23,6 +23,7 @@ class Rope: public Object
 
     bool isHooked() {return m_hooked;}
 
+    virtual void setPos(Vector3D v) {m_position=v;m_start=m_position;}
     double getDistance(){return m_distance;}
 
     private:

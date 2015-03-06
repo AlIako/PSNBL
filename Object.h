@@ -7,6 +7,8 @@
 #include "Online.h"
 #include "Gsounds.h"
 #include "Tracer.h"
+class Object;
+#include "Collision.h"
 
 class Object
 {
@@ -43,7 +45,7 @@ class Object
     virtual string writeObj();
 
     //set
-    void setPos(Vector3D v) {m_position=v;}
+    virtual void setPos(Vector3D v) {m_position=v;}
     void setRot(Vector3D v) {m_rotation=v;}
     void setDir(Vector3D v) {m_direction=v;}
     void setSize(Vector3D v) {m_size=v;}

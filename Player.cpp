@@ -91,6 +91,17 @@ void Player::update(double functionTime)
     if(m_onTopOf!=NULL)
         m_jumping=false;
 }
+
+void Player::updateRope()
+{
+    if(m_rope!=NULL)
+    {
+        if(m_rope->isHooked())
+            m_rope->setPos(m_position);
+    }
+}
+
+
 void Player::jump()
 {
     if(m_life>0)

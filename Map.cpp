@@ -62,6 +62,8 @@ void Map::update(double functionTime)
 
         applyGravity((*playerList)[0]);
         applyPhysics((*playerList)[0]);
+
+        (*playerList)[0]->updateRope();
     }
 }
 
