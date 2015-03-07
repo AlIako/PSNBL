@@ -15,7 +15,6 @@ void Game::ini()
 
     //video
     m_video=Video::getInstance();
-    m_video->ini();
 
     //sound
     Gsounds::getInstance()->ini();
@@ -71,7 +70,9 @@ void Game::ini()
     m_mode="play";
     m_camera.setMode(m_mode);
 
-
+    SDL_ShowCursor(SDL_DISABLE);//pas de curseur
+    SDL_WM_GrabInput(SDL_GRAB_ON);
+    grabCursor=true;
 }
 
 void Game::playPlayerSound(Player* p,string sound)
@@ -1068,8 +1069,6 @@ void Game::close()
     }
     m_online->close();
 
-    Gsounds::getInstance()->close();
-    m_video->close();
 
     cerr<<"Exited cleanly.";
 }

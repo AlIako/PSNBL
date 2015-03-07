@@ -1,6 +1,4 @@
-#include "Game.h"
-#include "Editor.h"
-
+#include "Menu.h"
 /*
 //template
 template <typename T>
@@ -16,8 +14,14 @@ int main ( int argc, char** argv )
     cerr<<"Start main"<<endl;
     srand (time(NULL));
 
+    Video* m_video=Video::getInstance();
+    m_video->ini();
 
-    bool playGame=true;
+    Menu menu;
+    menu.ini();
+    menu.play();
+
+   /* bool playGame=true;
     //playGame=false;
 
     if(playGame)
@@ -29,7 +33,10 @@ int main ( int argc, char** argv )
     {
         Editor Editor;
         Editor.play();
-    }
+    }*/
+
+    Gsounds::getInstance()->close();
+    m_video->close();
 
     return 0;
 }
