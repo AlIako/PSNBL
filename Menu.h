@@ -4,7 +4,6 @@
 #include "Editor.h"
 #include "Object2D.h"
 
-
 class Menu
 {
 public:
@@ -31,6 +30,8 @@ public:
 
         GTime since_last_frame;
         double ft;//function time
+
+        string curMenu;
 };
 
 #endif // MENU_H_INCLUDED

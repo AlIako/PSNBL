@@ -4,6 +4,7 @@
 Object2D::Object2D()
 {
     m_texture=NULL;
+    m_texture_hover=NULL;
     m_position=Vector3D(0.5,0.5,0);
     m_size=Vector3D(0.1,0.1,0);
 
@@ -25,8 +26,16 @@ void Object2D::draw()
 
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
-    if(m_texture)
-        m_texture->bind();
+
+    if(m_hover && m_texture_hover)
+    {
+        m_texture_hover->bind();
+    }
+    else
+    {
+        if(m_texture)
+            m_texture->bind();
+    }
 
     glColor4ub(255,255,255,255);
     glBegin(GL_QUADS);
@@ -52,7 +61,9 @@ void Object2D::update(double functionTime)
 
 void Object2D::updateCursor(Vector3D pos)
 {
-
+    m_hover=false;
+    if(clic(pos))
+        m_hover=true;
 }
 
 
@@ -67,7 +78,7 @@ bool Object2D::clic(Vector3D pos)
 
     pos.X/=Video::getInstance()->getWidth();
     pos.Y/=Video::getInstance()->getHeight();
-    cerr<<"clic on: "<<pos.X<<", "<<pos.Y<<endl;
+    //cerr<<"clic on: "<<pos.X<<", "<<pos.Y<<endl;
 
     if(pos.X>m_position.X && pos.X<m_position.X+m_size.X &&
        pos.Y>m_position.Y && pos.Y<m_position.Y+m_size.Y)

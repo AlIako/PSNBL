@@ -17,6 +17,7 @@ class Object2D
 
 
         void setTexture(Texture* t){m_texture=t;}
+        void setTextureHover(Texture* t){m_texture_hover=t;}
         void setPos(Vector3D v) {m_position=v;}
         void setSize(Vector3D v) {m_size=v;}
         void setClicable(bool c){m_clicable=c;}
@@ -28,6 +29,8 @@ class Object2D
 
     private:
         Texture* m_texture;
+        Texture* m_texture_hover;
+
         Vector3D m_position;
         Vector3D m_size;
 

@@ -1,4 +1,13 @@
 #include "Menu.h"
+#include "MenuOptions.h"
+#include "MenuStart.h"
+#include "MenuMultiplayer.h"
+#include "MenuHost.h"
+#include "MenuJoin.h"
+#include "MenuServers.h"
+#include "MenuEditor.h"
+#include "MenuAudio.h"
+#include "MenuVideo.h"
 
 Menu::Menu()
 {
@@ -16,66 +25,8 @@ void Menu::ini()
     m_bg.setPos(Vector3D(0,0,0));
     m_bg.setSize(Vector3D(1,1,0));
 
-    //buttons
-    m_buttons.clear();
-
-    GTexture::getInstance()->addTexture("../data/textures/interface/title_hq.png");
-    GTexture::getInstance()->addTexture("../data/textures/interface/single_hq.png");
-    GTexture::getInstance()->addTexture("../data/textures/interface/multi_hq.png");
-    GTexture::getInstance()->addTexture("../data/textures/interface/editor_hq.png");
-    GTexture::getInstance()->addTexture("../data/textures/interface/options_hq.png");
-    GTexture::getInstance()->addTexture("../data/textures/interface/quit_hq.png");
-    GTexture::getInstance()->addTexture("../data/textures/interface/linkocraftcom_hq.png");
-
-    unsigned int ind=m_buttons.size();
-    m_buttons.push_back(Object2D());
-    m_buttons[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/title_hq.png"));
-    m_buttons[ind].setPos(Vector3D(0.25,0.6,0));
-    m_buttons[ind].setSize(Vector3D(0.5,0.4,0));
-    m_buttons[ind].setName("title");
-
-    ind=m_buttons.size();
-    m_buttons.push_back(Object2D());
-    m_buttons[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/single_hq.png"));
-    m_buttons[ind].setPos(Vector3D(0.25,0.5,0));
-    m_buttons[ind].setSize(Vector3D(0.5,0.075,0));
-    m_buttons[ind].setName("single");
-
-    ind=m_buttons.size();
-    m_buttons.push_back(Object2D());
-    m_buttons[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/multi_hq.png"));
-    m_buttons[ind].setPos(Vector3D(0.25,0.4,0));
-    m_buttons[ind].setSize(Vector3D(0.5,0.075,0));
-    m_buttons[ind].setName("multi");
-
-    ind=m_buttons.size();
-    m_buttons.push_back(Object2D());
-    m_buttons[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/editor_hq.png"));
-    m_buttons[ind].setPos(Vector3D(0.25,0.3,0));
-    m_buttons[ind].setSize(Vector3D(0.5,0.075,0));
-    m_buttons[ind].setName("editor");
-
-    ind=m_buttons.size();
-    m_buttons.push_back(Object2D());
-    m_buttons[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/options_hq.png"));
-    m_buttons[ind].setPos(Vector3D(0.25,0.2,0));
-    m_buttons[ind].setSize(Vector3D(0.5,0.075,0));
-    m_buttons[ind].setName("options");
-
-    ind=m_buttons.size();
-    m_buttons.push_back(Object2D());
-    m_buttons[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/linkocraftcom_hq.png"));
-    m_buttons[ind].setPos(Vector3D(0.04,0.04,0));
-    m_buttons[ind].setSize(Vector3D(0.3,0.03,0));
-    m_buttons[ind].setName("linkocraftcom");
-
-    ind=m_buttons.size();
-    m_buttons.push_back(Object2D());
-    m_buttons[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/quit_hq.png"));
-    m_buttons[ind].setPos(Vector3D(0.76,0.04,0));
-    m_buttons[ind].setSize(Vector3D(0.2,0.075,0));
-    m_buttons[ind].setName("quit");
-
+    curMenu="start";
+    menuStart(&m_buttons);
 
     SDL_ShowCursor(SDL_ENABLE);//curseur
     SDL_WM_GrabInput(SDL_GRAB_OFF);
@@ -111,7 +62,10 @@ void Menu::play()
                     for(unsigned int i=0;i<m_buttons.size();i++)
                     {
                         if(m_buttons[i].clic(Vector3D(event.button.x,event.button.y,0)))
+                        {
                             clicOn(m_buttons[i].getName());
+                            break;
+                        }
                     }
                 }
                 if(event.button.button==SDL_BUTTON_RIGHT)
@@ -141,7 +95,7 @@ void Menu::play()
                     case SDLK_RETURN:
                     break;
                     case SDLK_ESCAPE:
-                    playLoop = false;
+                        clicOn("back");
                     break;
                     default:
                     break;
@@ -190,6 +144,11 @@ void Menu::draw()
 
 void Menu::clicOn(string name)
 {
+    if(name=="start")
+    {
+        curMenu="start";
+        menuStart(&m_buttons);
+    }
     if(name=="single")
     {
         game.play();
@@ -198,10 +157,67 @@ void Menu::clicOn(string name)
     }
     if(name=="multi")
     {
-        game.play();
-        SDL_ShowCursor(SDL_ENABLE);//curseur
-        SDL_WM_GrabInput(SDL_GRAB_OFF);
+        curMenu=name;
+        menuMultiplayer(&m_buttons);
     }
+    if(name=="editor")
+    {
+        curMenu=name;
+        menuEditor(&m_buttons);
+    }
+
+    if(name=="options")
+    {
+        curMenu=name;
+        menuOptions(&m_buttons);
+    }
+    if(name=="audio")
+    {
+        curMenu=name;
+        menuAudio(&m_buttons);
+    }
+    if(name=="video")
+    {
+        curMenu=name;
+        menuVideo(&m_buttons);
+    }
+
+    if(name=="host")
+    {
+        curMenu=name;
+        menuHost(&m_buttons);
+    }
+    if(name=="join")
+    {
+        curMenu=name;
+        menuJoin(&m_buttons);
+    }
+    if(name=="servers")
+    {
+        curMenu=name;
+        menuServers(&m_buttons);
+    }
+
+    if(name=="back")
+    {
+        if(curMenu=="video" || curMenu=="audio")
+        {
+            curMenu="options";
+            menuOptions(&m_buttons);
+        }
+        else if(curMenu=="start")
+        {
+            playLoop=false;
+        }
+        else
+        {
+            curMenu="start";
+            menuStart(&m_buttons);
+        }
+    }
+
+
+
     if(name=="quit")
     {
         playLoop=false;
