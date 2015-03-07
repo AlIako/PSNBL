@@ -20,8 +20,21 @@ int main ( int argc, char** argv )
     m_video->ini();
 
     Menu menu;
-    menu.ini();
-    menu.play();
+
+    string nextCommand="play";
+
+    while(nextCommand!="quit")
+    {
+        menu.ini();
+        menu.play();
+        nextCommand=menu.command;
+
+        if(nextCommand=="play")
+        {
+            Game game;
+            game.play();
+        }
+    }
 
    /* bool playGame=true;
     //playGame=false;

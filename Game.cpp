@@ -16,7 +16,7 @@ void Game::ini()
     //video
     m_video=Video::getInstance();
 
-
+    Gsounds::getInstance()->loads();
 
 
     //player ini
@@ -1066,6 +1066,7 @@ void Game::close()
     }
     m_online->close();
 
+    Gsounds::getInstance()->freeAll();
 
     cerr<<"Exited cleanly.";
 }

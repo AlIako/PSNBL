@@ -15,6 +15,7 @@ public:
 
     void clicOn(string name, bool leftClic);
 
+    string command;
 
     private:
         freetype::font_data m_font;
@@ -26,8 +27,6 @@ public:
         double lastCursorX;
         double lastCursorY;
 
-        Game game;
-        //Editor Editor;
 
         Object2D m_bg;
         vector<Object2D> m_buttons;

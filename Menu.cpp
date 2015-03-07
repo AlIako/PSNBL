@@ -11,12 +11,14 @@
 
 Menu::Menu()
 {
-
 }
 
 
 void Menu::ini()
 {
+
+    command="quit";
+
     m_video=Video::getInstance();
 
     //sound
@@ -138,6 +140,8 @@ void Menu::play()
 
         SDL_Delay(10);
     }
+
+    Gsounds::getInstance()->freeAll();
 }
 
 
@@ -170,9 +174,8 @@ void Menu::clicOn(string name, bool leftClic)
     }
     if(leftClic && name=="single")
     {
-        game.play();
-        SDL_ShowCursor(SDL_ENABLE);//curseur
-        SDL_WM_GrabInput(SDL_GRAB_OFF);
+        command="play";
+        playLoop=false;
     }
     if(leftClic && name=="multi")
     {
@@ -253,6 +256,7 @@ void Menu::clicOn(string name, bool leftClic)
 
     if(leftClic && name=="back")
     {
+        command="quit";
         if(curMenu=="video" || curMenu=="audio")
         {
             curMenu="options";
