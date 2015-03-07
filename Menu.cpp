@@ -19,6 +19,14 @@ void Menu::ini()
 {
     m_video=Video::getInstance();
 
+    //sound
+    Gsounds::getInstance()->ini();
+    Gsounds::getInstance()->loads();
+
+    Gsounds::getInstance()->addMusic("../data/music/menu_theme.mp3");
+    Gsounds::getInstance()->play("../data/music/menu_theme.mp3");
+
+
     m_font.init("../data/fonts/arial.TTF", 16);
 
 
@@ -191,12 +199,16 @@ void Menu::clicOn(string name, bool leftClic)
     {
         Config::getInstance()->toggleSound();
         Config::getInstance()->save();
+        Gsounds::getInstance()->on=Config::getInstance()->sound;
+        Gsounds::getInstance()->pauseSounds(Gsounds::getInstance()->on);
         menuAudio(&m_buttons,&m_font);
     }
     if(leftClic && name=="music")
     {
         Config::getInstance()->toggleMusic();
         Config::getInstance()->save();
+        Gsounds::getInstance()->music=Config::getInstance()->music;
+        Gsounds::getInstance()->pauseMusic(Gsounds::getInstance()->music);
         menuAudio(&m_buttons,&m_font);
     }
     if(leftClic && name=="video")
@@ -273,6 +285,8 @@ void Menu::clicOn(string name, bool leftClic)
 
     for(unsigned int i=0;i<m_buttons.size();i++)
         m_buttons[i].updateCursor(Vector3D(lastCursorX,lastCursorY,0));
+
+    Gsounds::getInstance()->play("../data/sounds/hover.mp3");
 }
 
 

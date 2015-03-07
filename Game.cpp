@@ -16,9 +16,6 @@ void Game::ini()
     //video
     m_video=Video::getInstance();
 
-    //sound
-    Gsounds::getInstance()->ini();
-    Gsounds::getInstance()->loads();
 
 
 

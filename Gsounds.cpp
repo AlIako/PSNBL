@@ -49,6 +49,7 @@ void Gsounds::play(std::string nom)
         if(sounds[i]!=NULL && sounds[i]->getChemin()==nom )
             if(on || sounds[i]->getType()!="son")
             {
+                cerr<<"playn"<<endl;
                 sounds[i]->play();
                 if(sounds[i]->getType()=="music" && !music)
                     sounds[i]->pause(music);
@@ -106,6 +107,8 @@ void Gsounds::loads()
     addSound("../data/sounds/lavabubble.wav");
     addSound("../data/sounds/fire.mp3");
     addSound("../data/sounds/metal_impact.mp3");
+
+    addSound("../data/sounds/hover.mp3");
 }
 
 void Gsounds::addSound(std::string chemin)

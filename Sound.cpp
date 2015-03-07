@@ -108,6 +108,7 @@ int Sound::getLength()
 }
 void Sound::pause(bool p)
 {
+    cerr<<"pausing "<<p<<endl;
     /*if(m_type=="son")
     {
         FMOD_CHANNELGROUP *canal;
