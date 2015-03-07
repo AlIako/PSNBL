@@ -361,9 +361,6 @@ void Game::play()
                     s.type=3;
                     m_online->sendSocket(s);//add socket to queue
                     break;
-                    case SDLK_ESCAPE:
-                    playLoop = false;
-                    break;
 
                     case SDLK_LSHIFT:
                         playerList[0]->setGasing(true);
@@ -384,6 +381,9 @@ void Game::play()
                     case SDLK_RETURN:
                     if(m_chat.active())
                         m_chat.enterUp();
+                    break;
+                    case SDLK_ESCAPE:
+                    playLoop = false;
                     break;
                     case SDLK_a:
                     playerList[0]->pressKey(LEFT,false);

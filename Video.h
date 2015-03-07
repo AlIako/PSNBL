@@ -10,6 +10,8 @@
 #include "Fog.h"
 #include "utilFunctions.h"
 
+using namespace std;
+
 class Video
 {
     public:
@@ -26,6 +28,8 @@ class Video
 
     void beforeDraw();
     void afterDraw();
+
+    string getStrHD();
 
     Fog* getFog() {return &fog;}
 
@@ -51,6 +55,8 @@ class Video
     int m_fov;//field of view
 
     Fog fog;
+
+    bool m_hd;
 };
 
 #endif // VIDEO_H_INCLUDED

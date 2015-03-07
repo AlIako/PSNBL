@@ -19,6 +19,7 @@ Video::Video()
 
 void Video::ini()
 {
+    m_hd=false;
     m_largeur=800;
     m_hauteur=600;
     m_fullscreen=false;
@@ -44,6 +45,10 @@ void Video::ini()
                 m_hauteur=cur_int;
 
                 std::cerr<<"resolution: "<<m_largeur<<" "<< m_hauteur<<std::endl;
+
+                if(m_largeur>1200)
+                    m_hd=true;
+                else m_hd=false;
             }
             else if(read_name=="fullscreen")
             {
@@ -229,6 +234,12 @@ void Video::afterDraw()
 
 
 
+string Video::getStrHD()
+{
+    if(m_hd)
+        return "hq";
+    return "lq";
+}
 
 
 

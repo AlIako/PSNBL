@@ -14,6 +14,8 @@ public:
     void draw();
     void updateTimes();
 
+    void clicOn(string name);
+
 
     private:
         Video* m_video;

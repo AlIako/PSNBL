@@ -13,7 +13,7 @@ class Object2D
         void draw();
         void update(double functionTime);
         void updateCursor(Vector3D pos);
-        void clic(Vector3D pos);
+        bool clic(Vector3D pos);
 
 
         void setTexture(Texture* t){m_texture=t;}
@@ -22,6 +22,9 @@ class Object2D
         void setClicable(bool c){m_clicable=c;}
         void setHover(bool h){m_hover=h;}
         void setClicked(bool c){m_clicked=c;}
+        void setName(std::string s) {m_name=s;}
+
+        std::string getName() {return m_name;}
 
     private:
         Texture* m_texture;
@@ -31,6 +34,8 @@ class Object2D
         bool m_clicable;
         bool m_hover;
         bool m_clicked;
+
+        std::string m_name;
 };
 
 
