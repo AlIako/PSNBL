@@ -11,6 +11,8 @@ Object2D::Object2D()
     m_clicable=false;
     m_hover=false;
     m_clicked=false;
+
+    m_hasText=false;
 }
 
 
@@ -18,37 +20,46 @@ Object2D::Object2D()
 
 void Object2D::draw()
 {
-    Video::getInstance()->matrixOrtho2D();
-
-    glDisable(GL_LIGHTING);
-    glDisable(GL_DEPTH_TEST);
-    glEnable(GL_TEXTURE_2D);
-
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_BLEND);
-
-    if(m_hover && m_texture_hover)
+    if(m_hasText)
     {
-        m_texture_hover->bind();
+        m_text.setX(m_position.X);
+        m_text.setY(m_position.Y);
+        m_text.draw(255,255,255);
     }
     else
     {
-        if(m_texture)
-            m_texture->bind();
+        Video::getInstance()->matrixOrtho2D();
+
+        glDisable(GL_LIGHTING);
+        glDisable(GL_DEPTH_TEST);
+        glEnable(GL_TEXTURE_2D);
+
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glEnable(GL_BLEND);
+
+        if(m_hover && m_texture_hover)
+        {
+            m_texture_hover->bind();
+        }
+        else
+        {
+            if(m_texture)
+                m_texture->bind();
+        }
+
+        glColor4ub(255,255,255,255);
+        glBegin(GL_QUADS);
+            glTexCoord2d(0,0);    glVertex2d(m_position.X,m_position.Y);
+            glTexCoord2d(0,1);    glVertex2d(m_position.X,m_position.Y+m_size.Y);
+            glTexCoord2d(1,1);    glVertex2d(m_position.X+m_size.X,m_position.Y+m_size.Y);
+            glTexCoord2d(1,0);    glVertex2d(m_position.X+m_size.X,m_position.Y);
+        glEnd();
+
+        glDisable(GL_BLEND);
+
+        glEnable(GL_DEPTH_TEST);
+        Video::getInstance()->matrixProjection();
     }
-
-    glColor4ub(255,255,255,255);
-    glBegin(GL_QUADS);
-        glTexCoord2d(0,0);    glVertex2d(m_position.X,m_position.Y);
-        glTexCoord2d(0,1);    glVertex2d(m_position.X,m_position.Y+m_size.Y);
-        glTexCoord2d(1,1);    glVertex2d(m_position.X+m_size.X,m_position.Y+m_size.Y);
-        glTexCoord2d(1,0);    glVertex2d(m_position.X+m_size.X,m_position.Y);
-    glEnd();
-
-    glDisable(GL_BLEND);
-
-    glEnable(GL_DEPTH_TEST);
-    Video::getInstance()->matrixProjection();
 }
 
 
@@ -87,6 +98,12 @@ bool Object2D::clic(Vector3D pos)
 }
 
 
+void Object2D::addText(string txt, freetype::font_data* font)
+{
+    m_hasText=true;
+    m_text.ini(Video::getInstance()->getWidth(),Video::getInstance()->getHeight(),font);
+    m_text.setTexte(txt);
+}
 
 
 

@@ -9,6 +9,8 @@
 #include <vector>
 #include "Fog.h"
 #include "utilFunctions.h"
+#include "Config.h"
+#include "Vector3D.h"
 
 using namespace std;
 
@@ -22,6 +24,9 @@ class Video
     void close();
 
     GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path);
+
+    Vector3D nextResolution(int width, int height);
+    Vector3D previousResolution(int width, int height);
 
     void matrixProjection();
     void matrixOrtho2D();
@@ -57,6 +62,8 @@ class Video
     Fog fog;
 
     bool m_hd;
+
+    vector<Vector3D> m_resolutions;
 };
 
 #endif // VIDEO_H_INCLUDED

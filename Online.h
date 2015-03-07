@@ -1,7 +1,6 @@
 #ifndef ONLINE_H_INCLUDED
 #define ONLINE_H_INCLUDED
-#include <fstream>
-#include <iostream>
+#include "Config.h"
 #include "Client.h"
 #include "Server.h"
 #define RECEIVE_SOCKET_HANDLE_PER_FRAME 10

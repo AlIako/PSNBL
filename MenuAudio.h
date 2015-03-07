@@ -3,7 +3,7 @@
 #include "Object2D.h"
 #include <vector>
 
-void menuAudio(vector<Object2D>* b)
+void menuAudio(vector<Object2D>* b,freetype::font_data* font)
 {
     b->clear();
 
@@ -26,11 +26,31 @@ void menuAudio(vector<Object2D>* b)
 
     ind=(*b).size();
     (*b).push_back(Object2D());
+    (*b)[ind].setPos(Vector3D(0.77,0.525,0));
+    if(Config::getInstance()->music)
+        (*b)[ind].addText("on",font);
+    else
+        (*b)[ind].addText("off",font);
+    (*b)[ind].setName("musicon");
+
+    ind=(*b).size();
+    (*b).push_back(Object2D());
     (*b)[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/sound_hq.png"));
     (*b)[ind].setTextureHover(GTexture::getInstance()->getTexture("../data/textures/interface/sound_hover_hq.png"));
     (*b)[ind].setPos(Vector3D(0.25,0.4,0));
     (*b)[ind].setSize(Vector3D(0.5,0.075,0));
     (*b)[ind].setName("sound");
+
+    ind=(*b).size();
+    (*b).push_back(Object2D());
+    (*b)[ind].setPos(Vector3D(0.77,0.425,0));
+
+    if(Config::getInstance()->sound)
+        (*b)[ind].addText("on",font);
+    else
+        (*b)[ind].addText("off",font);
+
+    (*b)[ind].setName("soundon");
 
 
 

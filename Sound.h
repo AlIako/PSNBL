@@ -5,6 +5,7 @@
 #include <string>
 #include <fmodex/fmod.h>
 #include "Vector3D.h"
+#include "Config.h"
 
 using namespace std;
 

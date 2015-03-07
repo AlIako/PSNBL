@@ -13,19 +13,25 @@ public:
     void draw();
     void updateTimes();
 
-    void clicOn(string name);
+    void clicOn(string name, bool leftClic);
 
 
     private:
+        freetype::font_data m_font;
+
         Video* m_video;
 
         bool playLoop;
+
+        double lastCursorX;
+        double lastCursorY;
 
         Game game;
         //Editor Editor;
 
         Object2D m_bg;
         vector<Object2D> m_buttons;
+        vector<Texte> m_texts;
 
 
         GTime since_last_frame;

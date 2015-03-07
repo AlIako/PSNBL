@@ -201,67 +201,18 @@ void Online::update()
 
 void Online::readMultiplayerFile()
 {
-    ifstream file("config.ini", ios::in);
 
-    if(file)
-    {
-        std::string befor_read="",read_name="",read_name_before="";
-        std::string cur_read="";
-        int cur_int=0;
+    m_onlineName=Config::getInstance()->name;
+    m_ip=Config::getInstance()->ip;
+    m_port=Config::getInstance()->port;
 
-        while(!file.eof())
-        {
-            read_name=cur_read.substr(0,cur_read.size()-1);//enleve le ":"
+    if(Config::getInstance()->mode.find("server")!=string::npos)
+        m_server=true;
+    else m_server=false;
 
-            if(read_name=="name")
-            {
-                file >> cur_read;
-                m_onlineName=cur_read;
-                cerr<<"name: "<<cur_read<<endl;
-            }
-            else if(read_name=="ip")
-            {
-                file >> cur_read;
-                m_ip=cur_read;
-                cerr<<"ip: "<<cur_read<<endl;
-            }
-            else if(read_name_before=="port")
-            {
-                file >> cur_int;
-                m_port=cur_int;
-                cerr<<"port: "<<cur_int<<endl;
-            }
-            else if(read_name=="mode")
-            {
-                file >> cur_read;
-                cerr<<"mode: "<<cur_read<<endl;
-
-                if(cur_read.find("server")!=string::npos)
-                    m_server=true;
-                else m_server=false;
-            }
-            else if(read_name=="protocol")
-            {
-                file >> cur_read;
-                cerr<<"protocol: "<<cur_read<<endl;
-
-                if(cur_read.find("tcp")!=string::npos)
-                    m_tcp=true;
-                else m_tcp=false;
-            }
-
-            file >> cur_read;
-            befor_read=cur_read;
-            read_name_before=befor_read.substr(0,befor_read.size()-1);//enleve le ":"
-
-        }
-
-        cerr<<endl;
-        file.close();
-    }
-    else
-        cerr << "can't open file (multiplayer settings)" << endl;
-
+    if(Config::getInstance()->mode.find("tcp")!=string::npos)
+        m_tcp=true;
+    else m_tcp=false;
 }
 
 int Online::nextConfirmationID()

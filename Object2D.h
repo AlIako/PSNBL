@@ -4,7 +4,7 @@
 #include "Vector3D.h"
 #include "GTexture.h"
 #include <vector>
-
+#include "Texte.h"
 
 class Object2D
 {
@@ -15,6 +15,7 @@ class Object2D
         void updateCursor(Vector3D pos);
         bool clic(Vector3D pos);
 
+        void addText(string txt, freetype::font_data* font);
 
         void setTexture(Texture* t){m_texture=t;}
         void setTextureHover(Texture* t){m_texture_hover=t;}
@@ -39,6 +40,9 @@ class Object2D
         bool m_clicked;
 
         std::string m_name;
+
+        bool m_hasText;
+        Texte m_text;
 };
 
 

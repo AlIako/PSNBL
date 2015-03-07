@@ -19,6 +19,9 @@ void Menu::ini()
 {
     m_video=Video::getInstance();
 
+    m_font.init("../data/fonts/arial.TTF", 16);
+
+
     string txtPath="../data/textures/interface/bg_"+Video::getInstance()->getStrHD()+".jpg";
     GTexture::getInstance()->addTexture(txtPath);
     m_bg.setTexture(GTexture::getInstance()->getTexture(txtPath));
@@ -50,10 +53,10 @@ void Menu::play()
                 break;
 
                 case SDL_MOUSEMOTION:
+                    lastCursorX=event.button.x;
+                    lastCursorY=event.button.y;
                     for(unsigned int i=0;i<m_buttons.size();i++)
-                    {
                         m_buttons[i].updateCursor(Vector3D(event.button.x,event.button.y,0));
-                    }
                 break;
 
                 case SDL_MOUSEBUTTONUP:
@@ -63,13 +66,21 @@ void Menu::play()
                     {
                         if(m_buttons[i].clic(Vector3D(event.button.x,event.button.y,0)))
                         {
-                            clicOn(m_buttons[i].getName());
+                            clicOn(m_buttons[i].getName(),true);
                             break;
                         }
                     }
                 }
                 if(event.button.button==SDL_BUTTON_RIGHT)
                 {
+                    for(unsigned int i=0;i<m_buttons.size();i++)
+                    {
+                        if(m_buttons[i].clic(Vector3D(event.button.x,event.button.y,0)))
+                        {
+                            clicOn(m_buttons[i].getName(),false);
+                            break;
+                        }
+                    }
                 }
                 break;
 
@@ -95,7 +106,7 @@ void Menu::play()
                     case SDLK_RETURN:
                     break;
                     case SDLK_ESCAPE:
-                        clicOn("back");
+                        clicOn("back",true);
                     break;
                     default:
                     break;
@@ -142,63 +153,93 @@ void Menu::draw()
     m_video->afterDraw();
 }
 
-void Menu::clicOn(string name)
+void Menu::clicOn(string name, bool leftClic)
 {
-    if(name=="start")
+    if(leftClic && name=="start")
     {
         curMenu="start";
         menuStart(&m_buttons);
     }
-    if(name=="single")
+    if(leftClic && name=="single")
     {
         game.play();
         SDL_ShowCursor(SDL_ENABLE);//curseur
         SDL_WM_GrabInput(SDL_GRAB_OFF);
     }
-    if(name=="multi")
+    if(leftClic && name=="multi")
     {
         curMenu=name;
         menuMultiplayer(&m_buttons);
     }
-    if(name=="editor")
+    if(leftClic && name=="editor")
     {
         curMenu=name;
         menuEditor(&m_buttons);
     }
 
-    if(name=="options")
+    if(leftClic && name=="options")
     {
         curMenu=name;
         menuOptions(&m_buttons);
     }
-    if(name=="audio")
+    if(leftClic && name=="audio")
     {
         curMenu=name;
-        menuAudio(&m_buttons);
+        menuAudio(&m_buttons,&m_font);
     }
-    if(name=="video")
+    if(leftClic && name=="sound")
+    {
+        Config::getInstance()->toggleSound();
+        Config::getInstance()->save();
+        menuAudio(&m_buttons,&m_font);
+    }
+    if(leftClic && name=="music")
+    {
+        Config::getInstance()->toggleMusic();
+        Config::getInstance()->save();
+        menuAudio(&m_buttons,&m_font);
+    }
+    if(leftClic && name=="video")
     {
         curMenu=name;
-        menuVideo(&m_buttons);
+        menuVideo(&m_buttons,&m_font);
+    }
+    if(leftClic && name=="fullscreen")
+    {
+        Config::getInstance()->toggleFullscreen();
+        Config::getInstance()->save();
+        menuVideo(&m_buttons,&m_font);
+    }
+    if(name=="resolution")
+    {
+        Vector3D next=Vector3D(0,0,0);
+        if(leftClic)
+            next=Video::getInstance()->nextResolution(Config::getInstance()->width,Config::getInstance()->height);
+        else next=Video::getInstance()->previousResolution(Config::getInstance()->width,Config::getInstance()->height);
+
+        Config::getInstance()->width=next.X;
+        Config::getInstance()->height=next.Y;
+        Config::getInstance()->save();
+        menuVideo(&m_buttons,&m_font);
     }
 
-    if(name=="host")
+    if(leftClic && name=="host")
     {
         curMenu=name;
         menuHost(&m_buttons);
     }
-    if(name=="join")
+    if(leftClic && name=="join")
     {
         curMenu=name;
         menuJoin(&m_buttons);
     }
-    if(name=="servers")
+    if(leftClic && name=="servers")
     {
         curMenu=name;
         menuServers(&m_buttons);
     }
 
-    if(name=="back")
+    if(leftClic && name=="back")
     {
         if(curMenu=="video" || curMenu=="audio")
         {
@@ -218,15 +259,20 @@ void Menu::clicOn(string name)
 
 
 
-    if(name=="quit")
+    if(leftClic && name=="quit")
     {
         playLoop=false;
     }
-    if(name=="linkocraftcom")
+    if(leftClic && name=="linkocraftcom")
     {
         char url[255]="www.linkocraft.com";
         ShellExecute(NULL, "open", url,NULL, NULL, SW_SHOWNORMAL);
     }
+
+
+
+    for(unsigned int i=0;i<m_buttons.size();i++)
+        m_buttons[i].updateCursor(Vector3D(lastCursorX,lastCursorY,0));
 }
 
 

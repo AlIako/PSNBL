@@ -14,6 +14,8 @@ int main ( int argc, char** argv )
     cerr<<"Start main"<<endl;
     srand (time(NULL));
 
+    Config::getInstance()->load();
+
     Video* m_video=Video::getInstance();
     m_video->ini();
 

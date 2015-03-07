@@ -25,58 +25,10 @@ void Video::ini()
     m_fullscreen=false;
     m_fov=90;
 
-    std::ifstream file("config.ini", std::ios::in);
-
-    if(file)
-    {
-        std::string befor_read="",read_name="",read_name_before="";
-        std::string cur_read="";
-        int cur_int=0;
-
-        while(!file.eof())
-        {
-            read_name=cur_read.substr(0,cur_read.size()-1);//enleve le ":"
-
-            if(read_name_before=="resolution")
-            {
-                file >> cur_int;
-                m_largeur=cur_int;
-                file >> cur_int;
-                m_hauteur=cur_int;
-
-                std::cerr<<"resolution: "<<m_largeur<<" "<< m_hauteur<<std::endl;
-
-                if(m_largeur>1200)
-                    m_hd=true;
-                else m_hd=false;
-            }
-            else if(read_name=="fullscreen")
-            {
-                file >> cur_int;
-                if(cur_int)
-                    m_fullscreen=true;
-                else m_fullscreen=false;
-            }
-            else if(read_name=="fov")
-            {
-                file >> cur_int;
-                m_fov=cur_int;
-            }
-
-            file >> cur_read;
-            befor_read=cur_read;
-            read_name_before=befor_read.substr(0,befor_read.size()-1);//enleve le ":"
-
-        }
-
-        std::cerr<<std::endl;
-        file.close();
-    }
-    else
-        std::cerr << "can't open file (config settings)" << std::endl;
-
-
-
+    m_largeur=Config::getInstance()->width;
+    m_hauteur=Config::getInstance()->height;
+    m_fullscreen=Config::getInstance()->fullscreen;
+    m_fov=Config::getInstance()->fov;
 
     SDL_Init(SDL_INIT_VIDEO);
 
@@ -100,7 +52,16 @@ void Video::ini()
     SDL_ShowCursor(SDL_DISABLE);//no cursor
     SDL_WM_GrabInput(SDL_GRAB_ON);
 
+    //resolutions available
 
+
+    m_resolutions.clear();
+    SDL_Rect** modes;
+    modes = SDL_ListModes(NULL, SDL_FULLSCREEN|SDL_HWSURFACE);
+    for (unsigned int i=0; modes[i]; ++i)
+        m_resolutions.push_back(Vector3D(modes[i]->w,modes[i]->h,0));
+
+    //fog
     fog.enable();
 
 
@@ -241,6 +202,39 @@ string Video::getStrHD()
     return "lq";
 }
 
+Vector3D Video::nextResolution(int width, int height)
+{
+    int cur=0;
+    //find which we have
+    for(unsigned int i=0;i<m_resolutions.size();i++)
+    {
+        if(m_resolutions[i].X==width && m_resolutions[i].Y==height)
+            cur=i;
+    }
+    //return next one
+    cur--;
+    if(cur<=0)
+        cur=(int)m_resolutions.size()-1;
+
+    return Vector3D(m_resolutions[cur].X,m_resolutions[cur].Y,0);
+}
+Vector3D Video::previousResolution(int width, int height)
+{
+    int cur=0;
+    //find which we have
+    for(unsigned int i=0;i<m_resolutions.size();i++)
+    {
+        if(m_resolutions[i].X==width && m_resolutions[i].Y==height)
+            cur=i;
+    }
+    //return previous one
+    cur++;
+    if(cur>=(int)m_resolutions.size())
+        cur=0;
+
+
+    return Vector3D(m_resolutions[cur].X,m_resolutions[cur].Y,0);
+}
 
 
 

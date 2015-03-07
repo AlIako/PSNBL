@@ -31,45 +31,8 @@ void Gsounds::ini()
 
 
 
-    //config file
-        std::ifstream file("config.ini", std::ios::in);
-
-    if(file)
-    {
-        std::string befor_read="",read_name="",read_name_before="";
-        std::string cur_read="";
-        int cur_int=0;
-
-        while(!file.eof())
-        {
-            read_name=cur_read.substr(0,cur_read.size()-1);//enleve le ":"
-
-            if(read_name_before=="sound")
-            {
-                file >> cur_int;
-                if(cur_int)
-                    on=true;
-                else on=false;
-            }
-            else if(read_name=="music")
-            {
-                file >> cur_int;
-                if(cur_int)
-                    music=true;
-                else music=false;
-            }
-
-            file >> cur_read;
-            befor_read=cur_read;
-            read_name_before=befor_read.substr(0,befor_read.size()-1);//enleve le ":"
-
-        }
-
-        std::cerr<<std::endl;
-        file.close();
-    }
-    else
-        std::cerr << "can't open file (config settings)" << std::endl;
+    music=Config::getInstance()->music;
+    on=Config::getInstance()->sound;
 }
 
 void Gsounds::reini()
