@@ -105,6 +105,11 @@ void Object2D::addText(string txt, freetype::font_data* font)
     m_text.setTexte(txt);
 }
 
+void Object2D::setText(string txt)
+{
+    m_text.setTexte(txt);
+}
+
 
 
 

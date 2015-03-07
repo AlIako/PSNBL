@@ -41,6 +41,32 @@ void menuStart(vector<Object2D>* b)
     GTexture::getInstance()->addTexture("../data/textures/interface/fullscreen_hover_hq.png");
     GTexture::getInstance()->addTexture("../data/textures/interface/resolution_hover_hq.png");
 
+    //multiplayer
+    GTexture::getInstance()->addTexture("../data/textures/interface/host_hq.png");
+    GTexture::getInstance()->addTexture("../data/textures/interface/joingame_hq.png");
+    GTexture::getInstance()->addTexture("../data/textures/interface/join_hq.png");
+    GTexture::getInstance()->addTexture("../data/textures/interface/name_hq.png");
+    GTexture::getInstance()->addTexture("../data/textures/interface/ip_hq.png");
+    GTexture::getInstance()->addTexture("../data/textures/interface/port_hq.png");
+    GTexture::getInstance()->addTexture("../data/textures/interface/create_hq.png");
+
+    GTexture::getInstance()->addTexture("../data/textures/interface/host_hover_hq.png");
+    GTexture::getInstance()->addTexture("../data/textures/interface/joingame_hover_hq.png");
+    GTexture::getInstance()->addTexture("../data/textures/interface/join_hover_hq.png");
+    GTexture::getInstance()->addTexture("../data/textures/interface/name_hover_hq.png");
+    GTexture::getInstance()->addTexture("../data/textures/interface/ip_hover_hq.png");
+    GTexture::getInstance()->addTexture("../data/textures/interface/port_hover_hq.png");
+    GTexture::getInstance()->addTexture("../data/textures/interface/create_hover_hq.png");
+
+    //input
+    GTexture::getInstance()->addTexture("../data/textures/interface/inputname_hq.png");
+    GTexture::getInstance()->addTexture("../data/textures/interface/input_ip_hq.png");
+    GTexture::getInstance()->addTexture("../data/textures/interface/ok_hq.png");
+    GTexture::getInstance()->addTexture("../data/textures/interface/paste_hq.png");
+
+    GTexture::getInstance()->addTexture("../data/textures/interface/ok_hover_hq.png");
+    GTexture::getInstance()->addTexture("../data/textures/interface/paste_hover_hq.png");
+
     unsigned int ind=b->size();
     b->push_back(Object2D());
     (*b)[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/title_hq.png"));

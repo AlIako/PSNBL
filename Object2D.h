@@ -16,6 +16,7 @@ class Object2D
         bool clic(Vector3D pos);
 
         void addText(string txt, freetype::font_data* font);
+        void setText(string txt);
 
         void setTexture(Texture* t){m_texture=t;}
         void setTextureHover(Texture* t){m_texture_hover=t;}

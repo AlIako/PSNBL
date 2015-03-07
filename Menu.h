@@ -13,11 +13,14 @@ public:
     void draw();
     void updateTimes();
 
+    string inputString(string txt,string pathTxt,bool onlyInt=false);
+
     void clicOn(string name, bool leftClic);
 
     string command;
 
     private:
+        SDL_Event event;
         freetype::font_data m_font;
 
         Video* m_video;
@@ -30,7 +33,6 @@ public:
 
         Object2D m_bg;
         vector<Object2D> m_buttons;
-        vector<Texte> m_texts;
 
 
         GTime since_last_frame;
