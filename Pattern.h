@@ -25,6 +25,8 @@ class Pattern
 
     void setStartZ(double s) {m_startZ=s;}
 
+    void setName(string n){m_name=n;}
+
     //public attributes
     Video *video;
 

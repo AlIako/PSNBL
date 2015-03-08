@@ -204,7 +204,10 @@ void Phase::iniMap()
                 randomizer=myIntRand(0,400);
 
                 //addPatternToQueue(10);
-                addPatternToQueue(9);
+                //addPatternToQueue(9);
+                addPatternToQueue(10);
+                addPatternToQueue(11);
+                addPatternToQueue(12);
                 //next pattern are random
                 /*if(randomizer>300)
                     addPatternToQueue(2);
@@ -298,6 +301,7 @@ void Phase::iniMap()
 
 void Phase::addPatternToQueue(int p)
 {
+    int ind=(int)m_patternQueue.size();
     if(p==1)
     {
         m_patternQueue.push_back(new PatStill());
@@ -337,6 +341,16 @@ void Phase::addPatternToQueue(int p)
     else if(p==10)
     {
         m_patternQueue.push_back(new PatJump());
+    }
+    else if(p==11)
+    {
+        m_patternQueue.push_back(new Pattern());
+        m_patternQueue[ind]->setName("PatRope");
+    }
+    else if(p==12)
+    {
+        m_patternQueue.push_back(new Pattern());
+        m_patternQueue[ind]->setName("PatRope2");
     }
 
     iniLastPattern();

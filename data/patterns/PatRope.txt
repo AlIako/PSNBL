@@ -25,4 +25,4 @@
 @ block: x: 47 y: -28 z: 6 tx: 6 ty: 6 tz: 1 text: ../data/textures/bedrock.png
 @ block: x: 46 y: -29 z: 8 tx: 5 ty: 5 tz: 2 text: ../data/textures/bedrock.png
 @ bonus: y: -1 z: 51 t: 1 name: rez
-@ bonus: y: -1 z: 51 t: 1 name: nextphase
+@ highestZ: 51

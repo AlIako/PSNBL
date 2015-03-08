@@ -29,3 +29,4 @@
 @ block: x: 4 y: -14 z: 102 tx: 1.5 ty: 1.5 tz: 2 text: ../data/textures/bedrock.png name: block
 @ block: x: -3 y: -3 z: 83 tx: 4 ty: 4 tz: 1 text: ../data/textures/metal.png name: noHookBlock
 @ bonus: x: -3 y: -3 z: 85 t: 1 name: rez
+@ bonus: x: -3 y: -3 z: 85 t: 1 name: nextphase

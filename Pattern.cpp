@@ -61,7 +61,16 @@ void Pattern::ini(double startZ, std::vector<Object*>* objects)
             m_lava=(*objects)[i];
     }
 
-    calculHighestZ();
+
+
+    m_highestZ=m_startZ;
+
+    if(m_name!="pattern")
+        loadPattern();
+
+    if(m_highestZ==m_startZ)//if highest Z not specified in map file, calculate it
+        calculHighestZ();
+    m_nextZ=m_highestZ+5;
 }
 
 void Pattern::loadPattern()
@@ -83,6 +92,7 @@ void Pattern::loadPattern()
     {
         std::string befor_read="",read_name="",read_name_before="";
         std::string cur_read="";
+        int curInt=0;
         int ind=-1;
 
         while(!fichier1.eof())
@@ -112,6 +122,11 @@ void Pattern::loadPattern()
                 (*m_objects)[ind]->readObj(&fichier1);
                 (*m_objects)[ind]->ini();
                 (*m_objects)[ind]->setPos((*m_objects)[ind]->getPos()+Vector3D(0,0,m_startZ));
+            }
+            else if(read_name=="highestZ")
+            {
+                fichier1 >> curInt;
+                m_highestZ=m_startZ+curInt;
             }
             fichier1 >> cur_read;
             befor_read=cur_read;
@@ -149,6 +164,10 @@ int Pattern::getPID()
         return 9;
     if(m_name=="PatJump")
         return 10;
+    if(m_name=="PatRope")
+        return 11;
+    if(m_name=="PatRope2")
+        return 12;
     return 0;
 }
 
