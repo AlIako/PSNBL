@@ -34,6 +34,11 @@ int main ( int argc, char** argv )
             Game game;
             game.play();
         }
+        else if(nextCommand.find("editor")!=string::npos)
+        {
+            Editor Editor;
+            Editor.play(nextCommand.substr(7,nextCommand.size()));
+        }
     }
 
    /* bool playGame=true;

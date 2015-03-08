@@ -18,6 +18,7 @@ class Object2D
         void addText(string txt, freetype::font_data* font);
         void setText(string txt);
 
+
         void setTexture(Texture* t){m_texture=t;}
         void setTextureHover(Texture* t){m_texture_hover=t;}
         void setPos(Vector3D v) {m_position=v;}
@@ -27,6 +28,7 @@ class Object2D
         void setClicked(bool c){m_clicked=c;}
         void setName(std::string s) {m_name=s;}
 
+        bool getClicable(){return m_clicable;}
         std::string getName() {return m_name;}
 
     private:

@@ -23,6 +23,7 @@ void menuAudio(vector<Object2D>* b,freetype::font_data* font)
     (*b)[ind].setPos(Vector3D(0.25,0.5,0));
     (*b)[ind].setSize(Vector3D(0.5,0.075,0));
     (*b)[ind].setName("music");
+    (*b)[ind].setClicable(true);
 
     ind=(*b).size();
     (*b).push_back(Object2D());
@@ -40,6 +41,7 @@ void menuAudio(vector<Object2D>* b,freetype::font_data* font)
     (*b)[ind].setPos(Vector3D(0.25,0.4,0));
     (*b)[ind].setSize(Vector3D(0.5,0.075,0));
     (*b)[ind].setName("sound");
+    (*b)[ind].setClicable(true);
 
     ind=(*b).size();
     (*b).push_back(Object2D());
@@ -61,6 +63,7 @@ void menuAudio(vector<Object2D>* b,freetype::font_data* font)
     (*b)[ind].setPos(Vector3D(0.04,0.04,0));
     (*b)[ind].setSize(Vector3D(0.3,0.03,0));
     (*b)[ind].setName("linkocraftcom");
+    (*b)[ind].setClicable(true);
 
     ind=(*b).size();
     (*b).push_back(Object2D());
@@ -69,6 +72,7 @@ void menuAudio(vector<Object2D>* b,freetype::font_data* font)
     (*b)[ind].setPos(Vector3D(0.76,0.04,0));
     (*b)[ind].setSize(Vector3D(0.2,0.075,0));
     (*b)[ind].setName("back");
+    (*b)[ind].setClicable(true);
 }
 
 

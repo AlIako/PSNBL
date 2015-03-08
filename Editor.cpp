@@ -4,8 +4,9 @@ Editor::Editor()
 }
 
 
-void Editor::ini()
+void Editor::ini(string path)
 {
+    m_path=path;
     m_fps=0;
     m_fpsTime.reset();
 
@@ -13,12 +14,12 @@ void Editor::ini()
 
     //video
     m_video=Video::getInstance();
-    m_video->ini();
+    SDL_ShowCursor(SDL_DISABLE);//no cursor
+    SDL_WM_GrabInput(SDL_GRAB_ON);
 
     m_camera.setDist(15);
 
     //sound
-    Gsounds::getInstance()->ini();
     Gsounds::getInstance()->loads();
 
 
@@ -27,7 +28,7 @@ void Editor::ini()
 
     m_map.createWalls();
     m_map.translateAll(Vector3D(0,0,-15));
-    m_map.loadPat("../data/patterns/PatNew.txt");
+    m_map.loadPat(path);
 
     posCur=Vector3D(0,0,0);
     curObj=new Block();
@@ -42,9 +43,10 @@ void Editor::ini()
 }
 
 
-void Editor::play()
+void Editor::play(string path)
 {
-    ini();
+    m_path=path;
+    ini(path);
 
     SDL_EnableKeyRepeat(20, 20);
 
@@ -116,9 +118,6 @@ void Editor::play()
                     break;
                     case SDLK_SPACE:
                     break;
-                    case SDLK_ESCAPE:
-                    playLoop = false;
-                    break;
 
                     case SDLK_LSHIFT:
                     break;
@@ -132,8 +131,11 @@ void Editor::play()
                 {
                     case SDLK_KP_ENTER:
                     break;
+                    case SDLK_ESCAPE:
+                    playLoop = false;
+                    break;
                     case SDLK_RETURN:
-                        m_map.saveMap("../data/patterns/PatNew.txt");
+                        m_map.saveMap(m_path);
                     break;
                     case SDLK_BACKSPACE:
                         m_map.deleteLastObj();
@@ -360,8 +362,7 @@ void Editor::moveObj(Vector3D key)
 
 void Editor::close()
 {
-    Gsounds::getInstance()->close();
-    m_video->close();
+    Gsounds::getInstance()->freeAll();
 
     cerr<<"Exited cleanly.";
 }

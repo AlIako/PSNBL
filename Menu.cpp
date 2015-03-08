@@ -72,7 +72,7 @@ void Menu::play()
                 {
                     for(unsigned int i=0;i<m_buttons.size();i++)
                     {
-                        if(m_buttons[i].clic(Vector3D(event.button.x,event.button.y,0)))
+                        if(m_buttons[i].getClicable() && m_buttons[i].clic(Vector3D(event.button.x,event.button.y,0)))
                         {
                             clicOn(m_buttons[i].getName(),true);
                             break;
@@ -83,7 +83,7 @@ void Menu::play()
                 {
                     for(unsigned int i=0;i<m_buttons.size();i++)
                     {
-                        if(m_buttons[i].clic(Vector3D(event.button.x,event.button.y,0)))
+                        if(m_buttons[i].getClicable() && m_buttons[i].clic(Vector3D(event.button.x,event.button.y,0)))
                         {
                             clicOn(m_buttons[i].getName(),false);
                             break;
@@ -165,6 +165,8 @@ void Menu::draw()
 
 void Menu::clicOn(string name, bool leftClic)
 {
+    Gsounds::getInstance()->play("../data/sounds/hover.mp3");
+
     if(leftClic && name=="start")
     {
         curMenu="start";
@@ -196,7 +198,13 @@ void Menu::clicOn(string name, bool leftClic)
     if(leftClic && name=="editor")
     {
         curMenu=name;
-        menuEditor(&m_buttons);
+        menuEditor(&m_buttons,&m_font);
+    }
+    if(leftClic && name.find("../data/patterns/")!=string::npos)
+    {
+        command="editor "+name;
+        cerr<<"going editor "<< command<<endl;
+        playLoop=false;
     }
 
     if(leftClic && name=="options")
@@ -277,7 +285,7 @@ void Menu::clicOn(string name, bool leftClic)
         std::stringstream ss;
         ss << Config::getInstance()->port;
 
-        istringstream buffer(inputString(ss.str(),"../data/textures/interface/input_ip_hq.png",true));
+        istringstream buffer(inputString(ss.str(),"../data/textures/interface/input_port_hq.png",true));
         int value;
         buffer >> value;
 
@@ -337,7 +345,6 @@ void Menu::clicOn(string name, bool leftClic)
     for(unsigned int i=0;i<m_buttons.size();i++)
         m_buttons[i].updateCursor(Vector3D(lastCursorX,lastCursorY,0));
 
-    Gsounds::getInstance()->play("../data/sounds/hover.mp3");
 }
 
 

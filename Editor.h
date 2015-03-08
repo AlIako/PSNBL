@@ -17,8 +17,8 @@ class Editor
     public:
     Editor();
 
-    void ini();
-    void play();
+    void ini(string path);
+    void play(string path);
     void updateTimes();
 
     void moveObj(Vector3D key);
@@ -27,6 +27,8 @@ class Editor
     ~Editor();
 
     private:
+    string m_path;
+
     bool playLoop;
     Video* m_video;
     Map m_map;

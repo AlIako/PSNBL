@@ -24,7 +24,15 @@ void Object2D::draw()
     {
         m_text.setX(m_position.X);
         m_text.setY(m_position.Y);
-        m_text.draw(255,255,255);
+
+        if(!m_clicable)
+            m_text.draw(255,255,255);
+        else
+        {
+            if(m_hover)
+                m_text.draw(155,155,155);
+            else m_text.draw(255,255,255);
+        }
     }
     else
     {

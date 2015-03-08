@@ -61,6 +61,7 @@ void menuStart(vector<Object2D>* b)
     //input
     GTexture::getInstance()->addTexture("../data/textures/interface/inputname_hq.png");
     GTexture::getInstance()->addTexture("../data/textures/interface/input_ip_hq.png");
+    GTexture::getInstance()->addTexture("../data/textures/interface/input_port_hq.png");
     GTexture::getInstance()->addTexture("../data/textures/interface/ok_hq.png");
     GTexture::getInstance()->addTexture("../data/textures/interface/paste_hq.png");
 
@@ -81,6 +82,7 @@ void menuStart(vector<Object2D>* b)
     (*b)[ind].setPos(Vector3D(0.25,0.5,0));
     (*b)[ind].setSize(Vector3D(0.5,0.075,0));
     (*b)[ind].setName("single");
+    (*b)[ind].setClicable(true);
 
     ind=(*b).size();
     (*b).push_back(Object2D());
@@ -89,6 +91,7 @@ void menuStart(vector<Object2D>* b)
     (*b)[ind].setPos(Vector3D(0.25,0.4,0));
     (*b)[ind].setSize(Vector3D(0.5,0.075,0));
     (*b)[ind].setName("multi");
+    (*b)[ind].setClicable(true);
 
     ind=(*b).size();
     (*b).push_back(Object2D());
@@ -97,6 +100,7 @@ void menuStart(vector<Object2D>* b)
     (*b)[ind].setPos(Vector3D(0.25,0.3,0));
     (*b)[ind].setSize(Vector3D(0.5,0.075,0));
     (*b)[ind].setName("editor");
+    (*b)[ind].setClicable(true);
 
     ind=(*b).size();
     (*b).push_back(Object2D());
@@ -105,6 +109,7 @@ void menuStart(vector<Object2D>* b)
     (*b)[ind].setPos(Vector3D(0.25,0.2,0));
     (*b)[ind].setSize(Vector3D(0.5,0.075,0));
     (*b)[ind].setName("options");
+    (*b)[ind].setClicable(true);
 
     ind=(*b).size();
     (*b).push_back(Object2D());
@@ -113,6 +118,7 @@ void menuStart(vector<Object2D>* b)
     (*b)[ind].setPos(Vector3D(0.04,0.04,0));
     (*b)[ind].setSize(Vector3D(0.3,0.03,0));
     (*b)[ind].setName("linkocraftcom");
+    (*b)[ind].setClicable(true);
 
     ind=(*b).size();
     (*b).push_back(Object2D());
@@ -121,6 +127,7 @@ void menuStart(vector<Object2D>* b)
     (*b)[ind].setPos(Vector3D(0.76,0.04,0));
     (*b)[ind].setSize(Vector3D(0.2,0.075,0));
     (*b)[ind].setName("quit");
+    (*b)[ind].setClicable(true);
 }
 
 
