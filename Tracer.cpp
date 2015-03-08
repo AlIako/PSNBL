@@ -24,6 +24,7 @@ Tracer::Tracer()
     m_enabled=false;
     m_channels.push_back("rope");
     m_channels.push_back("crosshair");
+    m_channels.push_back("jumpblock");
 
     m_channelsSize=m_channels.size();
 }

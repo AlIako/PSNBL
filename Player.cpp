@@ -70,6 +70,11 @@ void Player::update(double functionTime)
             {
                 m_deathCause=1;
             }
+            else if(m_colliding[i]->getType()=="block" && m_colliding[i]->getName()=="jumpBlock")
+            {
+                m_velocity.Z=.8;
+                Tracer::getInstance()->trace("jumpblock","jumpblock");
+            }
         }
     }
 

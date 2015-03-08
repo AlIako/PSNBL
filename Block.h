@@ -10,6 +10,8 @@ class Block: public Object
     virtual void ini();
     virtual void draw();
 
+    virtual string writeObj();
+
     protected:
     double mosaic;
 

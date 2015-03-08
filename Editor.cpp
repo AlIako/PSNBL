@@ -77,9 +77,10 @@ void Editor::play(string path)
                     m_map.getObjects()->push_back(curObj);
                     Object* lastObj=curObj;
                     curObj=new Block();
-                    curObj->ini();
                     curObj->setPos(lastObj->getPos());
                     curObj->setSize(lastObj->getSize());
+                    curObj->setName(lastObj->getName());
+                    curObj->ini();
                     m_camera.setCible(curObj);
                 }
                 if(event.button.button==SDL_BUTTON_RIGHT)
@@ -157,7 +158,17 @@ void Editor::play(string path)
                         string curName=curObj->getName();
                         delete curObj;
 
-                        if(curType=="block")
+                        if(curType=="block" && curName=="block")
+                        {
+                            curObj=new Block();
+                            curObj->setName("noHookBlock");
+                        }
+                        else if(curType=="block" && curName=="noHookBlock")
+                        {
+                            curObj=new Block();
+                            curObj->setName("jumpBlock");
+                        }
+                        else if(curType=="block" && curName=="jumpBlock")
                         {
                             curObj=new Bonus();
                             curObj->setName("rez");
