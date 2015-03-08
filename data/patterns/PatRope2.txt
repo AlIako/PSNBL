@@ -1,0 +1,8 @@
+@ block: y: 6 z: -5 t: 1.5 text: ../data/textures/bedrock.png
+@ block: x: -2 y: 21 z: 23 tx: 1.5 ty: 1.5 tz: 2 text: ../data/textures/bedrock.png
+@ block: x: -3 y: 41 z: -5 tx: 6 ty: 6 tz: 2 text: ../data/textures/bedrock.png
+@ block: x: -3 y: 34 z: -5 tx: 6 ty: 1.5 tz: 5 text: ../data/textures/bedrock.png
+@ block: x: -3 y: 34 z: 16 tx: 6 ty: 1.5 tz: 5 text: ../data/textures/bedrock.png
+@ block: x: -7 y: 34 z: 5 tx: 2 ty: 1.5 tz: 5.5 text: ../data/textures/bedrock.png
+@ block: x: 1 y: 34 z: 5 tx: 2 ty: 1.5 tz: 5.5 text: ../data/textures/bedrock.png
+@ bonus: y: 6 z: -2 t: 1 name: rope

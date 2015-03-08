@@ -199,6 +199,7 @@ void Menu::clicOn(string name, bool leftClic)
     }
     if(leftClic && name=="editor")
     {
+        mapSelected="";
         curMenu=name;
         menuEditor(&m_buttons,&m_font);
     }
