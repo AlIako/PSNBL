@@ -12,8 +12,12 @@ Camera::Camera()
 
     m_target=Vector3D(0,0,0);
     m_position=Vector3D(0,0,0);
+    m_direction=Vector3D(1,1,1);
 
-    m_alpha=0;
+    ft=0;
+    m_beta=0;
+
+    m_alpha=270;
 }
 
 void Camera::updateTime(double fonction_temps)

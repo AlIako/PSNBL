@@ -14,6 +14,7 @@ public:
     void updateTimes();
 
     string inputString(string txt,string pathTxt,bool onlyInt=false);
+    bool messageSure();
 
     void clicOn(string name, bool leftClic);
 
@@ -39,6 +40,8 @@ public:
         double ft;//function time
 
         string curMenu;
+
+        string mapSelected;
 };
 
 #endif // MENU_H_INCLUDED

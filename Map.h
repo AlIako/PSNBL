@@ -17,7 +17,7 @@ class Map
     public:
     Map();
 
-    void ini();
+    void ini(string path="");
     void draw();
 
     void createWalls();
@@ -44,7 +44,7 @@ class Map
     Phase* getPhase() {return &m_phase;}
     std::vector<Object*>* getObjects() {return &m_objects;}
 
-    void loadPat(string path);
+    void loadPat(string path,double zOff=0);
     void saveMap(string path);
 
     void deleteLastObj();

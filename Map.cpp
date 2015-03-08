@@ -94,7 +94,7 @@ void Map::applyPhysics(Object* o)
     Collision::getInstance()->simulatePhysics(o);
 }
 
-void Map::ini()
+void Map::ini(string path)
 {
     //cerr << "ini map"<<endl;
 
@@ -102,8 +102,16 @@ void Map::ini()
 
     createWalls();
 
-    m_phase.ini(&m_objects);
-    m_phase.iniMap();
+    if(path=="")
+    {
+        m_phase.ini(&m_objects);
+        m_phase.iniMap();
+    }
+    else
+    {
+        loadPat(path,10);
+        (*playerList)[0]->setPos(Vector3D(0,0,20));
+    }
 
 
 }
@@ -259,7 +267,7 @@ void Map::saveMap(string path)
         cerr << "can't open file." << endl;
 }
 
-void Map::loadPat(string path)
+void Map::loadPat(string path,double zOff)
 {
     char* tempchemin=stringtochar(path);
 
@@ -288,6 +296,7 @@ void Map::loadPat(string path)
                 m_objects.push_back(new Block());
                 m_objects[ind]->readObj(&fichier1);
                 m_objects[ind]->ini();
+                m_objects[ind]->setPos(m_objects[ind]->getPos()+Vector3D(0,0,zOff));
 
                 //actually we dont want that one (walls)
                 if(m_objects[ind]->getSize().Z>=1000)
@@ -302,6 +311,7 @@ void Map::loadPat(string path)
                 m_objects.push_back(new Bonus());
                 m_objects[ind]->readObj(&fichier1);
                 m_objects[ind]->ini();
+                m_objects[ind]->setPos(m_objects[ind]->getPos()+Vector3D(0,0,zOff));
             }
             fichier1 >> cur_read;
             befor_read=cur_read;

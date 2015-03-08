@@ -25,6 +25,44 @@ void menuEditor(vector<Object2D>* b,freetype::font_data* font)
 
     ind=(*b).size();
     (*b).push_back(Object2D());
+    (*b)[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/new_hq.png"));
+    (*b)[ind].setTextureHover(GTexture::getInstance()->getTexture("../data/textures/interface/new_hover_hq.png"));
+    (*b)[ind].setPos(Vector3D(0.76,0.14,0));
+    (*b)[ind].setSize(Vector3D(0.2,0.075,0));
+    (*b)[ind].setName("new");
+    (*b)[ind].setClicable(true);
+
+    ind=(*b).size();
+    (*b).push_back(Object2D());
+    (*b)[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/delete_hq.png"));
+    (*b)[ind].setTextureHover(GTexture::getInstance()->getTexture("../data/textures/interface/delete_hover_hq.png"));
+    (*b)[ind].setPos(Vector3D(0.76,0.24,0));
+    (*b)[ind].setSize(Vector3D(0.2,0.075,0));
+    (*b)[ind].setName("delete");
+    (*b)[ind].setClicable(true);
+
+    ind=(*b).size();
+    (*b).push_back(Object2D());
+    (*b)[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/test_hq.png"));
+    (*b)[ind].setTextureHover(GTexture::getInstance()->getTexture("../data/textures/interface/test_hover_hq.png"));
+    (*b)[ind].setPos(Vector3D(0.76,0.34,0));
+    (*b)[ind].setSize(Vector3D(0.2,0.075,0));
+    (*b)[ind].setName("test");
+    (*b)[ind].setClicable(true);
+
+    ind=(*b).size();
+    (*b).push_back(Object2D());
+    (*b)[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/open_hq.png"));
+    (*b)[ind].setTextureHover(GTexture::getInstance()->getTexture("../data/textures/interface/open_hover_hq.png"));
+    (*b)[ind].setPos(Vector3D(0.76,0.44,0));
+    (*b)[ind].setSize(Vector3D(0.2,0.075,0));
+    (*b)[ind].setName("open");
+    (*b)[ind].setClicable(true);
+
+
+
+    ind=(*b).size();
+    (*b).push_back(Object2D());
     (*b)[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/back_hq.png"));
     (*b)[ind].setTextureHover(GTexture::getInstance()->getTexture("../data/textures/interface/back_hover_hq.png"));
     (*b)[ind].setPos(Vector3D(0.76,0.04,0));
@@ -76,7 +114,7 @@ void menuEditor(vector<Object2D>* b,freetype::font_data* font)
 
         ind=(*b).size();
         (*b).push_back(Object2D());
-        (*b)[ind].setPos(Vector3D(0.1,0.7-(i+folders.size())/20.0,0));
+        (*b)[ind].setPos(Vector3D(0.1,0.5-(i+folders.size())/20.0,0));
         (*b)[ind].setSize(Vector3D(0.5,0.05,0));
         (*b)[ind].addText(maps[i],font);
         (*b)[ind].setName(maps[i]);

@@ -29,10 +29,14 @@ int main ( int argc, char** argv )
         menu.play();
         nextCommand=menu.command;
 
-        if(nextCommand=="play")
+        if(nextCommand.find("play")!=string::npos)
         {
             Game game;
-            game.play();
+            //game.play();
+            if(nextCommand.size()>5)
+                game.play(nextCommand.substr(5,nextCommand.size()));
+            else
+                game.play();
         }
         else if(nextCommand.find("editor")!=string::npos)
         {

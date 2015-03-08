@@ -22,7 +22,7 @@ class Game
 
 
 
-    void play();
+    void play(string path="");
 
     void handleCommands();
     void handleTracer();
@@ -69,6 +69,8 @@ class Game
 
 
     bool alreadyDead;
+
+    string pathTest;
 };
 
 

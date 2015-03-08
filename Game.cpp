@@ -1,6 +1,7 @@
 #include "Game.h"
 Game::Game()
 {
+    pathTest="";
 }
 
 
@@ -60,8 +61,8 @@ void Game::ini()
     playerList[0]->setOnlineName(m_online->getOnlineName());
     //end ini online
 
-    m_map.ini();
     m_map.playerList=&playerList;
+    m_map.ini(pathTest);
 
     m_camera.setCible(playerList[0]);
     m_mode="play";
@@ -231,8 +232,9 @@ bool Game::castSpell(Player* p, string spell, Vector3D param1)
     return false;
 }
 
-void Game::play()
+void Game::play(string path)
 {
+    pathTest=path;
     ini();
 
     //SDL_EnableKeyRepeat(10, 0);

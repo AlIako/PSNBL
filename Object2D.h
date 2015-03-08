@@ -27,9 +27,11 @@ class Object2D
         void setHover(bool h){m_hover=h;}
         void setClicked(bool c){m_clicked=c;}
         void setName(std::string s) {m_name=s;}
+        void select(bool s){m_selected=s;}
 
         bool getClicable(){return m_clicable;}
         std::string getName() {return m_name;}
+        bool isSelected(){return m_selected;}
 
     private:
         Texture* m_texture;
@@ -41,6 +43,7 @@ class Object2D
         bool m_clicable;
         bool m_hover;
         bool m_clicked;
+        bool m_selected;
 
         std::string m_name;
 

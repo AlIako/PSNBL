@@ -11,6 +11,7 @@ Object2D::Object2D()
     m_clicable=false;
     m_hover=false;
     m_clicked=false;
+    m_selected=false;
 
     m_hasText=false;
 }
@@ -25,11 +26,11 @@ void Object2D::draw()
         m_text.setX(m_position.X);
         m_text.setY(m_position.Y);
 
-        if(!m_clicable)
+        if(!m_clicable && !m_selected)
             m_text.draw(255,255,255);
         else
         {
-            if(m_hover)
+            if(m_hover || m_selected)
                 m_text.draw(155,155,155);
             else m_text.draw(255,255,255);
         }

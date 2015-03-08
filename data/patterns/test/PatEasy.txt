@@ -1,2 +1,0 @@
-@ block: x: 8 z: 6 tx: 1 ty: 1 tz: 2 text: ../data/textures/bedrock.png
-@ block: x: 14 z: 6 tx: 1 ty: 1 tz: 3 text: ../data/textures/bedrock.png

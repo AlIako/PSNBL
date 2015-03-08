@@ -11,12 +11,13 @@
 
 Menu::Menu()
 {
+    mapSelected="";
 }
 
 
 void Menu::ini()
 {
-
+    mapSelected="";
     command="quit";
 
     m_video=Video::getInstance();
@@ -48,6 +49,7 @@ void Menu::ini()
 
 void Menu::play()
 {
+    mapSelected="";
     playLoop=true;
 
     while (playLoop)
@@ -200,11 +202,83 @@ void Menu::clicOn(string name, bool leftClic)
         curMenu=name;
         menuEditor(&m_buttons,&m_font);
     }
-    if(leftClic && name.find("../data/patterns/")!=string::npos)
+    if(name.find("../data/patterns/")!=string::npos)
     {
-        command="editor "+name;
-        cerr<<"going editor "<< command<<endl;
-        playLoop=false;
+        if(leftClic)
+        {
+            mapSelected=name;
+            for(unsigned int i=0;i<m_buttons.size();i++)
+            {
+                if(m_buttons[i].getName()==name)
+                    m_buttons[i].select(true);
+                else m_buttons[i].select(false);
+            }
+        }
+        else//right clic: open map with editor
+        {
+            command="editor "+name;
+            playLoop=false;
+        }
+    }
+    if(leftClic && name=="open")
+    {
+        if(curMenu=="editor")
+        {
+            if(mapSelected!="")
+            {
+                command="editor "+mapSelected;
+                cerr<<"going editor "<< command<<endl;
+                playLoop=false;
+            }
+        }
+    }
+    if(leftClic && name=="delete")
+    {
+        if(curMenu=="editor")
+        {
+            if(mapSelected!="")
+            {
+                if(messageSure())
+                {
+                    cerr<<"deleting "<< mapSelected<<endl;
+
+                    char* tempChar=stringtochar(mapSelected);
+                    remove(tempChar);
+                    delete tempChar;
+
+                    mapSelected="";
+
+                    menuEditor(&m_buttons,&m_font);
+                }
+            }
+        }
+    }
+    if(leftClic && name=="test")
+    {
+        if(curMenu=="editor")
+        {
+            if(mapSelected!="")
+            {
+                Config::getInstance()->mode="server";
+                command="play "+mapSelected;
+                cerr<<"going play "<< command<<endl;
+                playLoop=false;
+            }
+        }
+    }
+    if(leftClic && name=="new")
+    {
+        if(curMenu=="editor")
+        {
+            string inputName=inputString("","../data/textures/interface/inputname_hq.png");
+            if(inputName!="")
+            {
+                inputName="../data/patterns/"+inputName+".txt";
+                command="editor "+inputName;
+                cerr<<"going editor "<< command<<endl;
+                playLoop=false;
+            }
+        }
     }
 
     if(leftClic && name=="options")
@@ -389,6 +463,10 @@ std::string GetClipboardText()
 
     return text;
 }
+
+
+
+
 string Menu::inputString(string txt,string pathTxt,bool onlyInt)
 {
     string savetxt=txt;
@@ -423,6 +501,8 @@ string Menu::inputString(string txt,string pathTxt,bool onlyInt)
     b[ind].addText(txt,&m_font);
     b[ind].setName("txt");
 
+    SDL_EnableKeyRepeat(200, 45);
+
     bool addChar=false;
     SDL_EnableUNICODE( SDL_ENABLE );
 
@@ -439,6 +519,7 @@ string Menu::inputString(string txt,string pathTxt,bool onlyInt)
                 case SDL_QUIT:
                 loop = false;
                 playLoop = false;
+                txt=savetxt;
                 break;
 
                 case SDL_MOUSEMOTION:
@@ -532,7 +613,7 @@ string Menu::inputString(string txt,string pathTxt,bool onlyInt)
                     txt= ss.str();
                     b[ind].setText(txt);
 
-                    cerr<<"add char "<< txt<<endl;
+                    //cerr<<"add char "<< txt<<endl;
                 }
                 break;
 
@@ -608,4 +689,127 @@ string Menu::inputString(string txt,string pathTxt,bool onlyInt)
 
 
 
+bool Menu::messageSure()
+{
+    bool result=false;
 
+    vector<Object2D> b;
+    b.clear();
+    unsigned int ind=b.size();
+    b.push_back(Object2D());
+    b[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/sure_hq.png"));
+    b[ind].setPos(Vector3D(0.25,0.15,0));
+    b[ind].setSize(Vector3D(0.5,0.6,0));
+    b[ind].setName("sure");
+
+    ind=b.size();
+    b.push_back(Object2D());
+    b[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/yes_hq.png"));
+    b[ind].setTextureHover(GTexture::getInstance()->getTexture("../data/textures/interface/yes_hover_hq.png"));
+    b[ind].setPos(Vector3D(0.28,0.3,0));
+    b[ind].setSize(Vector3D(0.175,0.075,0));
+    b[ind].setName("yes");
+
+    ind=b.size();
+    b.push_back(Object2D());
+    b[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/no_hq.png"));
+    b[ind].setTextureHover(GTexture::getInstance()->getTexture("../data/textures/interface/no_hover_hq.png"));
+    b[ind].setPos(Vector3D(0.54,0.3,0));
+    b[ind].setSize(Vector3D(0.175,0.075,0));
+    b[ind].setName("no");
+
+    bool loop=true;
+    while (loop)
+    {
+        while (SDL_PollEvent(&event))
+        {
+            switch (event.type)
+            {
+                case SDL_QUIT:
+                loop = false;
+                playLoop = false;
+                break;
+
+                case SDL_MOUSEMOTION:
+                    lastCursorX=event.button.x;
+                    lastCursorY=event.button.y;
+                    for(unsigned int i=0;i<b.size();i++)
+                        b[i].updateCursor(Vector3D(event.button.x,event.button.y,0));
+                break;
+
+                case SDL_MOUSEBUTTONUP:
+                if(event.button.button==SDL_BUTTON_LEFT)
+                {
+                    for(unsigned int i=0;i<b.size();i++)
+                    {
+                        if(b[i].clic(Vector3D(event.button.x,event.button.y,0)))
+                        {
+                            if(b[i].getName()=="yes")
+                            {
+                                Gsounds::getInstance()->play("../data/sounds/hover.mp3");
+                                loop=false;
+                                result=true;
+                                break;
+                            }
+                            else if(b[i].getName()=="no")
+                            {
+                                Gsounds::getInstance()->play("../data/sounds/hover.mp3");
+                                loop=false;
+                                result=false;
+                                break;
+                            }
+                        }
+                    }
+                }
+                break;
+
+
+                case SDL_KEYUP:
+                switch(event.key.keysym.sym)
+                {
+                    case SDLK_ESCAPE:
+                        loop=false;
+                        result=false;
+                    break;
+                    default:
+                    break;
+                }
+                break;
+            }
+        }
+
+        //update stuff
+        updateTimes();
+        //m_online->update();
+
+        m_video->update(ft);
+
+        m_bg.update(ft);
+        for(unsigned int i=0;i<m_buttons.size();i++)
+            m_buttons[i].update(ft);
+
+        m_video->beforeDraw();
+
+        gluLookAt(5,2,1,
+        1,2,0,
+        0,0,1);
+
+        //bg
+        m_bg.draw();
+
+
+        //buttons
+        for(unsigned int i=0;i<m_buttons.size();i++)
+            m_buttons[i].draw();
+        //b
+        for(unsigned int i=0;i<b.size();i++)
+            b[i].draw();
+
+        m_video->afterDraw();
+
+        SDL_Delay(10);
+    }
+
+
+    return result;
+}

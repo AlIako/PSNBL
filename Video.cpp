@@ -73,10 +73,10 @@ void Video::ini()
     //glew
     glewInit();
     //shaders
-    programID = LoadShaders( "../shaders/vertexShader.vsh", "../shaders/fragmentShader.fsh" );
-    programIDRed = LoadShaders( "../shaders/vertexShaderRed.vsh", "../shaders/fragmentShaderRed.fsh" );
-    programIDBlur = LoadShaders( "../shaders/vertexShaderBlur.vsh", "../shaders/fragmentShaderBlur.fsh" );
-    programIDWave = LoadShaders( "../shaders/vertexShaderWave.vsh", "../shaders/fragmentShaderWave.fsh" );
+    programID = LoadShaders( "../data/shaders/vertexShader.vsh", "../shaders/fragmentShader.fsh" );
+    programIDRed = LoadShaders( "../data/shaders/vertexShaderRed.vsh", "../shaders/fragmentShaderRed.fsh" );
+    programIDBlur = LoadShaders( "../data/shaders/vertexShaderBlur.vsh", "../shaders/fragmentShaderBlur.fsh" );
+    programIDWave = LoadShaders( "../data/shaders/vertexShaderWave.vsh", "../shaders/fragmentShaderWave.fsh" );
 }
 
 //shaders
