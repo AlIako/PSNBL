@@ -53,6 +53,7 @@ class Player: public Object
     //spells
     void addSpell(Spell* s);
     Spell* getSpell(string s);
+    vector<Spell*>* getSpells(){return &m_spells;}
 
     private:
     Vector3D m_startpos;

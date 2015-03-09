@@ -7,7 +7,7 @@ LifeBar::LifeBar()
     m_texture=NULL;
 
     m_barWidth=0.6;
-    m_barHeight=0.1;
+    m_barHeight=0.05;
 }
 
 void LifeBar::ini()

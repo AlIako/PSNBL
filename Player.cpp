@@ -63,6 +63,13 @@ void Player::update(double functionTime)
                 }
                 else if(m_colliding[i]->getName()=="rope")
                 {
+                    infosSocket s;
+                    s.confirmationID=Online::getInstance()->nextConfirmationID();
+                    s.type=16;
+                    s.variable[1]=Spell::nameToId("rope");
+                    Online::getInstance()->sendSocket(s);
+
+
                     addSpell(new SpellRope());
                 }
             }
@@ -77,6 +84,9 @@ void Player::update(double functionTime)
             }
         }
     }
+
+    for(unsigned int i=0;i<m_spells.size();i++)
+        m_spells[i]->update(functionTime);
 
     if(hookedToRope())
     {
@@ -180,6 +190,7 @@ void Player::ini()
         m_textureDead=GTexture::getInstance()->getTexture("../data/textures/chardead.png");
     }
 
+    GTexture::getInstance()->addTexture("../data/textures/spells/rope.png");
     //spells
     //addSpell(new SpellRope());
     addSpell(new SpellJump());
@@ -368,6 +379,7 @@ void Player::addSpell(Spell* s)
         {
             if(m_spells[i]->getName()==s->getName())
             {
+                s->ini();
                 m_spells[i]=s;
                 spellFound=true;
             }
@@ -375,6 +387,7 @@ void Player::addSpell(Spell* s)
 
         if(!spellFound)
         {
+            s->ini();
             m_spells.push_back(s);
         }
     }

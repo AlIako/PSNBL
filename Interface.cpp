@@ -32,6 +32,16 @@ void Interface::draw()
     m_lifebar.draw();
     m_playerName.draw(255,255,255);
     m_fps.draw(255,255,255);
+
+    //spells
+    if(m_target!=NULL)
+    {
+        vector<Spell*>* s=m_target->getSpells();
+        for(unsigned int i=0;i<s->size();i++)
+        {
+            (*s)[i]->draw();
+        }
+    }
 }
 
 void Interface::drawScreenEffect(std::string path)

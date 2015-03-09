@@ -791,6 +791,7 @@ void Game::updateMultiplayer()
                     13:chat msg
                     14: name
                     15: longjump
+                    16: loot new spell
                     */
                     //player position and angle and life
                     if(s.type==1)
@@ -1031,6 +1032,19 @@ void Game::updateMultiplayer()
                     if(s.type==15)
                     {
                         playPlayerSound(player,"../data/sounds/boost.wav");
+                    }
+                    //loot new spell
+                    if(s.type==16)
+                    {
+                        int spellID=s.variable[1];
+                        string spellName=Spell::idToName(spellID);
+
+                        if(spellName=="jump")
+                            player->addSpell(new SpellJump());
+                        if(spellName=="longjump")
+                            player->addSpell(new SpellLongJump());
+                        if(spellName=="rope")
+                            player->addSpell(new SpellRope());
                     }
                 }
             }
