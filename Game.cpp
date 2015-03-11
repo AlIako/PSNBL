@@ -37,26 +37,13 @@ void Game::ini()
 
     //online
     m_online=Online::getInstance();
-    m_online->ini();
+    m_online->startThreads();
     if(m_online->active())
     {
         if(m_online->m_server)
             playerList[0]->setIdOnline(0);
-
-        if(!m_online->m_server)
-        {
-            m_online->setIncontrol(false);
-
-            GTime start_try_connect;
-            start_try_connect.reset();
-            while(!m_online->m_connectionEstablished && !start_try_connect.ecouler(2500))
-            {
-                start_try_connect.couler();
-                m_online->update();
-                SDL_Delay(50);
-            }
+        else
             updateMultiplayer();
-        }
     }
     playerList[0]->setOnlineName(m_online->getOnlineName());
     //end ini online
@@ -209,20 +196,27 @@ bool Game::castSpell(Player* p, string spell, Vector3D param1)
             {
                 if(s->getName()=="rope")
                 {
+                    s->resetCooldown();
                     p->linkRope(m_map.createRope(p->getPos(),param1));
 
                     playPlayerSound(p,"../data/sounds/bounce.wav");
                 }
                 else if(s->getName()=="jump")
                 {
-                    p->jump();
+                    if(p->jump())
+                        s->resetCooldown();
                     //Gsounds::getInstance()->play("../data/sounds/bounce.wav");
                 }
                 else if(s->getName()=="longjump")
                 {
-                    p->setVel(p->getVel()+p->getDir()/3.0);
-                    p->jump();
-                    playPlayerSound(p,"../data/sounds/boost.wav");
+                    if(p->jump())
+                    {
+                        p->setVel(p->getVel()+p->getDir()/3.0);
+
+                        s->resetCooldown();
+
+                        playPlayerSound(p,"../data/sounds/boost.wav");
+                    }
                     //Gsounds::getInstance()->play("../data/sounds/bounce.wav");
                 }
                 return true;//spell cast successfull
@@ -1080,7 +1074,7 @@ void Game::close()
         m_online->sendSocket(s);
         SDL_Delay(250);
     }
-    m_online->close();
+    m_online->closeOnline();
 
     Gsounds::getInstance()->freeAll();
 

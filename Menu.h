@@ -15,6 +15,7 @@ public:
 
     string inputString(string txt,string pathTxt,bool onlyInt=false);
     bool messageSure();
+    void messageError(string msg);
 
     void clicOn(string name, bool leftClic);
 

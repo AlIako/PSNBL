@@ -81,9 +81,11 @@ void menuStart(vector<Object2D>* b)
     GTexture::getInstance()->addTexture("../data/textures/interface/open_hover_hq.png");
     GTexture::getInstance()->addTexture("../data/textures/interface/test_hover_hq.png");
     GTexture::getInstance()->addTexture("../data/textures/interface/delete_hover_hq.png");
-    GTexture::getInstance()->addTexture("../data/textures/interface/sure_hover_hq.png");
     GTexture::getInstance()->addTexture("../data/textures/interface/yes_hover_hq.png");
     GTexture::getInstance()->addTexture("../data/textures/interface/no_hover_hq.png");
+
+    GTexture::getInstance()->addTexture("../data/textures/interface/error_hq.png");
+
 
     unsigned int ind=b->size();
     b->push_back(Object2D());

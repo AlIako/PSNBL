@@ -22,6 +22,7 @@ struct cID
 struct thread_params
 {
     bool* threadOn;
+    bool* serverOn;
     bool* connectionEstablished;
     int port;
     string ip;

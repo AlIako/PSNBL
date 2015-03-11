@@ -18,6 +18,7 @@ public:
     void draw();
 
     virtual bool cast();
+    void resetCooldown();
 
     static int nameToId(string name);
     static string idToName(int id);

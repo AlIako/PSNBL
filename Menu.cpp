@@ -183,12 +183,44 @@ void Menu::clicOn(string name, bool leftClic)
     if(leftClic && name=="join")
     {
         Config::getInstance()->mode="client";
-        command="play";
-        playLoop=false;
+
+        Online::getInstance()->ini();
+        Online::getInstance()->startThreads();
+
+        if(!Online::getInstance()->m_server)
+        {
+            Online::getInstance()->setIncontrol(false);
+
+            GTime start_try_connect;
+            start_try_connect.reset();
+            while(!Online::getInstance()->m_connectionEstablished && !start_try_connect.ecouler(2500))
+            {
+                start_try_connect.couler();
+                Online::getInstance()->update();
+                SDL_Delay(50);
+            }
+        }
+
+        if(Online::getInstance()->m_connectionEstablished)
+        {
+            command="play";
+            playLoop=false;
+        }
+        else//fail connection
+        {
+            Online::getInstance()->closeOnline();
+            messageError("Connection to server failed.");
+            //command="quit";
+            //playLoop=false;
+        }
+
     }
     if(leftClic && name=="create")
     {
         Config::getInstance()->mode="server";
+
+        Online::getInstance()->ini();
+
         command="play";
         playLoop=false;
     }
@@ -813,4 +845,115 @@ bool Menu::messageSure()
 
 
     return result;
+}
+
+
+
+void Menu::messageError(string msg)
+{
+    vector<Object2D> b;
+    b.clear();
+    unsigned int ind=b.size();
+    b.push_back(Object2D());
+    b[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/error_hq.png"));
+    b[ind].setPos(Vector3D(0.25,0.15,0));
+    b[ind].setSize(Vector3D(0.5,0.6,0));
+    b[ind].setName("error");
+
+    ind=b.size();
+    b.push_back(Object2D());
+    b[ind].setPos(Vector3D(0.3,0.43,0));
+    b[ind].addText(msg,&m_font);
+    b[ind].setName("errortxt");
+
+    ind=b.size();
+    b.push_back(Object2D());
+    b[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/ok_hq.png"));
+    b[ind].setTextureHover(GTexture::getInstance()->getTexture("../data/textures/interface/ok_hover_hq.png"));
+    b[ind].setPos(Vector3D(0.415,0.17,0));
+    b[ind].setSize(Vector3D(0.175,0.075,0));
+    b[ind].setName("ok");
+
+    bool loop=true;
+    while (loop)
+    {
+        while (SDL_PollEvent(&event))
+        {
+            switch (event.type)
+            {
+                case SDL_QUIT:
+                loop = false;
+                playLoop = false;
+                break;
+
+                case SDL_MOUSEMOTION:
+                    lastCursorX=event.button.x;
+                    lastCursorY=event.button.y;
+                    for(unsigned int i=0;i<b.size();i++)
+                        b[i].updateCursor(Vector3D(event.button.x,event.button.y,0));
+                break;
+
+                case SDL_MOUSEBUTTONUP:
+                if(event.button.button==SDL_BUTTON_LEFT)
+                {
+                    for(unsigned int i=0;i<b.size();i++)
+                    {
+                        if(b[i].clic(Vector3D(event.button.x,event.button.y,0)))
+                        {
+                            if(b[i].getName()=="ok")
+                            {
+                                Gsounds::getInstance()->play("../data/sounds/hover.mp3");
+                                loop=false;
+                                break;
+                            }
+                        }
+                    }
+                }
+                break;
+
+
+                case SDL_KEYUP:
+                switch(event.key.keysym.sym)
+                {
+                    case SDLK_ESCAPE:
+                        loop=false;
+                    break;
+                    default:
+                    break;
+                }
+                break;
+            }
+        }
+
+        //update stuff
+        updateTimes();
+        //m_online->update();
+
+        m_video->update(ft);
+
+        m_bg.update(ft);
+        for(unsigned int i=0;i<m_buttons.size();i++)
+            m_buttons[i].update(ft);
+
+        m_video->beforeDraw();
+
+        gluLookAt(5,2,1,
+        1,2,0,
+        0,0,1);
+
+        //bg
+        m_bg.draw();
+
+
+        //buttons
+        for(unsigned int i=0;i<m_buttons.size();i++)
+            m_buttons[i].draw();
+        //b
+        for(unsigned int i=0;i<b.size();i++)
+            b[i].draw();
+
+        m_video->afterDraw();
+
+        SDL_Delay(10);
+    }
 }

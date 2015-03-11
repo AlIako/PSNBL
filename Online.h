@@ -14,6 +14,7 @@ class Online
 
     void ini();
     void readMultiplayerFile();
+    void startThreads();
 
     void update();
 
@@ -31,7 +32,7 @@ class Online
 
     std::string getOnlineName() {return m_onlineName; }
 
-    void close();
+    void closeOnline();
     ~Online();
 
     std::vector<infosSocket> socketsReceived;
@@ -63,6 +64,7 @@ class Online
 
     std::string m_onlineName;
 
+    bool m_serverOn;
     bool m_threadsOn;
 
     //threads serv

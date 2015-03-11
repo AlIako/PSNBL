@@ -12,17 +12,6 @@ Online* Online::getInstance()
 
 Online::Online()
 {
-    m_incontrol=true;
-    m_active=true;
-
-    m_server=false;
-    m_connectionEstablished=false;
-
-    m_tcp=false;
-
-    clientID=0;
-
-    nextConfirmID=50;
 }
 
 //add socket to send to the list
@@ -115,12 +104,29 @@ infosSocket Online::getNextSocketRemove()
 
 void Online::ini()
 {
+    m_incontrol=true;
+    m_active=true;
+
+    m_server=false;
+    m_connectionEstablished=false;
+
+    m_tcp=false;
+
+    clientID=0;
+
+    nextConfirmID=50;
+
+    m_serverOn=true;
+
     //read settings file
     readMultiplayerFile();
-
+}
+void Online::startThreads()
+{
     if(m_active)
     {
         paramsHandleConnectionsThread.threadOn=&m_threadsOn;
+        paramsHandleConnectionsThread.serverOn=&m_serverOn;
         paramsHandleConnectionsThread.connectionEstablished=&m_connectionEstablished;
         paramsHandleConnectionsThread.socketsReceived=&socketsReceived;
         paramsHandleConnectionsThread.clients=&clients;
@@ -222,11 +228,22 @@ int Online::nextConfirmationID()
 }
 
 
-void Online::close()
+void Online::closeOnline()
 {
     //close threads
     m_connectionEstablished=false;
     m_threadsOn=false;
+    m_serverOn=false;
+
+
+    clients.clear();
+    socketWrappersToSend.clear();
+    confirmIDreceived.clear();
+    socketsReceived.clear();
+    clientID=0;
+    nextConfirmID=50;
+
+    close(newsockfd);
 }
 
 

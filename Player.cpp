@@ -117,7 +117,7 @@ void Player::updateRope()
 }
 
 
-void Player::jump()
+bool Player::jump()
 {
     if(m_life>0)
     {
@@ -137,8 +137,11 @@ void Player::jump()
             //unlinkRope();
 
             Tracer::getInstance()->trace("player","jump");
+
+            return true;
         }
     }
+    return false;
 }
 
 void Player::pullUpRope()

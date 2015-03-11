@@ -24,7 +24,7 @@ class Player: public Object
     virtual void draw();
 
 
-    void jump();
+    bool jump();
 
     void pullUpRope();
     void linkRope(Rope* p);

@@ -151,7 +151,7 @@ void* handleConnections(void* data)
         cerr<<"waiting for client..."<<endl;
         //waiting for client to connect
 
-        while(/* *(params->connectionEstablished)==false*/  true)
+        while(/* *(params->connectionEstablished)==false*/  *params->serverOn)
         {
             //sem_wait(params->mutex);
 

@@ -159,7 +159,7 @@ void Chat::checkKeyboard()
                 addChar=true;
             else if( ( event.key.keysym.unicode >= (Uint16)'!' ) && ( event.key.keysym.unicode <= (Uint16)'/' ) )
                 addChar=true;
-            if(addChar)
+            if(addChar && nextMessage.msg.size()<30)
             {
                 string m="";
                 for(unsigned int i=0;i<curseur;i++)

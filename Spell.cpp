@@ -73,12 +73,15 @@ bool Spell::cast()
     m_lastCast.couler();
     if(m_lastCast.ecouler(m_cooldown))
     {
-        m_lastCast.reset();
         return true;
     }
     return false;
 }
 
+void Spell::resetCooldown()
+{
+    m_lastCast.reset();
+}
 
 
 int Spell::nameToId(string name)
