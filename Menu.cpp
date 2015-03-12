@@ -177,6 +177,7 @@ void Menu::clicOn(string name, bool leftClic)
     if(leftClic && name=="single")
     {
         Config::getInstance()->mode="server";
+        Online::getInstance()->setActive(false);
         command="play";
         playLoop=false;
     }
@@ -184,6 +185,7 @@ void Menu::clicOn(string name, bool leftClic)
     {
         Config::getInstance()->mode="client";
 
+        Online::getInstance()->setActive(true);
         Online::getInstance()->ini();
         Online::getInstance()->startThreads();
 
@@ -219,6 +221,7 @@ void Menu::clicOn(string name, bool leftClic)
     {
         Config::getInstance()->mode="server";
 
+        Online::getInstance()->setActive(true);
         Online::getInstance()->ini();
 
         command="play";

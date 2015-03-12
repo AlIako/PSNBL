@@ -38,7 +38,7 @@ void Player::update(double functionTime)
 {
     if(m_collided)
     {
-        m_jumping=false;
+        //m_jumping=false;
         //m_collided=false;
 
         //grabbed a bonus?
@@ -49,7 +49,7 @@ void Player::update(double functionTime)
                 m_colliding[i]->loseLife(m_colliding[i]->getLife());//kill bonus
                 if(m_colliding[i]->getName()=="rez")
                 {
-                    if(Online::getInstance()!=NULL)
+                    if(Online::getInstance()->active())
                     {
                         infosSocket s;
                         s.confirmationID=-1;
@@ -63,11 +63,14 @@ void Player::update(double functionTime)
                 }
                 else if(m_colliding[i]->getName()=="rope")
                 {
-                    infosSocket s;
-                    s.confirmationID=Online::getInstance()->nextConfirmationID();
-                    s.type=16;
-                    s.variable[1]=Spell::nameToId("rope");
-                    Online::getInstance()->sendSocket(s);
+                    if(Online::getInstance()->active())
+                    {
+                        infosSocket s;
+                        s.confirmationID=Online::getInstance()->nextConfirmationID();
+                        s.type=16;
+                        s.variable[1]=Spell::nameToId("rope");
+                        Online::getInstance()->sendSocket(s);
+                    }
 
 
                     addSpell(new SpellRope());
@@ -75,7 +78,7 @@ void Player::update(double functionTime)
             }
             else if(m_colliding[i]->getType()=="lava")
             {
-                m_deathCause=1;
+                m_deathCause=1;//burn
             }
             else if(m_colliding[i]->getType()=="block" && m_colliding[i]->getName()=="jumpBlock")
             {
@@ -85,9 +88,7 @@ void Player::update(double functionTime)
         }
     }
 
-    for(unsigned int i=0;i<m_spells.size();i++)
-        m_spells[i]->update(functionTime);
-
+    //get pulled by rope and stuff
     if(hookedToRope())
     {
         if(m_rope->getLife()<=0)
@@ -103,9 +104,23 @@ void Player::update(double functionTime)
 
     Object::update(functionTime);
 
+    //on top of an object
     if(m_onTopOf!=NULL)
+    {
+        if(m_jumping)
+            Tracer::getInstance()->trace("jump","rdy to jump again");
         m_jumping=false;
+    }
+
 }
+
+void Player::updateMulti(double functionTime)
+{
+    for(unsigned int i=0;i<m_spells.size();i++)
+        m_spells[i]->update(functionTime);
+
+}
+
 
 void Player::updateRope()
 {
@@ -121,11 +136,11 @@ bool Player::jump()
 {
     if(m_life>0)
     {
-        if(m_onTopOf!=NULL && !m_jumping && (fabs(m_velocity.Z)<0.1 || ropeHooked()))
+        if((m_onTopOf!=NULL && !m_jumping) || ropeHooked())
         {
             m_jumping=true;
 
-            if(m_velocity.Z<0.4)
+            if(m_velocity.Z<0.4)//dont jump to reduce velocity Z
                 setVel(Vector3D(getVel().X,getVel().Y,0.4));
 
 
@@ -154,7 +169,7 @@ void Player::pullUpRope()
 
 void Player::linkRope(Rope* p)
 {
-    m_jumping=false;
+    //m_jumping=false;
 
     unlinkRope();
 

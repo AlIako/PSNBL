@@ -28,6 +28,8 @@ class Online
 
     void setIncontrol(bool b) { m_incontrol=b;}
     bool inControl() {return m_incontrol;}
+
+    void setActive(bool a){m_active=a;}
     bool active() {return m_active;}
 
     std::string getOnlineName() {return m_onlineName; }

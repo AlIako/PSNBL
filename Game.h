@@ -29,6 +29,7 @@ class Game
 
     bool castSpell(Player* p, string spell, Vector3D param1=Vector3D(0,0,0));
     void playPlayerSound(Player* p,string sound);
+    bool isMainPlayer(Player* p);
 
     void updateCamMode();
     void switchSpectate(int d);

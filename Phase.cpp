@@ -47,7 +47,7 @@ void Phase::ini(std::vector<Object*>* objects)
     highestZ=m_lava->getPos().Z+m_lava->getSize().Z;
     nextZ=highestZ;
 
-    if(!Online::getInstance()->inControl())
+    if(Online::getInstance()->active() && !Online::getInstance()->inControl())
         m_name="waitingToReceive";
 }
 
@@ -90,7 +90,7 @@ void Phase::update(double functionTime)
             cerr<<"next pattern"<<endl;
             nextPattern();
 
-            if(Online::getInstance()->inControl() && m_pattern==NULL)//if all patterns are finished
+            if((!Online::getInstance()->active() || Online::getInstance()->inControl()) && m_pattern==NULL)//if all patterns are finished
             {
                 //go to a next phase
                 goToNextPhase();
@@ -188,7 +188,7 @@ void Phase::iniMap()
     iniPhaseProperties();
 
     m_patternQueue.clear();
-    if(Online::getInstance()->inControl())
+    if(!Online::getInstance()->active() || Online::getInstance()->inControl())
     {
         int randomizer=myIntRand(0,100);
         //ini patterns depending on which phase
@@ -272,14 +272,13 @@ void Phase::iniMap()
         //addPatternToQueue(5);
 
         //start with first pattern in queue
-        m_pattern=m_patternQueue[0];
-        m_pattern->start();
-
-
-        //send that shit
-        if(Online::getInstance()->inControl())
+        if(m_patternQueue.size()>0)
         {
-            if(Online::getInstance()!=NULL && Online::getInstance()->active())
+            m_pattern=m_patternQueue[0];
+            m_pattern->start();
+
+            //send that shit
+            if(Online::getInstance()->active() && Online::getInstance()->inControl())
             {
                 infosSocket s;
                 s.confirmationID=Online::getInstance()->nextConfirmationID();

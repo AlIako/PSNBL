@@ -26,6 +26,8 @@ Tracer::Tracer()
     //m_channels.push_back("crosshair");
     //m_channels.push_back("jumpblock");
     m_channels.push_back("spell");
+    m_channels.push_back("jump");
+    //m_channels.push_back("debug");
 
     m_channelsSize=m_channels.size();
 }
@@ -66,6 +68,16 @@ void Tracer::trace(string channel, string output, int timeLapse, int id)
 
         if(authorizeNewTrace)
             m_traces.push_back(toSend);
+    }
+}
+void Tracer::traceCerr(string channel, string output, int timeLapse, int id)
+{
+    if(m_enabled)
+    {
+        if(channelOn(channel))
+        {
+            cerr<<"tracer ("<<channel<<"):"<<output<<endl;
+        }
     }
 }
 

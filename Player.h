@@ -19,6 +19,7 @@ class Player: public Object
 
 
     virtual void update(double functionTime);
+    virtual void updateMulti(double functionTime);
 
     virtual void ini();
     virtual void draw();

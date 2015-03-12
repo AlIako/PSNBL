@@ -30,6 +30,7 @@ class Tracer
 
 
     void trace(string channel, string output, int timeLapse=0, int id=-1);
+    void traceCerr(string channel, string output, int timeLapse=0, int id=-1);
     void afterFetch();
 
     void addChannel(string ch);

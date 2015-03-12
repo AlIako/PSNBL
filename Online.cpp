@@ -12,6 +12,7 @@ Online* Online::getInstance()
 
 Online::Online()
 {
+    m_active=true;
 }
 
 //add socket to send to the list
@@ -105,7 +106,6 @@ infosSocket Online::getNextSocketRemove()
 void Online::ini()
 {
     m_incontrol=true;
-    m_active=true;
 
     m_server=false;
     m_connectionEstablished=false;

@@ -49,21 +49,19 @@ void Map::update(double functionTime)
         }
     }
     //players
-    /*for(unsigned int i=0, count=playerList->size();i<count;i++)
-    {
-        (*playerList)[i]->update(ft);
-        (*playerList)[i]->move();
-    }*/
+    for(unsigned int i=0, count=playerList->size();i<count;i++)
+        (*playerList)[i]->updateMulti(ft);
     //player
     if(playerList!=NULL && playerList->size()>0)
     {
-        (*playerList)[0]->update(ft);
         (*playerList)[0]->move();
 
         applyGravity((*playerList)[0]);
         applyPhysics((*playerList)[0]);
 
         (*playerList)[0]->updateRope();
+
+        (*playerList)[0]->update(ft);
     }
 }
 

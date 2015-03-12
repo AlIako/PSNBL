@@ -30,6 +30,7 @@ void Spell::ini()
 
 void Spell::update(double functionTime)
 {
+    m_lastCast.couler();
     //if(m_icon==NULL)//fail init?
     //    ini();
 }

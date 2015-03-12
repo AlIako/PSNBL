@@ -37,15 +37,17 @@ void Game::ini()
 
     //online
     m_online=Online::getInstance();
-    m_online->startThreads();
     if(m_online->active())
     {
+        m_online->startThreads();
+
         if(m_online->m_server)
             playerList[0]->setIdOnline(0);
         else
             updateMultiplayer();
+
+        playerList[0]->setOnlineName(m_online->getOnlineName());
     }
-    playerList[0]->setOnlineName(m_online->getOnlineName());
     //end ini online
 
     m_map.playerList=&playerList;
@@ -100,7 +102,7 @@ void Game::handleCommands()
         string c=m_chat.commands[i];
         if(c=="/restart" || c=="/reset" || c=="/Reset" || c=="/Restart" || c=="/R" || c=="/r")
         {
-            if(Online::getInstance()->inControl())
+            if(!Online::getInstance()->active() || Online::getInstance()->inControl())
             {
                 infosSocket s;
                 s.confirmationID=m_online->nextConfirmationID();
@@ -184,6 +186,13 @@ void Game::handleCommands()
     m_chat.commands.clear();
 }
 
+bool Game::isMainPlayer(Player* p)
+{
+    if(playerList.size()>0 && p==playerList[0])
+        return true;
+    return false;
+}
+
 
 bool Game::castSpell(Player* p, string spell, Vector3D param1)
 {
@@ -200,26 +209,30 @@ bool Game::castSpell(Player* p, string spell, Vector3D param1)
                     p->linkRope(m_map.createRope(p->getPos(),param1));
 
                     playPlayerSound(p,"../data/sounds/bounce.wav");
+
+                    return true;
                 }
                 else if(s->getName()=="jump")
                 {
                     if(p->jump())
+                    {
                         s->resetCooldown();
-                    //Gsounds::getInstance()->play("../data/sounds/bounce.wav");
+                        return true;
+                    }
                 }
                 else if(s->getName()=="longjump")
                 {
-                    if(p->jump())
+                    if(!isMainPlayer(p) || p->jump())
                     {
                         p->setVel(p->getVel()+p->getDir()/3.0);
 
                         s->resetCooldown();
 
                         playPlayerSound(p,"../data/sounds/boost.wav");
+
+                        return true;
                     }
-                    //Gsounds::getInstance()->play("../data/sounds/bounce.wav");
                 }
-                return true;//spell cast successfull
             }
         }
     }
@@ -260,22 +273,25 @@ void Game::play(string path)
                 {
                     if(m_mode=="play")
                     {
-                        Vector3D dir=(m_camera.getTarget()-(playerList[0]->getPos()+Vector3D(0,0,1))).normalize();
-
-                        if(castSpell(playerList[0],"rope",dir))
+                        if(playerList[0]->getLife()>0)
                         {
-                            infosSocket s;
-                            s.confirmationID=-1;
-                            s.type=2;
+                            Vector3D dir=(m_camera.getTarget()-(playerList[0]->getPos()+Vector3D(0,0,1))).normalize();
 
-                            s.variable[1]=playerList[0]->getPos().X;
-                            s.variable[2]=playerList[0]->getPos().Y;
-                            s.variable[3]=playerList[0]->getPos().Z;
-                            s.variable[4]=dir.X;
-                            s.variable[5]=dir.Y;
-                            s.variable[6]=dir.Z;
+                            if(castSpell(playerList[0],"rope",dir))
+                            {
+                                infosSocket s;
+                                s.confirmationID=-1;
+                                s.type=2;
 
-                            m_online->sendSocket(s);//add socket to queue
+                                s.variable[1]=playerList[0]->getPos().X;
+                                s.variable[2]=playerList[0]->getPos().Y;
+                                s.variable[3]=playerList[0]->getPos().Z;
+                                s.variable[4]=dir.X;
+                                s.variable[5]=dir.Y;
+                                s.variable[6]=dir.Z;
+
+                                m_online->sendSocket(s);//add socket to queue
+                            }
                         }
 
                     }
@@ -288,12 +304,15 @@ void Game::play(string path)
                 {
                     if(m_mode=="play")
                     {
-                        playerList[0]->unlinkRope();
+                        if(playerList[0]->getLife()>0)
+                        {
+                            playerList[0]->unlinkRope();
 
-                        infosSocket s;
-                        s.confirmationID=-1;
-                        s.type=3;
-                        m_online->sendSocket(s);//add socket to queue
+                            infosSocket s;
+                            s.confirmationID=-1;
+                            s.type=3;
+                            m_online->sendSocket(s);//add socket to queue
+                        }
                     }
                     else if(m_mode=="spectate")
                     {
@@ -329,30 +348,27 @@ void Game::play(string path)
                     playerList[0]->pressKey(KEY_E,true);
                     break;
                     case SDLK_SPACE:
-                    if(shiftPushed)
+                    if(playerList[0]->getLife()>0)
                     {
-                        if(castSpell(playerList[0],"longjump"))
+                        if(shiftPushed)
                         {
-                            infosSocket s;
-                            s.confirmationID=-1;
-                            s.type=15;
+                            if(castSpell(playerList[0],"longjump"))
+                            {
+                                infosSocket s;
+                                s.confirmationID=-1;
+                                s.type=15;
 
-                            s.variable[1]=playerList[0]->getPos().X;
-                            s.variable[2]=playerList[0]->getPos().Y;
-                            s.variable[3]=playerList[0]->getPos().Z;
+                                s.variable[1]=playerList[0]->getPos().X;
+                                s.variable[2]=playerList[0]->getPos().Y;
+                                s.variable[3]=playerList[0]->getPos().Z;
 
-                            m_online->sendSocket(s);//add socket to queue
+                                m_online->sendSocket(s);//add socket to queue
+                            }
+
                         }
-
+                        else
+                            castSpell(playerList[0],"jump");
                     }
-                    else
-                        castSpell(playerList[0],"jump");
-
-                    //unlink rope
-                    infosSocket s;
-                    s.confirmationID=-1;
-                    s.type=3;
-                    m_online->sendSocket(s);//add socket to queue
                     break;
 
                     case SDLK_LSHIFT:
@@ -394,7 +410,8 @@ void Game::play(string path)
                     playerList[0]->pressKey(KEY_E,false);
                     break;
                     case SDLK_r:
-                    if(playerList.size()==1 && Online::getInstance()->inControl())//if youre alone its ok
+                    if(playerList.size()==1 &&
+                       (!Online::getInstance()->active() || Online::getInstance()->inControl()))//if youre alone its ok
                     {
                         infosSocket s;
                         s.confirmationID=m_online->nextConfirmationID();
@@ -432,6 +449,29 @@ void Game::play(string path)
                         playerList[0]->setGasing(false);
                         shiftPushed=false;
                     break;
+                    case SDLK_SPACE:
+                    if(playerList[0]->getLife()>0)
+                    {
+                        if(shiftPushed)
+                        {
+                            if(castSpell(playerList[0],"longjump"))
+                            {
+                                infosSocket s;
+                                s.confirmationID=-1;
+                                s.type=15;
+
+                                s.variable[1]=playerList[0]->getPos().X;
+                                s.variable[2]=playerList[0]->getPos().Y;
+                                s.variable[3]=playerList[0]->getPos().Z;
+
+                                m_online->sendSocket(s);//add socket to queue
+                            }
+
+                        }
+                        else
+                            castSpell(playerList[0],"jump");
+                    }
+                    break;
                     default:
                     break;
                 }
@@ -449,11 +489,14 @@ void Game::play(string path)
         m_video->update(ft);
         m_map.update(ft);
 
+        Tracer::getInstance()->traceCerr("debug","1");
 
         m_interface.setMode(m_mode);
         m_interface.update(ft);
         handleCommands();
         handleTracer();
+
+        Tracer::getInstance()->traceCerr("debug","2");
 
         updateCamMode();
 
@@ -481,6 +524,8 @@ void Game::play(string path)
         else if(playerList[0]->getLife()>0)
             alreadyDead=false;
 
+        Tracer::getInstance()->traceCerr("debug","3");
+
         //crosshair
         m_map.simulateRopeForCrosshair(playerList[0],
                                        (m_camera.getTarget()-(playerList[0]->getPos()+Vector3D(0,0,1))).normalize(),
@@ -492,12 +537,16 @@ void Game::play(string path)
         m_camera.look();
 
 
+        Tracer::getInstance()->traceCerr("debug","4");
+
         //glUseProgram(m_video->programIDRed);
 
         if(m_mode!="play")
             playerList[0]->draw();
         for(unsigned int i=1, count=playerList.size();i<count;i++)
             playerList[i]->draw();
+
+        Tracer::getInstance()->traceCerr("debug","5");
 
 
         //glUseProgram(m_video->programIDWave);
@@ -509,9 +558,13 @@ void Game::play(string path)
         if(m_camera.getPos().Z<=m_map.getLava()->getPos().Z+m_map.getLava()->getSize().Z*2)
             m_interface.drawScreenEffect("../data/textures/lava.png");
 
+        Tracer::getInstance()->traceCerr("debug","6");
+
         m_interface.draw();
         m_chat.draw();
 
+
+        Tracer::getInstance()->traceCerr("debug","7");
 
 
         m_video->afterDraw();
@@ -526,6 +579,8 @@ void Game::play(string path)
             m_fpsTime.reset();
         }
 
+        Tracer::getInstance()->traceCerr("debug","8");
+
         SDL_Delay(10);
     }
 
@@ -535,23 +590,26 @@ void Game::play(string path)
 
 void Game::updateCamMode()
 {
-    if(m_camera.getCible()->getLife()<=0)
+    if(m_camera.getCible()!=NULL)
     {
-        //camera mode
-        Player* pTarget=NULL;
-        Object* p=m_camera.getCible();
-        for(unsigned int i=1, count=playerList.size();i<count;i++)
+        if(m_camera.getCible()->getLife()<=0)
         {
-            if(playerList[i]->getLife()>0)
+            //camera mode
+            Player* pTarget=NULL;
+            Object* p=m_camera.getCible();
+            for(unsigned int i=1, count=playerList.size();i<count;i++)
             {
-                p=playerList[i];
-                pTarget=playerList[i];
+                if(playerList[i]->getLife()>0)
+                {
+                    p=playerList[i];
+                    pTarget=playerList[i];
+                }
             }
+            m_mode="spectate";
+            m_camera.setMode("spectate");
+            m_camera.setCible(p);
+            m_interface.setTarget(pTarget);
         }
-        m_mode="spectate";
-        m_camera.setMode("spectate");
-        m_camera.setCible(p);
-        m_interface.setTarget(pTarget);
     }
 }
 
@@ -564,13 +622,13 @@ void Game::switchSpectate(int d)
     //find which id we have now
     for(unsigned int i=0, count=playerList.size();i<count;i++)
     {
-        if(playerList[i]->getIdOnline()==p->getIdOnline())
+        if(p && playerList[i]->getIdOnline()==p->getIdOnline())
             id=i;
     }
 
     //find next player in list that has no same id
     bool foundPl=false;
-    for(unsigned int i=id+1, count=playerList.size();i<count;i++)
+    for(unsigned int i=id, count=playerList.size();i<count;i++)
     {
         int tempI=i;
         if(!foundPl && playerList[tempI]->getLife()>0)
@@ -836,7 +894,15 @@ void Game::updateMultiplayer()
 
                             m_chat.recieveMessage(tempChar2,0,-2);
                             delete tempChar2;
+
+                            Online::getInstance()->setActive(false);
                         }
+
+                        //check if was spectating him. If yes, kill the link
+                        if(m_interface.getTarget()==player)
+                            m_interface.setTarget(NULL);
+                        if(m_camera.getCible()==player)
+                            m_camera.setCible(NULL);
 
 
                         //delete player from player list
@@ -1025,7 +1091,8 @@ void Game::updateMultiplayer()
                     //long jump
                     if(s.type==15)
                     {
-                        playPlayerSound(player,"../data/sounds/boost.wav");
+                        castSpell(player,"longjump");
+                        //playPlayerSound(player,"../data/sounds/boost.wav");
                     }
                     //loot new spell
                     if(s.type==16)

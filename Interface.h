@@ -15,6 +15,7 @@ public:
 
 
     void setTarget(Player* p) {m_target=p;}
+    Player* getTarget() {return m_target;}
     void setMode(std::string m) {m_mode=m;}
 
     void setFPS(int fps);
