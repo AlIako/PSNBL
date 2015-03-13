@@ -161,7 +161,9 @@ void* handleConnections(void* data)
 
             if (n < 0)
                 cerr<<"ERROR reading from conn socket: "<<WSAGetLastError()<<endl;
-            if(infosRecu.type==4)//client connect
+            else if (n == 0)
+                cerr<<"--timeout"<<endl;
+            else if(infosRecu.type==4)//client connect
             {
 
 
@@ -219,13 +221,14 @@ void* handleConnections(void* data)
                 SDL_Delay(100);
                 cerr<<"end connection with this client "<<endl;
                 *(params->connectionEstablished)=true;
+
+                //sem_post(params->mutex);
+
+                break;
             }
             else (*params->socketsReceived).push_back(infosRecu);
 
 
-            //sem_post(params->mutex);
-
-            break;
         }
 
     }
@@ -254,202 +257,207 @@ void* serverReceiveThread(void* data)
 
             if (n < 0)
                 cerr<<"ERROR reading from socket: "<<WSAGetLastError()<<endl;
-
-            if(infosRecu.type!=-1)
+            else if (n == 0)
+                cerr<<"--timeout"<<endl;
+            else
             {
-                cerr<<"-----received socket type "<<(int)infosRecu.type << ", 0: "<< infosRecu.variable[0]  << ", 1: "<< infosRecu.variable[1] << ", 2: "<< infosRecu.variable[2] << ", 3: "<< infosRecu.variable[3] <<endl;
-                //add received socket to queue
 
-
-                if(infosRecu.type==4)//client connect
+                if(infosRecu.type!=-1)
                 {
+                    cerr<<"-----received socket type "<<(int)infosRecu.type << ", 0: "<< infosRecu.variable[0]  << ", 1: "<< infosRecu.variable[1] << ", 2: "<< infosRecu.variable[2] << ", 3: "<< infosRecu.variable[3] <<endl;
+                    //add received socket to queue
 
 
-                    *params->clientID=*params->clientID+1;
-                    cerr << "new client: "<<(int)*params->clientID<<endl;
-
-                    //simulate received type 4 to add player in game
-                    infosSocket dummyS;
-                    dummyS.confirmationID=-1;
-                    dummyS.type=4;
-                    dummyS.variable[0]=*params->clientID;
-                    (*params->socketsReceived).push_back(dummyS);
-
-                    //increment the last client ID
-
-                    //send to all clients except the new one information that a new client is connected, with his id
-                    dummyS.type=4;
-                    dummyS.variable[0]=*params->clientID;
-                    for(unsigned int i=0;i<(*params->clients).size();i++)
+                    if(infosRecu.type==4)//client connect
                     {
-                        infosClient ic=(*params->clients)[i];
-                        if(floor(dummyS.variable[0])!=ic.id)//dont send to client who sent this to you
+
+
+                        *params->clientID=*params->clientID+1;
+                        cerr << "new client: "<<(int)*params->clientID<<endl;
+
+                        //simulate received type 4 to add player in game
+                        infosSocket dummyS;
+                        dummyS.confirmationID=-1;
+                        dummyS.type=4;
+                        dummyS.variable[0]=*params->clientID;
+                        (*params->socketsReceived).push_back(dummyS);
+
+                        //increment the last client ID
+
+                        //send to all clients except the new one information that a new client is connected, with his id
+                        dummyS.type=4;
+                        dummyS.variable[0]=*params->clientID;
+                        for(unsigned int i=0;i<(*params->clients).size();i++)
                         {
-                            SocketWrapper sw;
-                            sw.socket=dummyS;
-                            sw.client=ic;
-                            (*params->socketWrappersToSend).push_back(sw);
+                            infosClient ic=(*params->clients)[i];
+                            if(floor(dummyS.variable[0])!=ic.id)//dont send to client who sent this to you
+                            {
+                                SocketWrapper sw;
+                                sw.socket=dummyS;
+                                sw.client=ic;
+                                (*params->socketWrappersToSend).push_back(sw);
+                            }
+                        }
+
+                        //send to this client his id
+                        dummyS.type=5;
+                        dummyS.variable[0]=*params->clientID;
+                        int n = sendSocket(params->tcp,*params->newsockfd,(char*)&dummyS, sizeof(dummyS),0,(struct sockaddr *) (params->addr), (*params->clilen));
+                        if (n < 0)
+                            cerr<<"ERROR writing to conn2 socket: "<<WSAGetLastError()<<endl;
+
+                        //add new client to client list.
+                        infosClient ic;
+                        ic.id=*params->clientID;
+                        ic.lastHeardFrom.reset();
+
+                        ic.sock=new int;
+                        *ic.sock=(*params->newsockfd);
+
+                        ic.addr=new sockaddr_in;
+                        *ic.addr=(*params->addr);
+
+
+                        ic.clilen=(*params->clilen);
+
+                        (*params->clients).push_back(ic);
+
+
+                        //SDL_Delay(100);
+                        cerr<<"end connection with this client "<<endl;
+                    }
+
+                    //player disconnect
+                    if(infosRecu.type==12)
+                    {
+                        cerr<<"Player "<< infosRecu.variable[0]<<" disconnected."<<endl;
+                        //delete from client list
+                        for(unsigned int j=0;j<(*params->clients).size();j++)
+                        {
+                            if((*params->clients)[j].id==infosRecu.variable[0])
+                            {
+                                (*params->clients).erase((*params->clients).begin()+j);
+                            }
+                        }
+                        //delete all sockets to send to this client
+                        for(unsigned int j=0;j<(*params->socketWrappersToSend).size();j++)
+                        {
+                            if((*params->socketWrappersToSend)[j].client.id==infosRecu.variable[0])
+                            {
+                                (*params->socketWrappersToSend).erase((*params->socketWrappersToSend).begin()+j);
+                            }
                         }
                     }
 
-                    //send to this client his id
-                    dummyS.type=5;
-                    dummyS.variable[0]=*params->clientID;
-                    int n = sendSocket(params->tcp,*params->newsockfd,(char*)&dummyS, sizeof(dummyS),0,(struct sockaddr *) (params->addr), (*params->clilen));
-                    if (n < 0)
-                        cerr<<"ERROR writing to conn2 socket: "<<WSAGetLastError()<<endl;
-
-                    //add new client to client list.
-                    infosClient ic;
-                    ic.id=*params->clientID;
-                    ic.lastHeardFrom.reset();
-
-                    ic.sock=new int;
-                    *ic.sock=(*params->newsockfd);
-
-                    ic.addr=new sockaddr_in;
-                    *ic.addr=(*params->addr);
 
 
-                    ic.clilen=(*params->clilen);
 
-                    (*params->clients).push_back(ic);
+                    //add to list only if you didn't already receive that or if not important socket
+                    bool alreadyReceived=false;
 
-
-                    //SDL_Delay(100);
-                    cerr<<"end connection with this client "<<endl;
-                }
-
-                //player disconnect
-                if(infosRecu.type==12)
-                {
-                    cerr<<"Player "<< infosRecu.variable[0]<<" disconnected."<<endl;
-                    //delete from client list
-                    for(unsigned int j=0;j<(*params->clients).size();j++)
+                    if(infosRecu.confirmationID!=-1)
                     {
-                        if((*params->clients)[j].id==infosRecu.variable[0])
+                        for(unsigned int j=0;!alreadyReceived && j<(*params->confirmIDreceived).size();j++)
                         {
-                            (*params->clients).erase((*params->clients).begin()+j);
+                            if(infosRecu.confirmationID==(*params->confirmIDreceived)[j].idConfirm
+                            && infosRecu.variable[0]==(*params->confirmIDreceived)[j].idClient)//already received
+                            {
+                                cerr<<"socket "<<infosRecu.confirmationID <<" already received "<<endl;
+                                alreadyReceived=true;
+                            }
                         }
                     }
-                    //delete all sockets to send to this client
-                    for(unsigned int j=0;j<(*params->socketWrappersToSend).size();j++)
+
+                    if(!alreadyReceived)
                     {
-                        if((*params->socketWrappersToSend)[j].client.id==infosRecu.variable[0])
+                        if(infosRecu.confirmationID!=-1 && infosRecu.type!=11)
                         {
-                            (*params->socketWrappersToSend).erase((*params->socketWrappersToSend).begin()+j);
+                            cID cid;
+                            cid.idClient=infosRecu.variable[0];
+                            cid.idConfirm=infosRecu.confirmationID;
+                            (*params->confirmIDreceived).push_back(cid);
+                        }
+
+
+                        (*params->socketsReceived).push_back(infosRecu);
+
+
+                        //cerr<<"transmiting socket type "<< (int)infosRecu.type<<endl;
+
+                        //add to send queue to send to other clients
+                        //(*params->socketsToSend).push_back(infosRecu);
+                        for(unsigned int j=0;j<(*params->clients).size();j++)
+                        {
+                            infosClient ic=(*params->clients)[j];
+                            if((*params->clients)[j].id!=infosRecu.variable[0])//dont send to client who sent this to you
+                            {
+                                SocketWrapper sw;
+                                sw.socket=infosRecu;
+                                sw.client=ic;
+                                (*params->socketWrappersToSend).push_back(sw);
+                            }
                         }
                     }
-                }
-
-
-
-
-                //add to list only if you didn't already receive that or if not important socket
-                bool alreadyReceived=false;
-
-                if(infosRecu.confirmationID!=-1)
-                {
-                    for(unsigned int j=0;!alreadyReceived && j<(*params->confirmIDreceived).size();j++)
+                    else
                     {
-                        if(infosRecu.confirmationID==(*params->confirmIDreceived)[j].idConfirm
-                        && infosRecu.variable[0]==(*params->confirmIDreceived)[j].idClient)//already received
-                        {
-                            cerr<<"socket "<<infosRecu.confirmationID <<" already received "<<endl;
-                            alreadyReceived=true;
-                        }
+                        cerr<<"already received; not handling again."<<endl;
                     }
-                }
 
-                if(!alreadyReceived)
-                {
+
+                    //if socket needs confirmation; send it back.to this particular client only
                     if(infosRecu.confirmationID!=-1 && infosRecu.type!=11)
                     {
-                        cID cid;
-                        cid.idClient=infosRecu.variable[0];
-                        cid.idConfirm=infosRecu.confirmationID;
-                        (*params->confirmIDreceived).push_back(cid);
-                    }
+                        infosSocket infosConfirmation;
+                        infosConfirmation.type=11;
+                        infosConfirmation.confirmationID=infosRecu.confirmationID;
+                        infosConfirmation.variable[0]=infosRecu.variable[0];//same id as socket received
 
-
-                    (*params->socketsReceived).push_back(infosRecu);
-
-
-                    //cerr<<"transmiting socket type "<< (int)infosRecu.type<<endl;
-
-                    //add to send queue to send to other clients
-                    //(*params->socketsToSend).push_back(infosRecu);
-                    for(unsigned int j=0;j<(*params->clients).size();j++)
-                    {
-                        infosClient ic=(*params->clients)[j];
-                        if((*params->clients)[j].id!=infosRecu.variable[0])//dont send to client who sent this to you
+                        SocketWrapper sw;
+                        sw.socket=infosConfirmation;
+                        //find which client
+                        for(unsigned int j=0;j<(*params->clients).size();j++)
                         {
-                            SocketWrapper sw;
-                            sw.socket=infosRecu;
-                            sw.client=ic;
-                            (*params->socketWrappersToSend).push_back(sw);
+                            if((*params->clients)[j].id==infosRecu.variable[0])
+                                sw.client=(*params->clients)[j];
                         }
+                        (*params->socketWrappersToSend).push_back(sw);
+
+                        cerr<<"important socket " <<infosConfirmation.confirmationID << " (type " << (int)infosRecu.type <<") received"<<endl;
                     }
-                }
-                else
-                {
-                    cerr<<"already received; not handling again."<<endl;
-                }
 
-
-                //if socket needs confirmation; send it back.to this particular client only
-                if(infosRecu.confirmationID!=-1 && infosRecu.type!=11)
-                {
-                    infosSocket infosConfirmation;
-                    infosConfirmation.type=11;
-                    infosConfirmation.confirmationID=infosRecu.confirmationID;
-                    infosConfirmation.variable[0]=infosRecu.variable[0];//same id as socket received
-
-                    SocketWrapper sw;
-                    sw.socket=infosConfirmation;
-                    //find which client
-                    for(unsigned int j=0;j<(*params->clients).size();j++)
+                    //if I received confirmation, delete socket that needed this confirmation so it wont be sent again
+                    if(infosRecu.type==11)
                     {
-                        if((*params->clients)[j].id==infosRecu.variable[0])
-                            sw.client=(*params->clients)[j];
-                    }
-                    (*params->socketWrappersToSend).push_back(sw);
+                        //GO SEMAPHORE
+                        if((*params->modifArray))
+                            sem_wait(params->mutex);
+                        (*params->modifArray)=true;
 
-                    cerr<<"important socket " <<infosConfirmation.confirmationID << " (type " << (int)infosRecu.type <<") received"<<endl;
-                }
-
-                //if I received confirmation, delete socket that needed this confirmation so it wont be sent again
-                if(infosRecu.type==11)
-                {
-                    //GO SEMAPHORE
-                    if((*params->modifArray))
-                        sem_wait(params->mutex);
-                    (*params->modifArray)=true;
-
-                    cerr<<"received confirmation " << infosRecu.confirmationID<< "!"<<endl;
-                    for(unsigned int j=0;j<(*params->socketWrappersToSend).size();j++)
-                    {
-                        SocketWrapper sw=(*params->socketWrappersToSend)[j];//THIS LINE CRASH
-                        if(sw.socket.confirmationID==infosRecu.confirmationID && sw.client.id==infosRecu.variable[0])//same ID, same client
+                        cerr<<"received confirmation " << infosRecu.confirmationID<< "!"<<endl;
+                        for(unsigned int j=0;j<(*params->socketWrappersToSend).size();j++)
                         {
-                            cerr<<"important socket "<< infosRecu.confirmationID<< " deleted."<<endl;
-                            (*params->socketWrappersToSend).erase((*params->socketWrappersToSend).begin()+j);
+                            SocketWrapper sw=(*params->socketWrappersToSend)[j];//THIS LINE CRASH
+                            if(sw.socket.confirmationID==infosRecu.confirmationID && sw.client.id==infosRecu.variable[0])//same ID, same client
+                            {
+                                cerr<<"important socket "<< infosRecu.confirmationID<< " deleted."<<endl;
+                                (*params->socketWrappersToSend).erase((*params->socketWrappersToSend).begin()+j);
+                            }
                         }
-                    }
-                    cerr<<"list of important wrappers to send:"<<endl;
-                    for(unsigned int j=0;j<(*params->socketWrappersToSend).size();j++)
-                    {
-                        SocketWrapper sw=(*params->socketWrappersToSend)[j];
-                        if(sw.socket.confirmationID!=-1 && sw.socket.type!=11)
+                        cerr<<"list of important wrappers to send:"<<endl;
+                        for(unsigned int j=0;j<(*params->socketWrappersToSend).size();j++)
                         {
-                            cerr<<"type: "<<(int)sw.socket.type<<", "<<sw.socket.confirmationID<<endl;
+                            SocketWrapper sw=(*params->socketWrappersToSend)[j];
+                            if(sw.socket.confirmationID!=-1 && sw.socket.type!=11)
+                            {
+                                cerr<<"type: "<<(int)sw.socket.type<<", "<<sw.socket.confirmationID<<endl;
+                            }
                         }
-                    }
-                    cerr<<endl;
-                    //END SEMAPHORE
+                        cerr<<endl;
+                        //END SEMAPHORE
 
-                    (*params->modifArray)=false;
-                    sem_post(params->mutex);
+                        (*params->modifArray)=false;
+                        sem_post(params->mutex);
+                    }
                 }
             }
         }

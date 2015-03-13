@@ -149,86 +149,90 @@ void* clientReceiveThread(void* data)
         int n = receiveSocket(params->tcp,*params->newsockfd, (char*)&infosRecu,sizeof(infosRecu), 0,(struct sockaddr *) (params->addr), (params->clilen));
         if (n < 0)
             cerr<<"ERROR reading from socket: "<<WSAGetLastError()<<endl;
-
-        //add received socket to queue
-        if(infosRecu.type!=-1)
+        else if (n == 0)
+            cerr<<"--timeout"<<endl;
+        else
         {
-            cerr<<"-----received socket type "<<(int)infosRecu.type << ", 0: "<< infosRecu.variable[0]  << ", 1: "<< infosRecu.variable[1] << ", 2: "<< infosRecu.variable[2] << ", 3: "<< infosRecu.variable[3] <<endl;
-
-            //add to list only if you didn't already receive that or if not important socket
-            bool alreadyReceived=false;
-
-            if(infosRecu.confirmationID!=-1)//important socket
+            //add received socket to queue
+            if(infosRecu.type!=-1)
             {
-                for(unsigned int j=0;!alreadyReceived && j<(*params->confirmIDreceived).size();j++)
+                cerr<<"-----received socket type "<<(int)infosRecu.type << ", 0: "<< infosRecu.variable[0]  << ", 1: "<< infosRecu.variable[1] << ", 2: "<< infosRecu.variable[2] << ", 3: "<< infosRecu.variable[3] <<endl;
+
+                //add to list only if you didn't already receive that or if not important socket
+                bool alreadyReceived=false;
+
+                if(infosRecu.confirmationID!=-1)//important socket
                 {
-                    //cerr<<"c: "<<infosRecu.confirmationID<<" -- "<<(*params->confirmIDreceived)[j]<<endl;
-                    if(infosRecu.confirmationID==(*params->confirmIDreceived)[j].idConfirm
-                       && infosRecu.variable[0]==(*params->confirmIDreceived)[j].idClient)//already received
-                        alreadyReceived=true;
-                }
-            }
-            //handle socket only if not already received
-            if(!alreadyReceived)
-            {
-                if(infosRecu.confirmationID!=-1 && infosRecu.type!=11)
-                {
-                    cID cid;
-                    cid.idClient=infosRecu.variable[0];
-                    cid.idConfirm=infosRecu.confirmationID;
-                    (*params->confirmIDreceived).push_back(cid);
-                }
-
-
-                (*params->socketsReceived).push_back(infosRecu);
-            }
-            else
-            {
-                cerr<<"already received; not handling again."<<endl;
-            }
-
-
-            //if socket needs confirmation; send it back.to the server
-            if(infosRecu.confirmationID!=-1 && infosRecu.type!=11)
-            {
-                infosSocket infosConfirmation;
-                infosConfirmation.type=11;
-                infosConfirmation.confirmationID=infosRecu.confirmationID;
-                infosConfirmation.variable[0]=*params->clientID;//YOUR ID
-
-                SocketWrapper sw;
-                sw.socket=infosConfirmation;
-
-                (*params->socketWrappersToSend).push_back(sw);
-
-                cerr<<"important socket " <<infosConfirmation.confirmationID << " (type " << (int)infosRecu.type <<") received"<<endl;
-            }
-
-            //if I received confirmation, delete socket that needed this confirmation so it wont be sent again
-            if(infosRecu.type==11)
-            {
-                //GO SEMAPHORE
-                if((*params->modifArray))
-                    sem_wait(params->mutex);
-                (*params->modifArray)=true;
-
-                cerr<<"received confirmation " << infosRecu.confirmationID<< "!"<<endl;
-                for(unsigned int j=0;j<(*params->socketWrappersToSend).size();j++)
-                {
-                    SocketWrapper sw=(*params->socketWrappersToSend)[j];
-                    if(sw.socket.confirmationID==infosRecu.confirmationID)
+                    for(unsigned int j=0;!alreadyReceived && j<(*params->confirmIDreceived).size();j++)
                     {
-                        cerr<<"important socket "<< infosRecu.confirmationID<< " deleted."<<endl;
-
-                        (*params->socketWrappersToSend).erase((*params->socketWrappersToSend).begin()+j);
+                        //cerr<<"c: "<<infosRecu.confirmationID<<" -- "<<(*params->confirmIDreceived)[j]<<endl;
+                        if(infosRecu.confirmationID==(*params->confirmIDreceived)[j].idConfirm
+                           && infosRecu.variable[0]==(*params->confirmIDreceived)[j].idClient)//already received
+                            alreadyReceived=true;
                     }
                 }
+                //handle socket only if not already received
+                if(!alreadyReceived)
+                {
+                    if(infosRecu.confirmationID!=-1 && infosRecu.type!=11)
+                    {
+                        cID cid;
+                        cid.idClient=infosRecu.variable[0];
+                        cid.idConfirm=infosRecu.confirmationID;
+                        (*params->confirmIDreceived).push_back(cid);
+                    }
 
 
-                //END SEMAPHORE
+                    (*params->socketsReceived).push_back(infosRecu);
+                }
+                else
+                {
+                    cerr<<"already received; not handling again."<<endl;
+                }
 
-                (*params->modifArray)=false;
-                sem_post(params->mutex);
+
+                //if socket needs confirmation; send it back.to the server
+                if(infosRecu.confirmationID!=-1 && infosRecu.type!=11)
+                {
+                    infosSocket infosConfirmation;
+                    infosConfirmation.type=11;
+                    infosConfirmation.confirmationID=infosRecu.confirmationID;
+                    infosConfirmation.variable[0]=*params->clientID;//YOUR ID
+
+                    SocketWrapper sw;
+                    sw.socket=infosConfirmation;
+
+                    (*params->socketWrappersToSend).push_back(sw);
+
+                    cerr<<"important socket " <<infosConfirmation.confirmationID << " (type " << (int)infosRecu.type <<") received"<<endl;
+                }
+
+                //if I received confirmation, delete socket that needed this confirmation so it wont be sent again
+                if(infosRecu.type==11)
+                {
+                    //GO SEMAPHORE
+                    if((*params->modifArray))
+                        sem_wait(params->mutex);
+                    (*params->modifArray)=true;
+
+                    cerr<<"received confirmation " << infosRecu.confirmationID<< "!"<<endl;
+                    for(unsigned int j=0;j<(*params->socketWrappersToSend).size();j++)
+                    {
+                        SocketWrapper sw=(*params->socketWrappersToSend)[j];
+                        if(sw.socket.confirmationID==infosRecu.confirmationID)
+                        {
+                            cerr<<"important socket "<< infosRecu.confirmationID<< " deleted."<<endl;
+
+                            (*params->socketWrappersToSend).erase((*params->socketWrappersToSend).begin()+j);
+                        }
+                    }
+
+
+                    //END SEMAPHORE
+
+                    (*params->modifArray)=false;
+                    sem_post(params->mutex);
+                }
             }
         }
 
