@@ -54,7 +54,7 @@ class Online
     std::vector<infosClient> clients;
     std::vector<SocketWrapper> socketWrappersToSend;
 
-    SOCKET newsockfd;
+    int* newsockfd;
 
     int m_port;
     string m_ip;

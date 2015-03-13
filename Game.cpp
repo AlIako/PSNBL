@@ -39,12 +39,16 @@ void Game::ini()
     m_online=Online::getInstance();
     if(m_online->active())
     {
-        m_online->startThreads();
-
         if(m_online->m_server)
+        {
             playerList[0]->setIdOnline(0);
+            m_online->startThreads();
+        }
         else
+        {
             updateMultiplayer();
+            //threads already started (menu)
+        }
 
         playerList[0]->setOnlineName(m_online->getOnlineName());
     }
@@ -318,6 +322,14 @@ void Game::play(string path)
                     {
                         switchSpectate(-1);
                     }
+                }
+                if(event.button.button==SDL_BUTTON_WHEELUP)
+                {
+                    Video::getInstance()->incrFOV(1);
+                }
+                if(event.button.button==SDL_BUTTON_WHEELDOWN)
+                {
+                    Video::getInstance()->incrFOV(-1);
                 }
                 break;
 
@@ -786,7 +798,8 @@ void Game::updateMultiplayer()
                 int idPlayer=floor(s.variable[0]);
                 Player *player=playerForId(idPlayer);
                 //if player not found, create it and assign id
-                if(player==NULL && s.type!=5 && s.type!=12 && idPlayer>=0 && idPlayer<30)//idPlayer<10 = sux fix temporaire
+                if(player==NULL && (s.type==4 ||s.type==14)
+                    && s.type!=5 && s.type!=12 && idPlayer>=0 && idPlayer<30)//idPlayer<10 = sux fix temporaire
                 {
                     unsigned int ind=playerList.size();
                     playerList.push_back(new Player());
@@ -1145,7 +1158,7 @@ void Game::close()
 
     Gsounds::getInstance()->freeAll();
 
-    cerr<<"Exited cleanly.";
+    cerr<<"Exited cleanly."<<endl<<endl<<endl;
 }
 
 

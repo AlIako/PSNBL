@@ -118,6 +118,8 @@ void Online::ini()
 
     m_serverOn=true;
 
+    newsockfd=new int;
+
     //read settings file
     readMultiplayerFile();
 }
@@ -135,7 +137,7 @@ void Online::startThreads()
         paramsHandleConnectionsThread.port=m_port;
         paramsHandleConnectionsThread.ip=m_ip;
         paramsHandleConnectionsThread.tcp=m_tcp;
-        paramsHandleConnectionsThread.newsockfd=new int;
+        paramsHandleConnectionsThread.newsockfd=newsockfd;
         paramsHandleConnectionsThread.addr=new sockaddr_in;
         paramsHandleConnectionsThread.clilen=new int;
         paramsHandleConnectionsThread.clientID=&clientID;
@@ -236,6 +238,17 @@ void Online::closeOnline()
     m_serverOn=false;
 
 
+    sem_post(&mutex);
+    if(m_server)
+    {
+        pthread_cancel(handleConnectionsPThread);
+        pthread_cancel(serverReceivePThread);
+    }
+    else
+    {
+        pthread_cancel(clientReceivePThread);
+    }
+
     clients.clear();
     socketWrappersToSend.clear();
     confirmIDreceived.clear();
@@ -243,7 +256,7 @@ void Online::closeOnline()
     clientID=0;
     nextConfirmID=50;
 
-    close(newsockfd);
+    cerr<<"Online service closed."<<endl;
 }
 
 

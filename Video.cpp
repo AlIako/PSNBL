@@ -38,8 +38,11 @@ void Video::ini()
         SDL_SetVideoMode(m_largeur, m_hauteur, 32, SDL_OPENGL | SDL_FULLSCREEN);
     else SDL_SetVideoMode(m_largeur, m_hauteur, 32, SDL_OPENGL);
 
+    //SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 16);//antialia
+
     SDL_Init(SDL_INIT_VIDEO);
 
+	//glViewport(0,0,m_largeur,m_hauteur);
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
     gluPerspective(m_fov,(double)m_hauteur/m_largeur,0.01,1000);
@@ -78,6 +81,18 @@ void Video::ini()
     programIDBlur = LoadShaders( "../data/shaders/vertexShaderBlur.vsh", "../shaders/fragmentShaderBlur.fsh" );
     programIDWave = LoadShaders( "../data/shaders/vertexShaderWave.vsh", "../shaders/fragmentShaderWave.fsh" );
 }
+
+void Video::incrFOV(int i)
+{
+    m_fov+=i;
+    stringstream ss;
+    ss << "fov:"<<m_fov;
+    Tracer::getInstance()->trace("video",ss.str());
+    glMatrixMode( GL_PROJECTION );
+    glLoadIdentity();
+    gluPerspective(m_fov,(double)m_hauteur/m_largeur,0.01,1000);
+}
+
 
 //shaders
 GLuint Video::LoadShaders(const char * vertex_file_path,const char * fragment_file_path)
@@ -213,7 +228,7 @@ Vector3D Video::nextResolution(int width, int height)
     }
     //return next one
     cur--;
-    if(cur<=0)
+    if(cur<0)
         cur=(int)m_resolutions.size()-1;
 
     return Vector3D(m_resolutions[cur].X,m_resolutions[cur].Y,0);

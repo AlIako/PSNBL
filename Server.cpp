@@ -25,7 +25,7 @@ void* handleConnections(void* data)
         //return false;
     }
     SOCKADDR_IN addr; // The address structure for a TCP socket
-    SOCKET s;
+    //SOCKET s;
 
     addr.sin_family = AF_INET;      // Address family
     addr.sin_port = htons (params->port);   // Assign port to this socket
@@ -44,7 +44,7 @@ void* handleConnections(void* data)
 
     if(params->tcp)
     {
-        s = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP); // Create socket tcp
+        /*s = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP); // Create socket tcp
         //s = socket (AF_INET, SOCK_STREAM, 0); // Create socket tcp
 
         if (s == INVALID_SOCKET)
@@ -60,8 +60,9 @@ void* handleConnections(void* data)
            //socket more than once)
             //return false;
         }
-        while(/* *(params->connectionEstablished)==false || */true)
+        while(true)
         {
+
             //sem_wait(params->mutex);
 
             //Now we can start listening (allowing as many connections as possible to
@@ -142,7 +143,7 @@ void* handleConnections(void* data)
             SDL_Delay(100);
 
             //sem_post(params->mutex);
-        }
+        }*/
     }
     else//udp
     {
@@ -171,6 +172,7 @@ void* handleConnections(void* data)
                 infosSocket dummyS;
                 dummyS.confirmationID=-1;
                 dummyS.type=4;
+                dummyS.variable[0]=*params->clientID;
                 (*params->socketsReceived).push_back(dummyS);
 
                 //increment the last client ID
@@ -238,7 +240,7 @@ void* serverReceiveThread(void* data)
     thread_params* params;
     params=(thread_params*)data;
 
-    while(params!=NULL/* && *(params->threadOn)*/)
+    while(params!=NULL && *(params->threadOn))
     {
         //sem_wait(params->mutex);
 
@@ -270,6 +272,7 @@ void* serverReceiveThread(void* data)
                     infosSocket dummyS;
                     dummyS.confirmationID=-1;
                     dummyS.type=4;
+                    dummyS.variable[0]=*params->clientID;
                     (*params->socketsReceived).push_back(dummyS);
 
                     //increment the last client ID
@@ -294,7 +297,7 @@ void* serverReceiveThread(void* data)
                     dummyS.variable[0]=*params->clientID;
                     int n = sendSocket(params->tcp,*params->newsockfd,(char*)&dummyS, sizeof(dummyS),0,(struct sockaddr *) (params->addr), (*params->clilen));
                     if (n < 0)
-                        cerr<<"ERROR writing to conn socket: "<<WSAGetLastError()<<endl;
+                        cerr<<"ERROR writing to conn2 socket: "<<WSAGetLastError()<<endl;
 
                     //add new client to client list.
                     infosClient ic;
@@ -471,8 +474,10 @@ void* serverSendThread(void* data)
     while(params!=NULL && *(params->threadOn))
     {
         //GO SEMAPHORE
+        //cerr<<"send; waiting sem"<<endl;
         sem_wait(params->mutex);
         (*params->modifArray)=true;
+        //cerr<<"send; waited sem"<<endl;
 
         //if there is something to send
         int nSendDirectly=(*params->socketWrappersToSend).size();
@@ -541,6 +546,8 @@ void* serverSendThread(void* data)
     }
 
     close(*params->newsockfd);
+    delete params->newsockfd;
+
     cerr << "End server send thread"<<endl;
     return NULL;
 }

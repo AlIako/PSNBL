@@ -42,7 +42,7 @@ void* clientConnectThread(void* data)
 
     if(params->tcp)
     {
-        cerr<<"starting tcp connection thread"<<endl;
+        /*cerr<<"starting tcp connection thread"<<endl;
         *params->newsockfd = socket (AF_INET, SOCK_STREAM, IPPROTO_TCP); //Create socket tcp
         //*params->newsockfd = socket (AF_INET, SOCK_STREAM, 0); //Create socket tcp
         //*params->newsockfd = socket(AF_INET, SOCK_DGRAM, 0); //Create socket udp
@@ -87,7 +87,7 @@ void* clientConnectThread(void* data)
         }
 
 
-        delete tempIp;
+        delete tempIp;*/
 
     }
     else
@@ -314,6 +314,8 @@ void* clientSendThread(void* data)
 
 
     close(*params->newsockfd);
+    delete params->newsockfd;
+
     cerr << "End client send thread"<<endl;
     return NULL;
 }

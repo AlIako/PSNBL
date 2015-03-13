@@ -11,6 +11,7 @@
 #include "utilFunctions.h"
 #include "Config.h"
 #include "Vector3D.h"
+#include "Tracer.h"
 
 using namespace std;
 
@@ -27,6 +28,8 @@ class Video
 
     Vector3D nextResolution(int width, int height);
     Vector3D previousResolution(int width, int height);
+
+    void incrFOV(int i);
 
     void matrixProjection();
     void matrixOrtho2D();

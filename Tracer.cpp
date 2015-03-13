@@ -27,6 +27,7 @@ Tracer::Tracer()
     //m_channels.push_back("jumpblock");
     m_channels.push_back("spell");
     m_channels.push_back("jump");
+    m_channels.push_back("video");
     //m_channels.push_back("debug");
 
     m_channelsSize=m_channels.size();
