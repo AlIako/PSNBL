@@ -63,6 +63,14 @@ void PatStill::ini(double startZ, std::vector<Object*>* objects)
     (*m_objects)[ind]->setSize(Vector3D(4,4,20));
 
 
+    ind=(*m_objects).size();
+    (*m_objects).push_back(new Block());
+    (*m_objects)[ind]->ini();
+    (*m_objects)[ind]->setPos(Vector3D(-30,-20,startZ+14));
+    (*m_objects)[ind]->setSize(Vector3D(10,10,5));
+
+
+
 
 
     //to hook around

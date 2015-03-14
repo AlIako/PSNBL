@@ -1153,8 +1153,9 @@ void Game::close()
         s.confirmationID=-1;
         m_online->sendSocket(s);
         SDL_Delay(250);
+
+        m_online->closeOnline();
     }
-    m_online->closeOnline();
 
     Gsounds::getInstance()->freeAll();
 

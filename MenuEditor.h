@@ -3,10 +3,10 @@
 #include "Object2D.h"
 #include <vector>
 
-void menuEditor(vector<Object2D>* b,freetype::font_data* font)
+void menuEditor(vector<Button>* b,freetype::font_data* font)
 {
     b->clear();
-
+/*
     unsigned int ind=b->size();
     b->push_back(Object2D());
     (*b)[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/title_hq.png"));
@@ -81,9 +81,7 @@ void menuEditor(vector<Object2D>* b,freetype::font_data* font)
     std::string en_cours="";
 
     string chardir="";
-    /*if(savetxt!="")
-        chardir=savetxt;
-    else*/
+
         chardir="../data/patterns/";
 
     char* tempchemin=stringtochar(chardir);
@@ -119,14 +117,7 @@ void menuEditor(vector<Object2D>* b,freetype::font_data* font)
         (*b)[ind].addText(maps[i],font);
         (*b)[ind].setName(maps[i]);
         (*b)[ind].setClicable(true);
-
-        /*boutons.push_back(Bouton());
-        ind=boutons.size()-1;
-        boutons[ind].texte=maps[i].substr(0,maps[i].size()-4);
-        boutons[ind].m_x=0.1;
-        boutons[ind].m_y=0.7-(i+folders.size())/20.0;
-        boutons[ind].ini(aldisplay->largeur,aldisplay->hauteur,&m_font);*/
-    }
+    }*/
 }
 
 

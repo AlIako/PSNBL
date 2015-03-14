@@ -40,7 +40,7 @@ void Menu::ini()
     m_bg.setSize(Vector3D(1,1,0));
 
     curMenu="start";
-    menuStart(&m_buttons);
+    menuStart(&m_buttons,&m_font);
 
     SDL_ShowCursor(SDL_ENABLE);//curseur
     SDL_WM_GrabInput(SDL_GRAB_OFF);
@@ -172,7 +172,7 @@ void Menu::clicOn(string name, bool leftClic)
     if(leftClic && name=="start")
     {
         curMenu="start";
-        menuStart(&m_buttons);
+        menuStart(&m_buttons,&m_font);
     }
     if(leftClic && name=="single")
     {
@@ -434,7 +434,7 @@ void Menu::clicOn(string name, bool leftClic)
         else
         {
             curMenu="start";
-            menuStart(&m_buttons);
+            menuStart(&m_buttons,&m_font);
         }
     }
 
@@ -506,33 +506,31 @@ std::string GetClipboardText()
 string Menu::inputString(string txt,string pathTxt,bool onlyInt)
 {
     string savetxt=txt;
-    vector<Object2D> b;
+    vector<Button> b;
     b.clear();
     unsigned int ind=b.size();
-    b.push_back(Object2D());
+    b.push_back(Button());
     b[ind].setTexture(GTexture::getInstance()->getTexture(pathTxt));
     b[ind].setPos(Vector3D(0.25,0.15,0));
     b[ind].setSize(Vector3D(0.5,0.6,0));
     b[ind].setName("inputtext");
 
     ind=b.size();
-    b.push_back(Object2D());
-    b[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/paste_hq.png"));
-    b[ind].setTextureHover(GTexture::getInstance()->getTexture("../data/textures/interface/paste_hover_hq.png"));
+    b.push_back(Button());
+    b[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/button_large.png"));
     b[ind].setPos(Vector3D(0.28,0.3,0));
     b[ind].setSize(Vector3D(0.175,0.075,0));
     b[ind].setName("paste");
 
     ind=b.size();
-    b.push_back(Object2D());
-    b[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/ok_hq.png"));
-    b[ind].setTextureHover(GTexture::getInstance()->getTexture("../data/textures/interface/ok_hover_hq.png"));
+    b.push_back(Button());
+    b[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/button_large.png"));
     b[ind].setPos(Vector3D(0.54,0.3,0));
     b[ind].setSize(Vector3D(0.175,0.075,0));
     b[ind].setName("ok");
 
     ind=b.size();
-    b.push_back(Object2D());
+    b.push_back(Button());
     b[ind].setPos(Vector3D(0.3,0.43,0));
     b[ind].addText(txt,&m_font);
     b[ind].setName("txt");
@@ -729,27 +727,25 @@ bool Menu::messageSure()
 {
     bool result=false;
 
-    vector<Object2D> b;
+    vector<Button> b;
     b.clear();
     unsigned int ind=b.size();
-    b.push_back(Object2D());
+    b.push_back(Button());
     b[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/sure_hq.png"));
     b[ind].setPos(Vector3D(0.25,0.15,0));
     b[ind].setSize(Vector3D(0.5,0.6,0));
     b[ind].setName("sure");
 
     ind=b.size();
-    b.push_back(Object2D());
-    b[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/yes_hq.png"));
-    b[ind].setTextureHover(GTexture::getInstance()->getTexture("../data/textures/interface/yes_hover_hq.png"));
+    b.push_back(Button());
+    b[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/button_large.png"));
     b[ind].setPos(Vector3D(0.28,0.3,0));
     b[ind].setSize(Vector3D(0.175,0.075,0));
     b[ind].setName("yes");
 
     ind=b.size();
-    b.push_back(Object2D());
-    b[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/no_hq.png"));
-    b[ind].setTextureHover(GTexture::getInstance()->getTexture("../data/textures/interface/no_hover_hq.png"));
+    b.push_back(Button());
+    b[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/button_large.png"));
     b[ind].setPos(Vector3D(0.54,0.3,0));
     b[ind].setSize(Vector3D(0.175,0.075,0));
     b[ind].setName("no");
@@ -854,25 +850,24 @@ bool Menu::messageSure()
 
 void Menu::messageError(string msg)
 {
-    vector<Object2D> b;
+    vector<Button> b;
     b.clear();
     unsigned int ind=b.size();
-    b.push_back(Object2D());
+    b.push_back(Button());
     b[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/error_hq.png"));
     b[ind].setPos(Vector3D(0.25,0.15,0));
     b[ind].setSize(Vector3D(0.5,0.6,0));
     b[ind].setName("error");
 
     ind=b.size();
-    b.push_back(Object2D());
+    b.push_back(Button());
     b[ind].setPos(Vector3D(0.3,0.43,0));
     b[ind].addText(msg,&m_font);
     b[ind].setName("errortxt");
 
     ind=b.size();
-    b.push_back(Object2D());
-    b[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/ok_hq.png"));
-    b[ind].setTextureHover(GTexture::getInstance()->getTexture("../data/textures/interface/ok_hover_hq.png"));
+    b.push_back(Button());
+    b[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/button_large.png"));
     b[ind].setPos(Vector3D(0.415,0.17,0));
     b[ind].setSize(Vector3D(0.175,0.075,0));
     b[ind].setName("ok");

@@ -25,8 +25,8 @@ Tracer::Tracer()
     //m_channels.push_back("rope");
     //m_channels.push_back("crosshair");
     //m_channels.push_back("jumpblock");
-    m_channels.push_back("spell");
-    m_channels.push_back("jump");
+    //m_channels.push_back("spell");
+    //m_channels.push_back("jump");
     m_channels.push_back("video");
     //m_channels.push_back("debug");
 

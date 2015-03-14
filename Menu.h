@@ -2,7 +2,7 @@
 #define MENU_H_INCLUDED
 #include "Game.h"
 #include "Editor.h"
-#include "Object2D.h"
+#include "Button.h"
 
 class Menu
 {
@@ -34,7 +34,7 @@ public:
 
 
         Object2D m_bg;
-        vector<Object2D> m_buttons;
+        vector<Button> m_buttons;
 
 
         GTime since_last_frame;

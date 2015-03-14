@@ -3,11 +3,11 @@
 #include "Object2D.h"
 #include <vector>
 
-void menuServers(vector<Object2D>* b)
+void menuServers(vector<Button>* b)
 {
     b->clear();
 
-    unsigned int ind=b->size();
+   /* unsigned int ind=b->size();
     b->push_back(Object2D());
     (*b)[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/title_hq.png"));
     (*b)[ind].setPos(Vector3D(0.25,0.6,0));
@@ -32,7 +32,7 @@ void menuServers(vector<Object2D>* b)
     (*b)[ind].setPos(Vector3D(0.76,0.04,0));
     (*b)[ind].setSize(Vector3D(0.2,0.075,0));
     (*b)[ind].setName("back");
-    (*b)[ind].setClicable(true);
+    (*b)[ind].setClicable(true);*/
 }
 
 
