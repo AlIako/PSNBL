@@ -66,7 +66,7 @@ class Online
 
     std::string m_onlineName;
 
-    bool m_serverOn;
+    bool m_startedOn;
     bool m_threadsOn;
 
     //threads serv

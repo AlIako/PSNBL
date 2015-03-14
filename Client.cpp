@@ -104,28 +104,37 @@ void* clientConnectThread(void* data)
         int n = sendSocket(params->tcp,*params->newsockfd,(char*)&infosRecu, sizeof(infosRecu),0,(struct sockaddr *) (params->addr), (*params->clilen));
         if (n < 0)
             cerr<<"ERROR writing from conn socket: "<<WSAGetLastError()<<endl;
-
-        //receive answer from serv
-        n = receiveSocket(params->tcp,*params->newsockfd, (char*)&infosRecu,sizeof(infosRecu), 0,(struct sockaddr *) (params->addr), (params->clilen));
-
-        if (n < 0)
-            cerr<<"ERROR reading to conn socket: "<<WSAGetLastError()<<endl;
+        if (n == 0)
+            cerr<<"--timeout on conn socket "<<endl;
 
 
+        while(*(params->connectionEstablished)==false && *(params->startedOn))
+        {
+            //receive answer from serv
+            n = receiveSocket(params->tcp,*params->newsockfd, (char*)&infosRecu,sizeof(infosRecu), 0,(struct sockaddr *) (params->addr), (params->clilen));
 
-        if(infosRecu.type==5)//serv response
-            *(params->connectionEstablished)=true;
-
-
-        (*params->clientID)=infosRecu.variable[0];
-        cerr<<"server responded. my client id is "<< (int)infosRecu.variable[0]<<endl;
-        (*params->socketsReceived).push_back(infosRecu);
-
-
-        SDL_Delay(50);
+            if (n < 0)
+                cerr<<"ERROR reading to conn socket: "<<WSAGetLastError()<<endl;
 
 
-        cerr << "Connection succesful!"<<endl;
+
+            if(infosRecu.type==5)//serv response
+            {
+                *(params->connectionEstablished)=true;
+
+                (*params->clientID)=infosRecu.variable[0];
+                cerr<<"server responded. my client id is "<< (int)infosRecu.variable[0]<<endl;
+                (*params->socketsReceived).push_back(infosRecu);
+
+
+                cerr << "Connection succesful!"<<endl;
+            }
+            SDL_Delay(50);
+        }
+
+        if(*(params->connectionEstablished)==false)
+            cerr <<"Connection failed."<<endl;
+
     }
 
 

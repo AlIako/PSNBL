@@ -19,6 +19,8 @@ int sendSocket(bool tcp,SOCKET s,const char* infosS,int sizeInfosS,int wut,const
 
 int receiveSocket(bool tcp,SOCKET s,char* infosS,int sizeInfosS,int wut,struct sockaddr* paramsin,int* crecsize, int timeoutValue)
 {
+    timeoutValue=2;
+
     fd_set fds ;
 
     // Set up the file descriptor set.
@@ -34,7 +36,7 @@ int receiveSocket(bool tcp,SOCKET s,char* infosS,int sizeInfosS,int wut,struct s
     //int n = select ( s, NULL, NULL, NULL, &tv ) ;
     if ( n == 0)
     {
-      cerr<<"Timeout select().."<<endl;
+      //cerr<<"Timeout select().."<<endl;
       return 0 ;
     }
     else if( n == -1 )

@@ -147,12 +147,26 @@ void* handleConnections(void* data)
     }
     else//udp
     {
+
         *params->newsockfd  = socket(AF_INET, SOCK_DGRAM, 0); //Create socket udp
-        bind(*params->newsockfd, (SOCKADDR*)&addr, (*params->clilen));
+
+        char yes=1;
+        if (setsockopt(*params->newsockfd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(yes)) == -1)
+        {
+            perror("setsockopt");
+            exit(1);
+        }
+
+
+        if(bind(*params->newsockfd, (SOCKADDR*)&addr, (*params->clilen))!=0)
+            cerr<<"ERROR on bind(): "<<WSAGetLastError()<<endl;
+        else cerr <<"bind successful."<<endl;
+
+
         cerr<<"waiting for client..."<<endl;
         //waiting for client to connect
 
-        while(/* *(params->connectionEstablished)==false*/  *params->serverOn)
+        while(/* *(params->connectionEstablished)==false*/  *params->startedOn)
         {
             //sem_wait(params->mutex);
 
@@ -467,6 +481,9 @@ void* serverReceiveThread(void* data)
         //sem_post(params->mutex);
     }
     cerr << "End server receive thread"<<endl;
+
+    sem_post(params->mutex);
+
     return NULL;
 }
 
@@ -553,9 +570,16 @@ void* serverSendThread(void* data)
 
     }
 
-    close(*params->newsockfd);
+    //close(*params->newsockfd);
     delete params->newsockfd;
 
+    delete params->clilen;
+    delete params->modifArray;
+    delete params->addr;
+
     cerr << "End server send thread"<<endl;
+
+    sem_post(params->mutex);
+
     return NULL;
 }

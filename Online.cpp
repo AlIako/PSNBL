@@ -116,7 +116,7 @@ void Online::ini()
 
     nextConfirmID=50;
 
-    m_serverOn=true;
+    m_startedOn=true;
 
     newsockfd=new int;
 
@@ -128,7 +128,7 @@ void Online::startThreads()
     if(m_active)
     {
         paramsHandleConnectionsThread.threadOn=&m_threadsOn;
-        paramsHandleConnectionsThread.serverOn=&m_serverOn;
+        paramsHandleConnectionsThread.startedOn=&m_startedOn;
         paramsHandleConnectionsThread.connectionEstablished=&m_connectionEstablished;
         paramsHandleConnectionsThread.socketsReceived=&socketsReceived;
         paramsHandleConnectionsThread.clients=&clients;
@@ -235,7 +235,10 @@ void Online::closeOnline()
     //close threads
     m_connectionEstablished=false;
     m_threadsOn=false;
-    m_serverOn=false;
+    m_startedOn=false;
+
+
+    closesocket(*newsockfd);
 
 
     sem_post(&mutex);
