@@ -74,8 +74,11 @@ void Object2D::update(double functionTime)
 void Object2D::addText(string txt)
 {
     m_hasText=true;
-    m_text.ini(Video::getInstance()->getWidth(),Video::getInstance()->getHeight(),TextManager::getInstance()->getFont());
     m_text.setTexte(txt);
+    m_text.ini(Video::getInstance()->getWidth(),Video::getInstance()->getHeight(),TextManager::getInstance()->getFont());
+    //cerr<<"test1"<<endl;
+    //m_text.draw(255,255,255);
+    //cerr<<"test2"<<endl;
 }
 
 void Object2D::setText(string txt)

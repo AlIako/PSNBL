@@ -66,6 +66,7 @@ void menuVideo(vector<Button>* b)
     (*b)[ind].setName("back");
     (*b)[ind].addText("Back");
     (*b)[ind].ini();
+    (*b)[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/button_small.png"));
 }
 
 

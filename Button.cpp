@@ -31,23 +31,23 @@ void Button::draw()
     {
         if(m_selected)
         {
-            text.setR(155);
-            text.setG(0);
-            text.setB(0);
+            text.setR(200);
+            text.setG(50);
+            text.setB(20);
         }
         else if(m_hover)
         {
             m_shadow.draw();
-            text.setR(155);
-            text.setG(155);
-            text.setB(155);
+            text.setR(240);
+            text.setG(85);
+            text.setB(0);
         }
     }
     if(!m_clicable || (!m_hover && !m_selected))
     {
-        text.setR(255);
-        text.setG(255);
-        text.setB(255);
+        text.setR(240);
+        text.setG(182);
+        text.setB(0);
     }
 
     text.draw();
@@ -106,7 +106,7 @@ void Button::setText(string txt)
 void Button::centerText(bool c)
 {
     if(c)
-        text.setPos(m_position+Vector3D(m_size.X/2.0-text.getText().getSize()/100.0/2.0,m_size.Y/4.0,0));
+        text.setPos(m_position+Vector3D(m_size.X/2.0-text.getText().getTextWidth()/2.0/Video::getInstance()->getWidth(),m_size.Y/4.0,0));
     else
         text.setPos(m_position+Vector3D(0,m_size.Y/4.0,0));
 }

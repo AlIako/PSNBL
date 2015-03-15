@@ -17,6 +17,7 @@ class Texte
     void ini(int largeur, int hauteur);
     void setTexte(std::string t);
     int getSize();
+    float getTextWidth();
     void draw(int r, int g, int b);
     void setX(float x);
     void setY(float y);
@@ -41,6 +42,9 @@ class Texte
     float m_taille;
     float m_rota;
     int m_alpha;
+
+
+    float m_txtwidth;
 };
 
 

@@ -29,7 +29,7 @@ void Menu::ini()
     m_loading.setPos(Vector3D(0.3,0.4,0));
     m_loading.setSize(Vector3D(0.4,0.2,0));
 
-    //drawLoading();
+    drawLoading();
 
 
     //sound
