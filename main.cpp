@@ -1,4 +1,6 @@
 #include "Menu.h"
+
+
 /*
 //template
 template <typename T>
@@ -18,6 +20,9 @@ int main ( int argc, char** argv )
 
     Video* m_video=Video::getInstance();
     m_video->ini();
+
+    TextManager::getInstance()->ini();
+
 
     Menu menu;
 

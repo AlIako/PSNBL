@@ -15,12 +15,14 @@ class Button: public Object2D
         void updateCursor(Vector3D pos);
         bool clic(Vector3D pos);
 
-        virtual void addText(string txt, freetype::font_data* font);
+        virtual void addText(string txt);
+        virtual void setText(string txt);
+        void centerText(bool c);
 
         void setClicable(bool c){m_clicable=c;}
         void setHover(bool h){m_hover=h;}
-        void setClicked(bool c){m_clicked=c;}
-        void select(bool s){m_selected=s;}
+        void setSelectable(bool s){m_selectable=s;}
+        void select(bool s);
 
         bool getClicable(){return m_clicable;}
         bool isSelected(){return m_selected;}
@@ -35,7 +37,7 @@ class Button: public Object2D
 
         bool m_clicable;
         bool m_hover;
-        bool m_clicked;
+        bool m_selectable;
         bool m_selected;
 };
 

@@ -3,12 +3,17 @@
 #include "Button.h"
 #include <vector>
 
-void menuStart(vector<Button>* b,freetype::font_data* font)
+void menuStart(vector<Button>* b)
 {
     //buttons
     b->clear();
 
     GTexture::getInstance()->addTexture("../data/textures/interface/title_hq.png");
+    GTexture::getInstance()->addTexture("../data/textures/interface/box_large.png");
+    GTexture::getInstance()->addTexture("../data/textures/interface/button_large.png");
+    GTexture::getInstance()->addTexture("../data/textures/interface/button_small.png");
+    GTexture::getInstance()->addTexture("../data/textures/interface/input_large.png");
+    GTexture::getInstance()->addTexture("../data/textures/interface/blackbox.png");
     //start
     /*GTexture::getInstance()->addTexture("../data/textures/interface/title_hq.png");
     GTexture::getInstance()->addTexture("../data/textures/interface/single_hq.png");
@@ -102,7 +107,7 @@ void menuStart(vector<Button>* b,freetype::font_data* font)
     (*b)[ind].setPos(Vector3D(0.25,0.5,0));
     (*b)[ind].setSize(Vector3D(0.5,0.075,0));
     (*b)[ind].setName("single");
-    (*b)[ind].addText("Singleplayer",font);
+    (*b)[ind].addText("Singleplayer");
     (*b)[ind].ini();
 
     ind=(*b).size();
@@ -110,7 +115,7 @@ void menuStart(vector<Button>* b,freetype::font_data* font)
     (*b)[ind].setPos(Vector3D(0.25,0.4,0));
     (*b)[ind].setSize(Vector3D(0.5,0.075,0));
     (*b)[ind].setName("multi");
-    (*b)[ind].addText("Multiplayer",font);
+    (*b)[ind].addText("Multiplayer");
     (*b)[ind].ini();
 
     ind=(*b).size();
@@ -118,7 +123,7 @@ void menuStart(vector<Button>* b,freetype::font_data* font)
     (*b)[ind].setPos(Vector3D(0.25,0.3,0));
     (*b)[ind].setSize(Vector3D(0.5,0.075,0));
     (*b)[ind].setName("editor");
-    (*b)[ind].addText("Editor",font);
+    (*b)[ind].addText("Editor");
     (*b)[ind].ini();
 
     ind=(*b).size();
@@ -126,7 +131,7 @@ void menuStart(vector<Button>* b,freetype::font_data* font)
     (*b)[ind].setPos(Vector3D(0.25,0.2,0));
     (*b)[ind].setSize(Vector3D(0.5,0.075,0));
     (*b)[ind].setName("options");
-    (*b)[ind].addText("Options",font);
+    (*b)[ind].addText("Options");
     (*b)[ind].ini();
 
     ind=(*b).size();
@@ -134,17 +139,19 @@ void menuStart(vector<Button>* b,freetype::font_data* font)
     (*b)[ind].setPos(Vector3D(0.04,0.04,0));
     (*b)[ind].setSize(Vector3D(0.3,0.03,0));
     (*b)[ind].setName("linkocraftcom");
-    (*b)[ind].addText("www.linkocraft.com",font);
+    (*b)[ind].addText("www.linkocraft.com");
     (*b)[ind].ini();
-    //(*b)[ind].setTexture(NULL);
+    (*b)[ind].setTexture(NULL);
+    (*b)[ind].centerText(false);
 
     ind=(*b).size();
     (*b).push_back(Button());
     (*b)[ind].setPos(Vector3D(0.76,0.04,0));
     (*b)[ind].setSize(Vector3D(0.2,0.075,0));
     (*b)[ind].setName("quit");
-    (*b)[ind].addText("Quit",font);
+    (*b)[ind].addText("Quit");
     (*b)[ind].ini();
+    (*b)[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/button_small.png"));
 }
 
 

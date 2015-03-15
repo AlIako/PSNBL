@@ -80,6 +80,7 @@ void Video::ini()
     programIDRed = LoadShaders( "../data/shaders/vertexShaderRed.vsh", "../shaders/fragmentShaderRed.fsh" );
     programIDBlur = LoadShaders( "../data/shaders/vertexShaderBlur.vsh", "../shaders/fragmentShaderBlur.fsh" );
     programIDWave = LoadShaders( "../data/shaders/vertexShaderWave.vsh", "../shaders/fragmentShaderWave.fsh" );
+    programIDText = LoadShaders( "../data/shaders/vertexShaderText.vsh", "../shaders/fragmentShaderText.fsh" );
 }
 
 void Video::incrFOV(int i)

@@ -51,6 +51,7 @@ class Video
     GLuint programIDRed;
     GLuint programIDBlur;
     GLuint programIDWave;
+    GLuint programIDText;
 
     private:
     Video();

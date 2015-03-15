@@ -16,13 +16,16 @@ class Object2D
         virtual void ini();
 
 
-        virtual void addText(string txt, freetype::font_data* font);
-        void setText(string txt);
+        virtual void addText(string txt);
+        virtual void setText(string txt);
 
         void setTexture(Texture* t){m_texture=t;}
         void setPos(Vector3D v) {m_position=v;}
         void setSize(Vector3D v) {m_size=v;}
         void setName(std::string s) {m_name=s;}
+        void setR(int r){m_r=r;}
+        void setG(int g){m_g=g;}
+        void setB(int b){m_b=b;}
 
         std::string getName() {return m_name;}
         Texte getText(){return m_text;}
@@ -38,6 +41,11 @@ class Object2D
 
         bool m_hasText;
         Texte m_text;
+
+
+        int m_r;
+        int m_g;
+        int m_b;
 };
 
 

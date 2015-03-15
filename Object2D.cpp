@@ -9,6 +9,11 @@ Object2D::Object2D()
     m_name="object2D";
 
     m_hasText=false;
+
+
+    m_r=255;
+    m_g=255;
+    m_b=255;
 }
 
 
@@ -21,7 +26,7 @@ void Object2D::draw()
         m_text.setX(m_position.X);
         m_text.setY(m_position.Y);
 
-        m_text.draw(255,255,255);
+        m_text.draw(m_r,m_g,m_b);
     }
 
     if(m_texture!=NULL)
@@ -37,7 +42,7 @@ void Object2D::draw()
 
         m_texture->bind(true);
 
-        glColor4ub(255,255,255,255);
+        glColor4ub(m_r,m_g,m_b,255);
         glBegin(GL_QUADS);
             glTexCoord2d(0,0);    glVertex2d(m_position.X,m_position.Y);
             glTexCoord2d(0,1);    glVertex2d(m_position.X,m_position.Y+m_size.Y);
@@ -66,10 +71,10 @@ void Object2D::update(double functionTime)
 
 
 
-void Object2D::addText(string txt, freetype::font_data* font)
+void Object2D::addText(string txt)
 {
     m_hasText=true;
-    m_text.ini(Video::getInstance()->getWidth(),Video::getInstance()->getHeight(),font);
+    m_text.ini(Video::getInstance()->getWidth(),Video::getInstance()->getHeight(),TextManager::getInstance()->getFont());
     m_text.setTexte(txt);
 }
 

@@ -1,0 +1,10 @@
+@ block: x: 2 y: 13 z: 35 tx: 1.5 ty: 1.5 tz: 2.5 text: ../data/textures/bedrock.png name: block
+@ block: x: 2 y: 24 z: 2 ty: 6 tz: 1 text: ../data/textures/metal.png name: noHookBlock
+@ block: x: 2 y: 29 z: 4 t: 1 text: ../data/textures/carpet_red.jpg name: jumpBlock
+@ bonus: x: 2 y: 15 z: 6 t: 1 name: rope
+@ block: x: 2 y: 15 z: -6 tx: 3.5 ty: 3 tz: 6 text: ../data/textures/bedrock.png name: block
+@ block: x: -1 y: 11 z: -6 tx: 2.5 ty: 2 tz: 3.5 text: ../data/textures/bedrock.png name: block
+@ block: x: 2 y: -11 z: 41 tx: 1.5 ty: 1.5 tz: 2.5 text: ../data/textures/bedrock.png name: block
+@ block: x: -15 y: -27 z: 52 tx: 1.5 ty: 1.5 tz: 2.5 text: ../data/textures/bedrock.png name: block
+@ block: x: -30 y: -16 z: 60 tx: 1.5 ty: 1.5 tz: 2.5 text: ../data/textures/bedrock.png name: block
+@ block: x: -28 y: 15 z: 70 tx: 1.5 ty: 1.5 tz: 2.5 text: ../data/textures/bedrock.png name: block

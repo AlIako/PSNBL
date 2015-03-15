@@ -6,6 +6,7 @@
 #include "utilFunctions.h"
 #include "Texture.h"
 #include "Video.h"
+#include "TextManager.h"
 
 class Texte
 {
@@ -29,6 +30,8 @@ class Texte
 
     Texture* m_texture;
     private:
+
+
     freetype::font_data* m_font;
     std::string m_texte;
     int m_hauteur;

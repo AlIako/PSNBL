@@ -30,7 +30,6 @@ void Menu::ini()
     Gsounds::getInstance()->play("../data/music/menu_theme.mp3");
 
 
-    m_font.init("../data/fonts/arial.TTF", 16);
 
 
     string txtPath="../data/textures/interface/bg_"+Video::getInstance()->getStrHD()+".jpg";
@@ -40,7 +39,7 @@ void Menu::ini()
     m_bg.setSize(Vector3D(1,1,0));
 
     curMenu="start";
-    menuStart(&m_buttons,&m_font);
+    menuStart(&m_buttons);
 
     SDL_ShowCursor(SDL_ENABLE);//curseur
     SDL_WM_GrabInput(SDL_GRAB_OFF);
@@ -162,6 +161,9 @@ void Menu::draw()
     for(unsigned int i=0;i<m_buttons.size();i++)
         m_buttons[i].draw();
 
+    //text freetype
+    //TextManager::getInstance()->display();
+
     m_video->afterDraw();
 }
 
@@ -172,7 +174,7 @@ void Menu::clicOn(string name, bool leftClic)
     if(leftClic && name=="start")
     {
         curMenu="start";
-        menuStart(&m_buttons,&m_font);
+        menuStart(&m_buttons);
     }
     if(leftClic && name=="single")
     {
@@ -230,13 +232,13 @@ void Menu::clicOn(string name, bool leftClic)
     if(leftClic && name=="multi")
     {
         curMenu=name;
-        menuMultiplayer(&m_buttons,&m_font);
+        menuMultiplayer(&m_buttons);
     }
     if(leftClic && name=="editor")
     {
         mapSelected="";
         curMenu=name;
-        menuEditor(&m_buttons,&m_font);
+        menuEditor(&m_buttons);
     }
     if(name.find("../data/patterns/")!=string::npos)
     {
@@ -284,7 +286,7 @@ void Menu::clicOn(string name, bool leftClic)
 
                     mapSelected="";
 
-                    menuEditor(&m_buttons,&m_font);
+                    menuEditor(&m_buttons);
                 }
             }
         }
@@ -296,6 +298,9 @@ void Menu::clicOn(string name, bool leftClic)
             if(mapSelected!="")
             {
                 Config::getInstance()->mode="server";
+
+                Online::getInstance()->setActive(false);
+
                 command="play "+mapSelected;
                 cerr<<"going play "<< command<<endl;
                 playLoop=false;
@@ -306,7 +311,7 @@ void Menu::clicOn(string name, bool leftClic)
     {
         if(curMenu=="editor")
         {
-            string inputName=inputString("","../data/textures/interface/inputname_hq.png");
+            string inputName=inputString("","Enter Name:");
             if(inputName!="")
             {
                 inputName="../data/patterns/"+inputName+".txt";
@@ -325,7 +330,7 @@ void Menu::clicOn(string name, bool leftClic)
     if(leftClic && name=="audio")
     {
         curMenu=name;
-        menuAudio(&m_buttons,&m_font);
+        menuAudio(&m_buttons);
     }
     if(leftClic && name=="sound")
     {
@@ -333,7 +338,7 @@ void Menu::clicOn(string name, bool leftClic)
         Config::getInstance()->save();
         Gsounds::getInstance()->on=Config::getInstance()->sound;
         Gsounds::getInstance()->pauseSounds(Gsounds::getInstance()->on);
-        menuAudio(&m_buttons,&m_font);
+        menuAudio(&m_buttons);
     }
     if(leftClic && name=="music")
     {
@@ -341,18 +346,18 @@ void Menu::clicOn(string name, bool leftClic)
         Config::getInstance()->save();
         Gsounds::getInstance()->music=Config::getInstance()->music;
         Gsounds::getInstance()->pauseMusic(Gsounds::getInstance()->music);
-        menuAudio(&m_buttons,&m_font);
+        menuAudio(&m_buttons);
     }
     if(leftClic && name=="video")
     {
         curMenu=name;
-        menuVideo(&m_buttons,&m_font);
+        menuVideo(&m_buttons);
     }
     if(leftClic && name=="fullscreen")
     {
         Config::getInstance()->toggleFullscreen();
         Config::getInstance()->save();
-        menuVideo(&m_buttons,&m_font);
+        menuVideo(&m_buttons);
     }
     if(name=="resolution")
     {
@@ -364,30 +369,30 @@ void Menu::clicOn(string name, bool leftClic)
         Config::getInstance()->width=next.X;
         Config::getInstance()->height=next.Y;
         Config::getInstance()->save();
-        menuVideo(&m_buttons,&m_font);
+        menuVideo(&m_buttons);
     }
 
     if(leftClic && name=="host")
     {
         curMenu=name;
-        menuHost(&m_buttons,&m_font);
+        menuHost(&m_buttons);
     }
     if(leftClic && name=="joingame")
     {
         curMenu=name;
-        menuJoin(&m_buttons,&m_font);
+        menuJoin(&m_buttons);
     }
     if(leftClic && name=="name")
     {
-        Config::getInstance()->name=inputString(Config::getInstance()->name,"../data/textures/interface/inputname_hq.png");
+        Config::getInstance()->name=inputString(Config::getInstance()->name,"Enter Name:");
         Config::getInstance()->save();
-        menuMultiplayer(&m_buttons,&m_font);
+        menuMultiplayer(&m_buttons);
     }
     if(leftClic && name=="ip")
     {
-        Config::getInstance()->ip=inputString(Config::getInstance()->ip,"../data/textures/interface/input_ip_hq.png");
+        Config::getInstance()->ip=inputString(Config::getInstance()->ip,"Enter ip:");
         Config::getInstance()->save();
-        menuJoin(&m_buttons,&m_font);
+        menuJoin(&m_buttons);
     }
     if(leftClic && name=="port")
     {
@@ -395,7 +400,7 @@ void Menu::clicOn(string name, bool leftClic)
         std::stringstream ss;
         ss << Config::getInstance()->port;
 
-        istringstream buffer(inputString(ss.str(),"../data/textures/interface/input_port_hq.png",true));
+        istringstream buffer(inputString(ss.str(),"Enter Port:",true));
         int value;
         buffer >> value;
 
@@ -404,9 +409,9 @@ void Menu::clicOn(string name, bool leftClic)
 
 
         if(curMenu=="joingame")
-            menuJoin(&m_buttons,&m_font);
+            menuJoin(&m_buttons);
         else if(curMenu=="host")
-            menuHost(&m_buttons,&m_font);
+            menuHost(&m_buttons);
     }
     if(leftClic && name=="servers")
     {
@@ -425,7 +430,7 @@ void Menu::clicOn(string name, bool leftClic)
         else if(curMenu=="host" || curMenu=="joingame")
         {
             curMenu="multi";
-            menuMultiplayer(&m_buttons,&m_font);
+            menuMultiplayer(&m_buttons);
         }
         else if(curMenu=="start")
         {
@@ -434,7 +439,7 @@ void Menu::clicOn(string name, bool leftClic)
         else
         {
             curMenu="start";
-            menuStart(&m_buttons,&m_font);
+            menuStart(&m_buttons);
         }
     }
 
@@ -503,37 +508,69 @@ std::string GetClipboardText()
 
 
 
-string Menu::inputString(string txt,string pathTxt,bool onlyInt)
+string Menu::inputString(string txt,string msg,bool onlyInt)
 {
     string savetxt=txt;
     vector<Button> b;
     b.clear();
     unsigned int ind=b.size();
     b.push_back(Button());
-    b[ind].setTexture(GTexture::getInstance()->getTexture(pathTxt));
     b[ind].setPos(Vector3D(0.25,0.15,0));
     b[ind].setSize(Vector3D(0.5,0.6,0));
     b[ind].setName("inputtext");
+    b[ind].ini();
+    b[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/box_large.png"));
+    b[ind].setClicable(false);
 
     ind=b.size();
     b.push_back(Button());
-    b[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/button_large.png"));
+    b[ind].setPos(Vector3D(0.31,0.425,0));
+    b[ind].setSize(Vector3D(0.375,0.075,0));
+    b[ind].setName("input");
+    b[ind].ini();
+    b[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/input_large.png"));;
+    b[ind].setClicable(false);
+
+
+    ind=b.size();
+    b.push_back(Button());
+    b[ind].setPos(Vector3D(0.4,0.51,0));
+    b[ind].setSize(Vector3D(0.175,0.2,0));
+    b[ind].addText(msg);
+    b[ind].setName("msg");
+    b[ind].ini();
+    b[ind].setClicable(false);
+    b[ind].setTexture(NULL);
+    b[ind].centerText(false);
+
+    ind=b.size();
+    b.push_back(Button());
     b[ind].setPos(Vector3D(0.28,0.3,0));
     b[ind].setSize(Vector3D(0.175,0.075,0));
     b[ind].setName("paste");
+    b[ind].addText("Paste");
+    b[ind].ini();
+    b[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/button_small.png"));
 
     ind=b.size();
     b.push_back(Button());
-    b[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/button_large.png"));
     b[ind].setPos(Vector3D(0.54,0.3,0));
     b[ind].setSize(Vector3D(0.175,0.075,0));
     b[ind].setName("ok");
+    b[ind].addText("Ok");
+    b[ind].ini();
+    b[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/button_small.png"));
 
     ind=b.size();
     b.push_back(Button());
-    b[ind].setPos(Vector3D(0.3,0.43,0));
-    b[ind].addText(txt,&m_font);
+    b[ind].setPos(Vector3D(0.32,0.4,0));
+    b[ind].setSize(Vector3D(0.175,0.2,0));
+    b[ind].addText(txt);
     b[ind].setName("txt");
+    b[ind].ini();
+    b[ind].centerText(false);
+    b[ind].setClicable(false);
+    b[ind].setTexture(NULL);
 
     SDL_EnableKeyRepeat(200, 45);
 
@@ -731,24 +768,40 @@ bool Menu::messageSure()
     b.clear();
     unsigned int ind=b.size();
     b.push_back(Button());
-    b[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/sure_hq.png"));
     b[ind].setPos(Vector3D(0.25,0.15,0));
     b[ind].setSize(Vector3D(0.5,0.6,0));
     b[ind].setName("sure");
+    b[ind].ini();
+    b[ind].setClicable(false);
+    b[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/box_large.png"));
 
     ind=b.size();
     b.push_back(Button());
-    b[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/button_large.png"));
+    b[ind].setPos(Vector3D(0.4,0.5,0));
+    b[ind].setSize(Vector3D(0.175,0.075,0));
+    b[ind].setName("suretxt");
+    b[ind].addText("Are you sure?");
+    b[ind].ini();
+    b[ind].setTexture(NULL);
+    b[ind].setClicable(false);
+
+    ind=b.size();
+    b.push_back(Button());
     b[ind].setPos(Vector3D(0.28,0.3,0));
     b[ind].setSize(Vector3D(0.175,0.075,0));
     b[ind].setName("yes");
+    b[ind].addText("Yes");
+    b[ind].ini();
+    b[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/button_small.png"));
 
     ind=b.size();
     b.push_back(Button());
-    b[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/button_large.png"));
     b[ind].setPos(Vector3D(0.54,0.3,0));
     b[ind].setSize(Vector3D(0.175,0.075,0));
     b[ind].setName("no");
+    b[ind].addText("No");
+    b[ind].ini();
+    b[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/button_small.png"));
 
     bool loop=true;
     while (loop)
@@ -854,23 +907,48 @@ void Menu::messageError(string msg)
     b.clear();
     unsigned int ind=b.size();
     b.push_back(Button());
-    b[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/error_hq.png"));
+    b[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/box_large.png"));
     b[ind].setPos(Vector3D(0.25,0.15,0));
     b[ind].setSize(Vector3D(0.5,0.6,0));
     b[ind].setName("error");
+    b[ind].setClicable(false);
+
+    ind=b.size();
+    b.push_back(Button());
+    b[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/blackbox.png"));
+    b[ind].setPos(Vector3D(0.29,0.32,0));
+    b[ind].setSize(Vector3D(0.42,0.22,0));
+    b[ind].setName("blackbox");
+    b[ind].setClicable(false);
+
+    ind=b.size();
+    b.push_back(Button());
+    b[ind].setPos(Vector3D(0.45,0.55,0));
+    b[ind].addText("Error:");
+    b[ind].setName("errortxt");
+    b[ind].ini();
+    b[ind].centerText(false);
+    b[ind].setClicable(false);
+    b[ind].setTexture(NULL);
 
     ind=b.size();
     b.push_back(Button());
     b[ind].setPos(Vector3D(0.3,0.43,0));
-    b[ind].addText(msg,&m_font);
+    b[ind].addText(msg);
     b[ind].setName("errortxt");
+    b[ind].ini();
+    b[ind].centerText(false);
+    b[ind].setClicable(false);
+    b[ind].setTexture(NULL);
 
     ind=b.size();
     b.push_back(Button());
-    b[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/button_large.png"));
     b[ind].setPos(Vector3D(0.415,0.17,0));
     b[ind].setSize(Vector3D(0.175,0.075,0));
     b[ind].setName("ok");
+    b[ind].addText("Ok");
+    b[ind].ini();
+    b[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/button_small.png"));
 
     bool loop=true;
     while (loop)

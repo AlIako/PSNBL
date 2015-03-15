@@ -13,7 +13,7 @@ public:
     void draw();
     void updateTimes();
 
-    string inputString(string txt,string pathTxt,bool onlyInt=false);
+    string inputString(string txt,string msg,bool onlyInt=false);
     bool messageSure();
     void messageError(string msg);
 
@@ -23,7 +23,6 @@ public:
 
     private:
         SDL_Event event;
-        freetype::font_data m_font;
 
         Video* m_video;
 

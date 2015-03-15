@@ -3,72 +3,73 @@
 #include "Object2D.h"
 #include <vector>
 
-void menuEditor(vector<Button>* b,freetype::font_data* font)
+void menuEditor(vector<Button>* b)
 {
     b->clear();
-/*
+
     unsigned int ind=b->size();
-    b->push_back(Object2D());
+    b->push_back(Button());
     (*b)[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/title_hq.png"));
     (*b)[ind].setPos(Vector3D(0.25,0.6,0));
     (*b)[ind].setSize(Vector3D(0.5,0.4,0));
     (*b)[ind].setName("title");
 
     ind=(*b).size();
-    (*b).push_back(Object2D());
-    (*b)[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/linkocraftcom_hq.png"));
-    (*b)[ind].setTextureHover(GTexture::getInstance()->getTexture("../data/textures/interface/linkocraftcom_hover_hq.png"));
+    b->push_back(Button());
     (*b)[ind].setPos(Vector3D(0.04,0.04,0));
     (*b)[ind].setSize(Vector3D(0.3,0.03,0));
     (*b)[ind].setName("linkocraftcom");
-    (*b)[ind].setClicable(true);
+    (*b)[ind].addText("www.linkocraft.com");
+    (*b)[ind].ini();
+    (*b)[ind].centerText(false);
+    (*b)[ind].setTexture(NULL);
 
     ind=(*b).size();
-    (*b).push_back(Object2D());
-    (*b)[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/new_hq.png"));
-    (*b)[ind].setTextureHover(GTexture::getInstance()->getTexture("../data/textures/interface/new_hover_hq.png"));
+    b->push_back(Button());
     (*b)[ind].setPos(Vector3D(0.76,0.14,0));
     (*b)[ind].setSize(Vector3D(0.2,0.075,0));
     (*b)[ind].setName("new");
-    (*b)[ind].setClicable(true);
+    (*b)[ind].addText("New");
+    (*b)[ind].ini();
+    (*b)[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/button_small.png"));
 
     ind=(*b).size();
-    (*b).push_back(Object2D());
-    (*b)[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/delete_hq.png"));
-    (*b)[ind].setTextureHover(GTexture::getInstance()->getTexture("../data/textures/interface/delete_hover_hq.png"));
+    b->push_back(Button());
     (*b)[ind].setPos(Vector3D(0.76,0.24,0));
     (*b)[ind].setSize(Vector3D(0.2,0.075,0));
     (*b)[ind].setName("delete");
-    (*b)[ind].setClicable(true);
+    (*b)[ind].addText("Delete");
+    (*b)[ind].ini();
+    (*b)[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/button_small.png"));
 
     ind=(*b).size();
-    (*b).push_back(Object2D());
-    (*b)[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/test_hq.png"));
-    (*b)[ind].setTextureHover(GTexture::getInstance()->getTexture("../data/textures/interface/test_hover_hq.png"));
+    b->push_back(Button());
     (*b)[ind].setPos(Vector3D(0.76,0.34,0));
     (*b)[ind].setSize(Vector3D(0.2,0.075,0));
     (*b)[ind].setName("test");
-    (*b)[ind].setClicable(true);
+    (*b)[ind].addText("Test");
+    (*b)[ind].ini();
+    (*b)[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/button_small.png"));
 
     ind=(*b).size();
-    (*b).push_back(Object2D());
-    (*b)[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/open_hq.png"));
-    (*b)[ind].setTextureHover(GTexture::getInstance()->getTexture("../data/textures/interface/open_hover_hq.png"));
+    b->push_back(Button());
     (*b)[ind].setPos(Vector3D(0.76,0.44,0));
     (*b)[ind].setSize(Vector3D(0.2,0.075,0));
     (*b)[ind].setName("open");
-    (*b)[ind].setClicable(true);
+    (*b)[ind].addText("Open");
+    (*b)[ind].ini();
+    (*b)[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/button_small.png"));
 
 
 
     ind=(*b).size();
-    (*b).push_back(Object2D());
-    (*b)[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/back_hq.png"));
-    (*b)[ind].setTextureHover(GTexture::getInstance()->getTexture("../data/textures/interface/back_hover_hq.png"));
+    b->push_back(Button());
     (*b)[ind].setPos(Vector3D(0.76,0.04,0));
     (*b)[ind].setSize(Vector3D(0.2,0.075,0));
     (*b)[ind].setName("back");
-    (*b)[ind].setClicable(true);
+    (*b)[ind].addText("Back");
+    (*b)[ind].ini();
+    (*b)[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/button_small.png"));
 
 
     vector<string> maps;
@@ -111,13 +112,16 @@ void menuEditor(vector<Button>* b,freetype::font_data* font)
     {
 
         ind=(*b).size();
-        (*b).push_back(Object2D());
+        (*b).push_back(Button());
         (*b)[ind].setPos(Vector3D(0.1,0.5-(i+folders.size())/20.0,0));
         (*b)[ind].setSize(Vector3D(0.5,0.05,0));
-        (*b)[ind].addText(maps[i],font);
+        (*b)[ind].addText(maps[i]);
         (*b)[ind].setName(maps[i]);
-        (*b)[ind].setClicable(true);
-    }*/
+        (*b)[ind].ini();
+        (*b)[ind].setSelectable(true);
+        (*b)[ind].centerText(false);
+        (*b)[ind].setTexture(NULL);
+    }
 }
 
 

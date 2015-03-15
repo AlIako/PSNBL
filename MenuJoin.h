@@ -3,79 +3,74 @@
 #include "Object2D.h"
 #include <vector>
 
-void menuJoin(vector<Button>* b,freetype::font_data* font)
+void menuJoin(vector<Button>* b)
 {
     b->clear();
-/*
+
     unsigned int ind=b->size();
-    b->push_back(Object2D());
+    b->push_back(Button());
     (*b)[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/title_hq.png"));
     (*b)[ind].setPos(Vector3D(0.25,0.6,0));
     (*b)[ind].setSize(Vector3D(0.5,0.4,0));
     (*b)[ind].setName("title");
 
+
+
     ind=(*b).size();
-    (*b).push_back(Object2D());
-    (*b)[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/port_hq.png"));
-    (*b)[ind].setTextureHover(GTexture::getInstance()->getTexture("../data/textures/interface/port_hover_hq.png"));
+    (*b).push_back(Button());
     (*b)[ind].setPos(Vector3D(0.25,0.5,0));
     (*b)[ind].setSize(Vector3D(0.5,0.075,0));
     (*b)[ind].setName("port");
-    (*b)[ind].setClicable(true);
-
-    ind=(*b).size();
-    (*b).push_back(Object2D());
-    (*b)[ind].setPos(Vector3D(0.77,0.525,0));
 
     std::stringstream ss;
-    ss << Config::getInstance()->port;
-    (*b)[ind].addText(ss.str(),font);
-    (*b)[ind].setName("porttxt");
+    ss << "Port: "<<Config::getInstance()->port;
+    (*b)[ind].addText(ss.str());
+    (*b)[ind].ini();
+
+
 
     ind=(*b).size();
-    (*b).push_back(Object2D());
-    (*b)[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/ip_hq.png"));
-    (*b)[ind].setTextureHover(GTexture::getInstance()->getTexture("../data/textures/interface/ip_hover_hq.png"));
+    (*b).push_back(Button());
     (*b)[ind].setPos(Vector3D(0.25,0.4,0));
     (*b)[ind].setSize(Vector3D(0.5,0.075,0));
     (*b)[ind].setName("ip");
-    (*b)[ind].setClicable(true);
+
+    std::stringstream ss2;
+    ss2 << "IP: "<<Config::getInstance()->ip;
+    (*b)[ind].addText(ss2.str());
+    (*b)[ind].ini();
+
+
+
 
     ind=(*b).size();
-    (*b).push_back(Object2D());
-    (*b)[ind].setPos(Vector3D(0.77,0.425,0));
-    (*b)[ind].addText(Config::getInstance()->ip,font);
-    (*b)[ind].setName("iptxt");
-
-
-    ind=(*b).size();
-    (*b).push_back(Object2D());
-    (*b)[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/join_hq.png"));
-    (*b)[ind].setTextureHover(GTexture::getInstance()->getTexture("../data/textures/interface/join_hover_hq.png"));
+    (*b).push_back(Button());
     (*b)[ind].setPos(Vector3D(0.25,0.3,0));
     (*b)[ind].setSize(Vector3D(0.5,0.075,0));
     (*b)[ind].setName("join");
-    (*b)[ind].setClicable(true);
+    (*b)[ind].addText("Join");
+    (*b)[ind].ini();
 
 
 
     ind=(*b).size();
-    (*b).push_back(Object2D());
-    (*b)[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/linkocraftcom_hq.png"));
-    (*b)[ind].setTextureHover(GTexture::getInstance()->getTexture("../data/textures/interface/linkocraftcom_hover_hq.png"));
+    b->push_back(Button());
     (*b)[ind].setPos(Vector3D(0.04,0.04,0));
     (*b)[ind].setSize(Vector3D(0.3,0.03,0));
     (*b)[ind].setName("linkocraftcom");
-    (*b)[ind].setClicable(true);
+    (*b)[ind].addText("www.linkocraft.com");
+    (*b)[ind].ini();
+    (*b)[ind].centerText(false);
+    (*b)[ind].setTexture(NULL);
 
     ind=(*b).size();
-    (*b).push_back(Object2D());
-    (*b)[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/back_hq.png"));
-    (*b)[ind].setTextureHover(GTexture::getInstance()->getTexture("../data/textures/interface/back_hover_hq.png"));
+    b->push_back(Button());
     (*b)[ind].setPos(Vector3D(0.76,0.04,0));
     (*b)[ind].setSize(Vector3D(0.2,0.075,0));
     (*b)[ind].setName("back");
-    (*b)[ind].setClicable(true);*/
+    (*b)[ind].addText("Back");
+    (*b)[ind].ini();
+    (*b)[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/button_small.png"));
 }
 
 
