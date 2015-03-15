@@ -12,6 +12,7 @@
 #include "Config.h"
 #include "Vector3D.h"
 #include "Tracer.h"
+#include "Fade.h"
 
 using namespace std;
 
@@ -40,6 +41,7 @@ class Video
     string getStrHD();
 
     Fog* getFog() {return &fog;}
+    Fade* getFade() {return &fade;}
 
     double getWidth() { return m_largeur; }
     double getHeight() {return m_hauteur;}
@@ -64,6 +66,7 @@ class Video
     int m_fov;//field of view
 
     Fog fog;
+    Fade fade;
 
     bool m_hd;
 

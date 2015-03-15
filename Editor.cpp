@@ -40,6 +40,13 @@ void Editor::ini(string path)
     m_camera.setCible(curObj);
     m_camera.setMode("editor");
 
+
+
+
+
+
+    m_video->getFade()->startFadeOut();
+
 }
 
 
@@ -53,6 +60,7 @@ void Editor::play(string path)
     SDL_Event event;
 
     playLoop=true;
+    fadingToLeave=false;
 
     double cur_incr=0.5;
     showCur=true;
@@ -64,7 +72,7 @@ void Editor::play(string path)
             switch (event.type)
             {
                 case SDL_QUIT:
-                playLoop = false;
+                fadingToLeave=true;
                 break;
 
                 case SDL_MOUSEMOTION:
@@ -133,7 +141,7 @@ void Editor::play(string path)
                     case SDLK_KP_ENTER:
                     break;
                     case SDLK_ESCAPE:
-                    playLoop = false;
+                    fadingToLeave=true;
                     break;
                     case SDLK_RETURN:
                         m_map.saveMap(m_path);
@@ -296,6 +304,10 @@ void Editor::play(string path)
 
         //m_interface.draw();
 
+        //fading
+        m_video->matrixOrtho2D();
+        m_video->getFade()->draw();
+        m_video->matrixProjection();
 
         m_video->afterDraw();
 
@@ -310,6 +322,20 @@ void Editor::play(string path)
         }
 
         SDL_Delay(10);
+
+
+        if(fadingToLeave)
+        {
+            if(Video::getInstance()->getFade()->getFading()==false)
+            {
+                Video::getInstance()->getFade()->startFadeIn();
+            }
+            if(Video::getInstance()->getFade()->getAlpha()>=1)
+            {
+                playLoop=false;
+                fadingToLeave=false;
+            }
+        }
     }
 
 

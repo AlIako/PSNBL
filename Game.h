@@ -48,6 +48,8 @@ class Game
 
     private:
     bool playLoop;
+    bool fadingToLeave;
+
     Video* m_video;
     Online* m_online;
     Map m_map;

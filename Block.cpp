@@ -62,9 +62,11 @@ void Block::draw()
 {
     if(m_visible)
     {
+        glDisable(GL_LIGHTING);
+
         const Vector3D m_taille=m_size;
 
-        glColor3ub(m_r,m_g,m_b);
+        glColor4ub(255,255,255,255);
 
         if(m_texture!=NULL)
             m_texture->bind();
@@ -76,7 +78,6 @@ void Block::draw()
 
         if(m_name=="jumpBlock")
         {
-            glColor3ub(255,255,255);
             glDisable(GL_LIGHTING);
             glTranslated(0,0,m_taille.Z*2*0);
             glDisable(GL_CULL_FACE);

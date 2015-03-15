@@ -30,6 +30,8 @@ class Editor
     string m_path;
 
     bool playLoop;
+    bool fadingToLeave;
+
     Video* m_video;
     Map m_map;
     Camera m_camera;

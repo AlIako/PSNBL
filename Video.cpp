@@ -67,6 +67,12 @@ void Video::ini()
     //fog
     fog.enable();
 
+    //fade
+    fade.ini();
+
+
+
+
 
 
     const unsigned char* glver = glGetString(GL_VERSION);
@@ -176,6 +182,7 @@ GLuint Video::LoadShaders(const char * vertex_file_path,const char * fragment_fi
 void Video::update(double functionTime)
 {
     fog.update(functionTime);
+    fade.update(functionTime);
 }
 
 void Video::matrixProjection()
@@ -206,8 +213,6 @@ void Video::afterDraw()
     glFlush();
     SDL_GL_SwapBuffers();
 }
-
-
 
 
 

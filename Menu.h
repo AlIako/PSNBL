@@ -11,6 +11,7 @@ public:
     void ini();
     void play();
     void draw();
+    void drawLoading();
     void updateTimes();
 
     string inputString(string txt,string msg,bool onlyInt=false);
@@ -27,12 +28,14 @@ public:
         Video* m_video;
 
         bool playLoop;
+        bool fadingToLeave;
 
         double lastCursorX;
         double lastCursorY;
 
 
         Object2D m_bg;
+        Object2D m_loading;
         vector<Button> m_buttons;
 
 

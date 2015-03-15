@@ -22,6 +22,16 @@ void Menu::ini()
 
     m_video=Video::getInstance();
 
+    //loading
+    GTexture::getInstance()->addTexture("../data/textures/interface/loading.png");
+
+    m_loading.setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/loading.png"));
+    m_loading.setPos(Vector3D(0.3,0.4,0));
+    m_loading.setSize(Vector3D(0.4,0.2,0));
+
+    //drawLoading();
+
+
     //sound
     Gsounds::getInstance()->ini();
     Gsounds::getInstance()->loads();
@@ -43,6 +53,10 @@ void Menu::ini()
 
     SDL_ShowCursor(SDL_ENABLE);//curseur
     SDL_WM_GrabInput(SDL_GRAB_OFF);
+
+
+
+    m_video->getFade()->startFadeOut();
 }
 
 
@@ -50,6 +64,7 @@ void Menu::play()
 {
     mapSelected="";
     playLoop=true;
+    fadingToLeave=false;
 
     while (playLoop)
     {
@@ -58,7 +73,7 @@ void Menu::play()
             switch (event.type)
             {
                 case SDL_QUIT:
-                playLoop = false;
+                fadingToLeave=true;
                 break;
 
                 case SDL_MOUSEMOTION:
@@ -138,6 +153,20 @@ void Menu::play()
         draw();
 
         SDL_Delay(10);
+
+
+        if(fadingToLeave)
+        {
+            if(Video::getInstance()->getFade()->getFading()==false)
+            {
+                Video::getInstance()->getFade()->startFadeIn();
+            }
+            if(Video::getInstance()->getFade()->getAlpha()>=1)
+            {
+                playLoop=false;
+                fadingToLeave=false;
+            }
+        }
     }
 
     Gsounds::getInstance()->freeAll();
@@ -164,8 +193,28 @@ void Menu::draw()
     //text freetype
     //TextManager::getInstance()->display();
 
+    //fading
+    m_video->matrixOrtho2D();
+    m_video->getFade()->draw();
+    m_video->matrixProjection();
+
+
     m_video->afterDraw();
 }
+
+void Menu::drawLoading()
+{
+    m_video->beforeDraw();
+
+    gluLookAt(5,2,1,
+    1,2,0,
+    0,0,1);
+
+    m_loading.draw();
+
+    m_video->afterDraw();
+}
+
 
 void Menu::clicOn(string name, bool leftClic)
 {
@@ -181,7 +230,7 @@ void Menu::clicOn(string name, bool leftClic)
         Config::getInstance()->mode="server";
         Online::getInstance()->setActive(false);
         command="play";
-        playLoop=false;
+        fadingToLeave=true;
     }
     if(leftClic && name=="join")
     {
@@ -208,14 +257,12 @@ void Menu::clicOn(string name, bool leftClic)
         if(Online::getInstance()->m_connectionEstablished)
         {
             command="play";
-            playLoop=false;
+            fadingToLeave=true;
         }
         else//fail connection
         {
             Online::getInstance()->closeOnline();
             messageError("Connection to server failed.");
-            //command="quit";
-            //playLoop=false;
         }
 
     }
@@ -227,7 +274,7 @@ void Menu::clicOn(string name, bool leftClic)
         Online::getInstance()->ini();
 
         command="play";
-        playLoop=false;
+        fadingToLeave=true;
     }
     if(leftClic && name=="multi")
     {
@@ -255,7 +302,7 @@ void Menu::clicOn(string name, bool leftClic)
         else//right clic: open map with editor
         {
             command="editor "+name;
-            playLoop=false;
+            fadingToLeave=true;
         }
     }
     if(leftClic && name=="open")
@@ -266,7 +313,7 @@ void Menu::clicOn(string name, bool leftClic)
             {
                 command="editor "+mapSelected;
                 cerr<<"going editor "<< command<<endl;
-                playLoop=false;
+                fadingToLeave=true;
             }
         }
     }
@@ -303,7 +350,7 @@ void Menu::clicOn(string name, bool leftClic)
 
                 command="play "+mapSelected;
                 cerr<<"going play "<< command<<endl;
-                playLoop=false;
+                fadingToLeave=true;
             }
         }
     }
@@ -317,7 +364,7 @@ void Menu::clicOn(string name, bool leftClic)
                 inputName="../data/patterns/"+inputName+".txt";
                 command="editor "+inputName;
                 cerr<<"going editor "<< command<<endl;
-                playLoop=false;
+                fadingToLeave=true;
             }
         }
     }
@@ -434,7 +481,7 @@ void Menu::clicOn(string name, bool leftClic)
         }
         else if(curMenu=="start")
         {
-            playLoop=false;
+            fadingToLeave=true;
         }
         else
         {
@@ -447,7 +494,7 @@ void Menu::clicOn(string name, bool leftClic)
 
     if(leftClic && name=="quit")
     {
-        playLoop=false;
+        fadingToLeave=true;
     }
     if(leftClic && name=="linkocraftcom")
     {
@@ -589,7 +636,7 @@ string Menu::inputString(string txt,string msg,bool onlyInt)
             {
                 case SDL_QUIT:
                 loop = false;
-                playLoop = false;
+                fadingToLeave=true;
                 txt=savetxt;
                 break;
 
@@ -812,7 +859,7 @@ bool Menu::messageSure()
             {
                 case SDL_QUIT:
                 loop = false;
-                playLoop = false;
+                fadingToLeave=true;
                 break;
 
                 case SDL_MOUSEMOTION:
@@ -959,7 +1006,7 @@ void Menu::messageError(string msg)
             {
                 case SDL_QUIT:
                 loop = false;
-                playLoop = false;
+                fadingToLeave=true;
                 break;
 
                 case SDL_MOUSEMOTION:

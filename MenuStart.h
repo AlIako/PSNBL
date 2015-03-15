@@ -14,6 +14,7 @@ void menuStart(vector<Button>* b)
     GTexture::getInstance()->addTexture("../data/textures/interface/button_small.png");
     GTexture::getInstance()->addTexture("../data/textures/interface/input_large.png");
     GTexture::getInstance()->addTexture("../data/textures/interface/blackbox.png");
+
     //start
     /*GTexture::getInstance()->addTexture("../data/textures/interface/title_hq.png");
     GTexture::getInstance()->addTexture("../data/textures/interface/single_hq.png");

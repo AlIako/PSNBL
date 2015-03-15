@@ -64,6 +64,13 @@ void Game::ini()
     SDL_ShowCursor(SDL_DISABLE);//pas de curseur
     SDL_WM_GrabInput(SDL_GRAB_ON);
     grabCursor=true;
+
+
+
+
+
+
+    m_video->getFade()->startFadeOut();
 }
 
 void Game::playPlayerSound(Player* p,string sound)
@@ -253,6 +260,7 @@ void Game::play(string path)
     SDL_Event event;
 
     playLoop=true;
+    fadingToLeave=false;
 
     while (playLoop)
     {
@@ -265,7 +273,7 @@ void Game::play(string path)
             switch (event.type)
             {
                 case SDL_QUIT:
-                playLoop = false;
+                fadingToLeave=true;
                 break;
 
                 case SDL_MOUSEMOTION:
@@ -404,7 +412,7 @@ void Game::play(string path)
                         m_chat.enterUp();
                     break;
                     case SDLK_ESCAPE:
-                    playLoop = false;
+                    fadingToLeave=true;
                     break;
                     case SDLK_a:
                     playerList[0]->pressKey(LEFT,false);
@@ -579,6 +587,12 @@ void Game::play(string path)
         Tracer::getInstance()->traceCerr("debug","7");
 
 
+        //fading
+        m_video->matrixOrtho2D();
+        m_video->getFade()->draw();
+        m_video->matrixProjection();
+
+
         m_video->afterDraw();
 
         //fps calcul
@@ -594,6 +608,21 @@ void Game::play(string path)
         Tracer::getInstance()->traceCerr("debug","8");
 
         SDL_Delay(10);
+
+
+
+        if(fadingToLeave)
+        {
+            if(Video::getInstance()->getFade()->getFading()==false)
+            {
+                Video::getInstance()->getFade()->startFadeIn();
+            }
+            if(Video::getInstance()->getFade()->getAlpha()>=1)
+            {
+                playLoop=false;
+                fadingToLeave=false;
+            }
+        }
     }
 
 
