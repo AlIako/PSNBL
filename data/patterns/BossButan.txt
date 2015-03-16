@@ -1,0 +1,7 @@
+@ block: y: 20 z: -6 tx: 1 ty: 9.5 tz: 1 text: ../data/textures/bedrock.png name: block
+@ block: y: 32 z: -4 tx: 1 ty: 9.5 tz: 2 text: ../data/textures/bedrock.png name: block
+@ block: y: 45 z: -9 tx: 50.5 ty: 7 tz: 6.5 text: ../data/textures/bedrock.png name: block
+@ block: x: 3 y: -45 z: -9 tx: 50.5 ty: 7 tz: 6.5 text: ../data/textures/bedrock.png name: block
+@ block: x: 45 z: -9 tx: 5.5 ty: 38 tz: 6.5 text: ../data/textures/bedrock.png name: block
+@ block: x: -44 z: -9 tx: 5.5 ty: 38 tz: 6.5 text: ../data/textures/bedrock.png name: block
+@ boss: x: 26 y: 19 z: 11 tx: 2.5 ty: 2 tz: 2 text: ../data/textures/chardead.png name: bossbutan

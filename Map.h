@@ -9,6 +9,7 @@
 #include "Phase.h"
 #include "Crosshair.h"
 #include "Flux.h"
+#include "BossButan.h"
 
 enum{PHASE_LOBBY,PHASE_EASY,PHASE_MEDIUM,PHASE_HARD};
 enum{PAT_ONE,PAT_TWO,PAT_THREE,PAT_FOUR};

@@ -6,6 +6,7 @@
 #include "DRDampingSpring.h"
 #include "Online.h"
 #include "Gsounds.h"
+#include "Effects.h"
 #include "Tracer.h"
 class Object;
 #include "Collision.h"
@@ -23,7 +24,10 @@ class Object
 
     virtual void update(double functionTime);
 
+
     void move(Vector3D v) {m_position+=v;}
+    void moveToDir();
+
     virtual void applyGravity();
 
     virtual void resurrect();

@@ -328,42 +328,35 @@ void Map::loadPat(string path,double zOff)
         std::string cur_read="";
         int ind=-1;
         int curInt=-1;
+        bool addingObject=false;
 
         while(!fichier1.eof())
         {
             //fichier1 >> cur_read;
             read_name=cur_read.substr(0,cur_read.size()-1);//enleve le ":"
 
+            ind=m_objects.size();
+            addingObject=false;
+
             if(read_name=="block")
             {
-                ind=m_objects.size();
                 m_objects.push_back(new Block());
-                m_objects[ind]->readObj(&fichier1);
-                m_objects[ind]->ini();
-                m_objects[ind]->setPos(m_objects[ind]->getPos()+Vector3D(0,0,zOff));
-
-                //actually we dont want that one (walls)
-                if(m_objects[ind]->getSize().Z>=1000)
-                {
-                    delete m_objects[ind];
-                    m_objects.pop_back();
-                }
+                addingObject=true;
             }
             else if(read_name=="bonus")
             {
-                ind=m_objects.size();
                 m_objects.push_back(new Bonus());
-                m_objects[ind]->readObj(&fichier1);
-                m_objects[ind]->ini();
-                m_objects[ind]->setPos(m_objects[ind]->getPos()+Vector3D(0,0,zOff));
+                addingObject=true;
             }
             else if(read_name=="flux")
             {
-                ind=m_objects.size();
                 m_objects.push_back(new Flux());
-                m_objects[ind]->readObj(&fichier1);
-                m_objects[ind]->ini();
-                m_objects[ind]->setPos(m_objects[ind]->getPos()+Vector3D(0,0,zOff));
+                addingObject=true;
+            }
+            else if(read_name=="boss")
+            {
+                m_objects.push_back(new BossButan());
+                addingObject=true;
             }
             else if(read_name=="highestZ")
             {
@@ -375,6 +368,25 @@ void Map::loadPat(string path,double zOff)
                 fichier1 >> curInt;
                 editor_nextZ=zOff+curInt;
             }
+
+            if(addingObject)
+            {
+                m_objects[ind]->readObj(&fichier1);
+                m_objects[ind]->ini();
+                m_objects[ind]->setPos(m_objects[ind]->getPos()+Vector3D(0,0,zOff));
+
+                //actually we dont want that one (walls)
+                if(m_objects[ind]->getSize().Z>=1000)
+                {
+                    delete m_objects[ind];
+                    m_objects.pop_back();
+                }
+            }
+
+
+
+
+
             fichier1 >> cur_read;
             befor_read=cur_read;
             read_name_before=befor_read.substr(0,befor_read.size()-1);//enleve le ":"

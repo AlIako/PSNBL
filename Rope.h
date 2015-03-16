@@ -13,6 +13,8 @@ class Rope: public Object
     virtual void ini();
     virtual void draw();
 
+    void damageCollided();
+
     void setNowDistance();
 
     void pullUp();

@@ -183,6 +183,11 @@ void Editor::play(string path)
                         }
                         else if(curType=="flux" && curName=="flux")
                         {
+                            curObj=new BossButan();
+                            curObj->setName("bossbutan");
+                        }
+                        else if(curType=="boss" && curName=="bossbutan")
+                        {
                             curObj=new Bonus();
                             curObj->setName("rez");
                         }

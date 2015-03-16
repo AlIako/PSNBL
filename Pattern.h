@@ -3,6 +3,7 @@
 #include "Block.h"
 #include "Bonus.h"
 #include "Flux.h"
+#include "BossButan.h"
 #include "Video.h"
 
 class Pattern
@@ -16,6 +17,8 @@ class Pattern
     virtual void ini(double startZ, std::vector<Object*>* objects);
     void loadPattern();
     virtual void start();
+
+    //static void loadPattern(string name, std::vector<Object*>* objects);
 
     void calculHighestZ();
     double getHighestZ() {return m_highestZ;}

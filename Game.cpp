@@ -503,6 +503,8 @@ void Game::play(string path)
         m_video->update(ft);
         m_map.update(ft);
 
+        Effects::getInstance()->update(ft);
+
         Tracer::getInstance()->traceCerr("debug","1");
 
         m_interface.setMode(m_mode);
@@ -566,6 +568,7 @@ void Game::play(string path)
         //glUseProgram(m_video->programIDWave);
 
         m_map.draw();
+        Effects::getInstance()->draw();
 
         //glUseProgram(m_video->programID);
 

@@ -106,6 +106,11 @@ void Object::update(double functionTime)
     }
 }
 
+void Object::moveToDir()
+{
+    //m_position+=m_direction*m_speed*ft;
+    m_velocity=m_direction*m_speed*ft;
+}
 
 void Object::ini()
 {
