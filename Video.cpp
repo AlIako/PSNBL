@@ -28,7 +28,16 @@ void Video::ini()
     m_largeur=Config::getInstance()->width;
     m_hauteur=Config::getInstance()->height;
     m_fullscreen=Config::getInstance()->fullscreen;
+
+
+
     m_fov=Config::getInstance()->fov;
+    if(Config::getInstance()->width>1500)
+        m_fov=90;
+
+
+
+
 
     SDL_Init(SDL_INIT_VIDEO);
 

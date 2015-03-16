@@ -20,6 +20,38 @@ void Map::draw()
         if(m_objects[i]->getTransparency())
             m_objects[i]->draw();
     }
+
+
+    Vector3D m_taille=Vector3D(10,10,1);
+    if(editor_highestZ!=-1)
+    {
+        //highest Z
+        glColor3ub(0,255,255);
+        glTranslated(0,0,editor_highestZ);
+        glBegin(GL_QUADS);
+        glTexCoord2d(0,1);    glVertex3d(m_taille.X,m_taille.Y,0);
+        glTexCoord2d(1,1);    glVertex3d(m_taille.X,-m_taille.Y,0);
+        glTexCoord2d(1,0);    glVertex3d(-m_taille.X,-m_taille.Y,0);
+        glTexCoord2d(0,0);    glVertex3d(-m_taille.X,m_taille.Y,0);
+        glEnd();
+        glTranslated(0,0,-editor_highestZ);
+    }
+    if(editor_nextZ!=-1)
+    {
+        //next Z
+        glColor3ub(0,255,0);
+        glTranslated(0,0,editor_nextZ);
+        glBegin(GL_QUADS);
+        glTexCoord2d(0,1);    glVertex3d(m_taille.X,m_taille.Y,0);
+        glTexCoord2d(1,1);    glVertex3d(m_taille.X,-m_taille.Y,0);
+        glTexCoord2d(1,0);    glVertex3d(-m_taille.X,-m_taille.Y,0);
+        glTexCoord2d(0,0);    glVertex3d(-m_taille.X,m_taille.Y,0);
+        glEnd();
+        glTranslated(0,0,-editor_nextZ);
+    }
+    glColor3ub(255,255,255);
+
+
 }
 
 void Map::update(double functionTime)

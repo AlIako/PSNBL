@@ -244,6 +244,12 @@ void Editor::play(string path)
                     case SDLK_k:
                         curObj->setSize(Vector3D(curObj->getSize().X,curObj->getSize().Y,curObj->getSize().Z-cur_incr));
                     break;
+                    case SDLK_b:
+                        m_map.editor_highestZ=curObj->getPos().Z;
+                    break;
+                    case SDLK_n:
+                        m_map.editor_nextZ=curObj->getPos().Z;
+                    break;
                     case SDLK_UP:
                     cur_incr*=2.0;
                     break;
