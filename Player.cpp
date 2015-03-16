@@ -85,6 +85,12 @@ void Player::update(double functionTime)
                 m_velocity.Z=.8;
                 Tracer::getInstance()->trace("jumpblock","jumpblock");
             }
+            else if(m_colliding[i]->getType()=="flux" && m_colliding[i]->getName()=="flux")
+            {
+                if(m_velocity.Z<.5)
+                    m_velocity.Z+=.02;
+                //Tracer::getInstance()->trace("jumpblock","jumpblock");
+            }
         }
     }
 
@@ -96,7 +102,6 @@ void Player::update(double functionTime)
 
         if(ropeHooked())
         {
-            //m_jumping=false;
             if(m_onTopOf==NULL)
                 m_rope->pullMe(this);
         }
@@ -210,7 +215,7 @@ void Player::ini()
 
     GTexture::getInstance()->addTexture("../data/textures/spells/rope.png");
     //spells
-    //addSpell(new SpellRope());
+    addSpell(new SpellRope());
     addSpell(new SpellJump());
     addSpell(new SpellLongJump());
     //addSpell(new SpellPullUp());
@@ -386,6 +391,14 @@ void Player::moveXY(Vector3D* vel)
     {
         m_movementVelocity=m_saveVel;
     }*/
+}
+
+void Player::applyGravity()
+{
+    if(/* !ropeHooked() && */m_physical && m_gravity)
+    {
+        m_velocity.Z-=0.01*ft;
+    }
 }
 
 void Player::addSpell(Spell* s)

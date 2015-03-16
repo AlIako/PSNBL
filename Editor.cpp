@@ -178,6 +178,11 @@ void Editor::play(string path)
                         }
                         else if(curType=="block" && curName=="jumpBlock")
                         {
+                            curObj=new Flux();
+                            curObj->setName("flux");
+                        }
+                        else if(curType=="flux" && curName=="flux")
+                        {
                             curObj=new Bonus();
                             curObj->setName("rez");
                         }

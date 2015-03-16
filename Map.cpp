@@ -56,12 +56,14 @@ void Map::update(double functionTime)
     {
         (*playerList)[0]->move();
 
+
         applyGravity((*playerList)[0]);
         applyPhysics((*playerList)[0]);
 
         (*playerList)[0]->updateRope();
 
         (*playerList)[0]->update(ft);
+
     }
 }
 
@@ -319,6 +321,14 @@ void Map::loadPat(string path,double zOff)
             {
                 ind=m_objects.size();
                 m_objects.push_back(new Bonus());
+                m_objects[ind]->readObj(&fichier1);
+                m_objects[ind]->ini();
+                m_objects[ind]->setPos(m_objects[ind]->getPos()+Vector3D(0,0,zOff));
+            }
+            else if(read_name=="flux")
+            {
+                ind=m_objects.size();
+                m_objects.push_back(new Flux());
                 m_objects[ind]->readObj(&fichier1);
                 m_objects[ind]->ini();
                 m_objects[ind]->setPos(m_objects[ind]->getPos()+Vector3D(0,0,zOff));

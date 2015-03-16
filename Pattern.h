@@ -2,6 +2,7 @@
 #define PATTERN_H_INCLUDED
 #include "Block.h"
 #include "Bonus.h"
+#include "Flux.h"
 #include "Video.h"
 
 class Pattern

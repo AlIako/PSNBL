@@ -100,7 +100,8 @@ void Rope::setNowDistance()
 void Rope::pullMe(Object* o)
 {
     //pull your player
-    double distToOutside=(m_end-o->getPos()).length()-(m_distance-2+2);
+    double distToOutside=(m_end-o->getPos()).length()-m_distance;
+    //distToOutside=(m_end-o->getPos()).length()-(m_distance-2);
 
     m_smallBoost=true;
     Vector3D dirToEnd=(m_end-o->getPos()).normalize();
@@ -205,10 +206,16 @@ void Rope::pullMe(Object* o)
 
         if(m_smallBoost)//dont teleport back at first, we want the player to have a small boost
         {
-            //o->setPos(o->getPos()+rope*distToOutside);
             Vector3D savePos=o->getPos();
 
-            o->setPos(o->getPos()+rope*distToOutside/200.0);
+            double oldDis=(o->getPos()-m_end).length();
+            //o->setPos(o->getPos()+rope*distToOutside/200.0);//move progressively to center, not instantly
+            o->setPos(o->getPos()+rope*distToOutside);
+
+            stringstream ss;
+            ss <<"dist: "<<oldDis<<"->"<<(o->getPos()-m_end).length();
+
+            Tracer::getInstance()->trace("rope",ss.str(),100,1);
 
             if(!Collision::getInstance()->testCollision(o))
             {

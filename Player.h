@@ -24,6 +24,8 @@ class Player: public Object
     virtual void ini();
     virtual void draw();
 
+    virtual void applyGravity();
+
 
     bool jump();
 

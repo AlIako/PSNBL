@@ -24,7 +24,7 @@ class Object
     virtual void update(double functionTime);
 
     void move(Vector3D v) {m_position+=v;}
-    void applyGravity();
+    virtual void applyGravity();
 
     virtual void resurrect();
     virtual void loseLife(double value);

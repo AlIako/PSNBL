@@ -125,6 +125,14 @@ void Pattern::loadPattern()
                 (*m_objects)[ind]->ini();
                 (*m_objects)[ind]->setPos((*m_objects)[ind]->getPos()+Vector3D(0,0,m_startZ));
             }
+            else if(read_name=="flux")
+            {
+                ind=(*m_objects).size();
+                (*m_objects).push_back(new Flux());
+                (*m_objects)[ind]->readObj(&fichier1);
+                (*m_objects)[ind]->ini();
+                (*m_objects)[ind]->setPos((*m_objects)[ind]->getPos()+Vector3D(0,0,m_startZ));
+            }
             else if(read_name=="highestZ")
             {
                 fichier1 >> curInt;

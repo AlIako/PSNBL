@@ -1,3 +1,5 @@
+@ highestZ: 15
+@ nextZ: 25
 @ block: x: 10 y: 10 z: 10 t: 4 text: ../data/textures/bedrock.png name: block
 @ block: x: 10 y: 15 z: 14 tx: 2 ty: 2 tz: 4 text: ../data/textures/bedrock.png name: block
 @ block: x: 2 y: -50 z: 8 tx: 50 ty: 10 tz: 8 text: ../data/textures/bedrock.png name: block
@@ -10,5 +12,4 @@
 @ block: z: 22 tx: 2 ty: 40 tz: 1 text: ../data/textures/bedrock.png name: block
 @ bonus: z: 24 t: 1 name: rez
 @ bonus: z: 24 t: 1 name: nextphase
-@ highestZ: 15
-@ nextZ: 25
+@ block: x: 10 y: -28 z: 38 tx: 2 ty: 2 tz: 2.5 text: ../data/textures/bedrock.png name: block

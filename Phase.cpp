@@ -204,6 +204,7 @@ void Phase::iniMap()
                 addPatternToQueue("PatJump");
                 addPatternToQueue("PatRope");
                 addPatternToQueue("PatRope2");
+                addPatternToQueue("PatRope3");
             }
         }
         else if(m_name=="medium")
