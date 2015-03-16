@@ -15,5 +15,6 @@ char* stringtochar(std::string lestring);
 int myIntRand(int min, int max);
 double myDoubleRand(double min, double max);
 std::string nameNoEnd(char* c, int size);
+char* endNoName(std::string s);
 
 #endif // UTILFUNCTIONS_H_INCLUDED

@@ -79,7 +79,16 @@ void Object::update(double functionTime)
             if(m_colliding[i]->getType()=="lava")
             {
                 if(getDestructible())
+                {
                     loseLife(3);
+                }
+
+                //if we're too deep in the lava, instantly die
+                if(m_position.Z<=m_colliding[i]->getPos().Z+m_colliding[i]->getSize().Z-50)
+                {
+                    if(m_type!="wall" && m_position.Z>5)//ground or walls shouldnt break
+                        m_life=0;
+                }
             }
             else if(m_colliding[i]->getType()=="block")
             {

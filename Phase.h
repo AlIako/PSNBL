@@ -1,16 +1,7 @@
 #ifndef PHASE_H_INCLUDED
 #define PHASE_H_INCLUDED
-#include "PatStill.h"
-#include "PatBigBlocks.h"
-#include "PatMidBlocks.h"
-#include "PatBeams.h"
-#include "PatEndPhase.h"
-#include "PatLetsGo.h"
-#include "PatHookAround.h"
-#include "PatEasy.h"
-#include "PatNew.h"
-#include "PatJump.h"
 #include "Online.h"
+#include "Pattern.h"
 
 class Phase
 {
@@ -23,10 +14,14 @@ class Phase
 
     void update(double functionTime);
 
-    void addPatternToQueue(int p);
+    void addPatternToQueue(string name, double startz=-1);
     void iniLastPattern();
     void nextPattern();
     void goToNextPhase();
+
+    void sendPatternOnline(int sendTo=-1);
+
+    void setName(string name){m_name=name;}
 
     void erase();
 

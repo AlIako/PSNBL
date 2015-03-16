@@ -18,7 +18,7 @@ class Online
 
     void update();
 
-    void sendSocket(infosSocket s);
+    void sendSocket(infosSocket s, int idTo=-1);
     void sendSocketReplace(infosSocket s);
 
     int nextConfirmationID();

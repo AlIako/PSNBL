@@ -45,7 +45,7 @@ void Phase::ini(std::vector<Object*>* objects)
     if(m_lava==NULL)
         cerr<<"WARNING! lava not found"<<endl;
     highestZ=m_lava->getPos().Z+m_lava->getSize().Z;
-    nextZ=highestZ;
+    nextZ=highestZ*0;
 
     if(Online::getInstance()->active() && !Online::getInstance()->inControl())
         m_name="waitingToReceive";
@@ -194,29 +194,16 @@ void Phase::iniMap()
         //ini patterns depending on which phase
         if(m_name=="still")//lobby like, lava rly slow
         {
-            addPatternToQueue(1);
+            addPatternToQueue("PatStill");
             //addPatternToQueue(6);
         }
         else if(m_name=="easy")
         {
             for(int i=0;i<2-1;i++)
             {
-                randomizer=myIntRand(0,400);
-
-                //addPatternToQueue(10);
-                //addPatternToQueue(9);
-                addPatternToQueue(10);
-                addPatternToQueue(11);
-                addPatternToQueue(12);
-                //next pattern are random
-                /*if(randomizer>300)
-                    addPatternToQueue(2);
-                else if(randomizer>200)
-                    addPatternToQueue(3);
-                else if(randomizer>100)
-                    addPatternToQueue(6);
-                else if(randomizer>0)
-                    addPatternToQueue(4);*/
+                addPatternToQueue("PatJump");
+                addPatternToQueue("PatRope");
+                addPatternToQueue("PatRope2");
             }
         }
         else if(m_name=="medium")
@@ -226,13 +213,13 @@ void Phase::iniMap()
                 randomizer=myIntRand(0,400);
                 //next pattern are random
                 if(randomizer>300)
-                    addPatternToQueue(2);
+                    addPatternToQueue("PatBigBlocks");
                 else if(randomizer>200)
-                    addPatternToQueue(3);
+                    addPatternToQueue("PatBeams");
                 else if(randomizer>100)
-                    addPatternToQueue(7);
+                    addPatternToQueue("PatHookAround");
                 else if(randomizer>0)
-                    addPatternToQueue(4);
+                    addPatternToQueue("PatMidBlocks");
             }
         }
         else if(m_name=="dark")
@@ -242,13 +229,13 @@ void Phase::iniMap()
                 randomizer=myIntRand(0,400);
                 //next pattern are random
                 if(randomizer>300)
-                    addPatternToQueue(2);
+                    addPatternToQueue("PatBigBlocks");
                 else if(randomizer>200)
-                    addPatternToQueue(3);
+                    addPatternToQueue("PatBeams");
                 else if(randomizer>100)
-                    addPatternToQueue(7);
+                    addPatternToQueue("PatHookAround");
                 else if(randomizer>0)
-                    addPatternToQueue(4);
+                    addPatternToQueue("PatMidBlocks");
             }
         }
         else if(m_name=="hard")
@@ -258,13 +245,13 @@ void Phase::iniMap()
                 randomizer=myIntRand(0,400);
                 //next pattern are random
                 if(randomizer>300)
-                    addPatternToQueue(2);
+                    addPatternToQueue("PatBigBlocks");
                 else if(randomizer>200)
-                    addPatternToQueue(3);
+                    addPatternToQueue("PatBeams");
                 else if(randomizer>100)
-                    addPatternToQueue(6);
+                    addPatternToQueue("PatLetsGo");
                 else if(randomizer>0)
-                    addPatternToQueue(4);
+                    addPatternToQueue("PatMidBlocks");
             }
         }
 
@@ -276,82 +263,61 @@ void Phase::iniMap()
         {
             m_pattern=m_patternQueue[0];
             m_pattern->start();
-
-            //send that shit
-            if(Online::getInstance()->active() && Online::getInstance()->inControl())
-            {
-                infosSocket s;
-                s.confirmationID=Online::getInstance()->nextConfirmationID();
-                s.type=8;
-                s.variable[0]=0;
-                s.variable[1]=m_lava->getSize().Z;//lava level
-                s.variable[2]=m_patternQueue[m_patternQueue.size()-1]->getStartZ();
-                for(unsigned int i=0;i<m_patternQueue.size();i++)
-                {
-                    s.variable[3+i]=m_patternQueue[i]->getPID();
-                    cerr<<"sending pattern "<< s.variable[3+i] << " to clients"<<endl;
-                }
-                s.variable[3+m_patternQueue.size()]=-1;
-                Online::getInstance()->sendSocket(s);
-            }
+            sendPatternOnline();
         }
     }
 }
 
-void Phase::addPatternToQueue(int p)
+void Phase::sendPatternOnline(int sendTo)
+{
+    //send that shit
+    if(Online::getInstance()->active() && Online::getInstance()->inControl())
+    {
+        //send phase name
+        infosSocket s;
+        s.confirmationID=Online::getInstance()->nextConfirmationID();
+        s.type=9;
+        s.variable[0]=0;
+
+        string strToCopy=m_name;
+        strncpy( s.text, strToCopy.c_str(), strToCopy.size()+2 );
+        s.text[strToCopy.size()+1]='\0';
+        Online::getInstance()->sendSocket(s,sendTo);
+
+        //send patterns
+        s.confirmationID=Online::getInstance()->nextConfirmationID();
+        s.type=8;
+        s.variable[0]=0;
+        s.variable[1]=m_lava->getSize().Z;//lava level
+        s.variable[2]=m_patternQueue[m_patternQueue.size()-1]->getStartZ();
+        for(unsigned int i=0;i<m_patternQueue.size();i++)
+        {
+            //s.variable[3+i]=m_patternQueue[i]->getPID();
+            //cerr<<"sending pattern "<< s.variable[3+i] << " to clients"<<endl;
+
+            s.confirmationID=Online::getInstance()->nextConfirmationID();
+
+            s.variable[1]=m_patternQueue[i]->getStartZ();//lava level
+
+            string strToCopy=m_patternQueue[i]->getName();
+            strncpy( s.text, strToCopy.c_str(), strToCopy.size()+2 );
+            s.text[strToCopy.size()+1]='\0';
+            Online::getInstance()->sendSocket(s,sendTo);
+            cerr<<"sending pattern "<< s.text << " to clients"<<endl;
+        }
+    }
+}
+
+void Phase::addPatternToQueue(string name, double startz)
 {
     int ind=(int)m_patternQueue.size();
-    if(p==1)
+    m_patternQueue.push_back(new Pattern());
+    m_patternQueue[ind]->setName(name);
+    if(startz!=-1)
     {
-        m_patternQueue.push_back(new PatStill());
+        nextZ=startz;
+        m_patternQueue[ind]->setStartZ(startz);
     }
-    else if(p==2)
-    {
-        m_patternQueue.push_back(new PatBigBlocks());
-    }
-    else if(p==3)
-    {
-        m_patternQueue.push_back(new PatBeams());
-    }
-    else if(p==4)
-    {
-        m_patternQueue.push_back(new PatMidBlocks());
-    }
-    else if(p==5)
-    {
-        m_patternQueue.push_back(new PatEndPhase());
-    }
-    else if(p==6)
-    {
-        m_patternQueue.push_back(new PatLetsGo());
-    }
-    else if(p==7)
-    {
-        m_patternQueue.push_back(new PatHookAround());
-    }
-    else if(p==8)
-    {
-        m_patternQueue.push_back(new PatEasy());
-    }
-    else if(p==9)
-    {
-        m_patternQueue.push_back(new PatNew());
-    }
-    else if(p==10)
-    {
-        m_patternQueue.push_back(new PatJump());
-    }
-    else if(p==11)
-    {
-        m_patternQueue.push_back(new Pattern());
-        m_patternQueue[ind]->setName("PatRope");
-    }
-    else if(p==12)
-    {
-        m_patternQueue.push_back(new Pattern());
-        m_patternQueue[ind]->setName("PatRope2");
-    }
-
     iniLastPattern();
 }
 
@@ -364,6 +330,8 @@ void Phase::iniLastPattern()
         m_patternQueue[m_patternQueue.size()-1]->ini(nextZ,m_objects);
         highestZ=m_patternQueue[m_patternQueue.size()-1]->getHighestZ();
         nextZ=m_patternQueue[m_patternQueue.size()-1]->getNextZ();
+
+        cerr<<"nextZ: "<<nextZ<<endl;
     }
 }
 

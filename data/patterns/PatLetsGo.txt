@@ -1,0 +1,17 @@
+@ block: x: 25 z: 18 tx: 50 ty: 1 tz: 1 text: ../data/textures/bedrock.png name: block
+@ block: x: 48 y: 12 z: 16 tx: 4 ty: 25 tz: 4 text: ../data/textures/bedrock.png name: block
+@ block: x: 48 y: 48 z: 16 tx: 12 ty: 12 tz: 6 text: ../data/textures/metal.png name: noHookBlock
+@ block: x: 30 y: 42 z: 28 tx: 6 ty: 6 tz: 3 text: ../data/textures/bedrock.png name: block
+@ block: x: 18 y: 42 z: 34 tx: 6 ty: 6 tz: 3 text: ../data/textures/metal.png name: noHookBlock
+@ block: x: 6 y: 42 z: 40 tx: 6 ty: 6 tz: 3 text: ../data/textures/bedrock.png name: block
+@ block: x: -6 y: 42 z: 46 tx: 6 ty: 6 tz: 3 text: ../data/textures/metal.png name: noHookBlock
+@ block: x: -18 y: 42 z: 52 tx: 6 ty: 6 tz: 3 text: ../data/textures/bedrock.png name: block
+@ block: x: -30 y: 42 z: 58 tx: 6 ty: 6 tz: 3 text: ../data/textures/metal.png name: noHookBlock
+@ block: x: -42 y: 42 z: 64 tx: 6 ty: 6 tz: 3 text: ../data/textures/bedrock.png name: block
+@ block: x: -46 y: 30 z: 70 tx: 6 ty: 6 tz: 3 text: ../data/textures/metal.png name: noHookBlock
+@ block: x: -46 y: 18 z: 76 tx: 6 ty: 6 tz: 3 text: ../data/textures/bedrock.png name: block
+@ block: x: -46 y: 6 z: 82 tx: 6 ty: 6 tz: 3 text: ../data/textures/metal.png name: noHookBlock
+@ block: x: -46 z: 88 tx: 6 ty: 6 tz: 3 text: ../data/textures/bedrock.png name: block
+@ block: x: -34 z: 94 tx: 6 ty: 6 tz: 3 text: ../data/textures/metal.png name: noHookBlock
+@ block: x: -22 z: 100 tx: 6 ty: 6 tz: 3 text: ../data/textures/bedrock.png name: block
+@ block: x: -10 z: 106 tx: 6 ty: 6 tz: 3 text: ../data/textures/metal.png name: noHookBlock

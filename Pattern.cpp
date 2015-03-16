@@ -64,13 +64,15 @@ void Pattern::ini(double startZ, std::vector<Object*>* objects)
 
 
     m_highestZ=m_startZ;
+    m_nextZ=-1;
 
     if(m_name!="pattern")
         loadPattern();
 
     if(m_highestZ==m_startZ)//if highest Z not specified in map file, calculate it
         calculHighestZ();
-    m_nextZ=m_highestZ+5;
+    if(m_nextZ==-1)
+        m_nextZ=m_highestZ+5;
 }
 
 void Pattern::loadPattern()
@@ -128,6 +130,11 @@ void Pattern::loadPattern()
                 fichier1 >> curInt;
                 m_highestZ=m_startZ+curInt;
             }
+            else if(read_name=="nextZ")
+            {
+                fichier1 >> curInt;
+                m_nextZ=m_startZ+curInt;
+            }
             fichier1 >> cur_read;
             befor_read=cur_read;
             read_name_before=befor_read.substr(0,befor_read.size()-1);//enleve le ":"
@@ -141,37 +148,6 @@ void Pattern::loadPattern()
 
 
 }
-
-int Pattern::getPID()
-{
-    if(m_name=="still")
-        return 1;
-    if(m_name=="PatBigBlocks")
-        return 2;
-    if(m_name=="PatBeams")
-        return 3;
-    if(m_name=="PatMidBlocks")
-        return 4;
-    if(m_name=="PatEndPhase")
-        return 5;
-    if(m_name=="PatLetsGo")
-        return 6;
-    if(m_name=="PatHookAround")
-        return 7;
-    if(m_name=="PatEasy")
-        return 8;
-    if(m_name=="PatNew")
-        return 9;
-    if(m_name=="PatJump")
-        return 10;
-    if(m_name=="PatRope")
-        return 11;
-    if(m_name=="PatRope2")
-        return 12;
-    return 0;
-}
-
-
 
 
 

@@ -1,0 +1,13 @@
+@ block: x: 10 y: -20 z: 16 tx: 8 ty: 8 tz: 12 text: ../data/textures/bedrock.png name: block
+@ block: x: -10 y: -30 z: 36 tx: 8 ty: 8 tz: 12 text: ../data/textures/bedrock.png name: block
+@ block: x: 10 z: 46 tx: 8 ty: 8 tz: 12 text: ../data/textures/bedrock.png name: block
+@ block: x: -10 y: 30 z: 66 tx: 8 ty: 8 tz: 12 text: ../data/textures/bedrock.png name: block
+@ block: x: -10 y: -30 z: 86 tx: 8 ty: 8 tz: 12 text: ../data/textures/bedrock.png name: block
+@ block: x: 10 z: 106 tx: 8 ty: 8 tz: 12 text: ../data/textures/bedrock.png name: block
+@ block: x: -10 y: 30 z: 126 tx: 8 ty: 8 tz: 12 text: ../data/textures/bedrock.png name: block
+@ block: x: -10 y: -30 z: 146 tx: 8 ty: 8 tz: 12 text: ../data/textures/bedrock.png name: block
+@ block: x: 10 z: 166 tx: 8 ty: 8 tz: 12 text: ../data/textures/bedrock.png name: block
+@ block: x: -10 y: 30 z: 186 tx: 8 ty: 8 tz: 12 text: ../data/textures/bedrock.png name: block
+@ block: x: -10 y: -30 z: 206 tx: 8 ty: 8 tz: 12 text: ../data/textures/bedrock.png name: block
+@ block: x: 10 z: 226 tx: 8 ty: 8 tz: 12 text: ../data/textures/bedrock.png name: block
+@ block: x: -10 y: 30 z: 246 tx: 8 ty: 8 tz: 12 text: ../data/textures/bedrock.png name: block

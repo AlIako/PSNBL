@@ -1,0 +1,10 @@
+@ block: z: 6 t: 4 text: ../data/textures/bedrock.png name: block
+@ block: z: 36 t: 4 text: ../data/textures/bedrock.png name: block
+@ block: z: 66 t: 4 text: ../data/textures/bedrock.png name: block
+@ block: z: 96 t: 4 text: ../data/textures/bedrock.png name: block
+@ block: z: 126 t: 4 text: ../data/textures/bedrock.png name: block
+@ block: z: 156 t: 4 text: ../data/textures/bedrock.png name: block
+@ block: z: 186 t: 4 text: ../data/textures/bedrock.png name: block
+@ block: z: 216 t: 4 text: ../data/textures/bedrock.png name: block
+@ block: z: 246 t: 4 text: ../data/textures/bedrock.png name: block
+@ block: z: 276 t: 4 text: ../data/textures/bedrock.png name: block

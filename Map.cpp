@@ -94,6 +94,9 @@ void Map::applyPhysics(Object* o)
 
 void Map::ini(string path)
 {
+    editor_highestZ=-1;
+    editor_nextZ=-1;
+
     //cerr << "ini map"<<endl;
 
     Collision::getInstance()->setObjects(&m_objects);
@@ -254,6 +257,11 @@ void Map::saveMap(string path)
     {
         string ch="";
 
+        if(editor_highestZ!=-1)
+            fichier << "@ highestZ: "<<editor_highestZ<<endl;
+        if(editor_nextZ!=-1)
+            fichier << "@ nextZ: "<<editor_nextZ<<endl;
+
         for(unsigned int i=6;i<m_objects.size();i++)
         {
             fichier << m_objects[i]->writeObj();
@@ -267,6 +275,9 @@ void Map::saveMap(string path)
 
 void Map::loadPat(string path,double zOff)
 {
+    editor_highestZ=-1;
+    editor_nextZ=-1;
+
     char* tempchemin=stringtochar(path);
 
     std::ifstream in(tempchemin, std::ifstream::ate | std::ifstream::binary);
@@ -282,6 +293,7 @@ void Map::loadPat(string path,double zOff)
         std::string befor_read="",read_name="",read_name_before="";
         std::string cur_read="";
         int ind=-1;
+        int curInt=-1;
 
         while(!fichier1.eof())
         {
@@ -310,6 +322,16 @@ void Map::loadPat(string path,double zOff)
                 m_objects[ind]->readObj(&fichier1);
                 m_objects[ind]->ini();
                 m_objects[ind]->setPos(m_objects[ind]->getPos()+Vector3D(0,0,zOff));
+            }
+            else if(read_name=="highestZ")
+            {
+                fichier1 >> curInt;
+                editor_highestZ=zOff+curInt;
+            }
+            else if(read_name=="nextZ")
+            {
+                fichier1 >> curInt;
+                editor_nextZ=zOff+curInt;
             }
             fichier1 >> cur_read;
             befor_read=cur_read;

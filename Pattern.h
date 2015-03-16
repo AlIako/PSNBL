@@ -20,11 +20,10 @@ class Pattern
     double getHighestZ() {return m_highestZ;}
     double getNextZ() {return m_nextZ;}
     double getStartZ() {return m_startZ;}
-    int getPID();
+    string getName() {return m_name;}
     bool finished() {return m_finished;}
 
     void setStartZ(double s) {m_startZ=s;}
-
     void setName(string n){m_name=n;}
 
     //public attributes

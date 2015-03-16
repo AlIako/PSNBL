@@ -21,3 +21,5 @@
 @ block: x: 27 y: 15 z: 24 tx: 3 tz: 1 text: ../data/textures/bedrock.png
 @ block: x: 23 y: 16 z: 24 tx: 3 tz: 1 text: ../data/textures/bedrock.png
 @ block: x: 31 y: -8 z: 21 tx: 12.5 ty: 1 tz: 1 text: ../data/textures/bedrock.png
+@ highestZ: 40
+@ nextZ: 35

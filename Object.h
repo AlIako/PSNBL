@@ -86,6 +86,7 @@ class Object
     std::string getOnlineName() { return m_onlineName;}
     bool isHookable() { return m_hookable; }
     bool collided(){return m_collided;}
+    double getSpeed(){return m_speed;}
 
     protected:
     Texture* m_texture;

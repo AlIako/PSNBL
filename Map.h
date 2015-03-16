@@ -51,11 +51,19 @@ class Map
 
     vector<Player*>* playerList;
 
+
+    //for editor
+    double editor_highestZ;
+    double editor_nextZ;
+
+
     private:
     std::vector<Object*> m_objects;
     double ft;//function time
 
     Phase m_phase;
+
+
 
 };
 

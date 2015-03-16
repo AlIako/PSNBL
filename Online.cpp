@@ -16,7 +16,7 @@ Online::Online()
 }
 
 //add socket to send to the list
-void Online::sendSocket(infosSocket s)
+void Online::sendSocket(infosSocket s, int idTo)
 {
     if(m_active)
     {
@@ -38,8 +38,11 @@ void Online::sendSocket(infosSocket s)
             {
                 for(unsigned int i=0;i<clients.size();i++)
                 {
-                    sw.client=clients[i];
-                    socketWrappersToSend.push_back(sw);
+                    if(clients[i].id==idTo ||idTo==-1)
+                    {
+                        sw.client=clients[i];
+                        socketWrappersToSend.push_back(sw);
+                    }
                 }
             }
             else//client, just add it once (just send it to server)
@@ -79,6 +82,7 @@ void Online::sendSocketReplace(infosSocket s)
             sendSocket(s);
     }
 }
+
 
 //get next socket from the list
 infosSocket Online::getNextSocket()

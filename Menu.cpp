@@ -204,6 +204,7 @@ void Menu::draw()
 
 void Menu::drawLoading()
 {
+    glDisable(GL_FOG);
     m_video->beforeDraw();
 
     gluLookAt(5,2,1,
@@ -213,6 +214,7 @@ void Menu::drawLoading()
     m_loading.draw();
 
     m_video->afterDraw();
+    glEnable(GL_FOG);
 }
 
 

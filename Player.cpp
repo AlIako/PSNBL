@@ -136,7 +136,7 @@ bool Player::jump()
 {
     if(m_life>0)
     {
-        if((m_onTopOf!=NULL && !m_jumping) || ropeHooked())
+        if((m_onTopOf!=NULL && !m_jumping) || ropeHooked()||1)
         {
             m_jumping=true;
 
@@ -221,7 +221,7 @@ void Player::draw()
 {
     glColor3ub(255,255,255);
 
-
+    glDisable(GL_LIGHTING);
 
     glPushMatrix();
     glTranslated(m_position.X,m_position.Y,m_position.Z+1);

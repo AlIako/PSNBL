@@ -32,3 +32,15 @@ std::string nameNoEnd(char* c, int size)
         else break;
     return s;
 }
+
+char* endNoName(std::string s)
+{
+    size_t size = s.size()+2;
+    char * bufferpseudo = new char[ size ];
+    // copier la chaîne
+    strncpy( bufferpseudo, s.c_str(), size );
+
+    bufferpseudo[s.size()+1]='\0';
+
+    return bufferpseudo;
+}

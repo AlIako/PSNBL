@@ -27,7 +27,6 @@ void Texte::ini(int largeur, int hauteur,freetype::font_data* font)
     }
 
     draw(0,0,0);
-    cerr<<"length: "<<m_txtwidth<<endl;
 }
 void Texte::ini(int largeur, int hauteur)
 {
@@ -39,7 +38,6 @@ void Texte::ini(int largeur, int hauteur)
     }
 
     draw(0,0,0);
-    cerr<<"length: "<<m_txtwidth<<endl;
 }
 
 void Texte::setTexte(std::string t)
@@ -151,7 +149,7 @@ float Texte::getTextWidth()
     //glScalef(m_taille*m_largeur/640.00,m_taille*m_hauteur/480.00,1);
     float result=m_txtwidth*m_taille*m_largeur/640.00;
 
-    cerr<<"text width "<< m_texte<<": "<<result<<endl;
+    //cerr<<"text width "<< m_texte<<": "<<result<<endl;
     return result;
 }
 
