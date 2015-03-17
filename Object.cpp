@@ -33,6 +33,8 @@ Object::Object()
 
     m_texture=NULL;
 
+    m_active=true;
+
     m_visible=true;
 
     time_since_ini.reset();

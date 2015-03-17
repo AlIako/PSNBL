@@ -31,6 +31,8 @@ public:
 
     virtual void iniPattern(BossPattern* pat);
 
+    virtual void action(int type, Object* o=NULL);
+
 protected:
     string m_phase;
     vector<BossPattern> m_patterns;

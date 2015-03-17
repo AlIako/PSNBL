@@ -52,6 +52,7 @@ class Object
 
     //set
     virtual void setPos(Vector3D v) {m_position=v;}
+    virtual void setStartPos(Vector3D v) {m_startPosition=v;}
     void setRot(Vector3D v) {m_rotation=v;}
     void setDir(Vector3D v) {m_direction=v;}
     void setSize(Vector3D v) {m_size=v;}
@@ -73,6 +74,7 @@ class Object
     void setTexture(Texture* t){m_texture=t;}
     void setFT(int f){ft=f;}
     void setDeathCause(int d){m_deathCause=d;}
+    void setActive(bool a){m_active=a;}
 
 
     //get
@@ -95,6 +97,7 @@ class Object
     bool collided(){return m_collided;}
     double getSpeed(){return m_speed;}
     int getDeathCause() {return m_deathCause;}
+    bool isActive() {return m_active;}
 
     protected:
     Texture* m_texture;
@@ -116,6 +119,7 @@ class Object
     bool m_destructible;
     double m_life;
     double m_lifeMax;
+    bool m_active;
 
     double m_speed;
 

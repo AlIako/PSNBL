@@ -151,7 +151,7 @@ bool Player::jump()
 {
     if(m_life>0)
     {
-        if((m_onTopOf!=NULL && !m_jumping) || ropeHooked()||1)
+        if((m_onTopOf!=NULL && !m_jumping) || ropeHooked() || 1)
         {
             m_jumping=true;
 
@@ -225,7 +225,7 @@ void Player::ini()
 
     GTexture::getInstance()->addTexture("../data/textures/spells/rope.png");
     //spells
-    addSpell(new SpellRope());
+    //addSpell(new SpellRope());
     addSpell(new SpellJump());
     addSpell(new SpellLongJump());
     //addSpell(new SpellPullUp());

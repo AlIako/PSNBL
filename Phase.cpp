@@ -199,13 +199,11 @@ void Phase::iniMap()
         }
         else if(m_name=="easy")
         {
-            for(int i=0;i<2-1;i++)
-            {
-                addPatternToQueue("PatJump");
-                addPatternToQueue("PatRope");
-                addPatternToQueue("PatRope2");
-                addPatternToQueue("PatRope3");
-            }
+            addPatternToQueue("PatJump");
+            addPatternToQueue("PatRope");
+            addPatternToQueue("PatRope2");
+            addPatternToQueue("PatRope3");
+            addPatternToQueue("BossButan");
         }
         else if(m_name=="medium")
         {

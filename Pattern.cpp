@@ -246,8 +246,9 @@ void Pattern::loadPattern()
             if(addingObject)
             {
                 (*m_objects)[ind]->readObj(&fichier1);
-                (*m_objects)[ind]->ini();
                 (*m_objects)[ind]->setPos((*m_objects)[ind]->getPos()+Vector3D(0,0,m_startZ));
+                (*m_objects)[ind]->setStartPos((*m_objects)[ind]->getPos());
+                (*m_objects)[ind]->ini();
 
                 //actually we dont want that one (walls)
                 if((*m_objects)[ind]->getSize().Z>=1000)

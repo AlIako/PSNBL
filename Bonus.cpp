@@ -24,19 +24,21 @@ void Bonus::ini()
     {
         if(m_name=="rez")
         {
-            GTexture::getInstance()->addTexture("../data/textures/blue.jpg");
-            m_texture=GTexture::getInstance()->getTexture("../data/textures/blue.jpg");
+            m_texture=GTexture::getInstance()->addGetTexture("../data/textures/blue.jpg");
         }
         else if(m_name=="rope")
         {
-            GTexture::getInstance()->addTexture("../data/textures/rope.jpg");
-            m_texture=GTexture::getInstance()->getTexture("../data/textures/rope.jpg");
+            m_texture=GTexture::getInstance()->addGetTexture("../data/textures/rope.jpg");
         }
         else if(m_name=="nextphase")
         {
             m_transparency=true;
-            GTexture::getInstance()->addTexture("../data/textures/redrock.png");
-            m_texture=GTexture::getInstance()->getTexture("../data/textures/redrock.png");
+            m_texture=GTexture::getInstance()->addGetTexture("../data/textures/redrock.png");
+        }
+        else if(m_name=="startboss")
+        {
+            m_transparency=true;
+            m_texture=GTexture::getInstance()->addGetTexture("../data/textures/greenrock.png");
         }
     }
 
@@ -114,7 +116,7 @@ void Bonus::draw()
 
         glEnd();
     }
-    else if(m_name=="nextphase")
+    else if(m_name=="nextphase" || m_name=="startboss")
     {
         glTranslated(0,0,1);
         glDisable(GL_CULL_FACE);

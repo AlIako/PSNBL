@@ -201,6 +201,11 @@ void Editor::play(string path)
                             curObj=new Bonus();
                             curObj->setName("nextphase");
                         }
+                        else if(curType=="bonus" && curName=="nextphase")
+                        {
+                            curObj=new Bonus();
+                            curObj->setName("startboss");
+                        }
                         else
                             curObj=new Block();
                         curObj->ini();

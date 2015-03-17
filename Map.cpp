@@ -81,9 +81,21 @@ void Map::update(double functionTime)
         if(m_objects[i]->getLife()<=0)
         {
             //if a NEXTPHASE bonus was taken, increase lava speed (phase is over)
-            if(m_objects[i]->getType()=="bonus" && m_objects[i]->getName()=="nextphase")
+            if(m_objects[i]->getType()=="bonus")
             {
-                increaseLavaSpeed();
+                if(m_objects[i]->getName()=="nextphase")
+                    increaseLavaSpeed();
+                else if(m_objects[i]->getName()=="startboss")
+                {
+                    Object* boss=NULL;
+                    for(unsigned int i=0;i<m_objects.size();i++)
+                    {
+                        if(m_objects[i]->getType()=="boss")
+                            boss=m_objects[i];
+                    }
+                    if(boss!=NULL)
+                        boss->action(0);
+                }
             }
             //delete m_objects[i];
             m_objects.erase(m_objects.begin()+i);

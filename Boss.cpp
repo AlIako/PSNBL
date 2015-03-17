@@ -31,6 +31,20 @@ void Boss::update(double functionTime)
 }
 
 
+void Boss::action(int type, Object* o)
+{
+    if(type==0)//start boss
+    {
+        m_active=true;
+
+        if(m_patterns.size()>0)
+        {
+            m_current_pattern=&m_patterns[0];
+            iniPattern(m_current_pattern);
+            time_since_ini.reset();
+        }
+    }
+}
 
 
 string Boss::writeObj()
@@ -50,6 +64,7 @@ string Boss::writeObj()
 
 void Boss::iniPattern(BossPattern* pat)
 {
-
+    if(pat!=NULL)
+        pat->time_since_start.reset();
 }
 

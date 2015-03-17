@@ -6,6 +6,7 @@
 BossButan::BossButan()
 {
     m_name="bossbutan";
+    m_active=false;
 }
 
 
@@ -28,55 +29,56 @@ void BossButan::ini()
     patrol.duration=3000;
 
     m_patterns.push_back(patrol);
-
-    m_current_pattern=&m_patterns[0];
-    iniPattern(m_current_pattern);
 }
 
 
 void BossButan::update(double functionTime)
 {
-    Boss::update(functionTime);
-
-    //collision with rope: death
-    if(collidedWithType("rope"))
+    if(m_active)
     {
-        m_life=0;
-    }
+        Boss::update(functionTime);
 
-    //fireball
-    cd_fireball.couler();
-    if(cd_fireball.ecouler(1000))
-    {
-        cd_fireball.reset();
-        //find direction to player
-        vector<Player*>* p=Map::getInstance()->playerList;
-        Vector3D dir=((*p)[0]->getPos()-m_position).normalize();
-
-        //create fireball
-        vector<Object*>* o=Map::getInstance()->getObjects();
-        unsigned int ind=o->size();
-        o->push_back(new Fireball());
-        (*o)[ind]->setPos(m_position+dir*5);
-        (*o)[ind]->setDir(dir);
-        (*o)[ind]->ini();
-    }
-
-    //patterns
-    if(m_current_pattern!=NULL)
-    {
-        if(m_current_pattern->name=="patrol")
+        //collision with rope: death
+        if(collidedWithType("rope"))
         {
-            //move
-            moveToDir();
+            m_life=0;
         }
 
-        m_current_pattern->time_since_start.couler();
-        if(m_current_pattern->time_since_start.ecouler(m_current_pattern->duration))
+        //fireball
+        cd_fireball.couler();
+        if(cd_fireball.ecouler(1000))
         {
-            m_current_pattern=&m_patterns[0];
-            iniPattern(m_current_pattern);
+            cd_fireball.reset();
+            //find direction to player
+            vector<Player*>* p=Map::getInstance()->playerList;
+            Vector3D dir=((*p)[0]->getPos()-m_position).normalize();
+
+            //create fireball
+            vector<Object*>* o=Map::getInstance()->getObjects();
+            unsigned int ind=o->size();
+            o->push_back(new Fireball());
+            (*o)[ind]->setPos(m_position+dir*5);
+            (*o)[ind]->setDir(dir);
+            (*o)[ind]->ini();
         }
+
+        //patterns
+        if(m_current_pattern!=NULL)
+        {
+            if(m_current_pattern->name=="patrol")
+            {
+                //move
+                moveToDir();
+            }
+
+            m_current_pattern->time_since_start.couler();
+            if(m_current_pattern->time_since_start.ecouler(m_current_pattern->duration))
+            {
+                m_current_pattern=&m_patterns[0];
+                iniPattern(m_current_pattern);
+            }
+        }
+
     }
 }
 
@@ -108,7 +110,7 @@ void BossButan::iniPattern(BossPattern* pat)
 
 void BossButan::draw()
 {
-    if(m_visible)
+    if(m_active && m_visible)
     {
         glDisable(GL_LIGHTING);
 
