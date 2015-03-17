@@ -52,7 +52,6 @@ class Game
 
     Video* m_video;
     Online* m_online;
-    Map m_map;
     vector<Player*> playerList;
     Camera m_camera;
     Chat m_chat;

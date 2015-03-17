@@ -23,6 +23,7 @@ class GTexture
 
     string getSoundGround(string text,int num);
 
+    Texture* addGetTexture(string c);
     Texture* getTexture(string c);
     Texture* getTexture(unsigned int index);
 

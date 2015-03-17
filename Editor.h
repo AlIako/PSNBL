@@ -33,7 +33,6 @@ class Editor
     bool fadingToLeave;
 
     Video* m_video;
-    Map m_map;
     Camera m_camera;
     Interface m_interface;
 

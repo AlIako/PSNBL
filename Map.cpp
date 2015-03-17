@@ -3,6 +3,15 @@
 #define WALL_HEIGHT 1000
 
 
+Map* Map::m_instance = new Map();
+
+
+Map* Map::getInstance()
+{
+    return m_instance;
+}
+
+
 Map::Map()
 {
     playerList=NULL;

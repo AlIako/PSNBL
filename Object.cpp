@@ -314,6 +314,9 @@ void Object::readObj(ifstream* fichier1)
         befor_read=cur_read;
         read_name_before=befor_read.substr(0,befor_read.size()-1);//enleve le ":"
     }
+
+
+    m_startPosition=m_position;
 }
 
 

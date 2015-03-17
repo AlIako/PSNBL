@@ -1,6 +1,6 @@
 #include "BossButan.h"
-
-
+#include "Map.h"
+#include "Fireball.h"
 
 
 BossButan::BossButan()
@@ -17,10 +17,10 @@ void BossButan::ini()
 {
     Boss::ini();
 
-    GTexture::getInstance()->addTexture("../data/textures/chardead.png");
-    m_texture=GTexture::getInstance()->getTexture("../data/textures/chardead.png");
+    m_texture=GTexture::getInstance()->addGetTexture("../data/textures/bossbutan.png");
 
     m_life=10;
+    cd_fireball.reset();
 
 
     BossPattern patrol=BossPattern();
@@ -42,6 +42,24 @@ void BossButan::update(double functionTime)
     if(collidedWithType("rope"))
     {
         m_life=0;
+    }
+
+    //fireball
+    cd_fireball.couler();
+    if(cd_fireball.ecouler(1000))
+    {
+        cd_fireball.reset();
+        //find direction to player
+        vector<Player*>* p=Map::getInstance()->playerList;
+        Vector3D dir=((*p)[0]->getPos()-m_position).normalize();
+
+        //create fireball
+        vector<Object*>* o=Map::getInstance()->getObjects();
+        unsigned int ind=o->size();
+        o->push_back(new Fireball());
+        (*o)[ind]->setPos(m_position+dir*5);
+        (*o)[ind]->setDir(dir);
+        (*o)[ind]->ini();
     }
 
     //patterns
@@ -72,9 +90,12 @@ void BossButan::iniPattern(BossPattern* pat)
         if(pat->name=="patrol")
         {
             double movementRange=20;
+            double movementRangeZ=5;
 
             //find next destination
-            m_destination=m_position+Vector3D(myDoubleRand(-movementRange,movementRange),myDoubleRand(-movementRange,movementRange),myDoubleRand(-movementRange,movementRange));
+            m_destination=m_startPosition+Vector3D(myDoubleRand(-movementRange,movementRange),
+                                              myDoubleRand(-movementRange,movementRange),
+                                              myDoubleRand(-movementRangeZ,movementRangeZ));
 
             //set vector direction
             m_direction=(m_destination-m_position).normalize();

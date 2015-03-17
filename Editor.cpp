@@ -26,9 +26,9 @@ void Editor::ini(string path)
     //interface
     m_interface.ini();
 
-    m_map.createWalls();
-    m_map.translateAll(Vector3D(0,0,-15));
-    m_map.loadPat(path);
+    Map::getInstance()->createWalls();
+    Map::getInstance()->translateAll(Vector3D(0,0,-15));
+    Map::getInstance()->loadPat(path);
 
     posCur=Vector3D(0,0,0);
     curObj=new Block();
@@ -82,7 +82,7 @@ void Editor::play(string path)
                 case SDL_MOUSEBUTTONUP:
                 if(event.button.button==SDL_BUTTON_LEFT)
                 {
-                    m_map.getObjects()->push_back(curObj);
+                    Map::getInstance()->getObjects()->push_back(curObj);
                     Object* lastObj=curObj;
                     curObj=new Block();
                     curObj->setPos(lastObj->getPos());
@@ -144,10 +144,10 @@ void Editor::play(string path)
                     fadingToLeave=true;
                     break;
                     case SDLK_RETURN:
-                        m_map.saveMap(m_path);
+                        Map::getInstance()->saveMap(m_path);
                     break;
                     case SDLK_BACKSPACE:
-                        m_map.deleteLastObj();
+                        Map::getInstance()->deleteLastObj();
                     break;
                     case SDLK_a:
                     break;
@@ -214,7 +214,7 @@ void Editor::play(string path)
                     if(1)//if I dont do that, compiler gives error... WTF?
                     {
                         //delete colliding objects
-                        std::vector<Object*>* os=m_map.getObjects();
+                        std::vector<Object*>* os=Map::getInstance()->getObjects();
 
                         for(unsigned int i=0;i<os->size();i++)
                         {
@@ -250,10 +250,10 @@ void Editor::play(string path)
                         curObj->setSize(Vector3D(curObj->getSize().X,curObj->getSize().Y,curObj->getSize().Z-cur_incr));
                     break;
                     case SDLK_b:
-                        m_map.editor_highestZ=curObj->getPos().Z;
+                        Map::getInstance()->editor_highestZ=curObj->getPos().Z;
                     break;
                     case SDLK_n:
-                        m_map.editor_nextZ=curObj->getPos().Z;
+                        Map::getInstance()->editor_nextZ=curObj->getPos().Z;
                     break;
                     case SDLK_UP:
                     cur_incr*=2.0;
@@ -313,7 +313,7 @@ void Editor::play(string path)
         glEnable(GL_TEXTURE_2D);
 
 
-        m_map.draw();
+        Map::getInstance()->draw();
 
         if(showCur)
             curObj->draw();
@@ -415,6 +415,8 @@ void Editor::moveObj(Vector3D key)
 
 void Editor::close()
 {
+
+    Map::getInstance()->erase();
     Gsounds::getInstance()->freeAll();
 
     cerr<<"Exited cleanly.";

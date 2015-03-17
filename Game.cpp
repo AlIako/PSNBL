@@ -54,8 +54,8 @@ void Game::ini()
     }
     //end ini online
 
-    m_map.playerList=&playerList;
-    m_map.ini(pathTest);
+    Map::getInstance()->playerList=&playerList;
+    Map::getInstance()->ini(pathTest);
 
     m_camera.setCible(playerList[0]);
     m_mode="play";
@@ -121,7 +121,7 @@ void Game::handleCommands()
                 m_online->sendSocket(s);//add socket to queue
 
 
-                m_map.restart();
+                Map::getInstance()->restart();
 
                 m_interface.setTarget(playerList[0]);
                 m_camera.setCible(playerList[0]);
@@ -211,7 +211,7 @@ bool Game::castSpell(Player* p, string spell, Vector3D param1)
                 if(s->getName()=="rope")
                 {
                     s->resetCooldown();
-                    p->linkRope(m_map.createRope(p->getPos(),param1));
+                    p->linkRope(Map::getInstance()->createRope(p->getPos(),param1));
 
                     playPlayerSound(p,"../data/sounds/bounce.wav");
 
@@ -433,7 +433,7 @@ void Game::play(string path)
                         m_online->sendSocket(s);//add socket to queue
 
 
-                        m_map.restart();
+                        Map::getInstance()->restart();
 
                         m_interface.setTarget(playerList[0]);
                         m_camera.setCible(playerList[0]);
@@ -501,7 +501,7 @@ void Game::play(string path)
         Gsounds::getInstance()->update(m_camera.getPos().toLeft(),Vector3D(0,0,0),m_camera.getDir().toLeft(),Vector3D(0,0,1));
 
         m_video->update(ft);
-        m_map.update(ft);
+        Map::getInstance()->update(ft);
 
         Effects::getInstance()->update(ft);
 
@@ -543,7 +543,7 @@ void Game::play(string path)
         Tracer::getInstance()->traceCerr("debug","3");
 
         //crosshair
-        m_map.simulateRopeForCrosshair(playerList[0],
+        Map::getInstance()->simulateRopeForCrosshair(playerList[0],
                                        (m_camera.getTarget()-(playerList[0]->getPos()+Vector3D(0,0,1))).normalize(),
                                        m_interface.getCrosshair());
 
@@ -567,12 +567,12 @@ void Game::play(string path)
 
         //glUseProgram(m_video->programIDWave);
 
-        m_map.draw();
+        Map::getInstance()->draw();
         Effects::getInstance()->draw();
 
         //glUseProgram(m_video->programID);
 
-        if(m_camera.getPos().Z<=m_map.getLava()->getPos().Z+m_map.getLava()->getSize().Z*2)
+        if(m_camera.getPos().Z<=Map::getInstance()->getLava()->getPos().Z+Map::getInstance()->getLava()->getSize().Z*2)
             m_interface.drawScreenEffect("../data/textures/lava.png");
 
         Tracer::getInstance()->traceCerr("debug","6");
@@ -719,6 +719,7 @@ void Game::close()
         m_online->closeOnline();
     }
 
+    Map::getInstance()->erase();
     Gsounds::getInstance()->freeAll();
 
     cerr<<"Exited cleanly."<<endl<<endl<<endl;

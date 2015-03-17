@@ -131,6 +131,12 @@ string GTexture::getSoundGround(string text,int num)
     return ss.str();
 }
 
+Texture* GTexture::addGetTexture(string c)
+{
+    if(getTexture(c)==NULL)
+        addTexture(c);
+    return getTexture(c);
+}
 
 Texture* GTexture::getTexture(string c)
 {

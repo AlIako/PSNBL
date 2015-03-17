@@ -103,6 +103,7 @@ class Object
     Vector3D m_direction;
     Vector3D m_velocity;
     Vector3D m_movementVelocity;
+    Vector3D m_startPosition;
 
     bool m_visible;
     bool m_physical;

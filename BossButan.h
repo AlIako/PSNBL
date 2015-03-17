@@ -15,6 +15,7 @@ public:
     virtual void iniPattern(BossPattern* pat);
 
 private:
+    GTime cd_fireball;
 
 };
 

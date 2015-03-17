@@ -1,6 +1,7 @@
 #ifndef BOSS_H_INCLUDED
 #define BOSS_H_INCLUDED
 #include "Object.h"
+class Map;
 
 
 class BossPattern

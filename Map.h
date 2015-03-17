@@ -9,6 +9,7 @@
 #include "Phase.h"
 #include "Crosshair.h"
 #include "Flux.h"
+#include "Boss.h"
 #include "BossButan.h"
 
 enum{PHASE_LOBBY,PHASE_EASY,PHASE_MEDIUM,PHASE_HARD};
@@ -17,7 +18,7 @@ enum{PAT_ONE,PAT_TWO,PAT_THREE,PAT_FOUR};
 class Map
 {
     public:
-    Map();
+    static Map* getInstance();
 
     void ini(string path="");
     void draw();
@@ -60,6 +61,9 @@ class Map
 
 
     private:
+    Map();
+    static Map* m_instance;
+
     std::vector<Object*> m_objects;
     double ft;//function time
 

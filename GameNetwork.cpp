@@ -19,8 +19,8 @@ void Game::updateMultiplayer()
         s.variable[5]=playerList[0]->getLife();
         if(Online::getInstance()->m_server)
         {
-            s.variable[6]=m_map.getLavaLevel();
-            s.variable[7]=m_map.getLava()->getSpeed();
+            s.variable[6]=Map::getInstance()->getLavaLevel();
+            s.variable[7]=Map::getInstance()->getLava()->getSpeed();
         }
 
         m_online->sendSocketReplace(s);//add socket to queue
@@ -201,8 +201,8 @@ void Game::updateMultiplayer()
                         if(!Online::getInstance()->m_server && s.variable[0]==0)
                         {
                             //lava level
-                            m_map.setLavaLevel(s.variable[6]);
-                            m_map.getLava()->setSpeed(s.variable[7]);
+                            Map::getInstance()->setLavaLevel(s.variable[6]);
+                            Map::getInstance()->getLava()->setSpeed(s.variable[7]);
                         }
                     }
                     //hook
@@ -272,7 +272,7 @@ void Game::updateMultiplayer()
                     //restart map
                     if(s.type==6)
                     {
-                        m_map.restart();
+                        Map::getInstance()->restart();
                         m_interface.setTarget(playerList[0]);
                         m_camera.setCible(playerList[0]);
                         m_camera.setMode("play");
@@ -294,26 +294,26 @@ void Game::updateMultiplayer()
                     {
                         if(m_online->m_server)
                         {
-                            m_map.getPhase()->sendPatternOnline(s.variable[0]);
+                            Map::getInstance()->getPhase()->sendPatternOnline(s.variable[0]);
                         }
                         else
                         {
                             cerr<<"received pattern "<< s.text <<" from server!"<<endl;
-                            m_map.getPhase()->addPatternToQueue(s.text,s.variable[1]);
+                            Map::getInstance()->getPhase()->addPatternToQueue(s.text,s.variable[1]);
 
                         }
                     }
                     //phase
                     if(s.type==9)
                     {
-                        m_map.getPhase()->setName(s.text);
-                        m_map.getPhase()->iniMap();
+                        Map::getInstance()->getPhase()->setName(s.text);
+                        Map::getInstance()->getPhase()->iniMap();
                     }
                     //loot bonus
                     if(s.type==10)
                     {
                         Vector3D pos=Vector3D(s.variable[1],s.variable[2],s.variable[3]);
-                        std::vector<Object*>* objects=m_map.getObjects();
+                        std::vector<Object*>* objects=Map::getInstance()->getObjects();
 
                         //find nearest bonus (cant be farther than 5)
                         Object* o=NULL;
