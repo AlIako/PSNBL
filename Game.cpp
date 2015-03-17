@@ -532,6 +532,8 @@ void Game::play(string path)
                 ss << playerList[0]->getOnlineName() << " burned to death.";
             else if(dc==2)
                 ss << playerList[0]->getOnlineName() << " committed suicide.";
+            else if(dc==3)
+                ss << playerList[0]->getOnlineName() << " exploded in pieces.";
 
             char* tempChar=stringtochar(ss.str());
             m_chat.newMessage(tempChar,-2);

@@ -46,11 +46,9 @@ class Player: public Object
 
     //set
     void setGasing(bool g){m_gasing=g;}
-    void setDeathCause(int d){m_deathCause=d;}
 
     //get
     bool getGasing() {return m_gasing;}
-    int getDeathCause() {return m_deathCause;}
     Rope* getRope() {return m_rope;}
 
     //spells
@@ -72,8 +70,6 @@ class Player: public Object
     bool m_gasing;
 
     vector<Spell*> m_spells;
-
-    int m_deathCause;
 };
 
 #endif // PLAYER_H_INCLUDED

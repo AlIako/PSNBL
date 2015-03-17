@@ -1,4 +1,6 @@
 #include "Player.h"
+#include "Map.h"
+#include "Fireball.h"
 #define MAPSIZE 50
 
 
@@ -75,6 +77,14 @@ void Player::update(double functionTime)
 
                     addSpell(new SpellRope());
                 }
+            }
+            else if(m_colliding[i]->getType()=="projectile")
+            {
+                m_colliding[i]->action(0);//destroy projectile
+            }
+            else if(m_colliding[i]->getType()=="damage")
+            {
+                m_colliding[i]->action(0,this);//get damaged
             }
             else if(m_colliding[i]->getType()=="lava")
             {

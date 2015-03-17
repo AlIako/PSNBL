@@ -1,4 +1,6 @@
 #include "Fireball.h"
+#include "Map.h"
+#include "Damage.h"
 
 Fireball::Fireball()
 {
@@ -6,6 +8,8 @@ Fireball::Fireball()
     m_name="fireball";
     m_speed=1;
     m_gravity=false;
+    m_block=false;
+    m_life=1;
 
     m_texture_fire=NULL;
 }
@@ -28,13 +32,28 @@ void Fireball::update(double functionTime)
 
     if(m_collided)
     {
+        if(!collidedWithType("boss"))
+            action(0,NULL);
+    }
+}
+
+void Fireball::action(int type,Object* o)
+{
+    if(type==0)
+    {
         m_life=0;
         Effects::getInstance()->addExplosion(m_position);
 
-        for(unsigned int i=0;i<m_colliding.size();i++)
-        {
-            m_colliding[i]->loseLife(1);
-        }
+        //create damage
+        Damage* td=new Damage();
+        td->setSize(m_size*1.5);
+        td->setSize(Vector3D(5,5,5));
+        td->setPos(m_position-Vector3D(0,0,5));
+        td->setDamageValue(10);
+        td->setDamageType(3);
+        td->ini();
+
+        Map::getInstance()->getObjects()->push_back(td);
     }
 }
 
@@ -46,7 +65,7 @@ void Fireball::draw()
             m_texture->bind();
 
         glPushMatrix();
-        glTranslated(m_position.X,m_position.Y,m_position.Z+m_size.Z/2);
+        glTranslated(m_position.X,m_position.Y,m_position.Z);
         glRotated(m_rotation.X,1,0,0);
         glRotated(m_rotation.Y,0,1,0);
         glRotated(m_rotation.Z,0,0,1);

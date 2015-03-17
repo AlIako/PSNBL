@@ -34,6 +34,8 @@ Object::Object()
     m_texture=NULL;
 
     m_visible=true;
+
+    time_since_ini.reset();
 }
 
 void Object::resurrect()
@@ -55,9 +57,17 @@ void Object::loseLife(double value)
     }
 }
 
+void Object::action(int type, Object* o)
+{
+
+}
+
+
 void Object::update(double functionTime)
 {
     ft=functionTime;
+
+    time_since_ini.couler();
 
     //kill if out of map
     if(m_position.Z<=-50)
@@ -114,6 +124,7 @@ void Object::moveToDir()
 
 void Object::ini()
 {
+    time_since_ini.reset();
     //cerr <<"ini "<<m_type<<endl;
 }
 

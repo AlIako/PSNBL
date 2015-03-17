@@ -152,7 +152,7 @@ void Menu::play()
 
         draw();
 
-        SDL_Delay(10);
+        SDL_Delay(20);
 
 
         if(fadingToLeave)

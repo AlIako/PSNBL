@@ -352,7 +352,7 @@ void Rope::draw()
 
 void Rope::damageCollided()
 {
-    Effects::getInstance()->addExplosion(m_position);
+    //Effects::getInstance()->addExplosion(m_position);
 
     for(unsigned int i=0;i<m_colliding.size();i++)
     {

@@ -24,6 +24,8 @@ class Object
 
     virtual void update(double functionTime);
 
+    virtual void action(int type, Object* o=NULL);
+
 
     void move(Vector3D v) {m_position+=v;}
     void moveToDir();
@@ -70,6 +72,7 @@ class Object
     void setVisible(bool v) {m_visible=v;}
     void setTexture(Texture* t){m_texture=t;}
     void setFT(int f){ft=f;}
+    void setDeathCause(int d){m_deathCause=d;}
 
 
     //get
@@ -91,6 +94,7 @@ class Object
     bool isHookable() { return m_hookable; }
     bool collided(){return m_collided;}
     double getSpeed(){return m_speed;}
+    int getDeathCause() {return m_deathCause;}
 
     protected:
     Texture* m_texture;
@@ -118,6 +122,7 @@ class Object
     double ft;//function time
 
     GTime last_lose_life;
+    GTime time_since_ini;
 
     bool m_gravity;
 
@@ -131,6 +136,8 @@ class Object
     bool m_hookable;
 
     Object* m_onTopOf;
+
+    int m_deathCause;
 };
 
 #endif // OBJECT_H_INCLUDED

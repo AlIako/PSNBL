@@ -9,6 +9,8 @@ public:
     virtual void ini();
     virtual void update(double functionTime);
     virtual void draw();
+
+    virtual void action(int type, Object* o=NULL);
 private:
     Texture* m_texture_fire;
 };
