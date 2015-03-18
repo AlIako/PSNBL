@@ -236,7 +236,8 @@ void Player::draw()
 {
     glColor3ub(255,255,255);
 
-    glDisable(GL_LIGHTING);
+    Lighting::getInstance()->glDisableLighting();
+    Lighting::getInstance()->glEnableLighting();
 
     glPushMatrix();
     glTranslated(m_position.X,m_position.Y,m_position.Z+1);

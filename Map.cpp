@@ -123,6 +123,10 @@ void Map::update(double functionTime)
         (*playerList)[0]->update(ft);
 
     }
+
+    //lava light
+    if(getLava())
+        Lighting::getInstance()->setZ("all",getLava()->getPos().Z+getLava()->getSize().Z*2);
 }
 
 void Map::updateMap()

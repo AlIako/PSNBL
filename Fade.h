@@ -3,6 +3,7 @@
 #include <SDL.h>
 #include <GL/glew.h>
 #include "GTexture.h"
+#include "Lighting.h"
 
 class Fade
 {

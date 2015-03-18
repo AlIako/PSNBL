@@ -112,7 +112,7 @@ void BossButan::draw()
 {
     if(m_active && m_visible)
     {
-        glDisable(GL_LIGHTING);
+        Lighting::getInstance()->glDisableLighting();
 
         const Vector3D m_taille=m_size;
 

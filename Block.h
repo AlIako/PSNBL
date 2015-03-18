@@ -14,6 +14,7 @@ class Block: public Object
 
     protected:
     double mosaic;
+    bool divided;
 
     int m_r;
     int m_g;

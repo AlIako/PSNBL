@@ -32,7 +32,7 @@ void Fade::draw()
     {
         glDisable(GL_CULL_FACE);
         glDisable(GL_DEPTH_TEST);
-        glDisable(GL_LIGHTING);
+        Lighting::getInstance()->glDisableLighting();
 
 
         glBindTexture(GL_TEXTURE_2D,0);
@@ -56,7 +56,7 @@ void Fade::draw()
 
 
         glEnable(GL_DEPTH_TEST);
-        glEnable(GL_LIGHTING);
+        Lighting::getInstance()->glEnableLighting();
 
 
         glColor4ub(255,255,255,255);

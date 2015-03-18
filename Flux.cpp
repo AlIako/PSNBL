@@ -64,7 +64,7 @@ void Flux::draw()
 {
     if(m_visible)
     {
-        glDisable(GL_LIGHTING);
+        Lighting::getInstance()->glDisableLighting();
 
 
         //m_size=Vector3D(3,3,5);
@@ -77,7 +77,6 @@ void Flux::draw()
         glTranslated(m_position.X,m_position.Y,m_position.Z);
 
 
-        glDisable(GL_LIGHTING);
         glTranslated(0,0,m_size.Z*2*0);
         glDisable(GL_CULL_FACE);
         m_texture->bind();

@@ -2,6 +2,7 @@
 #define EXPLOSION_H_INCLUDED
 #include "Vector3D.h"
 #include "Gtexture.h"
+#include "Lighting.h"
 #include <vector>
 
 struct particle

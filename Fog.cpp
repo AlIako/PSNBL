@@ -5,14 +5,14 @@
 
 Fog::Fog()
 {
-    m_fogdistancestart=100;
-    m_fogdistanceend=300;
+    m_fogdistancestart=200;
+    m_fogdistanceend=500;
     m_fogr=0.0f;
     m_fogg=0.0f;
     m_fogb=0.0f;
 
-    m_targetfogdistancestart=100;
-    m_targetfogdistanceend=300;
+    m_targetfogdistancestart=m_fogdistancestart;
+    m_targetfogdistanceend=m_fogdistanceend;
     m_targetfogr=0.0f;
     m_targetfogg=0.0f;
     m_targetfogb=0.0f;
@@ -20,7 +20,7 @@ Fog::Fog()
     m_speedColor=0.001;
     m_speedDistance=1;
 
-    m_enabled=true;
+    m_enabled=false;
 }
 
 

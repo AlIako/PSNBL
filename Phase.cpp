@@ -14,8 +14,8 @@ Phase::Phase()
 
     m_lavaspeed=0;
 
-    m_fogdistancestart=100;
-    m_fogdistanceend=300;
+    m_fogdistancestart=500;
+    m_fogdistanceend=800;
     m_fogr=0.0f;
     m_fogg=0.0f;
     m_fogb=0.0f;
@@ -133,8 +133,8 @@ void Phase::goToNextPhase()
 void Phase::iniPhaseProperties()
 {
     m_lavaspeed=0.1;
-    m_fogdistancestart=100;
-    m_fogdistanceend=300;
+    m_fogdistancestart=500;
+    m_fogdistanceend=800;
     m_fogr=0.0f;
     m_fogg=0.0f;
     m_fogb=0.0f;
@@ -154,8 +154,8 @@ void Phase::iniPhaseProperties()
     else if(m_name=="medium")
     {
         m_lavaspeed=0.4;
-        m_fogdistancestart=50;
-        m_fogdistanceend=200;
+        m_fogdistancestart=200;
+        m_fogdistanceend=500;
         m_fogr=0.7f;
         m_fogg=0.1f;
         m_fogb=0.1f;

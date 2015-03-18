@@ -120,7 +120,7 @@ void Bonus::draw()
     {
         glTranslated(0,0,1);
         glDisable(GL_CULL_FACE);
-        glDisable(GL_LIGHTING);
+        Lighting::getInstance()->glDisableLighting();
 
         glBlendFunc(GL_SRC_ALPHA,GL_ONE);
         glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);

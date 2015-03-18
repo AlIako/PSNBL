@@ -7,7 +7,7 @@ Lava::Lava()
     m_texture=NULL;
     m_transparency=true;
     m_block=false;
-    mosaic=7;
+    mosaic=7*2;
     m_speed=0;
     txtcord=Vector3D(0,0,0);
 
@@ -139,6 +139,7 @@ void Lava::draw()
     if(m_texture!=NULL)
         m_texture->bind();
 
+    Lighting::getInstance()->glDisableLighting();
 
     glBlendFunc(GL_SRC_ALPHA,GL_ONE);
     //glEnable(GL_BLEND);
@@ -209,6 +210,7 @@ void Lava::draw()
 
 
     glDisable(GL_BLEND);
+    Lighting::getInstance()->glEnableLighting();
 }
 
 

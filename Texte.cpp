@@ -96,7 +96,7 @@ void Texte::draw(int r, int g, int b)
     //si on affiche une texture
     if(m_texture!=NULL)
     {
-        glDisable(GL_LIGHTING);
+        Lighting::getInstance()->glDisableLighting();
         int posx=(m_x-0.05)*m_largeur;
         if(m_texte.size()==0)
             posx=m_x*m_largeur;
@@ -138,7 +138,7 @@ void Texte::draw(int r, int g, int b)
         glDisable(GL_BLEND);
 
         Video::getInstance()->matrixProjection();
-        glEnable(GL_LIGHTING);
+        Lighting::getInstance()->glEnableLighting();
     }
     glEnable(GL_CULL_FACE);
     glDisable(GL_CULL_FACE);

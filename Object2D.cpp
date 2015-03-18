@@ -34,7 +34,7 @@ void Object2D::draw()
     {
         Video::getInstance()->matrixOrtho2D();
 
-        glDisable(GL_LIGHTING);
+        Lighting::getInstance()->glDisableLighting();
         glDisable(GL_DEPTH_TEST);
         glEnable(GL_TEXTURE_2D);
 

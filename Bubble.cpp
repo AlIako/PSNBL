@@ -33,7 +33,7 @@ void Bubble::draw()
 
 
     glDisable(GL_CULL_FACE);
-    glDisable(GL_LIGHTING);
+    Lighting::getInstance()->glDisableLighting();
 
     glBlendFunc(GL_SRC_ALPHA,GL_ONE);
     glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
@@ -54,6 +54,8 @@ void Bubble::draw()
     glTranslated(-m_position.X,-m_position.Y,-m_position.Z-zUp);
 
     glDisable(GL_BLEND);
+
+    Lighting::getInstance()->glEnableLighting();
 
 }
 

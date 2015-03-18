@@ -58,7 +58,7 @@ void Damage::draw()
 {
     if(m_visible)
     {
-        glDisable(GL_LIGHTING);
+        Lighting::getInstance()->glDisableLighting();
 
         int mosaic=1;
         const Vector3D m_taille=m_size;

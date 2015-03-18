@@ -79,7 +79,7 @@ void Explosion::draw()
     //glAlphaFunc(GL_GREATER,0.1f);
     //glEnable(GL_ALPHA_TEST);
     glDisable(GL_CULL_FACE);
-    glDisable(GL_LIGHTING);
+    Lighting::getInstance()->glDisableLighting();
 
     glBlendFunc(GL_SRC_ALPHA,GL_ONE);
     glEnable(GL_BLEND);

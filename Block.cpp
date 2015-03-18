@@ -6,6 +6,7 @@ Block::Block()
 {
     m_texture=NULL;
     mosaic=4;
+    divided=false;
 
     m_hookable=true;
     m_name="block";
@@ -25,20 +26,24 @@ void Block::ini()
         else if(randTexture>100)
             path="../data/textures/cubes_triangles.jpg";
         */
+        mosaic=16;
         if(m_name=="finalBlock")
         {
             path="../data/textures/redrock.png";
+            mosaic=4;
         }
         if(m_name=="noHookBlock")
         {
             path="../data/textures/metal.png";
             m_hookable=false;
+            mosaic=4;
         }
         if(m_name=="jumpBlock")
         {
             path="../data/textures/carpet_red.jpg";
             m_hookable=false;
             m_block=false;
+            mosaic=4;
         }
         char* tempPath=stringtochar(path);
         GTexture::getInstance()->addTexture(tempPath);
@@ -62,8 +67,6 @@ void Block::draw()
 {
     if(m_visible)
     {
-        glDisable(GL_LIGHTING);
-
         const Vector3D m_taille=m_size;
 
         glColor4ub(255,255,255,255);
@@ -78,7 +81,6 @@ void Block::draw()
 
         if(m_name=="jumpBlock")
         {
-            glDisable(GL_LIGHTING);
             glTranslated(0,0,m_taille.Z*2*0);
             glDisable(GL_CULL_FACE);
             m_texture->bind();
@@ -96,7 +98,6 @@ void Block::draw()
 
             glDisable(GL_BLEND);
             //glEnable(GL_CULL_FACE);
-            //glEnable(GL_LIGHTING);
         }
         else
         {
@@ -148,6 +149,7 @@ void Block::draw()
 
         glColor3ub(255,255,255);
 
+        Lighting::getInstance()->glEnableLighting();
     }
 }
 

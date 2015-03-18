@@ -66,7 +66,22 @@ void Game::ini()
     grabCursor=true;
 
 
+    Lighting* l=Lighting::getInstance();
+    l->setActive(true);
+    l->shineAmbiant();
 
+    for(int i=0;i<4-3;i++)
+    {
+        l->addLight();
+        l->setX("last",30*(pow(-1,i)));
+        l->setY("last",30*(pow(-1,i+1)));
+        l->setZ("last",10);
+
+        l->setR("last",255);
+        l->setG("last",153);
+        l->setB("last",0);
+        l->setAT("last",0.0001);
+    }
 
 
 
@@ -553,6 +568,9 @@ void Game::play(string path)
         m_video->beforeDraw();
 
         m_camera.look();
+
+        Lighting::getInstance()->shineAmbiant();
+        Lighting::getInstance()->shineAll();
 
 
         Tracer::getInstance()->traceCerr("debug","4");

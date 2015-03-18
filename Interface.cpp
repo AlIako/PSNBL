@@ -129,7 +129,7 @@ void Interface::drawScreenEffect(std::string path)
 
     glDisable(GL_CULL_FACE);
     glDisable(GL_DEPTH_TEST);
-    glDisable(GL_LIGHTING);
+    Lighting::getInstance()->glDisableLighting();
 
     Video::getInstance()->matrixOrtho2D();
 
@@ -155,7 +155,7 @@ void Interface::drawScreenEffect(std::string path)
 
 
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_LIGHTING);
+    Lighting::getInstance()->glEnableLighting();
 }
 
 

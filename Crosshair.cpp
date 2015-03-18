@@ -16,7 +16,7 @@ void Crosshair::draw()
 
     Video::getInstance()->matrixOrtho2D();
 
-    glDisable(GL_LIGHTING);
+    Lighting::getInstance()->glDisableLighting();
     glDisable(GL_TEXTURE_2D);
 
     double sq=0.002;

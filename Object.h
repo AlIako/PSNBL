@@ -2,6 +2,7 @@
 #define OBJECT_H_INCLUDED
 #include "Vector3D.h"
 #include "GTexture.h"
+#include "Lighting.h"
 #include "GTime.h"
 #include "DRDampingSpring.h"
 #include "Online.h"
