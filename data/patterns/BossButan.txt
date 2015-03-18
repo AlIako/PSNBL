@@ -11,3 +11,5 @@
 @ flux: x: -44 z: 4 tx: 2 ty: 2 tz: 21.5 text: ../data/textures/carpet_red.jpg
 @ block: x: -22 z: 47 tx: 18 ty: 1 tz: 1 text: ../data/textures/metal.png name: noHookBlock
 @ bonus: x: 25 t: 1 name: startboss
+@ highestZ: 45
+@ nextZ: 51

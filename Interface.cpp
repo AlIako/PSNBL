@@ -1,26 +1,49 @@
 #include "Interface.h"
 
 
+Interface* Interface::m_instance = new Interface();
+
+
+Interface* Interface::getInstance()
+{
+    return m_instance;
+}
+
+
+
 Interface::Interface()
 {
     m_target=NULL;
+    initalized=false;
 }
 
 
 void Interface::ini()
 {
-    m_font.init("../data/fonts/arial.TTF", 16);
+    if(!initalized)
+    {
+        initalized=true;
 
-    m_lifebar.ini();
-    m_crosshair.ini();
+        m_font.init("../data/fonts/arial.TTF", 16);
 
-    m_playerName.ini(Video::getInstance()->getWidth(),Video::getInstance()->getHeight(),&m_font);
-    m_playerName.setX(0.05);
-    m_playerName.setY(0.92);
+        m_lifebar.ini();
+        m_crosshair.ini();
 
-    m_fps.ini(Video::getInstance()->getWidth(),Video::getInstance()->getHeight(),&m_font);
-    m_fps.setX(0.85);
-    m_fps.setY(0.92);
+        m_playerName.ini(Video::getInstance()->getWidth(),Video::getInstance()->getHeight(),&m_font);
+        m_playerName.setX(0.05);
+        m_playerName.setY(0.92);
+
+        m_fps.ini(Video::getInstance()->getWidth(),Video::getInstance()->getHeight(),&m_font);
+        m_fps.setX(0.85);
+        m_fps.setY(0.92);
+
+        m_warningLava.setPos(Vector3D(0.3,0.35,0));
+        m_warningLava.setSize(Vector3D(0.4,0.3,0));
+        m_warningLava.setName("warning");
+        m_warningLava.setTexture(GTexture::getInstance()->addGetTexture("../data/textures/interface/warning.png"));
+        m_warningLava.ini();
+        m_warningLava.setAlpha(0);
+    }
 }
 
 
@@ -42,6 +65,54 @@ void Interface::draw()
             (*s)[i]->draw();
         }
     }
+
+    //warning
+    if(m_warningLava.getAlpha()>0)
+        m_warningLava.draw();
+}
+
+void Interface::warningLava()
+{
+    time_since_warning.reset();
+    m_warningLava.setAlpha(0);
+    m_warning=true;
+}
+
+void Interface::update(double functionTime)
+{
+    m_crosshair.update(functionTime);
+
+    m_lifebar.update(functionTime,m_target);
+
+    if(m_target!=NULL)
+    {
+        std::ostringstream oss;
+        if(m_mode=="spectate")
+            oss << "Spectating: ";
+        oss << m_target->getOnlineName();
+
+        m_playerName.setTexte(oss.str());
+    }
+
+    //warning lava
+    time_since_warning.couler();
+    double curAlpha=m_warningLava.getAlpha();
+    if(m_warning && time_since_warning.timePast()<3000)
+    {
+        m_warningLava.setAlpha(curAlpha+functionTime/10);
+        if(m_warningLava.getAlpha()>1)
+            m_warningLava.setAlpha(1);
+    }
+    else
+    {
+        m_warning=false;
+        m_warningLava.setAlpha(curAlpha-functionTime/10);
+        if(m_warningLava.getAlpha()<0)
+        {
+            m_warningLava.setAlpha(0);
+        }
+    }
+
 }
 
 void Interface::drawScreenEffect(std::string path)
@@ -87,23 +158,6 @@ void Interface::drawScreenEffect(std::string path)
     glEnable(GL_LIGHTING);
 }
 
-void Interface::update(double functionTime)
-{
-    m_crosshair.update(functionTime);
-
-    m_lifebar.update(functionTime,m_target);
-
-    if(m_target!=NULL)
-    {
-        std::ostringstream oss;
-        if(m_mode=="spectate")
-            oss << "Spectating: ";
-        oss << m_target->getOnlineName();
-
-        m_playerName.setTexte(oss.str());
-    }
-
-}
 
 
 void Interface::setFPS(int fps)

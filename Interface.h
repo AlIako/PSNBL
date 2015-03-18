@@ -3,15 +3,19 @@
 #include "LifeBar.h"
 #include "Crosshair.h"
 #include "Texte.h"
+#include "Object2D.h"
 
 class Interface
 {
 public:
-    Interface();
+    static Interface* getInstance();
+
     void ini();
     void draw();
     void drawScreenEffect(std::string path);
     void update(double functionTime);
+
+    void warningLava();
 
 
     void setTarget(Player* p) {m_target=p;}
@@ -24,6 +28,10 @@ public:
     Crosshair* getCrosshair(){return &m_crosshair;}
 
 private:
+    Interface();
+    static Interface* m_instance;
+
+    bool initalized;
     freetype::font_data m_font;
 
     std::string m_mode;
@@ -34,6 +42,11 @@ private:
 
     Texte m_playerName;
     Texte m_fps;
+
+
+    bool m_warning;
+    Object2D m_warningLava;
+    GTime time_since_warning;
 };
 
 

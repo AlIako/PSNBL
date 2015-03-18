@@ -27,8 +27,8 @@ void Game::ini()
 
 
     //interface
-    m_interface.setTarget(playerList[0]);
-    m_interface.ini();
+    Interface::getInstance()->setTarget(playerList[0]);
+    Interface::getInstance()->ini();
     //chat
     m_chat.activate(m_video->getWidth(), m_video->getHeight(), "../data/fonts/arial.TTF");
     m_chat.setSide(0);
@@ -123,7 +123,7 @@ void Game::handleCommands()
 
                 Map::getInstance()->restart();
 
-                m_interface.setTarget(playerList[0]);
+                Interface::getInstance()->setTarget(playerList[0]);
                 m_camera.setCible(playerList[0]);
                 m_camera.setMode("play");
                 m_mode="play";
@@ -435,7 +435,7 @@ void Game::play(string path)
 
                         Map::getInstance()->restart();
 
-                        m_interface.setTarget(playerList[0]);
+                        Interface::getInstance()->setTarget(playerList[0]);
                         m_camera.setCible(playerList[0]);
                         m_camera.setMode("play");
                         m_mode="play";
@@ -507,8 +507,8 @@ void Game::play(string path)
 
         Tracer::getInstance()->traceCerr("debug","1");
 
-        m_interface.setMode(m_mode);
-        m_interface.update(ft);
+        Interface::getInstance()->setMode(m_mode);
+        Interface::getInstance()->update(ft);
         handleCommands();
         handleTracer();
 
@@ -547,7 +547,7 @@ void Game::play(string path)
         //crosshair
         Map::getInstance()->simulateRopeForCrosshair(playerList[0],
                                        (m_camera.getTarget()-(playerList[0]->getPos()+Vector3D(0,0,1))).normalize(),
-                                       m_interface.getCrosshair());
+                                       Interface::getInstance()->getCrosshair());
 
         //draw
         m_video->beforeDraw();
@@ -575,11 +575,11 @@ void Game::play(string path)
         //glUseProgram(m_video->programID);
 
         if(m_camera.getPos().Z<=Map::getInstance()->getLava()->getPos().Z+Map::getInstance()->getLava()->getSize().Z*2)
-            m_interface.drawScreenEffect("../data/textures/lava.png");
+            Interface::getInstance()->drawScreenEffect("../data/textures/lava.png");
 
         Tracer::getInstance()->traceCerr("debug","6");
 
-        m_interface.draw();
+        Interface::getInstance()->draw();
         m_chat.draw();
 
 
@@ -599,7 +599,7 @@ void Game::play(string path)
         m_fpsTime.couler();
         if(m_fpsTime.ecouler(1000))
         {
-            m_interface.setFPS(m_fps);
+            Interface::getInstance()->setFPS(m_fps);
             m_fps=0;
             m_fpsTime.reset();
         }
@@ -648,7 +648,7 @@ void Game::updateCamMode()
             m_mode="spectate";
             m_camera.setMode("spectate");
             m_camera.setCible(p);
-            m_interface.setTarget(pTarget);
+            Interface::getInstance()->setTarget(pTarget);
         }
     }
 }
@@ -688,7 +688,7 @@ void Game::switchSpectate(int d)
         }
     }
     m_camera.setCible(p);
-    m_interface.setTarget(pTarget);
+    Interface::getInstance()->setTarget(pTarget);
 }
 
 

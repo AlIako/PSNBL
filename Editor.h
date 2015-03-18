@@ -34,7 +34,6 @@ class Editor
 
     Video* m_video;
     Camera m_camera;
-    Interface m_interface;
 
     GTime since_last_frame;
     double ft;//function time

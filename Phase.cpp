@@ -143,6 +143,10 @@ void Phase::iniPhaseProperties()
     {
         m_lavaspeed=0;
     }
+    else if(m_name=="tutorial")
+    {
+        m_lavaspeed=0;
+    }
     else if(m_name=="easy")
     {
         m_lavaspeed=0.1;
@@ -199,10 +203,16 @@ void Phase::iniMap()
         }
         else if(m_name=="easy")
         {
-            addPatternToQueue("PatJump");
-            addPatternToQueue("PatRope");
-            addPatternToQueue("PatRope2");
-            addPatternToQueue("PatRope3");
+            randomizer=myIntRand(0,200);
+
+            if(randomizer>100)
+                addPatternToQueue("PatJump1");
+            else if(randomizer>0)
+                addPatternToQueue("PatJump2");
+
+            addPatternToQueue("PatRope1");
+            addPatternToQueue("PatRopeJump1");
+            addPatternToQueue("PatRopeFlux1");
             addPatternToQueue("BossButan");
         }
         else if(m_name=="medium")

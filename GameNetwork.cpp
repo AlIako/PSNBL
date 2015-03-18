@@ -252,8 +252,8 @@ void Game::updateMultiplayer()
                         }
 
                         //check if was spectating him. If yes, kill the link
-                        if(m_interface.getTarget()==player)
-                            m_interface.setTarget(NULL);
+                        if(Interface::getInstance()->getTarget()==player)
+                            Interface::getInstance()->setTarget(NULL);
                         if(m_camera.getCible()==player)
                             m_camera.setCible(NULL);
 
@@ -273,7 +273,7 @@ void Game::updateMultiplayer()
                     if(s.type==6)
                     {
                         Map::getInstance()->restart();
-                        m_interface.setTarget(playerList[0]);
+                        Interface::getInstance()->setTarget(playerList[0]);
                         m_camera.setCible(playerList[0]);
                         m_camera.setMode("play");
                         m_mode="play";
@@ -340,7 +340,7 @@ void Game::updateMultiplayer()
                                 {
                                     playerList[0]->resurrect();
                                     playerList[0]->setPos(pos);
-                                    m_interface.setTarget(playerList[0]);
+                                    Interface::getInstance()->setTarget(playerList[0]);
                                     m_camera.setCible(playerList[0]);
                                     m_camera.setMode("play");
                                     m_mode="play";

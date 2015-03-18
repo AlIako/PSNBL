@@ -84,7 +84,12 @@ void Map::update(double functionTime)
             if(m_objects[i]->getType()=="bonus")
             {
                 if(m_objects[i]->getName()=="nextphase")
+                {
                     increaseLavaSpeed();
+
+                    //warning! lava rising
+                    Interface::getInstance()->warningLava();
+                }
                 else if(m_objects[i]->getName()=="startboss")
                 {
                     Object* boss=NULL;
@@ -94,7 +99,7 @@ void Map::update(double functionTime)
                             boss=m_objects[i];
                     }
                     if(boss!=NULL)
-                        boss->action(0);
+                        boss->action(0);//start boss
                 }
             }
             //delete m_objects[i];

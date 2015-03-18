@@ -26,9 +26,11 @@ class Object2D
         void setR(int r){m_r=r;}
         void setG(int g){m_g=g;}
         void setB(int b){m_b=b;}
+        void setAlpha(double a){m_alpha=a;}
 
         std::string getName() {return m_name;}
         Texte getText(){return m_text;}
+        double getAlpha() {return m_alpha;}
 
     protected:
         Texture* m_texture;
@@ -42,7 +44,7 @@ class Object2D
         bool m_hasText;
         Texte m_text;
 
-
+        double m_alpha;
         int m_r;
         int m_g;
         int m_b;

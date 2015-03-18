@@ -23,9 +23,6 @@ void Editor::ini(string path)
     Gsounds::getInstance()->loads();
 
 
-    //interface
-    m_interface.ini();
-
     Map::getInstance()->createWalls();
     Map::getInstance()->translateAll(Vector3D(0,0,-15));
     Map::getInstance()->loadPat(path);
@@ -294,8 +291,6 @@ void Editor::play(string path)
 
         m_video->update(ft);
 
-        m_interface.update(ft);
-
         //draw
         m_video->beforeDraw();
 
@@ -332,15 +327,6 @@ void Editor::play(string path)
 
         m_video->afterDraw();
 
-        //fps calcul
-        m_fps++;
-        m_fpsTime.couler();
-        if(m_fpsTime.ecouler(1000))
-        {
-            m_interface.setFPS(m_fps);
-            m_fps=0;
-            m_fpsTime.reset();
-        }
 
         SDL_Delay(10);
 

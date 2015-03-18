@@ -11,6 +11,7 @@
 #include "Flux.h"
 #include "Boss.h"
 #include "BossButan.h"
+#include "Interface.h"
 
 enum{PHASE_LOBBY,PHASE_EASY,PHASE_MEDIUM,PHASE_HARD};
 enum{PAT_ONE,PAT_TWO,PAT_THREE,PAT_FOUR};

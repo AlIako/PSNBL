@@ -14,6 +14,7 @@ Object2D::Object2D()
     m_r=255;
     m_g=255;
     m_b=255;
+    m_alpha=1;
 }
 
 
@@ -42,7 +43,7 @@ void Object2D::draw()
 
         m_texture->bind(true);
 
-        glColor4ub(m_r,m_g,m_b,255);
+        glColor4ub(m_r,m_g,m_b,255*m_alpha);
         glBegin(GL_QUADS);
             glTexCoord2d(0,0);    glVertex2d(m_position.X,m_position.Y);
             glTexCoord2d(0,1);    glVertex2d(m_position.X,m_position.Y+m_size.Y);

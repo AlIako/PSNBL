@@ -1,0 +1,28 @@
+@ highestZ: 46
+@ nextZ: 56
+@ block: x: 7 y: 1 z: -9 tx: 1.5 ty: 1.5 tz: 5 text: ../data/textures/bedrock.png name: block
+@ block: x: 11 y: -5 z: -9 tx: 1.5 ty: 1.5 tz: 6.5 text: ../data/textures/bedrock.png name: block
+@ block: x: 15 y: -12 z: -9 tx: 1.5 ty: 1.5 tz: 8 text: ../data/textures/bedrock.png name: block
+@ block: x: 27 y: -13 z: 5 tx: 3.5 ty: 3.5 tz: 1.5 text: ../data/textures/bedrock.png name: block
+@ block: x: 33 y: -8 z: 8 tx: 3.5 ty: 3.5 tz: 3 text: ../data/textures/bedrock.png name: block
+@ block: x: 33 y: 2 z: 11 tx: 1 ty: 3.5 tz: 3 text: ../data/textures/bedrock.png name: block
+@ block: x: 34 y: 12 z: -9 tx: 2 ty: 2 tz: 13 text: ../data/textures/bedrock.png name: block
+@ block: x: 40 y: 19 z: 12 tx: 1.5 ty: 1.5 tz: 2.5 text: ../data/textures/bedrock.png name: block
+@ block: x: 40 y: 25 z: 16 tx: 1.5 ty: 1.5 tz: 2.5 text: ../data/textures/bedrock.png name: block
+@ block: x: 37 y: 32 z: 19 tx: 1.5 ty: 1.5 tz: 2.5 text: ../data/textures/bedrock.png name: block
+@ block: x: 28 y: 12 z: 11 tx: 6 ty: 1 tz: 2.5 text: ../data/textures/bedrock.png name: block
+@ block: x: 23 y: 22 z: 13 tx: 1 ty: 9 tz: 2.5 text: ../data/textures/bedrock.png name: block
+@ block: x: 29 y: 32 z: 16 tx: 7 ty: 1 tz: 2.5 text: ../data/textures/bedrock.png name: block
+@ flux: x: 37 y: 32 z: 24 tx: 1.5 ty: 1.5 tz: 12.5 text: ../data/textures/carpet_red.jpg
+@ block: x: 33 y: 26 z: 46 tx: 2 ty: 2 tz: 1 text: ../data/textures/metal.png name: noHookBlock
+@ block: x: 28 y: 21 z: 46 tx: 2 ty: 2 tz: 1 text: ../data/textures/metal.png name: noHookBlock
+@ block: x: 23 y: 16 z: 46 tx: 2 ty: 2 tz: 1 text: ../data/textures/metal.png name: noHookBlock
+@ block: x: 17 y: 10 z: 48 tx: 2 ty: 2 tz: 1 text: ../data/textures/metal.png name: noHookBlock
+@ block: x: 23 y: 4 z: 48 tx: 2 ty: 2 tz: 1 text: ../data/textures/metal.png name: noHookBlock
+@ block: x: 10 y: 17 z: 48 tx: 2 ty: 2 tz: 1 text: ../data/textures/metal.png name: noHookBlock
+@ block: x: 3 y: 10 z: 48 tx: 2 ty: 2 tz: 1 text: ../data/textures/metal.png name: noHookBlock
+@ block: x: 13 y: 6 z: 48 tx: 2 ty: 2 tz: 1 text: ../data/textures/metal.png name: noHookBlock
+@ block: x: 16 y: -3 z: 48 tx: 2 ty: 2 tz: 1 text: ../data/textures/metal.png name: noHookBlock
+@ block: x: 4 y: -3 z: 52 tx: 2 ty: 2 tz: 1 text: ../data/textures/metal.png name: noHookBlock
+@ block: x: 6 y: -1 z: 48 tx: 2 ty: 2 tz: 1 text: ../data/textures/metal.png name: noHookBlock
+@ bonus: x: 4 y: -3 z: 54 t: 1 name: rez

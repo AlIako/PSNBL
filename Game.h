@@ -55,7 +55,6 @@ class Game
     vector<Player*> playerList;
     Camera m_camera;
     Chat m_chat;
-    Interface m_interface;
 
     GTime since_last_frame;
     double ft;//function time
