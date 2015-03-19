@@ -13,7 +13,7 @@ Lava::Lava()
 
     nextLoopSoundTime=0;
 
-    loopSound="../data/sounds/lava_loop.wav";
+    loopSound="../data/sounds/lava_loop.mp3";
     bubbleSound="../data/sounds/lavabubble.wav";
 }
 

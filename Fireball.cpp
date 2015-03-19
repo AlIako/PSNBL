@@ -42,7 +42,6 @@ void Fireball::action(int type,Object* o)
     if(type==0)
     {
         m_life=0;
-        Effects::getInstance()->addExplosion(m_position);
 
         //create damage
         Damage* td=new Damage();
@@ -61,6 +60,9 @@ void Fireball::draw()
 {
     if(m_visible)
     {
+
+        Lighting::getInstance()->glDisableLighting();
+
         if(m_texture!=NULL)
             m_texture->bind();
 
@@ -93,5 +95,6 @@ void Fireball::draw()
         glPopMatrix();
 
         glDisable(GL_BLEND);
+        Lighting::getInstance()->glEnableLighting();
     }
 }

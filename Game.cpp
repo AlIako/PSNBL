@@ -738,6 +738,9 @@ void Game::close()
 
         m_online->closeOnline();
     }
+    Video::getInstance()->getFog()->close();
+
+    Interface::getInstance()->close();
 
     Map::getInstance()->erase();
     Gsounds::getInstance()->freeAll();

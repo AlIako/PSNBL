@@ -14,6 +14,7 @@ Interface* Interface::getInstance()
 Interface::Interface()
 {
     m_target=NULL;
+    m_targetBoss=NULL;
     initalized=false;
 }
 
@@ -28,6 +29,10 @@ void Interface::ini()
 
         m_lifebar.ini();
         m_crosshair.ini();
+
+        m_lifebarBoss.ini();
+        m_lifebarBoss.setPos(m_lifebarBoss.getPos()+Vector3D(0,0.1,0));
+        m_lifebarBoss.setColor(Vector3D(255,255,0));
 
         m_playerName.ini(Video::getInstance()->getWidth(),Video::getInstance()->getHeight(),&m_font);
         m_playerName.setX(0.05);
@@ -69,6 +74,12 @@ void Interface::draw()
     //warning
     if(m_warningLava.getAlpha()>0)
         m_warningLava.draw();
+
+    //boss
+    if(m_targetBoss)
+    {
+        m_lifebarBoss.draw();
+    }
 }
 
 void Interface::warningLava()
@@ -112,6 +123,10 @@ void Interface::update(double functionTime)
             m_warningLava.setAlpha(0);
         }
     }
+
+    //boss
+    if(m_targetBoss)
+        m_lifebarBoss.update(functionTime,m_targetBoss);
 
 }
 
@@ -166,6 +181,13 @@ void Interface::setFPS(int fps)
     oss << "FPS: ";
     oss << fps;
     m_fps.setTexte(oss.str());
+}
+
+
+void Interface::close()
+{
+    m_target=NULL;
+    m_targetBoss=NULL;
 }
 
 

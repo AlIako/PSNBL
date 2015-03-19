@@ -63,6 +63,13 @@ void Player::update(double functionTime)
                         Online::getInstance()->sendSocket(s);
                     }
                 }
+                else if(m_colliding[i]->getName()=="health")
+                {
+                    Gsounds::getInstance()->play("../data/sounds/health.wav");
+                    loseLife(-10);
+                    if(m_life>100)
+                        m_life=100;
+                }
                 else if(m_colliding[i]->getName()=="rope")
                 {
                     if(Online::getInstance()->active())

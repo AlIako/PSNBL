@@ -11,11 +11,14 @@ class Fog
     void update(double functionTime);
 
     void setTarget(double fogdistancestart,double fogdistanceend,float fogr,float fogg,float fogb);
+    void setColor(float fogr,float fogg,float fogb){m_fogr=fogr;m_fogg=fogg;m_fogb=fogb;}
     void setSpeedColor(double s){m_speedColor=s;}
     void setSpeedDistance(double s){m_speedDistance=s;}
 
     void enable();
     void disable();
+
+    void close();
 
 
     private:

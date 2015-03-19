@@ -191,6 +191,11 @@ void Editor::play(string path)
                         else if(curType=="bonus" && curName=="rez")
                         {
                             curObj=new Bonus();
+                            curObj->setName("health");
+                        }
+                        else if(curType=="bonus" && curName=="health")
+                        {
+                            curObj=new Bonus();
                             curObj->setName("rope");
                         }
                         else if(curType=="bonus" && curName=="rope")

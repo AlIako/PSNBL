@@ -121,4 +121,10 @@ void Fog::disable()
     glDisable(GL_FOG);
 }
 
+void Fog::close()
+{
+    setColor(0,0,0);
+    setTarget(200,500,1,0,0);
+    update(0);
+}
 

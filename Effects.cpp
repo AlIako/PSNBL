@@ -33,12 +33,12 @@ void Effects::draw()
 }
 
 
-void Effects::addExplosion(Vector3D position)
+void Effects::addExplosion(Vector3D position,string type)
 {
     unsigned int ind=m_explosions.size();
     m_explosions.push_back(Explosion());
 
-    m_explosions[ind].ini();
+    m_explosions[ind].ini(type);
     m_explosions[ind].setPos(position);
 }
 

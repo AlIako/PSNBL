@@ -1,15 +1,20 @@
+@ highestZ: 45
+@ nextZ: 51
 @ block: y: 45 z: -9 tx: 50.5 ty: 7 tz: 6.5 text: ../data/textures/bedrock.png name: block
 @ block: x: 3 y: -45 z: -9 tx: 50.5 ty: 7 tz: 6.5 text: ../data/textures/bedrock.png name: block
 @ block: x: 45 z: -9 tx: 5.5 ty: 38 tz: 6.5 text: ../data/textures/bedrock.png name: block
 @ block: x: -44 z: -9 tx: 5.5 ty: 38 tz: 6.5 text: ../data/textures/bedrock.png name: block
-@ boss: z: 27 tx: 2.5 ty: 2.5 tz: 3 text: ../data/textures/bossbutan.png name: bossbutan
+@ boss: z: 27 tx: 2.5 ty: 2.5 tz: 3 active: 0 text: ../data/textures/bedrock.png name: bossbutan
 @ block: x: 23 z: -2 tx: 18 ty: 1 tz: 1 text: ../data/textures/bedrock.png name: block
 @ block: x: 6 y: -3 z: -6 t: 1 text: ../data/textures/bedrock.png name: block
 @ block: z: 47 tx: 4 ty: 4 tz: 1 text: ../data/textures/metal.png name: noHookBlock
 @ bonus: z: 49 t: 1 name: rez
 @ bonus: z: 49 t: 1 name: nextphase
-@ flux: x: -44 z: 4 tx: 2 ty: 2 tz: 21.5 text: ../data/textures/carpet_red.jpg
+@ flux: x: -44 z: 4 tx: 2 ty: 2 tz: 21.5 active: 0 text: ../data/textures/carpet_red.jpg
 @ block: x: -22 z: 47 tx: 18 ty: 1 tz: 1 text: ../data/textures/metal.png name: noHookBlock
 @ bonus: x: 25 t: 1 name: startboss
-@ highestZ: 45
-@ nextZ: 51
+@ bonus: x: 43 y: 43 z: 4 t: 1 name: health
+@ bonus: x: -43.3192 y: 43.6742 z: 4 t: 1 name: health
+@ bonus: x: -43 y: -42 z: 4 t: 1 name: health
+@ bonus: x: 43 y: -43 z: 4 t: 1 name: health
+@ bonus: x: -22 z: 49 t: 1 name: health

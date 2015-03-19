@@ -20,8 +20,8 @@ class Explosion
 public:
     Explosion();
 
-    void ini();
-    void start();
+    void ini(string type);
+    void start(string type);
 
     void update(double functionTime);
     void draw();

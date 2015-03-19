@@ -37,23 +37,26 @@ void Flux::ini()
 
 void Flux::update(double functionTime)
 {
-    m_rotation.Z+=functionTime;
-
-
-    if(goingUp)
+    if(m_active)
     {
-        zOffset+=functionTime*m_speed;
-
-        if(zOffset>=m_size.Z*2-m_size.Z*0.6)
-            goingUp=false;
-    }
-    else
-    {
-        zOffset-=functionTime*m_speed;
+        m_rotation.Z+=functionTime;
 
 
-        if(zOffset<=0)
-            goingUp=true;
+        if(goingUp)
+        {
+            zOffset+=functionTime*m_speed;
+
+            if(zOffset>=m_size.Z*2-m_size.Z*0.6)
+                goingUp=false;
+        }
+        else
+        {
+            zOffset-=functionTime*m_speed;
+
+
+            if(zOffset<=0)
+                goingUp=true;
+        }
     }
 }
 
@@ -62,7 +65,7 @@ void Flux::update(double functionTime)
 
 void Flux::draw()
 {
-    if(m_visible)
+    if(m_visible && m_active)
     {
         Lighting::getInstance()->glDisableLighting();
 

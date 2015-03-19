@@ -6,30 +6,47 @@ Explosion::Explosion()
     m_size=Vector3D(1,1,1);
 }
 
-void Explosion::ini()
+void Explosion::ini(string type)
 {
     GTexture::getInstance()->addTexture("../data/textures/fire.jpg");
     m_texture=GTexture::getInstance()->getTexture("../data/textures/fire.jpg");
 
-    start();
+    start(type);
 }
 
-void Explosion::start()
+void Explosion::start(string type)
 {
-    m_over=false;
-    m_speed=1;
-    m_time=300;
-    particles.clear();
+    int nParticle=100;
+    double sizeP=0.5;
+
     particle cur_p;
-    cur_p.life=2.0;
     cur_p.position=Vector3D(0,0,0);
     cur_p.speed=Vector3D(0,0,0);
     cur_p.direction=Vector3D(0,0,0);
     cur_p.rotation=Vector3D(0,0,0);
 
-    double sizeP=0.5;
+    particles.clear();
+    m_over=false;
 
-    for(unsigned int i=0;i<100;i++)
+    if(type=="boom")
+    {
+        m_speed=1;
+        m_time=300;
+        cur_p.life=2.0;
+        nParticle=100;
+        sizeP=0.5;
+    }
+    else if(type=="bigboom")
+    {
+        m_speed=1;
+        m_time=2000;
+        cur_p.life=4.0;
+        nParticle=500;
+        sizeP=1;
+    }
+
+
+    for(unsigned int i=0;(int)i<nParticle;i++)
     {
         if(m_size.X>=0.01)
             cur_p.position=Vector3D(myDoubleRand(0,m_size.X)-m_size.X/2,myDoubleRand(0,m_size.Y)-m_size.Y/2,myDoubleRand(0,m_size.Z)-m_size.Z/2);

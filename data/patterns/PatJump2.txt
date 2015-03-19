@@ -26,3 +26,6 @@
 @ block: x: 4 y: -3 z: 52 tx: 2 ty: 2 tz: 1 text: ../data/textures/metal.png name: noHookBlock
 @ block: x: 6 y: -1 z: 48 tx: 2 ty: 2 tz: 1 text: ../data/textures/metal.png name: noHookBlock
 @ bonus: x: 4 y: -3 z: 54 t: 1 name: rez
+@ bonus: x: 23 y: 4 z: 50 t: 1 name: health
+@ bonus: x: 3 y: 10 z: 50 t: 1 name: health
+@ bonus: x: 40 y: 19 z: 17 t: 1 name: health

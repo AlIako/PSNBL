@@ -40,6 +40,10 @@ void Bonus::ini()
             m_transparency=true;
             m_texture=GTexture::getInstance()->addGetTexture("../data/textures/greenrock.png");
         }
+        else if(m_name=="health")
+        {
+            m_texture=GTexture::getInstance()->addGetTexture("../data/textures/carpet_red.jpg");
+        }
     }
 
     Object::ini();
@@ -74,7 +78,7 @@ void Bonus::draw()
     glTranslated(m_position.X,m_position.Y,m_position.Z);
     glRotated(m_rotation.Z,0,0,1);
 
-    if(m_name=="rez" || m_name=="rope")
+    if(m_name=="rez" || m_name=="rope" || m_name=="health")
     {
         glBegin(GL_QUADS);
 

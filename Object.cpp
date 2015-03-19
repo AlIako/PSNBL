@@ -171,6 +171,15 @@ void Object::applyPhysics(int x, int y, int z)
 }
 
 
+void Object::rotaZDir()
+{
+    Vector3D dir2D=Vector3D(m_direction.X,m_direction.Y,0);
+    m_rotation.Z=acos(dir2D.X/dir2D.length())*180/3.14;
+
+    if(sin(dir2D.Y/dir2D.length())<0)
+        m_rotation.Z*=-1;
+}
+
 bool Object::collidedWithType(std::string t)
 {
     for(unsigned int i=0,count=m_colliding.size();i<count;i++)
@@ -260,6 +269,9 @@ string Object::writeObj()
         if(m_size.Z!=0.5)
             oss << " tz: " << m_size.Z;
     }
+    //active
+    if(!m_active)
+        oss<<" active: 0";
     //texture
     if(m_texture!=NULL)
         oss<<" text: " << m_texture->getChemin();
@@ -273,6 +285,7 @@ void Object::readObj(ifstream* fichier1)
     std::string befor_read="",read_name_before="";
     std::string cur_read="";
     double cur_double=0;
+    int curInt=0;
 
     int maxIteration=1000;
 
@@ -321,6 +334,12 @@ void Object::readObj(ifstream* fichier1)
         else if(read_name_before=="name")
         {
             *fichier1 >> m_name;
+        }
+        else if(read_name_before=="active")
+        {
+            *fichier1 >> curInt;
+            if(curInt==0)
+                m_active=0;
         }
 
         *fichier1 >> cur_read;

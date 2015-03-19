@@ -12,7 +12,7 @@ public:
     void update(double functionTime);
     void draw();
 
-    void addExplosion(Vector3D position);
+    void addExplosion(Vector3D position,string type="boom");
 
 private:
     Effects();

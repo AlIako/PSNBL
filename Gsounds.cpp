@@ -103,7 +103,9 @@ void Gsounds::loads()
     addSound("../data/sounds/boost.wav");
     addSound("../data/sounds/bounce.wav");
     addSound("../data/sounds/chat.wav");
-    addSound("../data/sounds/lava_loop.wav");
+    addSound("../data/sounds/explosion.wav");
+    addSound("../data/sounds/health.wav");
+    addSound("../data/sounds/lava_loop.mp3");
     addSound("../data/sounds/lavabubble.wav");
     addSound("../data/sounds/fire.mp3");
     addSound("../data/sounds/metal_impact.mp3");

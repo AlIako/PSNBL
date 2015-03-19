@@ -8,6 +8,9 @@ LifeBar::LifeBar()
 
     m_barWidth=0.6;
     m_barHeight=0.05;
+
+    m_position=Vector3D(0.2,0.1,0);
+    m_color=Vector3D(255,0,0);
 }
 
 void LifeBar::ini()
@@ -29,21 +32,21 @@ void LifeBar::draw()
     if(m_currentLife<=0)
         tempWidth=0;
 
-    glColor4ub(255,0,0,255);
+    glColor4ub(m_color.X,m_color.Y,m_color.Z,255);
     glBegin(GL_QUADS);
-        glTexCoord2d(1,0);    glVertex2d(0.2,0.1);
-        glTexCoord2d(1,1);    glVertex2d(0.2,0.1+m_barHeight);
-        glTexCoord2d(0,1);    glVertex2d(0.2+tempWidth,0.1+m_barHeight);
-        glTexCoord2d(0,0);    glVertex2d(0.2+tempWidth,0.1);
+        glTexCoord2d(1,0);    glVertex2d(m_position.X,m_position.Y);
+        glTexCoord2d(1,1);    glVertex2d(m_position.X,m_position.Y+m_barHeight);
+        glTexCoord2d(0,1);    glVertex2d(m_position.X+tempWidth,m_position.Y+m_barHeight);
+        glTexCoord2d(0,0);    glVertex2d(m_position.X+tempWidth,m_position.Y);
     glEnd();
 
     //rest
     glColor4ub(0,0,0,255);
     glBegin(GL_QUADS);
-        glTexCoord2d(1,0);    glVertex2d(0.2+tempWidth,0.1);
-        glTexCoord2d(1,1);    glVertex2d(0.2+tempWidth,0.1+m_barHeight);
-        glTexCoord2d(0,1);    glVertex2d(0.2+m_barWidth,0.1+m_barHeight);
-        glTexCoord2d(0,0);    glVertex2d(0.2+m_barWidth,0.1);
+        glTexCoord2d(1,0);    glVertex2d(m_position.X+tempWidth,m_position.Y);
+        glTexCoord2d(1,1);    glVertex2d(m_position.X+tempWidth,m_position.Y+m_barHeight);
+        glTexCoord2d(0,1);    glVertex2d(m_position.X+m_barWidth,m_position.Y+m_barHeight);
+        glTexCoord2d(0,0);    glVertex2d(m_position.X+m_barWidth,m_position.Y);
     glEnd();
 
 
@@ -54,11 +57,11 @@ void LifeBar::draw()
 }
 
 
-void LifeBar::update(double functionTime, Player* p)
+void LifeBar::update(double functionTime, Object* o)
 {
-    if(p!=NULL)
+    if(o!=NULL)
     {
-        m_currentLife=p->getLife();
-        m_maxLife=p->getLifeMax();
+        m_currentLife=o->getLife();
+        m_maxLife=o->getLifeMax();
     }
 }

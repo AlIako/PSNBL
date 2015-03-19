@@ -101,7 +101,7 @@ void Collision::collisionReaction(Object* o)
 bool Collision::testCollision(Object* o)
 {
     for(unsigned int i=0, count=(*m_objects).size();i<count;i++)
-        if((*m_objects)[i]!=o && (*m_objects)[i]->getBlock() && o->collision((*m_objects)[i]))
+        if((*m_objects)[i]!=o && (*m_objects)[i]->getBlock() && (*m_objects)[i]->isActive() && o->collision((*m_objects)[i]))
             return true;
     return false;
 }
@@ -111,7 +111,7 @@ void Collision::testCollision(Object* o, Object* pointer)
 {
     m_colliding.clear();
     for(unsigned int i=0, count=(*m_objects).size();i<count;i++)
-        if((*m_objects)[i]!=pointer && o->collision((*m_objects)[i]))
+        if((*m_objects)[i]!=pointer && (*m_objects)[i]->isActive() && o->collision((*m_objects)[i]))
             m_colliding.push_back((*m_objects)[i]);
 }
 
@@ -119,7 +119,7 @@ void Collision::testCollision(Object* o, Object* pointer)
 bool Collision::testCollisionColliding(Object* o)
 {
     for(unsigned int i=0, count=m_colliding.size();i<count;i++)
-        if(m_colliding[i]->getBlock() && o->collision(m_colliding[i]))
+        if(m_colliding[i]->isActive() && m_colliding[i]->getBlock() && o->collision(m_colliding[i]))
             return true;
     return false;
 }

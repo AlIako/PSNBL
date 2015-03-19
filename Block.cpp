@@ -68,6 +68,7 @@ void Block::draw()
     if(m_visible)
     {
         const Vector3D m_taille=m_size;
+        Lighting::getInstance()->glEnableLighting();
 
         glColor4ub(255,255,255,255);
 
@@ -81,6 +82,7 @@ void Block::draw()
 
         if(m_name=="jumpBlock")
         {
+            Lighting::getInstance()->glDisableLighting();
             glTranslated(0,0,m_taille.Z*2*0);
             glDisable(GL_CULL_FACE);
             m_texture->bind();

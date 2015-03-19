@@ -15,6 +15,7 @@ public:
     virtual void iniPattern(BossPattern* pat);
 
 private:
+    Texture* m_texture_fire;
     GTime cd_fireball;
 
 };

@@ -42,6 +42,7 @@ class Object
     bool collidedWithType(std::string t);
     bool collidedWithHookable();
 
+    void rotaZDir();
     void rotate(Vector3D v) {m_rotation+=v; }
 
     bool onGround();

@@ -21,8 +21,11 @@ public:
     void setTarget(Player* p) {m_target=p;}
     Player* getTarget() {return m_target;}
     void setMode(std::string m) {m_mode=m;}
+    void setTargetBoss(Object* p) {m_targetBoss=p;}
 
     void setFPS(int fps);
+
+    void close();
 
 
     Crosshair* getCrosshair(){return &m_crosshair;}
@@ -39,6 +42,9 @@ private:
     Player* m_target;
     LifeBar m_lifebar;
     Crosshair m_crosshair;
+
+    Object* m_targetBoss;
+    LifeBar m_lifebarBoss;
 
     Texte m_playerName;
     Texte m_fps;

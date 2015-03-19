@@ -96,10 +96,42 @@ void Map::update(double functionTime)
                     for(unsigned int i=0;i<m_objects.size();i++)
                     {
                         if(m_objects[i]->getType()=="boss")
+                        {
                             boss=m_objects[i];
+                            Interface::getInstance()->setTargetBoss(boss);
+                        }
                     }
                     if(boss!=NULL)
                         boss->action(0);//start boss
+
+                    Gsounds::getInstance()->addMusic("../data/music/bossbutan.mp3");
+                    Gsounds::getInstance()->play("../data/music/bossbutan.mp3");
+                }
+            }
+            else if(m_objects[i]->getType()=="boss")
+            {
+                Effects::getInstance()->addExplosion(m_objects[i]->getPos(),"bigboom");
+                Gsounds::getInstance()->play("../data/sounds/explosion.wav");
+
+                //activate flux
+                for(unsigned int i=0;i<m_objects.size();i++)
+                {
+                    if(m_objects[i]->getType()=="flux" && !m_objects[i]->isActive())
+                        m_objects[i]->setActive(true);
+                }
+                Interface::getInstance()->setTargetBoss(NULL);
+
+                Gsounds::getInstance()->stopMusic();
+            }
+            else if(m_objects[i]->getType()=="projectile")
+            {
+                if(distance2V((*playerList)[0]->getPos(),m_objects[i]->getPos())<50)
+                {
+                    Effects::getInstance()->addExplosion(m_objects[i]->getPos());
+
+                    string sound="../data/sounds/explosion.wav";
+                    Gsounds::getInstance()->getSound(sound)->setPos(m_objects[i]->getPos().toLeft());
+                    Gsounds::getInstance()->play(sound,1,10,50);
                 }
             }
             //delete m_objects[i];
@@ -264,6 +296,10 @@ void Map::restart()
     ini();
 
     (*playerList)[0]->resurrect();
+
+    Interface::getInstance()->setTargetBoss(NULL);
+
+    Gsounds::getInstance()->stopMusic();
 }
 
 
