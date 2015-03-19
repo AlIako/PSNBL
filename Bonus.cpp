@@ -43,6 +43,9 @@ void Bonus::ini()
         else if(m_name=="health")
         {
             m_texture=GTexture::getInstance()->addGetTexture("../data/textures/carpet_red.jpg");
+
+            meshPath="../data/mesh/vie.obj";
+            Gmodel::getInstance()->addMesh(meshPath);
         }
     }
 
@@ -78,7 +81,7 @@ void Bonus::draw()
     glTranslated(m_position.X,m_position.Y,m_position.Z);
     glRotated(m_rotation.Z,0,0,1);
 
-    if(m_name=="rez" || m_name=="rope" || m_name=="health")
+    if(m_name=="rez" || m_name=="rope")
     {
         glBegin(GL_QUADS);
 
@@ -137,6 +140,20 @@ void Bonus::draw()
 
         glDisable(GL_BLEND);
         glTranslated(0,0,-1);
+    }
+    else if(m_name=="health")
+    {
+        glTranslated(0,0,1);
+
+        double sc=.5;
+        //sc=100000;
+        glScaled(sc,sc,sc);
+        //Gmodel::getInstance()->getMesh("../data/mesh/vie.obj")->draw();
+
+        if(m_texture)
+            m_texture->bind();
+
+        Gmodel::getInstance()->getMesh(meshPath)->drawNoTexture();
     }
 
     glPopMatrix();

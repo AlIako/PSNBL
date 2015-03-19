@@ -13,3 +13,8 @@
 @ bonus: z: 24 t: 1 name: rez
 @ bonus: z: 24 t: 1 name: nextphase
 @ block: x: 10 y: -28 z: 38 tx: 2 ty: 2 tz: 2.5 text: ../data/textures/bedrock.png name: block
+@ bonus: x: -43 y: -44 z: 24 t: 1 name: health
+@ bonus: x: -44 y: 44 z: 24 t: 1 name: health
+@ bonus: x: 44 y: 44 z: 24 t: 1 name: health
+@ bonus: x: 44 y: -43 z: 24 t: 1 name: health
+@ bonus: x: 11 y: 9 z: 18 t: 1 name: health

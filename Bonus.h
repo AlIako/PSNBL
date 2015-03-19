@@ -16,6 +16,7 @@ class Bonus: public Object
 
     private:
     Texture* m_texture;
+    string meshPath;
 };
 
 #endif // BONUS_H_INCLUDED

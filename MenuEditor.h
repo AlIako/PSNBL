@@ -113,7 +113,7 @@ void menuEditor(vector<Button>* b)
 
         ind=(*b).size();
         (*b).push_back(Button());
-        (*b)[ind].setPos(Vector3D(0.1,0.5-(i+folders.size())/20.0,0));
+        (*b)[ind].setPos(Vector3D(0.1,0.7-(i+folders.size())/20.0,0));
         (*b)[ind].setSize(Vector3D(0.5,0.05,0));
         (*b)[ind].addText(maps[i]);
         (*b)[ind].setName(maps[i]);
