@@ -70,6 +70,8 @@ class Player: public Object
     bool m_gasing;
 
     vector<Spell*> m_spells;
+
+    bool infiniteJump;
 };
 
 #endif // PLAYER_H_INCLUDED

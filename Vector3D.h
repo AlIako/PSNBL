@@ -48,6 +48,7 @@ public:
     void write(std::string nom="");
     Vector3D toLeft();
     Vector3D & normalize();
+    Vector3D to2D();
 };
 
 double distance2V(Vector3D v1, Vector3D v2);

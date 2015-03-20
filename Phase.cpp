@@ -197,7 +197,7 @@ void Phase::iniPhaseProperties()
 
 void Phase::iniMap()
 {
-    cerr<<"ini mapphase "<<m_name<<endl;
+    //cerr<<"ini mapphase "<<m_name<<endl;
 
     iniPhaseProperties();
 
@@ -220,9 +220,26 @@ void Phase::iniMap()
             else if(randomizer>0)
                 addPatternToQueue("PatJump2");
 
-            addPatternToQueue("PatRope1");
-            addPatternToQueue("PatRopeJump1");
-            addPatternToQueue("PatRopeFlux1");
+            randomizer=myIntRand(0,200);
+            if(randomizer>100)
+                addPatternToQueue("PatRope1");
+            else if(randomizer>0)
+                addPatternToQueue("PatRope2");
+
+
+            randomizer=myIntRand(0,200);
+            if(randomizer>100)
+                addPatternToQueue("PatRopeJump1");
+            else if(randomizer>0)
+                addPatternToQueue("PatRopeJump2");
+
+            randomizer=myIntRand(0,200);
+            if(1||randomizer>100)
+                addPatternToQueue("PatRopeFlux1");
+            else if(randomizer>0)
+                addPatternToQueue("PatRopeFlux2");
+
+
             addPatternToQueue("BossButan");
         }
         else if(m_name=="medium")

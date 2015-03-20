@@ -165,6 +165,11 @@ Vector3D Vector3D::toLeft()
 {
     return Vector3D(X,Z,Y);
 }
+//2D vector
+Vector3D Vector3D::to2D()
+{
+    return Vector3D(X,Y,0);
+}
 
 Vector3D & Vector3D::normalize()
 {

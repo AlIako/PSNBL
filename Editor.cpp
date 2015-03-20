@@ -373,7 +373,7 @@ void Editor::updateTimes()
 
 void Editor::moveObj(Vector3D key)
 {
-    Vector3D dir=m_camera.getDir();
+    Vector3D dir=m_camera.getDir().to2D().normalize();
     Vector3D newPos=posCur;
 
     double speed=1;

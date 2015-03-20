@@ -33,6 +33,9 @@ Player::Player()
 
     m_deathCause=0;
 
+    infiniteJump=false;
+    //infiniteJump=true;
+
     //if (this->m_name == "Lilian") m_life = 10000000000000;
 }
 
@@ -81,7 +84,7 @@ void Player::update(double functionTime)
                         Online::getInstance()->sendSocket(s);
                     }
 
-                    if(getSpell("rope")==NULL)
+                    if(0&&getSpell("rope")==NULL)
                         Interface::getInstance()->warning("../data/textures/interface/warning/gotrope.png",0.05,5000);
                     addSpell(new SpellRope());
                 }
@@ -159,7 +162,7 @@ bool Player::jump()
 {
     if(m_life>0)
     {
-        if((m_onTopOf!=NULL && !m_jumping) || ropeHooked() || 1)
+        if((m_onTopOf!=NULL && !m_jumping) || ropeHooked() || infiniteJump)
         {
             m_jumping=true;
 
