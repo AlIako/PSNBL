@@ -68,6 +68,7 @@ void Map::update(double functionTime)
     ft=functionTime;
     updateMap();
 
+    //cerr<<m_objects.size()<<" obj"<<endl;
     //objects
     for(unsigned int i=0;i<m_objects.size();i++)
     {
@@ -125,10 +126,9 @@ void Map::update(double functionTime)
             }
             else if(m_objects[i]->getType()=="projectile")
             {
+                Effects::getInstance()->addExplosion(m_objects[i]->getPos());
                 if(distance2V((*playerList)[0]->getPos(),m_objects[i]->getPos())<50)
                 {
-                    Effects::getInstance()->addExplosion(m_objects[i]->getPos());
-
                     string sound="../data/sounds/explosion.wav";
                     Gsounds::getInstance()->getSound(sound)->setPos(m_objects[i]->getPos().toLeft());
                     Gsounds::getInstance()->play(sound,1,10,50);
@@ -136,6 +136,11 @@ void Map::update(double functionTime)
             }
             //delete m_objects[i];
             m_objects.erase(m_objects.begin()+i);
+        }
+        else if(getLava()!=NULL && m_objects[i]->getPos().Z<=getLava()->getPos().Z+getLava()->getSize().Z-50)//too deep in lava=death
+        {
+            if(m_objects[i]->getType()!="wall" && m_objects[i]->getPos().Z>5)//ground or walls shouldnt break
+                m_objects[i]->setLife(0);
         }
     }
     //players
@@ -185,7 +190,8 @@ void Map::applyGravity(Object* o)
 void Map::applyPhysics(Object* o)
 {
     //simulate physics
-    Collision::getInstance()->simulatePhysics(o);
+    if(o->getPhysical())
+        Collision::getInstance()->simulatePhysics(o);
 }
 
 void Map::ini(string path)
@@ -258,8 +264,7 @@ void Map::createWalls()
 
 void Map::increaseLavaSpeed()
 {
-    Object* lava=getLava();
-    if(lava) lava->setSpeed(2);
+    m_phase.boostLava();
 }
 
 void Map::setLavaLevel(double z)

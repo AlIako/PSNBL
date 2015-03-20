@@ -14,6 +14,7 @@ Boss::Boss()
 
     m_speed=.5;
     m_gravity=false;
+    m_physical=true;
 }
 
 

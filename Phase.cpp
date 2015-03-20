@@ -20,6 +20,8 @@ Phase::Phase()
     m_fogg=0.0f;
     m_fogb=0.0f;
 
+    m_boostingLava=false;
+
 }
 
 
@@ -87,8 +89,15 @@ void Phase::update(double functionTime)
         m_pattern->update(functionTime);
         if(m_pattern->finished())
         {
-            cerr<<"next pattern"<<endl;
+            //cerr<<"next pattern"<<endl;
             nextPattern();
+
+            //if next pattern is a boss, stop the lava
+            if(m_pattern!=NULL && !m_boostingLava && m_pattern->getName().find("Boss")!=string::npos)
+            {
+                m_lavaspeed=0;
+                m_lava->setSpeed(m_lavaspeed);
+            }
 
             if((!Online::getInstance()->active() || Online::getInstance()->inControl()) && m_pattern==NULL)//if all patterns are finished
             {
@@ -132,6 +141,7 @@ void Phase::goToNextPhase()
 
 void Phase::iniPhaseProperties()
 {
+    m_boostingLava=false;
     m_lavaspeed=0.1;
     m_fogdistancestart=500;
     m_fogdistanceend=800;
@@ -330,6 +340,11 @@ void Phase::addPatternToQueue(string name, double startz)
     iniLastPattern();
 }
 
+void Phase::boostLava()
+{
+    m_boostingLava=true;
+    m_lava->setSpeed(2);
+}
 
 void Phase::iniLastPattern()
 {

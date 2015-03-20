@@ -160,6 +160,15 @@ void Game::handleCommands()
             m_chat.recieveMessage(tempChar,0,-2);
             delete tempChar;
         }
+        else if(c=="/lava" || c=="/lavapos")
+        {
+            //command not found
+            stringstream ss;
+            ss << "Lava Z is "<<Map::getInstance()->getLavaLevel();
+            char* tempChar=stringtochar(ss.str());
+            m_chat.recieveMessage(tempChar,0,-2);
+            delete tempChar;
+        }
         else if(c.find("/tracer")!=string::npos)
         {
             if(c.find("enable")!=string::npos)

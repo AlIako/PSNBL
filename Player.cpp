@@ -159,7 +159,7 @@ bool Player::jump()
 {
     if(m_life>0)
     {
-        if((m_onTopOf!=NULL && !m_jumping) || ropeHooked())
+        if((m_onTopOf!=NULL && !m_jumping) || ropeHooked() || 1)
         {
             m_jumping=true;
 

@@ -9,6 +9,7 @@ Fireball::Fireball()
     m_speed=1;
     m_gravity=false;
     m_block=false;
+    m_physical=true;
     m_life=1;
 
     m_texture_fire=NULL;

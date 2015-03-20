@@ -19,6 +19,8 @@ class Phase
     void nextPattern();
     void goToNextPhase();
 
+    void boostLava();
+
     void sendPatternOnline(int sendTo=-1);
 
     void setName(string name){m_name=name;}
@@ -49,6 +51,8 @@ class Phase
 
     double highestZ;
     double nextZ;
+
+    bool m_boostingLava;//lava fast when going to next phase
 };
 
 

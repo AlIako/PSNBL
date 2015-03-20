@@ -16,7 +16,6 @@
 @ flux: x: -18 y: 34 z: 50 tx: 4.5 ty: 4.5 tz: 25 text: ../data/textures/carpet_red.jpg
 @ block: x: -7 y: 38 z: 100 tx: 4 ty: 4 tz: 1 text: ../data/textures/metal.png name: noHookBlock
 @ block: x: 1 y: 38 z: 100 tx: 4 tz: 1 text: ../data/textures/metal.png name: noHookBlock
-@ block: x: 7 y: 25 z: 120 tx: 1.5 ty: 1.5 tz: 2 text: ../data/textures/bedrock.png name: block
 @ block: x: 2 y: 3 z: 101 tx: 4 ty: 4 tz: 1 text: ../data/textures/metal.png name: noHookBlock
 @ bonus: x: 2 y: 3 z: 103 t: 1 name: rez
 @ block: x: -2 y: 8 z: -4 tx: 3 ty: 2 tz: 1 text: ../data/textures/bedrock.png name: block
@@ -27,3 +26,6 @@
 @ bonus: x: -2 y: 1 z: 22 t: 1 name: health
 @ bonus: x: -29 y: 2 z: 65 t: 1 name: health
 @ bonus: x: -35 y: -30 z: 41 t: 1 name: health
+@ block: x: 4 y: 31 z: 100 ty: 2 tz: 1 text: ../data/textures/metal.png name: noHookBlock
+@ block: x: 2 y: 23 z: 100 ty: 2 tz: 1 text: ../data/textures/metal.png name: noHookBlock
+@ block: x: 4 y: 14 z: 100 ty: 2 tz: 1 text: ../data/textures/metal.png name: noHookBlock
