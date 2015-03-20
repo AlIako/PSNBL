@@ -81,7 +81,8 @@ void Player::update(double functionTime)
                         Online::getInstance()->sendSocket(s);
                     }
 
-
+                    if(getSpell("rope")==NULL)
+                        Interface::getInstance()->warning("../data/textures/interface/warning/gotrope.png",0.05,5000);
                     addSpell(new SpellRope());
                 }
             }

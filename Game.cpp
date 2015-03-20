@@ -535,6 +535,7 @@ void Game::play(string path)
         if(playerList[0]->getLife()<=0 && !alreadyDead)
         {
             alreadyDead=true;
+            Interface::getInstance()->warning("../data/textures/interface/warning/died.png",0.03);
 
 
             //send chat msg

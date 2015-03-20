@@ -15,7 +15,7 @@ public:
     void drawScreenEffect(std::string path);
     void update(double functionTime);
 
-    void warningLava();
+    void warning(string path, double speed=0.1, double timeStay=3000);
 
 
     void setTarget(Player* p) {m_target=p;}
@@ -50,8 +50,10 @@ private:
     Texte m_fps;
 
 
-    bool m_warning;
-    Object2D m_warningLava;
+    bool m_goWarning;
+    double m_warningSpeed;
+    double m_warningTime;
+    Object2D m_warning;
     GTime time_since_warning;
 };
 

@@ -14,6 +14,8 @@ public:
     void setPos(Vector3D p){m_position=p;}
     Vector3D getPos(){return m_position;}
 
+    void setTexture(Texture* t){m_texture=t;}
+
     void setColor(Vector3D c){m_color=c;}
 private:
     Texture* m_texture;

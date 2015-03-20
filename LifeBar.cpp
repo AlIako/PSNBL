@@ -15,7 +15,7 @@ LifeBar::LifeBar()
 
 void LifeBar::ini()
 {
-
+    m_texture=GTexture::getInstance()->addGetTexture("../data/textures/interface/lifebar.png");
 }
 
 void LifeBar::draw()
@@ -24,13 +24,15 @@ void LifeBar::draw()
     Video::getInstance()->matrixOrtho2D();
 
     Lighting::getInstance()->glDisableLighting();
-    glDisable(GL_TEXTURE_2D);
 
 
     //filled
     double tempWidth=m_barWidth*(m_currentLife/m_maxLife);
     if(m_currentLife<=0)
         tempWidth=0;
+
+    if(m_texture)
+        m_texture->bind();
 
     glColor4ub(m_color.X,m_color.Y,m_color.Z,255);
     glBegin(GL_QUADS);
@@ -40,6 +42,7 @@ void LifeBar::draw()
         glTexCoord2d(0,0);    glVertex2d(m_position.X+tempWidth,m_position.Y);
     glEnd();
 
+    glDisable(GL_TEXTURE_2D);
     //rest
     glColor4ub(0,0,0,255);
     glBegin(GL_QUADS);

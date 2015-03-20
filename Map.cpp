@@ -88,7 +88,7 @@ void Map::update(double functionTime)
                     increaseLavaSpeed();
 
                     //warning! lava rising
-                    Interface::getInstance()->warningLava();
+                    Interface::getInstance()->warning("../data/textures/interface/warning/lava.png");
                 }
                 else if(m_objects[i]->getName()=="startboss")
                 {

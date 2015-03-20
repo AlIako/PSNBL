@@ -16,6 +16,7 @@ Interface::Interface()
     m_target=NULL;
     m_targetBoss=NULL;
     initalized=false;
+    m_warningSpeed=0.1;
 }
 
 
@@ -33,6 +34,7 @@ void Interface::ini()
         m_lifebarBoss.ini();
         m_lifebarBoss.setPos(m_lifebarBoss.getPos()+Vector3D(0,0.1,0));
         m_lifebarBoss.setColor(Vector3D(255,255,0));
+        m_lifebarBoss.setTexture(GTexture::getInstance()->addGetTexture("../data/textures/interface/lifebar_yellow.png"));
 
         m_playerName.ini(Video::getInstance()->getWidth(),Video::getInstance()->getHeight(),&m_font);
         m_playerName.setX(0.05);
@@ -42,12 +44,12 @@ void Interface::ini()
         m_fps.setX(0.85);
         m_fps.setY(0.92);
 
-        m_warningLava.setPos(Vector3D(0.3,0.35,0));
-        m_warningLava.setSize(Vector3D(0.4,0.3,0));
-        m_warningLava.setName("warning");
-        m_warningLava.setTexture(GTexture::getInstance()->addGetTexture("../data/textures/interface/warning.png"));
-        m_warningLava.ini();
-        m_warningLava.setAlpha(0);
+        m_warning.setPos(Vector3D(0.3,0.35,0));
+        m_warning.setSize(Vector3D(0.4,0.3,0));
+        m_warning.setName("warning");
+        m_warning.setTexture(GTexture::getInstance()->addGetTexture("../data/textures/interface/warning/lava.png"));
+        m_warning.ini();
+        m_warning.setAlpha(0);
     }
 }
 
@@ -72,8 +74,8 @@ void Interface::draw()
     }
 
     //warning
-    if(m_warningLava.getAlpha()>0)
-        m_warningLava.draw();
+    if(m_warning.getAlpha()>0)
+        m_warning.draw();
 
     //boss
     if(m_targetBoss)
@@ -82,11 +84,15 @@ void Interface::draw()
     }
 }
 
-void Interface::warningLava()
+void Interface::warning(string path, double speed, double timeStay)
 {
+    m_warningSpeed=speed;
+    m_warningTime=timeStay;
+
     time_since_warning.reset();
-    m_warningLava.setAlpha(0);
-    m_warning=true;
+    m_warning.setAlpha(0);
+    m_warning.setTexture(GTexture::getInstance()->addGetTexture(path));
+    m_goWarning=true;
 }
 
 void Interface::update(double functionTime)
@@ -107,20 +113,20 @@ void Interface::update(double functionTime)
 
     //warning lava
     time_since_warning.couler();
-    double curAlpha=m_warningLava.getAlpha();
-    if(m_warning && time_since_warning.timePast()<3000)
+    double curAlpha=m_warning.getAlpha();
+    if(m_goWarning && time_since_warning.timePast()<m_warningTime)
     {
-        m_warningLava.setAlpha(curAlpha+functionTime/10);
-        if(m_warningLava.getAlpha()>1)
-            m_warningLava.setAlpha(1);
+        m_warning.setAlpha(curAlpha+functionTime*m_warningSpeed);
+        if(m_warning.getAlpha()>1)
+            m_warning.setAlpha(1);
     }
     else
     {
-        m_warning=false;
-        m_warningLava.setAlpha(curAlpha-functionTime/10);
-        if(m_warningLava.getAlpha()<0)
+        m_goWarning=false;
+        m_warning.setAlpha(curAlpha-functionTime*m_warningSpeed);
+        if(m_warning.getAlpha()<0)
         {
-            m_warningLava.setAlpha(0);
+            m_warning.setAlpha(0);
         }
     }
 
