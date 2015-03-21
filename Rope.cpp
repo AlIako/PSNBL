@@ -1,12 +1,12 @@
 #include "Rope.h"
 #define DISTANCE_MAX 40
-
+#include "Map.h"
 
 
 
 Rope::Rope()
 {
-    m_block=true;
+    m_block=false;
 
     m_hooked=false;
     m_physical=true;
@@ -28,6 +28,7 @@ void Rope::update(double functionTime)
     {
         m_end=m_position;
         m_distance=distance2V(m_start,m_end);
+        m_direction=(m_end-m_start).normalize();
 
         //collide
         if(m_collided)
@@ -54,6 +55,15 @@ void Rope::update(double functionTime)
                 unlink();
             }
         }
+        //collide with player
+        vector<Player*>* p=Map::getInstance()->playerList;
+        for(unsigned int i=0;i<p->size();i++)
+        {
+            if((*p)[i]!=NULL && (*p)[i]!=linkedTo &&((*p)[i]->getPos()-m_position).length()<3)
+                action(0,(*p)[i]);
+        }
+
+
         //too far: kill
         if(m_distance>DISTANCE_MAX)
         {
@@ -246,6 +256,20 @@ void Rope::pullDown()
 
 }
 
+void Rope::action(int type, Object* o)
+{
+    if(type==0)
+    {
+        Vector3D vel=m_direction*m_distance/30.0;
+        o->addVel((-1)*vel);
+
+        m_life=0;
+        unlink();
+
+
+        Tracer::getInstance()->trace("rope","pulled");
+    }
+}
 
 void Rope::unlink()
 {

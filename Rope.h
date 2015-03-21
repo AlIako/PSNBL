@@ -13,6 +13,8 @@ class Rope: public Object
     virtual void ini();
     virtual void draw();
 
+    virtual void action(int type, Object* o=NULL);
+
     void damageCollided();
 
     void setNowDistance();

@@ -195,10 +195,6 @@ bool Object::collidedWithHookable()
 
 bool Object::collision(Object* o)
 {
-    if((o->getType()=="rope" && m_type=="player") || (o->getType()=="player" && m_type=="rope"))
-        return false;
-
-
     double marge=0.2*0;
     Vector3D m_taille_col=m_size;
     m_taille_col.X-=marge;

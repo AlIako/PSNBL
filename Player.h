@@ -71,7 +71,7 @@ class Player: public Object
 
     vector<Spell*> m_spells;
 
-    bool infiniteJump;
+    bool testMode;
 };
 
 #endif // PLAYER_H_INCLUDED

@@ -79,6 +79,9 @@ class Object
     void setDeathCause(int d){m_deathCause=d;}
     void setActive(bool a){m_active=a;}
 
+    //add
+    void addVel(Vector3D v){m_velocity+=v;}
+
 
     //get
     Vector3D getPos() {return m_position;}

@@ -33,10 +33,8 @@ Player::Player()
 
     m_deathCause=0;
 
-    infiniteJump=false;
-    //infiniteJump=true;
-
-    //if (this->m_name == "Lilian") m_life = 10000000000000;
+    testMode=false;
+    testMode=true;
 }
 
 void Player::update(double functionTime)
@@ -100,6 +98,10 @@ void Player::update(double functionTime)
             else if(m_colliding[i]->getType()=="lava")
             {
                 m_deathCause=1;//burn
+
+                //if deep enough, go back up
+                if(m_velocity.Z<.05 && m_position.Z<m_colliding[i]->getPos().Z+m_colliding[i]->getSize().Z*2)
+                    m_velocity.Z+=ft/75.0;
             }
             else if(m_colliding[i]->getType()=="block" && m_colliding[i]->getName()=="jumpBlock")
             {
@@ -112,6 +114,14 @@ void Player::update(double functionTime)
                     m_velocity.Z+=.02;
                 //Tracer::getInstance()->trace("jumpblock","jumpblock");
             }
+            /*else if(m_colliding[i]->getType()=="rope")
+            {
+                //get pulled by a rope
+                if(m_rope==NULL || m_rope!=m_colliding[i])
+                {
+                    m_colliding[i]->action(0,this);
+                }
+            }*/
         }
     }
 
@@ -162,7 +172,7 @@ bool Player::jump()
 {
     if(m_life>0)
     {
-        if((m_onTopOf!=NULL && !m_jumping) || ropeHooked() || infiniteJump)
+        if((m_onTopOf!=NULL && !m_jumping) || ropeHooked() || testMode)
         {
             m_jumping=true;
 
@@ -236,7 +246,8 @@ void Player::ini()
 
     GTexture::getInstance()->addTexture("../data/textures/spells/rope.png");
     //spells
-    //addSpell(new SpellRope());
+    if(testMode)
+        addSpell(new SpellRope());
     addSpell(new SpellJump());
     addSpell(new SpellLongJump());
     //addSpell(new SpellPullUp());
