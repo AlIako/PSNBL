@@ -36,6 +36,8 @@ void Wall::draw()
 {
     if(m_visible)
     {
+        glEnable(GL_CULL_FACE);
+
         const Vector3D m_taille=m_size;
 
         glColor4ub(255,255,255,255);
@@ -62,17 +64,26 @@ void Wall::draw()
             {
                 for(double j=0;j<2*m_taille.Z;j+=bs)
                 {
-                    glNormal3d(0.0,1.0,0.0);
-                    glTexCoord2d(1,0);  glVertex3d(i,m_taille.Y,j);
-                    glTexCoord2d(1,1);  glVertex3d(i,m_taille.Y,j-bs);
-                    glTexCoord2d(0,1);  glVertex3d(i-bsx,m_taille.Y,j-bs);
-                    glTexCoord2d(0,0);  glVertex3d(i-bsx,m_taille.Y,j);
+                    if(m_position.Y<0)
+                    {
+                        glNormal3d(0.0,1.0,0.0);
+                        glTexCoord2d(1,0);  glVertex3d(i,m_taille.Y,j);
+                        glTexCoord2d(1,1);  glVertex3d(i,m_taille.Y,j-bs);
+                        glTexCoord2d(0,1);  glVertex3d(i-bsx,m_taille.Y,j-bs);
+                        glTexCoord2d(0,0);  glVertex3d(i-bsx,m_taille.Y,j);
+                    }
 
-                    glNormal3d(0.0,-1.0,0.0);
-                    glTexCoord2d(1,0);  glVertex3d(i,-m_taille.Y,j);
-                    glTexCoord2d(1,1);  glVertex3d(i,-m_taille.Y,j-bs);
-                    glTexCoord2d(0,1);  glVertex3d(i-bsx,-m_taille.Y,j-bs);
-                    glTexCoord2d(0,0);  glVertex3d(i-bsx,-m_taille.Y,j);
+                    if(m_position.Y>0)
+                    {
+                        glNormal3d(0.0,-1.0,0.0);
+                        glTexCoord2d(0,0);  glVertex3d(i-bsx,-m_taille.Y,j);
+                        glTexCoord2d(0,1);  glVertex3d(i-bsx,-m_taille.Y,j-bs);
+                        glTexCoord2d(1,1);  glVertex3d(i,-m_taille.Y,j-bs);
+                        glTexCoord2d(1,0);  glVertex3d(i,-m_taille.Y,j);
+                    }
+
+
+
                 }
             }
         }
@@ -84,18 +95,24 @@ void Wall::draw()
             {
                 for(double j=0;j<2*m_taille.Z;j+=bs)
                 {
-                    glNormal3d(1.0,0.0,0.0);
-                    glTexCoord2d(0,1);  glVertex3d(m_taille.X,i,j);
-                    glTexCoord2d(0,0);  glVertex3d(m_taille.X,i,j-bs);
-                    glTexCoord2d(1,0);  glVertex3d(m_taille.X,i-bsy,j-bs);
-                    glTexCoord2d(1,1);  glVertex3d(m_taille.X,i-bsy,j);
+                    if(m_position.X<0)
+                    {
+                        glNormal3d(1.0,0.0,0.0);
+                        glTexCoord2d(1,1);  glVertex3d(m_taille.X,i-bsy,j);
+                        glTexCoord2d(1,0);  glVertex3d(m_taille.X,i-bsy,j-bs);
+                        glTexCoord2d(0,0);  glVertex3d(m_taille.X,i,j-bs);
+                        glTexCoord2d(0,1);  glVertex3d(m_taille.X,i,j);
+                    }
 
 
-                    glNormal3d(-1.0,0.0,0.0);
-                    glTexCoord2d(0,1);  glVertex3d(-m_taille.X,i,j);
-                    glTexCoord2d(0,0);  glVertex3d(-m_taille.X,i,j-bs);
-                    glTexCoord2d(1,0);  glVertex3d(-m_taille.X,i-bsy,j-bs);
-                    glTexCoord2d(1,1);  glVertex3d(-m_taille.X,i-bsy,j);
+                    if(m_position.X>0)
+                    {
+                        glNormal3d(-1.0,0.0,0.0);
+                        glTexCoord2d(0,1);  glVertex3d(-m_taille.X,i,j);
+                        glTexCoord2d(0,0);  glVertex3d(-m_taille.X,i,j-bs);
+                        glTexCoord2d(1,0);  glVertex3d(-m_taille.X,i-bsy,j-bs);
+                        glTexCoord2d(1,1);  glVertex3d(-m_taille.X,i-bsy,j);
+                    }
 
                 }
             }
@@ -106,6 +123,8 @@ void Wall::draw()
         glPopMatrix();
 
         glColor3ub(255,255,255);
+
+        glDisable(GL_CULL_FACE);
 
         Lighting::getInstance()->glEnableLighting();
     }

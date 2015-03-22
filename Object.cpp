@@ -36,6 +36,7 @@ Object::Object()
     m_active=true;
 
     m_visible=true;
+    m_blur=false;
 
     time_since_ini.reset();
 }
@@ -141,6 +142,10 @@ void Object::applyGravity()
     }
 }
 
+void Object::drawBlur()
+{
+
+}
 
 void Object::applyPhysics()
 {

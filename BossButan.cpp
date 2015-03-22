@@ -52,7 +52,7 @@ void BossButan::update(double functionTime)
     {
         Boss::update(functionTime);
 
-        m_life-=ft/100.0;
+        m_life-=ft/50.0;
 
         m_rotation.X+=ft/8.0;
         m_rotation.Y+=ft/8.0;
@@ -74,20 +74,23 @@ void BossButan::update(double functionTime)
                     {
                         cd_fireball.reset();
                         //find direction to player
-                        Vector3D dir=(nearPlayer->getPos()-m_position).normalize();
+                        if(nearPlayer!=NULL)
+                        {
+                            Vector3D dir=(nearPlayer->getPos()-m_position).normalize();
 
-                        action(3,dir);
+                            action(3,dir);
 
-                        //send socket
-                        infosSocket s;
-                        //s.confirmationID=Online::getInstance()->nextConfirmationID();
-                        s.confirmationID=-1;
-                        s.type=103;
-                        s.variable[0]=0;
-                        s.variable[1]=dir.X;
-                        s.variable[2]=dir.Y;
-                        s.variable[3]=dir.Z;
-                        Online::getInstance()->sendSocket(s);
+                            //send socket
+                            infosSocket s;
+                            //s.confirmationID=Online::getInstance()->nextConfirmationID();
+                            s.confirmationID=-1;
+                            s.type=103;
+                            s.variable[0]=0;
+                            s.variable[1]=dir.X;
+                            s.variable[2]=dir.Y;
+                            s.variable[3]=dir.Z;
+                            Online::getInstance()->sendSocket(s);
+                        }
                     }
                 }
             }
@@ -190,15 +193,18 @@ void BossButan::iniPattern(BossPattern* pat)
             target=randomPlayer();
             action(4,Vector3D(0,0,0));
 
-            //send socket
-            infosSocket s;
-            s.confirmationID=Online::getInstance()->nextConfirmationID();
-            s.type=104;
-            s.variable[0]=0;
-            s.variable[1]=target->getPos().X;
-            s.variable[2]=target->getPos().Y;
-            s.variable[3]=target->getPos().Z;
-            Online::getInstance()->sendSocket(s);
+            if(target!=NULL)
+            {
+                //send socket
+                infosSocket s;
+                s.confirmationID=Online::getInstance()->nextConfirmationID();
+                s.type=104;
+                s.variable[0]=0;
+                s.variable[1]=target->getPos().X;
+                s.variable[2]=target->getPos().Y;
+                s.variable[3]=target->getPos().Z;
+                Online::getInstance()->sendSocket(s);
+            }
         }
         else if(pat->name=="nova")
         {

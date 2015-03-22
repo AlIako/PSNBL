@@ -10,6 +10,10 @@ class Lava: public Object
     virtual void ini();
     virtual void update(double functionTime);
     virtual void draw();
+    virtual void drawBlur();
+
+    virtual void action(int type, Object* o=NULL);
+    GLuint EmptyTexture();
 
     private:
     vector<Bubble> m_bubbles;
@@ -27,5 +31,8 @@ class Lava: public Object
     string bubbleSound;
     GTime bubbleSoundTime;
     int nextBubbleSoundTime;
+
+    //blur
+    GLuint BlurTexture;
 };
 #endif // LAVA_H_INCLUDED

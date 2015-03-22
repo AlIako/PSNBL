@@ -52,6 +52,11 @@ void Game::ini()
 
         playerList[0]->setOnlineName(m_online->getOnlineName());
     }
+    else
+    {
+        m_online->setIncontrol(true);
+        playerList[0]->setOnlineName("");
+    }
     //end ini online
 
     Map::getInstance()->playerList=&playerList;

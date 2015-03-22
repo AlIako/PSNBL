@@ -1,5 +1,5 @@
 #include "Lava.h"
-
+#include "Video.h"
 
 
 Lava::Lava()
@@ -7,6 +7,7 @@ Lava::Lava()
     m_texture=NULL;
     m_transparency=true;
     m_block=false;
+    m_blur=true;
     mosaic=7*2;
     m_speed=0;
     txtcord=Vector3D(0,0,0);
@@ -45,6 +46,9 @@ void Lava::ini()
         nextLoopSoundTime=Gsounds::getInstance()->getSound(loopSound)->getLength();
         cerr<<"nextLoopSoundTime: "<<nextLoopSoundTime<<endl;
     }
+
+    //blur
+	BlurTexture = EmptyTexture();// Create Our Empty Texture
 }
 
 
@@ -127,6 +131,116 @@ void Lava::update(double functionTime)
     }
 }
 
+GLuint Lava::EmptyTexture()// Create An Empty Texture
+{
+	GLuint txtnumber;// Texture ID
+	unsigned int* data;// Stored Data
+
+	// Create Storage Space For Texture Data (128x128x4)
+	data = (unsigned int*)new GLuint[((128 * 128)* 4 * sizeof(unsigned int))];
+	ZeroMemory(data,((128 * 128)* 4 * sizeof(unsigned int)));// Clear Storage Memory
+
+	glGenTextures(1, &txtnumber);// Create 1 Texture
+	glBindTexture(GL_TEXTURE_2D, txtnumber);// Bind The Texture
+	glTexImage2D(GL_TEXTURE_2D, 0, 4, 128, 128, 0,
+		GL_RGBA, GL_UNSIGNED_BYTE, data);// Build Texture Using Information In data
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+
+	delete [] data;// Release data
+    data=NULL;
+
+	return txtnumber;// Return The Texture ID
+}
+
+void Lava::action(int type, Object* o)
+{
+         //nehe 36
+    int border=128;
+	glViewport(0,0,border,border);
+
+	draw();
+
+	glBindTexture(GL_TEXTURE_2D,BlurTexture);
+	// Copy Our ViewPort To The Blur Texture (From 0,0 To 128,128... No Border)
+	glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, 0, 0, border, border, 0);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.5);// Set The Clear Color To Medium Blue
+    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);// Clear The Screen And Depth Buffer
+	glViewport(0,0,Video::getInstance()->getWidth(),Video::getInstance()->getHeight());
+}
+
+void Lava::drawBlur()
+{
+    double times=5;
+    double inc=0.04f;
+
+    double m_larg=Video::getInstance()->getWidth();
+    double m_haut=Video::getInstance()->getHeight();
+    m_larg=1;
+    m_haut=1;
+
+	float spost = 0.0f;// Starting Texture Coordinate Offset
+	float alphainc = 0.9f / times;// Fade Speed For Alpha Blending
+	float alpha = 0.2f;
+
+	// Disable AutoTexture Coordinates
+	glDisable(GL_TEXTURE_GEN_S);
+	glDisable(GL_TEXTURE_GEN_T);
+
+    glDisable(GL_DEPTH_TEST);
+	glBlendFunc(GL_SRC_ALPHA,GL_ONE);
+	glEnable(GL_BLEND);
+	glBindTexture(GL_TEXTURE_2D,BlurTexture);
+
+
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+	glOrtho(0,1,1,0,-1,1);
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadIdentity();
+
+
+	alphainc = alpha / times;// alphainc=0.2f / Times To Render Blur
+	//enleve premier rayon "directement" sur le soleil
+    spost += inc;//Gradually Increase spost (Zooming Closer To Texture Center)
+    alpha = alpha - alphainc;//Gradually Decrease alpha (Gradually Fading Image Out)
+
+	glBegin(GL_QUADS);
+    for (int num = 0;num < times-1;num++)
+    {
+        if(num!=4)//tres verkrackt, pour eviter que le ciel "devienne blanc" quand on regarde le soleil
+        {
+            glColor4f(1.0f, 1.0f, 1.0f, alpha);
+            glTexCoord2f(0+spost,1-spost);
+            glVertex2f(0,0);
+
+            glTexCoord2f(0+spost,0+spost);
+            glVertex2f(0,m_haut);
+
+            glTexCoord2f(1-spost,0+spost);
+            glVertex2f(m_larg,m_haut);
+
+            glTexCoord2f(1-spost,1-spost);
+            glVertex2f(m_larg,0);
+        }
+
+        spost += inc;//Gradually Increase spost (Zooming Closer To Texture Center)
+        alpha = alpha - alphainc;//Gradually Decrease alpha (Gradually Fading Image Out)
+    }
+	glEnd();
+
+    glMatrixMode(GL_PROJECTION );
+	glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
+	glPopMatrix();
+
+	glDisable(GL_BLEND);
+    glEnable(GL_DEPTH_TEST);
+	glBindTexture(GL_TEXTURE_2D,0);
+}
+
 
 void Lava::draw()
 {
@@ -137,7 +251,7 @@ void Lava::draw()
     glColor3ub(255,255,255);
 
     if(m_texture!=NULL)
-        m_texture->bind();
+        m_texture->bind(1);
 
     Lighting::getInstance()->glDisableLighting();
 

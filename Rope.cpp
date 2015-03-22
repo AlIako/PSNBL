@@ -378,12 +378,12 @@ void Rope::damageCollided()
 {
     //Effects::getInstance()->addExplosion(m_position);
 
-    for(unsigned int i=0;i<m_colliding.size();i++)
+    /*for(unsigned int i=0;i<m_colliding.size();i++)
     {
         if(m_colliding[i]->getType()=="boss")
         {
             m_colliding[i]->loseLife(10);
         }
-    }
+    }*/
 }
 

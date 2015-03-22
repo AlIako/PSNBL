@@ -103,6 +103,7 @@ void Block::draw()
         }
         else
         {
+            glEnable(GL_CULL_FACE);
             glBegin(GL_QUADS);
 
             glNormal3d(0.0,1.0,0.0);
@@ -142,6 +143,8 @@ void Block::draw()
             glTexCoord2d(0,0);                          glVertex3d(-m_taille.X,m_taille.Y,-m_taille.Z*0);
 
             glEnd();
+
+            glDisable(GL_CULL_FACE);
 
         }
 

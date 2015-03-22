@@ -199,6 +199,11 @@ void Video::matrixProjection()
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity( );
     gluPerspective(m_fov,(double)m_hauteur/m_largeur,0.01,1000);
+
+    /*glMatrixMode(GL_PROJECTION );
+	glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
+	glPopMatrix();*/
 }
 
 void Video::matrixOrtho2D()
@@ -208,6 +213,14 @@ void Video::matrixOrtho2D()
     gluOrtho2D(0,1,0,1);
     glMatrixMode( GL_MODELVIEW );
     glLoadIdentity( );
+
+	/*glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+	glOrtho(0,1,1,0,-1,1);
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadIdentity();*/
 }
 void Video::beforeDraw()
 {

@@ -21,6 +21,7 @@ class Object
 
     virtual void ini();
     virtual void draw();
+    virtual void drawBlur();
 
     bool collision(Object* o);
 
@@ -149,6 +150,8 @@ class Object
     Object* m_onTopOf;
 
     int m_deathCause;
+
+    bool m_blur;
 };
 
 #endif // OBJECT_H_INCLUDED

@@ -19,9 +19,13 @@ Map::Map()
 
 void Map::draw()
 {
+
+
+    GTexture::getInstance()->setLastBind(NULL);
+
     for(unsigned int i = 0;i<m_objects.size();i++)
     {
-        if(!m_objects[i]->getTransparency())
+        if(!m_objects[i]->getTransparency() && m_objects[i]!=getLava())
             m_objects[i]->draw();
     }
     for(unsigned int i = 0;i<m_objects.size();i++)
@@ -30,7 +34,11 @@ void Map::draw()
             m_objects[i]->draw();
     }
 
+    /*getLava()->action(0);
+    getLava()->draw();
+    getLava()->drawBlur();*/
 
+    //highest Z editor
     Vector3D m_taille=Vector3D(10,10,1);
     if(editor_highestZ!=-1)
     {
