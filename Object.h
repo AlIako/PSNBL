@@ -26,6 +26,7 @@ class Object
 
     virtual void update(double functionTime);
 
+    virtual void action(int type, Vector3D v);
     virtual void action(int type, Object* o=NULL);
 
 

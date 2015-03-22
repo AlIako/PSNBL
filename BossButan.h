@@ -14,6 +14,9 @@ public:
 
     virtual void iniPattern(BossPattern* pat);
 
+    virtual void action(int type, Vector3D v);
+    virtual void action(int type, Object* o=NULL);
+
 private:
     Texture* m_texture_fire;
     GTime cd_fireball;

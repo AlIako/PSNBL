@@ -1,14 +1,14 @@
 #include "Menu.h"
 
 
-/*
+
 //template
 template <typename T>
 T myMax(T left, T right)
 {
     return (left > right) ? left : right;
 }
-double bigger = myMax<double> (3.45,2.34);*/
+double bigger = myMax<double> (3.45,2.34);
 
 int main ( int argc, char** argv )
 {

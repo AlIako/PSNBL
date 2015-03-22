@@ -38,6 +38,8 @@ class Game
     void updateMultiplayer();
     Player* playerForId(int id);
 
+    Object* findBoss();
+
     void updateTimes();
 
 

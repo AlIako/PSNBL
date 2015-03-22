@@ -190,6 +190,12 @@ void Game::updateMultiplayer()
                     14: name
                     15: longjump
                     16: loot new spell
+
+                    100:boss position and rotation
+                    101:boss action 1
+                    102:boss action 2
+                    103:boss action 3
+                    104:boss action 4
                     */
                     //player position and angle and life. Lava level too
                     if(s.type==1)
@@ -417,6 +423,53 @@ void Game::updateMultiplayer()
                         if(spellName=="rope")
                             player->addSpell(new SpellRope());
                     }
+                    //boss position and rotation and life
+                    if(s.type==100)
+                    {
+                        Object* b=findBoss();
+                        if(b!=NULL)
+                        {
+                            b->setPos(Vector3D(s.variable[1],s.variable[2],s.variable[3]));
+                            b->setRot(Vector3D(b->getRot().X,b->getRot().Y,s.variable[4]));
+                            b->setLife(s.variable[5]);
+                        }
+                    }
+                    //boss action 1
+                    if(s.type==101)
+                    {
+                        Object* b=findBoss();
+                        if(b!=NULL)
+                        {
+                            b->action(1,Vector3D(s.variable[1],s.variable[2],s.variable[3]));
+                        }
+                    }
+                    //boss action 2
+                    if(s.type==102)
+                    {
+                        Object* b=findBoss();
+                        if(b!=NULL)
+                        {
+                            b->action(2,Vector3D(0,0,0));
+                        }
+                    }
+                    //boss action 3
+                    if(s.type==103)
+                    {
+                        Object* b=findBoss();
+                        if(b!=NULL)
+                        {
+                            b->action(3,Vector3D(s.variable[1],s.variable[2],s.variable[3]));
+                        }
+                    }
+                    //boss action 4
+                    if(s.type==104)
+                    {
+                        Object* b=findBoss();
+                        if(b!=NULL)
+                        {
+                            b->action(4,Vector3D(s.variable[1],s.variable[2],s.variable[3]));
+                        }
+                    }
                 }
             }
         }
@@ -443,3 +496,24 @@ bool Game::isMainPlayer(Player* p)
         return true;
     return false;
 }
+
+Object* Game::findBoss()
+{
+    vector<Object*>* o=Map::getInstance()->getObjects();
+
+    for(unsigned int i=0;i<o->size();i++)
+    {
+        if((*o)[i]->getType().find("boss")!=string::npos)
+        {
+            return (*o)[i];
+        }
+    }
+
+    return NULL;
+}
+
+
+
+
+
+

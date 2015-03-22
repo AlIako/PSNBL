@@ -50,12 +50,12 @@ void Player::update(double functionTime)
             if(m_colliding[i]->getType()=="bonus")
             {
                 m_colliding[i]->loseLife(m_colliding[i]->getLife());//kill bonus
-                if(m_colliding[i]->getName()=="rez")
+                if(m_colliding[i]->getName()=="rez" || m_colliding[i]->getName()=="startboss")
                 {
                     if(Online::getInstance()->active())
                     {
                         infosSocket s;
-                        s.confirmationID=-1;
+                        s.confirmationID=Online::getInstance()->nextConfirmationID();
                         s.type=10;
                         s.variable[1]=m_colliding[i]->getPos().X;
                         s.variable[2]=m_colliding[i]->getPos().Y;

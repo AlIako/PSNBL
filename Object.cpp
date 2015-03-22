@@ -59,6 +59,11 @@ void Object::loseLife(double value)
     }
 }
 
+void Object::action(int type, Vector3D v)
+{
+
+}
+
 void Object::action(int type, Object* o)
 {
 

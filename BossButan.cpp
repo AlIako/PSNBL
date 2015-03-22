@@ -57,13 +57,6 @@ void BossButan::update(double functionTime)
         m_rotation.X+=ft/8.0;
         m_rotation.Y+=ft/8.0;
 
-        //collision with rope: death
-        if(collidedWithType("rope"))
-        {
-            m_life=0;
-        }
-
-
         //patterns
         if(m_current_pattern!=NULL)
         {
@@ -77,29 +70,34 @@ void BossButan::update(double functionTime)
                 cd_fireball.couler();
                 if(cd_fireball.ecouler(1000))
                 {
-                    cd_fireball.reset();
-                    //find direction to player
-                    vector<Player*>* p=Map::getInstance()->playerList;
-                    Vector3D dir=((*p)[0]->getPos()-m_position).normalize();
+                    if(Online::getInstance()->inControl())
+                    {
+                        cd_fireball.reset();
+                        //find direction to player
+                        Vector3D dir=(nearPlayer->getPos()-m_position).normalize();
 
-                    //create fireball
-                    vector<Object*>* o=Map::getInstance()->getObjects();
-                    unsigned int ind=o->size();
-                    o->push_back(new Fireball());
-                    (*o)[ind]->setPos(m_position+dir*5);
-                    (*o)[ind]->setDir(dir);
-                    (*o)[ind]->ini();
-                    (*o)[ind]->setSpeed(.5);
+                        action(3,dir);
+
+                        //send socket
+                        infosSocket s;
+                        //s.confirmationID=Online::getInstance()->nextConfirmationID();
+                        s.confirmationID=-1;
+                        s.type=103;
+                        s.variable[0]=0;
+                        s.variable[1]=dir.X;
+                        s.variable[2]=dir.Y;
+                        s.variable[3]=dir.Z;
+                        Online::getInstance()->sendSocket(s);
+                    }
                 }
             }
-            else if(m_current_pattern->name=="rush")
+            else if(m_current_pattern->name=="rush" && target!=NULL)
             {
                 //move
 
                 //find direction to player
-                vector<Player*>* p=Map::getInstance()->playerList;
-                m_direction=((*p)[0]->getPos()-m_position).normalize();
-                double dist=((*p)[0]->getPos()-m_position).length();
+                m_direction=(target->getPos()-m_position).normalize();
+                double dist=(target->getPos()-m_position).length();
 
                 rotaZDir();
 
@@ -146,9 +144,12 @@ void BossButan::update(double functionTime)
             m_current_pattern->time_since_start.couler();
             if(m_current_pattern->time_since_start.ecouler(m_current_pattern->duration))
             {
-                int nextPatternID=myIntRand(0,m_patterns.size()-1);
-                m_current_pattern=&m_patterns[nextPatternID];
-                iniPattern(m_current_pattern);
+                if(Online::getInstance()->inControl())
+                {
+                    int nextPatternID=myIntRand(0,m_patterns.size()-1);
+                    m_current_pattern=&m_patterns[nextPatternID];
+                    iniPattern(m_current_pattern);
+                }
             }
         }
 
@@ -172,19 +173,91 @@ void BossButan::iniPattern(BossPattern* pat)
                                               myDoubleRand(-movementRange,movementRange),
                                               myDoubleRand(-movementRangeZ,movementRangeZ));
 
-            //set vector direction
-            m_direction=(m_destination-m_position).normalize();
+            action(1,m_destination);
 
-            rotaZDir();
+            //send socket
+            infosSocket s;
+            s.confirmationID=Online::getInstance()->nextConfirmationID();
+            s.type=101;
+            s.variable[0]=0;
+            s.variable[1]=m_destination.X;
+            s.variable[2]=m_destination.Y;
+            s.variable[3]=m_destination.Z;
+            Online::getInstance()->sendSocket(s);
+        }
+        else if(pat->name=="rush")
+        {
+            target=randomPlayer();
+            action(4,Vector3D(0,0,0));
+
+            //send socket
+            infosSocket s;
+            s.confirmationID=Online::getInstance()->nextConfirmationID();
+            s.type=104;
+            s.variable[0]=0;
+            s.variable[1]=target->getPos().X;
+            s.variable[2]=target->getPos().Y;
+            s.variable[3]=target->getPos().Z;
+            Online::getInstance()->sendSocket(s);
         }
         else if(pat->name=="nova")
         {
-            m_velocity=Vector3D(0,0,0);
-            m_direction=m_velocity;
+            action(2,Vector3D(0,0,0));
+
+            //send socket
+            infosSocket s;
+            s.confirmationID=Online::getInstance()->nextConfirmationID();
+            s.type=102;
+            s.variable[0]=0;
+            Online::getInstance()->sendSocket(s);
         }
     }
 }
 
+void BossButan::action(int type, Vector3D v)
+{
+    if(type==1)
+    {
+        Tracer::getInstance()->trace("boss","pattern patrol");
+        setPattern("patrol");
+
+        //set vector direction
+        m_direction=(v-m_position).normalize();
+
+        rotaZDir();
+    }
+    else if(type==2)
+    {
+        Tracer::getInstance()->trace("boss","pattern nova");
+        setPattern("nova");
+
+        m_velocity=Vector3D(0,0,0);
+        m_direction=m_velocity;
+    }
+    else if(type==3)
+    {
+        Tracer::getInstance()->trace("boss","fireball");
+        //create fireball
+        vector<Object*>* o=Map::getInstance()->getObjects();
+        unsigned int ind=o->size();
+        o->push_back(new Fireball());
+        (*o)[ind]->setPos(m_position+v*5);
+        (*o)[ind]->setDir(v);
+        (*o)[ind]->ini();
+        (*o)[ind]->setSpeed(.5);
+    }
+    else if(type==4)
+    {
+        Tracer::getInstance()->trace("boss","pattern rush");
+        setPattern("rush");
+        target=nearestPlayerFrom(v);
+    }
+}
+
+void BossButan::action(int type, Object* o)
+{
+    Boss::action(type,o);
+}
 
 
 
