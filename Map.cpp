@@ -17,6 +17,10 @@ Map::Map()
 {
     playerList=NULL;
     wallsKilled=false;
+    editor_on=false;
+    m_hasLava=false;
+    m_path="";
+    m_startPos=Vector3D(2,-45,30);
 }
 
 void Map::draw()
@@ -41,34 +45,51 @@ void Map::draw()
     getLava()->drawBlur();*/
 
     //highest Z editor
-    Vector3D m_taille=Vector3D(10,10,1);
-    if(editor_highestZ!=-1)
+    if(editor_on)
     {
-        //highest Z
-        glColor3ub(0,255,255);
-        glTranslated(0,0,editor_highestZ);
-        glBegin(GL_QUADS);
-        glTexCoord2d(0,1);    glVertex3d(m_taille.X,m_taille.Y,0);
-        glTexCoord2d(1,1);    glVertex3d(m_taille.X,-m_taille.Y,0);
-        glTexCoord2d(1,0);    glVertex3d(-m_taille.X,-m_taille.Y,0);
-        glTexCoord2d(0,0);    glVertex3d(-m_taille.X,m_taille.Y,0);
-        glEnd();
-        glTranslated(0,0,-editor_highestZ);
+        Vector3D m_taille=Vector3D(10,10,1);
+        if(editor_highestZ!=-1)
+        {
+            //highest Z
+            glColor3ub(0,255,255);
+            glTranslated(0,0,editor_highestZ);
+            glBegin(GL_QUADS);
+            glTexCoord2d(0,1);    glVertex3d(m_taille.X,m_taille.Y,0);
+            glTexCoord2d(1,1);    glVertex3d(m_taille.X,-m_taille.Y,0);
+            glTexCoord2d(1,0);    glVertex3d(-m_taille.X,-m_taille.Y,0);
+            glTexCoord2d(0,0);    glVertex3d(-m_taille.X,m_taille.Y,0);
+            glEnd();
+            glTranslated(0,0,-editor_highestZ);
+        }
+        if(editor_nextZ!=-1)
+        {
+            //next Z
+            glColor3ub(0,255,0);
+            glTranslated(0,0,editor_nextZ);
+            glBegin(GL_QUADS);
+            glTexCoord2d(0,1);    glVertex3d(m_taille.X,m_taille.Y,0);
+            glTexCoord2d(1,1);    glVertex3d(m_taille.X,-m_taille.Y,0);
+            glTexCoord2d(1,0);    glVertex3d(-m_taille.X,-m_taille.Y,0);
+            glTexCoord2d(0,0);    glVertex3d(-m_taille.X,m_taille.Y,0);
+            glEnd();
+            glTranslated(0,0,-editor_nextZ);
+        }
+
+
+        //startpos
+        glTranslated(m_startPos.X,m_startPos.Y,m_startPos.Z+1);
+        GTexture::getInstance()->addGetTexture("../data/textures/fire.jpg")->bind();
+        glColor4b(0,255,0,255);
+
+        GLUquadric* params = gluNewQuadric();
+        gluQuadricTexture(params,GL_TRUE);
+        gluSphere(params,.5,5,5);
+        gluDeleteQuadric(params);
+
+        glTranslated(-m_startPos.X,-m_startPos.Y,-m_startPos.Z-1);
+
+        glColor3ub(255,255,255);
     }
-    if(editor_nextZ!=-1)
-    {
-        //next Z
-        glColor3ub(0,255,0);
-        glTranslated(0,0,editor_nextZ);
-        glBegin(GL_QUADS);
-        glTexCoord2d(0,1);    glVertex3d(m_taille.X,m_taille.Y,0);
-        glTexCoord2d(1,1);    glVertex3d(m_taille.X,-m_taille.Y,0);
-        glTexCoord2d(1,0);    glVertex3d(-m_taille.X,-m_taille.Y,0);
-        glTexCoord2d(0,0);    glVertex3d(-m_taille.X,m_taille.Y,0);
-        glEnd();
-        glTranslated(0,0,-editor_nextZ);
-    }
-    glColor3ub(255,255,255);
 
 
 }
@@ -206,11 +227,14 @@ void Map::applyPhysics(Object* o)
 
 void Map::ini(string path)
 {
+    editor_on=false;
     editor_highestZ=-1;
     editor_nextZ=-1;
     wallsKilled=false;
 
-    //cerr << "ini map"<<endl;
+    m_path=path;
+
+    //cerr << "ini map "<<path<<endl;
 
     Collision::getInstance()->setObjects(&m_objects);
 
@@ -220,6 +244,7 @@ void Map::ini(string path)
     {
         m_phase.ini(&m_objects);
         m_phase.iniMap();
+        m_startPos=Vector3D(2,-45,30);
     }
     else
     {
@@ -232,6 +257,8 @@ void Map::ini(string path)
 
 void Map::createWalls()
 {
+    m_hasLava=true;
+
     //walls
     unsigned int ind=0;
     m_objects.push_back(new Wall());
@@ -254,16 +281,15 @@ void Map::createWalls()
     ind=m_objects.size();
     m_objects.push_back(new Wall());
     m_objects[ind]->ini();
-    m_objects[ind]->ini();
     m_objects[ind]->setPos(Vector3D(2,-MAPSIZE,2));
     m_objects[ind]->setSize(Vector3D(MAPSIZE,2,WALL_HEIGHT));
 
     //lava
     ind=m_objects.size();
     m_objects.push_back(new Lava());
-    m_objects[ind]->ini();
     m_objects[ind]->setPos(Vector3D(0,0,4));
     m_objects[ind]->setSize(Vector3D(MAPSIZE,MAPSIZE,2));
+    m_objects[ind]->ini();
 
     //floor
     ind=m_objects.size();
@@ -274,6 +300,8 @@ void Map::createWalls()
 }
 void Map::killWalls()
 {
+    m_hasLava=false;
+
     wallsKilled=true;
     if(m_objects.size()>5 && m_objects[0]->getType()=="wall")
     {
@@ -309,11 +337,15 @@ double Map::getLavaLevel()
 
 Object* Map::getLava()
 {
+    if(!m_hasLava)
+        return NULL;
+
     for(unsigned int i=0,count=m_objects.size();i<count;i++)
     {
         if(m_objects[i]->getType()=="lava")
             return m_objects[i];
     }
+
     return NULL;
 }
 
@@ -321,9 +353,10 @@ Object* Map::getLava()
 void Map::restart()
 {
     erase();
-    ini();
+    ini(m_path);
 
     (*playerList)[0]->resurrect();
+    (*playerList)[0]->setPos(m_startPos);
 
     Interface::getInstance()->setTargetBoss(NULL);
 
@@ -392,8 +425,12 @@ void Map::saveMap(string path)
             fichier << "@ highestZ: "<<editor_highestZ<<endl;
         if(editor_nextZ!=-1)
             fichier << "@ nextZ: "<<editor_nextZ<<endl;
+
         if(wallsKilled)
             fichier << "@ noWalls!"<<endl;
+
+        if(m_startPos.X!=0 || m_startPos.Y!=0 || m_startPos.Z!=0)
+            fichier << "@ startpos: "<<m_startPos.X<<" "<<m_startPos.Y<<" "<<m_startPos.Z<<endl;
 
         for(unsigned int i=startI;i<m_objects.size();i++)
         {
@@ -427,6 +464,7 @@ void Map::loadPat(string path,double zOff)
         std::string cur_read="";
         int ind=-1;
         int curInt=-1;
+        double curDouble=-1;
         bool addingObject=false;
 
         while(!fichier1.eof())
@@ -444,12 +482,12 @@ void Map::loadPat(string path,double zOff)
                 m_objects[ind]->ini();
                 m_objects[ind]->setPos(m_objects[ind]->getPos()+Vector3D(0,0,zOff));
 
-                //actually we dont want that one (walls)
+                /*//actually we dont want that one (walls)
                 if(m_objects[ind]->getSize().Z>=1000)
                 {
                     delete m_objects[ind];
                     m_objects.pop_back();
-                }
+                }*/
             }
             else if(read_name=="highestZ")
             {
@@ -464,6 +502,15 @@ void Map::loadPat(string path,double zOff)
             else if(read_name=="noWalls")
             {
                 killWalls();
+            }
+            else if(read_name=="startpos")
+            {
+                fichier1 >> curDouble;
+                m_startPos.X=curDouble;
+                fichier1 >> curDouble;
+                m_startPos.Y=curDouble;
+                fichier1 >> curDouble;
+                m_startPos.Z=curDouble;
             }
 
 

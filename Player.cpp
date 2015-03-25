@@ -34,7 +34,7 @@ Player::Player()
     m_deathCause=0;
 
     testMode=false;
-    testMode=true;
+    //testMode=true;
 }
 
 void Player::update(double functionTime)
@@ -94,6 +94,14 @@ void Player::update(double functionTime)
             else if(m_colliding[i]->getType()=="damage")
             {
                 m_colliding[i]->action(0,this);//get damaged
+            }
+            else if(m_colliding[i]->getType()=="fogger")
+            {
+                m_colliding[i]->action(0);//set target fog
+            }
+            else if(m_colliding[i]->getType()=="fader")
+            {
+                m_colliding[i]->action(0);//start fading
             }
             else if(m_colliding[i]->getType()=="lava")
             {

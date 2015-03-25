@@ -54,11 +54,19 @@ class Map
 
     void deleteLastObj();
 
+    void setStartPos(Vector3D v){m_startPos=v;}
+    Vector3D getStartPos(){return m_startPos;}
+
+
+
+
+
     vector<Player*>* playerList;
 
 
     bool wallsKilled;
     //for editor
+    bool editor_on;
     double editor_highestZ;
     double editor_nextZ;
 
@@ -70,9 +78,12 @@ class Map
     std::vector<Object*> m_objects;
     double ft;//function time
 
+    bool m_hasLava;
+
     Phase m_phase;
 
-
+    string m_path;
+    Vector3D m_startPos;
 
 };
 

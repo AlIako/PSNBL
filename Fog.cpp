@@ -124,7 +124,7 @@ void Fog::disable()
 void Fog::close()
 {
     setColor(0,0,0);
-    setTarget(200,500,1,0,0);
+    setTarget(200,500,0,0,0);
     update(0);
 }
 

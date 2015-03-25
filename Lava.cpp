@@ -30,9 +30,12 @@ void Lava::ini()
     dampvalue.setParameter(15, 2);
     dampvalue = 2;
 
+    int bubblen=ceil(m_size.X*m_size.Y/25.0);
+    int steamn=ceil(m_size.X*m_size.Y/20.0);
+
     //bubbles
-    m_bubbles.resize(100);
-    m_steam.resize(150);
+    m_bubbles.resize(bubblen);
+    m_steam.resize(steamn);
 
 
 

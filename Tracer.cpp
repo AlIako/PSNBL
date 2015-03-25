@@ -22,7 +22,7 @@ Tracer* Tracer::getInstance()
 Tracer::Tracer()
 {
     m_enabled=false;
-    m_channels.push_back("rope");
+    //m_channels.push_back("rope");
     //m_channels.push_back("crosshair");
     //m_channels.push_back("jumpblock");
     //m_channels.push_back("spell");
@@ -30,6 +30,8 @@ Tracer::Tracer()
     m_channels.push_back("video");
     m_channels.push_back("fireball");
     m_channels.push_back("damage");
+    m_channels.push_back("phase");
+    m_channels.push_back("fade");
     //m_channels.push_back("boss");
     //m_channels.push_back("debug");
 

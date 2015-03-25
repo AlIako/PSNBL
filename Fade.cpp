@@ -1,4 +1,5 @@
 #include "Fade.h"
+#include "Tracer.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>

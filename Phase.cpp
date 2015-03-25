@@ -21,7 +21,6 @@ Phase::Phase()
     m_fogb=0.0f;
 
     m_boostingLava=false;
-
 }
 
 
@@ -31,7 +30,7 @@ void Phase::ini(std::vector<Object*>* objects)
 {
     m_patternQueue.clear();
 
-    cerr<<"ini phase "<<m_name<<endl;
+    //cerr<<"ini phase "<<m_name<<endl;
     //find walls and lava
     m_objects=objects;
 
@@ -141,6 +140,7 @@ void Phase::goToNextPhase()
 
 void Phase::iniPhaseProperties()
 {
+    //cerr<<"iniPhaseProperties "<<m_name<<endl;
     m_boostingLava=false;
     m_lavaspeed=0.1;
     m_fogdistancestart=500;
@@ -394,6 +394,8 @@ void Phase::erase()
     m_patternQueue.clear();
 
     m_pattern=NULL;
+
+    Tracer::getInstance()->traceCerr("phase","closing phase");
 
     m_name="still";
 }

@@ -26,6 +26,7 @@ void Editor::ini(string path)
     Map::getInstance()->createWalls();
     Map::getInstance()->translateAll(Vector3D(0,0,-15));
     Map::getInstance()->loadPat(path);
+    Map::getInstance()->editor_on=true;
 
     posCur=Vector3D(0,0,0);
     curObj=new Block();
@@ -170,6 +171,11 @@ void Editor::play(string path)
                         }
                         else if(curType=="block" && curName=="noHookBlock")
                         {
+                            curObj=new Lava();
+                            curObj->setName("Lava");
+                        }
+                        else if(curType=="lava" && curName=="Lava")
+                        {
                             curObj=new Block();
                             curObj->setName("jumpBlock");
                         }
@@ -264,6 +270,9 @@ void Editor::play(string path)
                     break;
                     case SDLK_v:
                         Map::getInstance()->killWalls();
+                    break;
+                    case SDLK_x:
+                        Map::getInstance()->setStartPos(curObj->getPos());
                     break;
                     case SDLK_UP:
                     cur_incr*=2.0;

@@ -46,8 +46,10 @@ void Block::ini()
             mosaic=4;
         }
         char* tempPath=stringtochar(path);
-        GTexture::getInstance()->addTexture(tempPath);
-        m_texture=GTexture::getInstance()->getTexture(tempPath);
+
+        if(!m_texture)
+            m_texture=GTexture::getInstance()->addGetTexture(tempPath);
+
         delete tempPath;
     }
 

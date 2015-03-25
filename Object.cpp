@@ -79,8 +79,8 @@ void Object::update(double functionTime)
     time_since_ini.couler();
 
     //kill if out of map
-    if(m_position.Z<=-50)
-        m_life=0;
+    //if(m_position.Z<=-50)
+    //    m_life=0;
 
 
     bool wasOnTop=false;
@@ -340,6 +340,11 @@ void Object::readObj(ifstream* fichier1)
             *fichier1 >> curInt;
             if(curInt==0)
                 m_active=0;
+        }
+        else if(read_name_before=="text")
+        {
+            *fichier1 >> cur_read;
+            m_texture=GTexture::getInstance()->addGetTexture(cur_read);
         }
 
         *fichier1 >> cur_read;

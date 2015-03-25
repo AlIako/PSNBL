@@ -61,6 +61,7 @@ void Game::ini()
 
     Map::getInstance()->playerList=&playerList;
     Map::getInstance()->ini(pathTest);
+    playerList[0]->setPos(Map::getInstance()->getStartPos());
 
     m_camera.setCible(playerList[0]);
     m_mode="play";
@@ -91,6 +92,9 @@ void Game::ini()
 
 
     m_video->getFade()->startFadeOut();
+    Video::getInstance()->getFade()->setR(0);
+    Video::getInstance()->getFade()->setG(0);
+    Video::getInstance()->getFade()->setB(0);
 }
 
 void Game::playPlayerSound(Player* p,string sound)
@@ -647,6 +651,9 @@ void Game::play(string path)
         {
             if(Video::getInstance()->getFade()->getFading()==false)
             {
+                Video::getInstance()->getFade()->setR(0);
+                Video::getInstance()->getFade()->setG(0);
+                Video::getInstance()->getFade()->setB(0);
                 Video::getInstance()->getFade()->startFadeIn();
             }
             if(Video::getInstance()->getFade()->getAlpha()>=1)
