@@ -50,7 +50,7 @@ void Player::update(double functionTime)
             if(m_colliding[i]->getType()=="bonus")
             {
                 m_colliding[i]->loseLife(m_colliding[i]->getLife());//kill bonus
-                if(m_colliding[i]->getName()=="rez" || m_colliding[i]->getName()=="startboss")
+                if(m_colliding[i]->getName()!="rope" && m_colliding[i]->getName()!="longjump")
                 {
                     if(Online::getInstance()->active())
                     {
@@ -63,13 +63,13 @@ void Player::update(double functionTime)
 
                         Online::getInstance()->sendSocket(s);
                     }
-                }
-                else if(m_colliding[i]->getName()=="health")
-                {
-                    Gsounds::getInstance()->play("../data/sounds/health.wav");
-                    loseLife(-10);
-                    if(m_life>100)
-                        m_life=100;
+                    if(m_colliding[i]->getName()=="health")
+                    {
+                        Gsounds::getInstance()->play("../data/sounds/health.wav");
+                        loseLife(-10);
+                        if(m_life>100)
+                            m_life=100;
+                    }
                 }
                 else if(m_colliding[i]->getName()=="rope")
                 {
@@ -172,7 +172,7 @@ bool Player::jump()
 {
     if(m_life>0)
     {
-        if((m_onTopOf!=NULL && !m_jumping) || ropeHooked() || testMode)
+        if((m_onTopOf!=NULL && !m_jumping)/* || ropeHooked()*/ || testMode)
         {
             m_jumping=true;
 

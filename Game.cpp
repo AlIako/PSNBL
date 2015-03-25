@@ -606,9 +606,9 @@ void Game::play(string path)
         Effects::getInstance()->draw();
 
         //glUseProgram(m_video->programID);
-
-        if(m_camera.getPos().Z<=Map::getInstance()->getLava()->getPos().Z+Map::getInstance()->getLava()->getSize().Z*2)
-            Interface::getInstance()->drawScreenEffect("../data/textures/lava.png");
+        if(Map::getInstance()->getLava())
+            if(m_camera.getPos().Z<=Map::getInstance()->getLava()->getPos().Z+Map::getInstance()->getLava()->getSize().Z*2)
+                Interface::getInstance()->drawScreenEffect("../data/textures/lava.png");
 
         Tracer::getInstance()->traceCerr("debug","6");
 

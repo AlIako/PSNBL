@@ -262,6 +262,9 @@ void Editor::play(string path)
                     case SDLK_n:
                         Map::getInstance()->editor_nextZ=curObj->getPos().Z;
                     break;
+                    case SDLK_v:
+                        Map::getInstance()->killWalls();
+                    break;
                     case SDLK_UP:
                     cur_incr*=2.0;
                     break;

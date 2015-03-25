@@ -18,8 +18,6 @@ class Pattern
     void loadPattern();
     virtual void start();
 
-    //static void loadPattern(string name, std::vector<Object*>* objects);
-
     void calculHighestZ();
     double getHighestZ() {return m_highestZ;}
     double getNextZ() {return m_nextZ;}

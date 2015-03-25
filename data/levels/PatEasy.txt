@@ -1,0 +1,2 @@
+@ noWalls!
+@ block: t: 1 text: ../data/textures/bedrock.png name: block

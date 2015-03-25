@@ -25,6 +25,7 @@ class Map
     void draw();
 
     void createWalls();
+    void killWalls();
 
     Rope* createRope(Vector3D start, Vector3D target);
 
@@ -56,6 +57,7 @@ class Map
     vector<Player*>* playerList;
 
 
+    bool wallsKilled;
     //for editor
     double editor_highestZ;
     double editor_nextZ;

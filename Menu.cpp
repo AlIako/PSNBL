@@ -8,6 +8,7 @@
 #include "MenuEditor.h"
 #include "MenuAudio.h"
 #include "MenuVideo.h"
+#include "MenuSingle.h"
 
 Menu::Menu()
 {
@@ -232,6 +233,19 @@ void Menu::clicOn(string name, bool leftClic)
         Config::getInstance()->mode="server";
         Online::getInstance()->setActive(false);
         command="play";
+
+        mapSelected="";
+        curMenu=name;
+        menuSingle(&m_buttons);
+
+        //fadingToLeave=true;
+    }
+    if(leftClic && curMenu=="single" && name!="single" && name!="linkocraftcom" && name!="back" && name!="title")
+    {
+        Config::getInstance()->mode="server";
+        Online::getInstance()->setActive(false);
+        command="play "+name;
+        mapSelected=name;
         fadingToLeave=true;
     }
     if(leftClic && name=="join")

@@ -7,6 +7,7 @@ Object::Object()
     m_position=Vector3D(0,0,0);
     m_rotation=Vector3D(0,0,0);
     m_velocity=Vector3D(0,0,0);
+    m_direction=Vector3D(0,0,0);
     m_size=Vector3D(.5,.5,.5);
     m_type="object";
     m_name="name";

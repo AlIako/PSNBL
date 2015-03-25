@@ -18,6 +18,12 @@ Rope::Rope()
     m_speed=0.05;
 
     m_life=100;
+
+    m_distance=0;
+
+    m_end=Vector3D(0,0,0);
+    m_start=Vector3D(0,0,0);
+
 }
 
 
@@ -260,14 +266,17 @@ void Rope::action(int type, Object* o)
 {
     if(type==0)
     {
-        Vector3D vel=m_direction*m_distance/30.0;
-        o->addVel((-1)*vel);
+        if(!isnan(m_distance) && !isnan(m_direction.X))
+        {
+            Vector3D vel=(-1)*m_direction*m_distance/30.0;
+            o->addVel(vel);
 
-        m_life=0;
-        unlink();
+            m_life=0;
+            unlink();
 
 
-        Tracer::getInstance()->trace("rope","pulled");
+            Tracer::getInstance()->trace("rope","pulled "+m_direction.toString());
+        }
     }
 }
 

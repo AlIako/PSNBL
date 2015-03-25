@@ -1,4 +1,5 @@
 #include "Map.h"
+#include "GameObjects.h"
 #define MAPSIZE 50
 #define WALL_HEIGHT 1000
 
@@ -15,6 +16,7 @@ Map* Map::getInstance()
 Map::Map()
 {
     playerList=NULL;
+    wallsKilled=false;
 }
 
 void Map::draw()
@@ -206,6 +208,7 @@ void Map::ini(string path)
 {
     editor_highestZ=-1;
     editor_nextZ=-1;
+    wallsKilled=false;
 
     //cerr << "ini map"<<endl;
 
@@ -268,6 +271,18 @@ void Map::createWalls()
     m_objects[ind]->ini();
     m_objects[ind]->setPos(Vector3D(0,0,2));
     m_objects[ind]->setSize(Vector3D(MAPSIZE,MAPSIZE,2));
+}
+void Map::killWalls()
+{
+    wallsKilled=true;
+    if(m_objects.size()>5 && m_objects[0]->getType()=="wall")
+    {
+        for(unsigned int i=0;i<6;i++)
+        {
+            delete m_objects[0];
+            m_objects.erase(m_objects.begin());
+        }
+    }
 }
 
 void Map::increaseLavaSpeed()
@@ -366,6 +381,9 @@ void Map::saveMap(string path)
     delete tempchemin;
     tempchemin=NULL;
 
+    int startI=0;
+    if(!wallsKilled) startI=6;
+
     if(fichier)
     {
         string ch="";
@@ -374,8 +392,10 @@ void Map::saveMap(string path)
             fichier << "@ highestZ: "<<editor_highestZ<<endl;
         if(editor_nextZ!=-1)
             fichier << "@ nextZ: "<<editor_nextZ<<endl;
+        if(wallsKilled)
+            fichier << "@ noWalls!"<<endl;
 
-        for(unsigned int i=6;i<m_objects.size();i++)
+        for(unsigned int i=startI;i<m_objects.size();i++)
         {
             fichier << m_objects[i]->writeObj();
             fichier << endl;
@@ -415,38 +435,8 @@ void Map::loadPat(string path,double zOff)
             read_name=cur_read.substr(0,cur_read.size()-1);//enleve le ":"
 
             ind=m_objects.size();
-            addingObject=false;
+            addingObject=addObjFromText(read_name,&m_objects);
 
-            if(read_name=="block")
-            {
-                m_objects.push_back(new Block());
-                addingObject=true;
-            }
-            else if(read_name=="bonus")
-            {
-                m_objects.push_back(new Bonus());
-                addingObject=true;
-            }
-            else if(read_name=="flux")
-            {
-                m_objects.push_back(new Flux());
-                addingObject=true;
-            }
-            else if(read_name=="boss")
-            {
-                m_objects.push_back(new BossButan());
-                addingObject=true;
-            }
-            else if(read_name=="highestZ")
-            {
-                fichier1 >> curInt;
-                editor_highestZ=zOff+curInt;
-            }
-            else if(read_name=="nextZ")
-            {
-                fichier1 >> curInt;
-                editor_nextZ=zOff+curInt;
-            }
 
             if(addingObject)
             {
@@ -461,6 +451,21 @@ void Map::loadPat(string path,double zOff)
                     m_objects.pop_back();
                 }
             }
+            else if(read_name=="highestZ")
+            {
+                fichier1 >> curInt;
+                editor_highestZ=zOff+curInt;
+            }
+            else if(read_name=="nextZ")
+            {
+                fichier1 >> curInt;
+                editor_nextZ=zOff+curInt;
+            }
+            else if(read_name=="noWalls")
+            {
+                killWalls();
+            }
+
 
 
 

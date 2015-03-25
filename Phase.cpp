@@ -234,7 +234,7 @@ void Phase::iniMap()
                 addPatternToQueue("PatRopeJump2");
 
             randomizer=myIntRand(0,200);
-            if(1||randomizer>100)
+            if(randomizer>100)
                 addPatternToQueue("PatRopeFlux1");
             else if(randomizer>0)
                 addPatternToQueue("PatRopeFlux2");

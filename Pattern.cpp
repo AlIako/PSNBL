@@ -1,5 +1,5 @@
 #include "Pattern.h"
-
+#include "GameObjects.h"
 
 
 
@@ -74,96 +74,6 @@ void Pattern::ini(double startZ, std::vector<Object*>* objects)
     if(m_nextZ==-1)
         m_nextZ=m_highestZ+5;
 }
-/*void Pattern::loadPattern(string name, std::vector<Object*>* objects)
-{
-    char* tempchemin=stringtochar("../data/patterns/"+name+".txt");
-    cerr<<"loading pattern file "<< "../data/patterns/"<<name<<".txt" <<endl;
-
-    std::ifstream in(tempchemin, std::ifstream::ate | std::ifstream::binary);
-    int sizeMap=in.tellg();
-    cerr<<"size map "<<tempchemin <<": "<<sizeMap<<endl;
-
-
-    ifstream fichier1(tempchemin, ios::in);
-    delete tempchemin;
-    tempchemin=NULL;
-
-
-    if(fichier1)
-    {
-        std::string befor_read="",read_name="",read_name_before="";
-        std::string cur_read="";
-        int curInt=0;
-        int ind=-1;
-        bool addingObject=false;
-
-        while(!fichier1.eof())
-        {
-            //fichier1 >> cur_read;
-            read_name=cur_read.substr(0,cur_read.size()-1);//enleve le ":"
-
-            ind=(*objects).size();
-            addingObject=false;
-
-            if(read_name=="block")
-            {
-                ind=(*objects).size();
-                (*objects).push_back(new Block());
-            }
-            else if(read_name=="bonus")
-            {
-                ind=(*objects).size();
-                (*objects).push_back(new Bonus());
-                addingObject=true;
-            }
-            else if(read_name=="flux")
-            {
-                ind=(*objects).size();
-                (*objects).push_back(new Flux());
-                addingObject=true;
-            }
-            else if(read_name=="bossbutan")
-            {
-                (*objects).push_back(new BossButan());
-                addingObject=true;
-            }
-            else if(read_name=="highestZ")
-            {
-                fichier1 >> curInt;
-                m_highestZ=m_startZ+curInt;
-            }
-            else if(read_name=="nextZ")
-            {
-                fichier1 >> curInt;
-                m_nextZ=m_startZ+curInt;
-            }
-
-            if(addingObject)
-            {
-                (*objects)[ind]->readObj(&fichier1);
-                (*objects)[ind]->ini();
-                (*objects)[ind]->setPos((*objects)[ind]->getPos()+Vector3D(0,0,m_startZ));
-
-                //actually we dont want that one (walls)
-                if((*objects)[ind]->getSize().Z>=1000)
-                {
-                    delete (*objects)[ind];
-                    (*objects).pop_back();
-                }
-            }
-
-
-            fichier1 >> cur_read;
-            befor_read=cur_read;
-            read_name_before=befor_read.substr(0,befor_read.size()-1);//enleve le ":"
-
-        }
-
-        fichier1.close();
-    }
-    else
-        cerr << "can't open file (pattern file)" << endl;
-}*/
 
 void Pattern::loadPattern()
 {
@@ -194,54 +104,9 @@ void Pattern::loadPattern()
             read_name=cur_read.substr(0,cur_read.size()-1);//enleve le ":"
 
             ind=(*m_objects).size();
-            addingObject=false;
 
-            if(read_name=="block")
-            {
-                ind=(*m_objects).size();
-                (*m_objects).push_back(new Block());
-                (*m_objects)[ind]->readObj(&fichier1);
-                (*m_objects)[ind]->ini();
-                (*m_objects)[ind]->setPos((*m_objects)[ind]->getPos()+Vector3D(0,0,m_startZ));
 
-                //actually we dont want that one (walls)
-                if((*m_objects)[ind]->getSize().Z>=1000)
-                {
-                    delete (*m_objects)[ind];
-                    (*m_objects).pop_back();
-                }
-            }
-            else if(read_name=="bonus")
-            {
-                ind=(*m_objects).size();
-                (*m_objects).push_back(new Bonus());
-                (*m_objects)[ind]->readObj(&fichier1);
-                (*m_objects)[ind]->ini();
-                (*m_objects)[ind]->setPos((*m_objects)[ind]->getPos()+Vector3D(0,0,m_startZ));
-            }
-            else if(read_name=="flux")
-            {
-                ind=(*m_objects).size();
-                (*m_objects).push_back(new Flux());
-                (*m_objects)[ind]->readObj(&fichier1);
-                (*m_objects)[ind]->ini();
-                (*m_objects)[ind]->setPos((*m_objects)[ind]->getPos()+Vector3D(0,0,m_startZ));
-            }
-            else if(read_name=="boss")
-            {
-                (*m_objects).push_back(new BossButan());
-                addingObject=true;
-            }
-            else if(read_name=="highestZ")
-            {
-                fichier1 >> curInt;
-                m_highestZ=m_startZ+curInt;
-            }
-            else if(read_name=="nextZ")
-            {
-                fichier1 >> curInt;
-                m_nextZ=m_startZ+curInt;
-            }
+            addingObject=addObjFromText(read_name,m_objects);
 
             if(addingObject)
             {
@@ -256,6 +121,16 @@ void Pattern::loadPattern()
                     delete (*m_objects)[ind];
                     (*m_objects).pop_back();
                 }
+            }
+            else if(read_name=="highestZ")
+            {
+                fichier1 >> curInt;
+                m_highestZ=m_startZ+curInt;
+            }
+            else if(read_name=="nextZ")
+            {
+                fichier1 >> curInt;
+                m_nextZ=m_startZ+curInt;
             }
 
             fichier1 >> cur_read;

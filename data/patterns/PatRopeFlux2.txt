@@ -1,0 +1,39 @@
+@ highestZ: 79
+@ nextZ: 87
+@ block: y: 6 z: -1 tx: 2 ty: 2 tz: 1 text: ../data/textures/metal.png name: noHookBlock
+@ block: y: 10 z: 1 tx: 6 ty: 2 tz: 1 text: ../data/textures/metal.png name: noHookBlock
+@ flux: y: 14 z: 4 tx: 2 ty: 2 tz: 9.5 text: ../data/textures/carpet_red.jpg
+@ block: x: 6 y: 20 z: 19 tx: 2 ty: 2 tz: 1 text: ../data/textures/metal.png name: noHookBlock
+@ block: x: -6 y: 20 z: 19 tx: 2 ty: 2 tz: 1 text: ../data/textures/metal.png name: noHookBlock
+@ bonus: x: 6 y: 20 z: 21 t: 1 name: health
+@ bonus: x: -6 y: 20 z: 21 t: 1 name: health
+@ flux: y: 25 z: 15 tx: 2 ty: 2 tz: 12 text: ../data/textures/carpet_red.jpg
+@ block: x: 6 y: 20 z: 36 tx: 2 ty: 2 tz: 1 text: ../data/textures/metal.png name: noHookBlock
+@ block: x: -6 y: 20 z: 36 tx: 2 ty: 2 tz: 1 text: ../data/textures/metal.png name: noHookBlock
+@ bonus: x: -6 y: 20 z: 38 t: 1 name: health
+@ bonus: x: 6 y: 20 z: 38 t: 1 name: health
+@ block: y: 33 z: 61 tx: 1.5 ty: 1.5 tz: 2 text: ../data/textures/bedrock.png name: block
+@ block: y: 46 z: 40 tx: 10 ty: 2 tz: 1 text: ../data/textures/metal.png name: noHookBlock
+@ block: x: -28 y: 33 z: 37 tx: 2 ty: 2 tz: 1 text: ../data/textures/metal.png name: noHookBlock
+@ block: x: -39 y: 10 z: 40 tx: 2 ty: 2 tz: 1 text: ../data/textures/metal.png name: noHookBlock
+@ block: x: -32 y: -9 z: 45 tx: 2 ty: 2 tz: 1 text: ../data/textures/metal.png name: noHookBlock
+@ block: x: -26 y: -29 z: 49 tx: 2 ty: 2 tz: 1 text: ../data/textures/metal.png name: noHookBlock
+@ block: x: -2 y: -42 z: 54 tx: 2 ty: 2 tz: 1 text: ../data/textures/metal.png name: noHookBlock
+@ block: x: 17 y: 41 z: 40 tx: 2 ty: 2 tz: 1 text: ../data/textures/metal.png name: noHookBlock
+@ block: x: 26 y: 35 z: 40 tx: 2 ty: 2 tz: 1 text: ../data/textures/metal.png name: noHookBlock
+@ flux: x: 26 y: 35 z: 42 tx: 1.5 ty: 1.5 tz: 12 text: ../data/textures/carpet_red.jpg
+@ block: x: 38 y: 8 z: 63 tx: 2 ty: 6.5 tz: 1 text: ../data/textures/bedrock.png name: block
+@ block: x: 29 y: -7 z: 64 tx: 2 ty: 6.5 tz: 1 text: ../data/textures/bedrock.png name: block
+@ block: x: 22 y: -25 z: 46 tx: 4 ty: 4 tz: 1 text: ../data/textures/metal.png name: noHookBlock
+@ flux: x: 20 y: -27 z: 48 tx: 2 ty: 2 tz: 7 text: ../data/textures/carpet_red.jpg
+@ block: x: 8 y: -35 z: 79 tx: 1.5 ty: 1.5 tz: 2.5 text: ../data/textures/bedrock.png name: block
+@ block: y: -5 z: 83 tx: 4 ty: 4 tz: 1 text: ../data/textures/metal.png name: noHookBlock
+@ bonus: y: -5 z: 85 t: 1 name: rez
+@ flux: x: -2 y: -42 z: 56 tx: 2 ty: 2 tz: 10.5 text: ../data/textures/carpet_red.jpg
+@ block: y: -14 z: 68 tx: 4 ty: 4 tz: 1 text: ../data/textures/metal.png name: noHookBlock
+@ block: y: -14 z: 70 t: 1 text: ../data/textures/carpet_red.jpg name: jumpBlock
+@ block: x: -2 y: -45 z: 55 tx: 4 tz: 13 text: ../data/textures/metal.png name: noHookBlock
+@ block: x: 37 y: 24 z: 42 tx: 2 ty: 2 tz: 1 text: ../data/textures/metal.png name: noHookBlock
+@ block: x: -2 y: -38 z: 70 tx: 2 ty: 2 tz: 1 text: ../data/textures/metal.png name: noHookBlock
+@ block: x: -1 y: -27 z: 86 tx: 1.5 ty: 1.5 tz: 2 text: ../data/textures/bedrock.png name: block
+@ flux: x: -14 y: -35 z: 57 t: 2.5 text: ../data/textures/carpet_red.jpg
