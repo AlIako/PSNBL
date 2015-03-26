@@ -21,6 +21,7 @@ class Object2D
 
         void setTexture(Texture* t){m_texture=t;}
         void setPos(Vector3D v) {m_position=v;}
+        void translate(double x, double y){m_position+=Vector3D(x,y,0);}
         void setSize(Vector3D v) {m_size=v;}
         void setName(std::string s) {m_name=s;}
         void setR(int r){m_r=r;}
@@ -32,6 +33,7 @@ class Object2D
         Texte getText(){return m_text;}
         double getAlpha() {return m_alpha;}
         Texture* getTexture(){return m_texture;}
+        Vector3D getPos() {return m_position;}
 
     protected:
         Texture* m_texture;

@@ -280,6 +280,126 @@ void Object::drawBox()
 
 }
 
+void Object::setButtons(vector<Button>* v,bool clear)
+{
+    if(clear)
+        v->clear();
+    int ind=0;
+    v->push_back(Button());
+    ind=v->size()-1;
+    (*v)[ind].addText(m_type);
+    (*v)[ind].setPos(Vector3D(-0.5,0.9,0));
+    (*v)[ind].ini();
+    (*v)[ind].setTexture(NULL);
+    v->push_back(Button());
+    ind=v->size()-1;
+    (*v)[ind].addText("position: ");
+    (*v)[ind].needwhat="vector";
+    (*v)[ind].addAuTexte(m_position);
+    (*v)[ind].vec_change=&m_position;
+    (*v)[ind].setPos(Vector3D(0.1,0.75,0));
+    (*v)[ind].ini();
+    (*v)[ind].setTexture(NULL);
+    v->push_back(Button());
+    ind=v->size()-1;
+    (*v)[ind].addText("taille: ");
+    (*v)[ind].needwhat="vector";
+    (*v)[ind].addAuTexte(m_size);
+    (*v)[ind].vec_change=&m_size;
+    (*v)[ind].setPos(Vector3D(0.1,0.7,0));
+    (*v)[ind].ini();
+    (*v)[ind].setTexture(NULL);
+    v->push_back(Button());
+    ind=v->size()-1;
+    (*v)[ind].addText("physical: ");
+    (*v)[ind].addAuTexte(m_physical);
+    (*v)[ind].setPos(Vector3D(0.1,0.65,0));
+    (*v)[ind].ini();
+    (*v)[ind].setTexture(NULL);
+    v->push_back(Button());
+    ind=v->size()-1;
+    (*v)[ind].addText("block: ");
+    (*v)[ind].addAuTexte(m_block);
+    (*v)[ind].setPos(Vector3D(0.1,0.55,0));
+    (*v)[ind].ini();
+    (*v)[ind].setTexture(NULL);
+    v->push_back(Button());
+    ind=v->size()-1;
+    (*v)[ind].addText("texture: ");
+    if(m_texture!=NULL)
+        (*v)[ind].addAuTexte(m_texture->getChemin());
+    else (*v)[ind].addAuTexte("N/A");
+    (*v)[ind].setPos(Vector3D(0.1,0.5,0));
+    (*v)[ind].ini();
+    (*v)[ind].setTexture(NULL);
+    /*
+    v->push_back(Bouton());
+    ind=v->size()-1;
+    (*v)[ind].texte="rota z: ";
+    (*v)[ind].needwhat="double";
+    (*v)[ind].dou_change=&m_rz;
+    (*v)[ind].addAuTexte(m_rz);
+    (*v)[ind].m_x=0.1;
+    (*v)[ind].m_y=0.45;*/
+    v->push_back(Button());
+    ind=v->size()-1;
+    (*v)[ind].addText("rotation: ");
+    (*v)[ind].needwhat="vector";
+    (*v)[ind].vec_change=&m_rotation;
+    (*v)[ind].addAuTexte(m_rotation);
+    (*v)[ind].setPos(Vector3D(0.1,0.45,0));
+    (*v)[ind].ini();
+    (*v)[ind].setTexture(NULL);
+    v->push_back(Button());
+    ind=v->size()-1;
+    (*v)[ind].addText("visible: ");
+    (*v)[ind].addAuTexte(m_visible);
+    (*v)[ind].setPos(Vector3D(0.1,0.4,0));
+    (*v)[ind].ini();
+    (*v)[ind].setTexture(NULL);
+
+
+    //mettre le bouton Ok en dessous des autres
+    double m_miny=1;
+    for(unsigned int i=0;i<v->size();i++)
+        if((*v)[i].getPos().Y<m_miny)
+            m_miny=(*v)[i].getPos().Y;
+
+    v->push_back(Button());
+    ind=v->size()-1;
+    (*v)[ind].addText("OK");
+    (*v)[ind].setPos(Vector3D(-0.5,m_miny-0.05,0));
+    (*v)[ind].ini();
+    (*v)[ind].setTexture(NULL);
+}
+
+void Object::checkClicks(vector<Button>* v,unsigned int id)
+{
+    if((*v)[id].getTxt().find("physical: ")!=string::npos)
+    {
+        if(m_physical)
+            m_physical=false;
+        else m_physical=true;
+        (*v)[id].setText("physical: ");
+        (*v)[id].addAuTexte(m_physical);
+    }
+    else if((*v)[id].getTxt().find("block: ")!=string::npos)
+    {
+        if(m_block)
+            m_block=false;
+        else m_block=true;
+        (*v)[id].setText("block: ");
+        (*v)[id].addAuTexte(m_block);
+    }
+    else if((*v)[id].getTxt().find("visible: ")!=string::npos)
+    {
+        if(m_visible)
+            m_visible=false;
+        else m_visible=true;
+        (*v)[id].setText("visible: ");
+        (*v)[id].addAuTexte(m_visible);
+    }
+}
 string Object::writeObj()
 {
 

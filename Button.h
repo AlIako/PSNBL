@@ -27,9 +27,24 @@ class Button: public Object2D
         bool getClicable(){return m_clicable;}
         bool isSelected(){return m_selected;}
 
+        void addAuTexte(int v, bool delprec=true);
+        void addAuTexte(double v, bool delprec=true);
+        void addAuTexte(string v, bool delprec=true);
+        void addAuTexte(Vector3D v, bool delprec=true);
+        void applyChangesVariable(string s);
+        void applyChangesVariable(double d);
+        void applyChangesVariable(int i);
+        void applyChangesVariable(Vector3D v);
+
+        string getTxt(){return text.getText().getTexte();}
 
 
         Object2D text;
+        string needwhat;
+        string* str_change;
+        double* dou_change;
+        int* int_change;
+        Vector3D* vec_change;
 
 
     private:

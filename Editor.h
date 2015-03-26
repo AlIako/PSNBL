@@ -26,6 +26,11 @@ class Editor
 
     void handleTracer();
     void moveObj(Vector3D key);
+    string choseFile(string what,string c, bool fullname, string type1, string type2="", string type3="");
+    int entrerNombre(int erg);
+    string entrerString(string *m);
+    Vector3D modifVector(Vector3D *v, string nom, double pas);
+    Vector3D modifVector(Vector3D v, string nom, double pas);
 
 
     void processHits(GLint hits, GLuint buffer[]);
@@ -53,12 +58,14 @@ class Editor
     GTime since_last_frame;
     double ft;//function time
 
+    vector<Button> buttons;
     bool justgrab;
     bool grabCursor;
     Interaction interaction;
 
     int m_fps;
     GTime m_fpsTime;
+    double yboutonstexture;
 
     Vector3D posCur;
     Object* curObj;

@@ -10,6 +10,7 @@
 #include "Gsounds.h"
 #include "Effects.h"
 #include "Tracer.h"
+#include "Button.h"
 class Object;
 #include "Collision.h"
 
@@ -30,6 +31,9 @@ class Object
 
     virtual void action(int type, Vector3D v);
     virtual void action(int type, Object* o=NULL);
+
+    virtual void setButtons(vector<Button>* v,bool clear=true);
+    virtual void checkClicks(vector<Button>* v,unsigned int id);
 
 
     void move(Vector3D v) {m_position+=v;}
@@ -108,6 +112,7 @@ class Object
     double getSpeed(){return m_speed;}
     int getDeathCause() {return m_deathCause;}
     bool isActive() {return m_active;}
+    Texture* getTexture() {return m_texture;}
 
     protected:
     Texture* m_texture;

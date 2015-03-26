@@ -16,6 +16,7 @@ class Texte
     void ini(int largeur, int hauteur,freetype::font_data* font);
     void ini(int largeur, int hauteur);
     void setTexte(std::string t);
+    string getTexte(){return m_texte;}
     int getSize();
     float getTextWidth();
     void draw(int r, int g, int b);

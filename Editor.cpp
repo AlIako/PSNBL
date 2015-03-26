@@ -23,6 +23,9 @@ void Editor::handleTracer()
 
 void Editor::ini(string path)
 {
+    objSelected=-1;
+    yboutonstexture=0;
+
     m_path=path;
     m_fps=0;
     m_fpsTime.reset();
@@ -104,6 +107,20 @@ void Editor::play(string path)
                 break;
 
                 case SDL_MOUSEBUTTONUP:
+                if(event.button.button==SDL_BUTTON_WHEELUP)
+                {
+                    //if(what=="une texture")
+                        yboutonstexture-=0.1;
+                    //for(unsigned int i=0;i<bout.size();i++)
+                    //    bout[i].bouger(0,-0.1);
+                }
+                else if(event.button.button==SDL_BUTTON_WHEELDOWN)
+                {
+                    //if(what=="une texture")
+                        yboutonstexture+=0.1;
+                    //for(unsigned int i=0;i<bout.size();i++)
+                    //    bout[i].bouger(0,0.1);
+                }
                 if(event.button.button==SDL_BUTTON_LEFT)
                 {
                     SDL_ShowCursor(SDL_ENABLE);
@@ -365,6 +382,7 @@ void Editor::play(string path)
         m_video->update(ft);
 
         draw();
+        Video::getInstance()->afterDraw();
 
         SDL_Delay(10);
 
@@ -431,8 +449,6 @@ void Editor::draw(bool toPick)
         m_video->matrixProjection();
     }
 
-    m_video->afterDraw();
-
 }
 
 void Editor::processHits(GLint hits, GLuint buffer[])
@@ -470,6 +486,8 @@ void Editor::pick(double x, double y)
     bool pickFace=false;
 
     draw(true);
+    Video::getInstance()->afterDraw();
+
     objSelected=0;
     double mouse_x=x;
     double mouse_y=y;

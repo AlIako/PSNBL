@@ -113,3 +113,70 @@ void Button::centerText(bool c)
 
 
 
+void Button::addAuTexte(int v, bool delprec)
+{
+    /*if(delprec)
+        textefinal=texte;*/
+    stringstream ss;
+    ss << text.getText().getTexte() << v;
+    text.setText(ss.str());
+}
+void Button::addAuTexte(double v, bool delprec)
+{
+    /*if(delprec)
+        textefinal=texte;*/
+    stringstream ss;
+    ss << text.getText().getTexte() << v;
+    text.setText(ss.str());
+}
+void Button::addAuTexte(string v, bool delprec)
+{
+    /*if(delprec)
+        textefinal=texte;*/
+    stringstream ss;
+    ss << text.getText().getTexte() << v;
+    text.setText(ss.str());
+}
+void Button::addAuTexte(Vector3D v, bool delprec)
+{
+    /*if(delprec)
+        textefinal=texte;*/
+    stringstream ss;
+    ss << text.getText().getTexte() << v.X << ", " << v.Y << ", " << v.Z;
+    text.setText(ss.str());
+}
+
+void Button::applyChangesVariable(string s)
+{
+    if(str_change!=NULL)
+        *str_change=s;
+    addAuTexte(s);
+    ini();
+}
+
+void Button::applyChangesVariable(double d)
+{
+    if(dou_change!=NULL)
+        *dou_change=d;
+    addAuTexte(d);
+    ini();
+}
+
+void Button::applyChangesVariable(int i)
+{
+    if(int_change!=NULL)
+        *int_change=i;
+    addAuTexte(i);
+    ini();
+}
+
+
+void Button::applyChangesVariable(Vector3D v)
+{
+    if(vec_change!=NULL)
+        *vec_change=v;
+    addAuTexte(v);
+    ini();
+}
+
+
