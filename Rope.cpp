@@ -37,7 +37,7 @@ void Rope::update(double functionTime)
         m_direction=(m_end-m_start).normalize();
 
         //collide
-        if(m_collided)
+        if(m_collided && (collidedWithType("block") || collidedWithType("wall")))
         {
             damageCollided();
             if(collidedWithHookable())
@@ -118,7 +118,7 @@ void Rope::pullMe(Object* o)
 {
     //pull your player
     double distToOutside=(m_end-o->getPos()).length()-m_distance;
-    //distToOutside=(m_end-o->getPos()).length()-(m_distance-2);
+    //distToOutside=(m_end-o->getPos()).length()-(m_distance-5);
 
     m_smallBoost=true;
     Vector3D dirToEnd=(m_end-o->getPos()).normalize();
@@ -218,11 +218,13 @@ void Rope::pullMe(Object* o)
         newVel/=3.0;
 
         //apply
-        o->setVel(newVel.normalize()*velNorm);
         //o->setVel((o->getVel()+newVel.normalize()*velNorm).normalize()*velNorm);
 
         if(m_smallBoost)//dont teleport back at first, we want the player to have a small boost
         {
+            o->setVel(newVel.normalize()*velNorm);
+
+
             Vector3D savePos=o->getPos();
 
             double oldDis=(o->getPos()-m_end).length();
@@ -244,6 +246,10 @@ void Rope::pullMe(Object* o)
                 //Tracer::getInstance()->trace("rope","setpos denied.");
                 o->setPos(savePos);
             }
+        }
+        else
+        {
+            o->setVel(o->getVel()+ft*rope/50.0);
         }
     }
     else m_smallBoost=true;//player back in->small boost finished

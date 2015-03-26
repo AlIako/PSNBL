@@ -3,6 +3,23 @@ Editor::Editor()
 {
 }
 
+void Editor::handleTracer()
+{
+    //traces
+    vector<Trace*>* traces=Tracer::getInstance()->getTraces();
+    if(traces->size()>0)
+    {
+        for(unsigned int i=0;i<traces->size();i++)
+        {
+            if(!(*traces)[i]->sent)
+            {
+                (*traces)[i]->sent=true;
+                m_chat.newMessage((*traces)[i]->msg,-1);
+            }
+        }
+        Tracer::getInstance()->afterFetch();
+    }
+}
 
 void Editor::ini(string path)
 {
@@ -14,15 +31,20 @@ void Editor::ini(string path)
 
     //video
     m_video=Video::getInstance();
-    SDL_ShowCursor(SDL_DISABLE);//no cursor
-    SDL_WM_GrabInput(SDL_GRAB_ON);
+    //SDL_ShowCursor(SDL_DISABLE);//no cursor
+    //SDL_WM_GrabInput(SDL_GRAB_ON);
 
     m_camera.setDist(15);
 
+    Tracer::getInstance()->enable();
     //sound
     Gsounds::getInstance()->loads();
 
+    //chat
+    m_chat.activate(m_video->getWidth(), m_video->getHeight(), "../data/fonts/arial.TTF");
+    m_chat.setSide(0);
 
+    //map
     Map::getInstance()->createWalls();
     Map::getInstance()->translateAll(Vector3D(0,0,-15));
     Map::getInstance()->loadPat(path);
@@ -38,9 +60,12 @@ void Editor::ini(string path)
     m_camera.setCible(curObj);
     m_camera.setMode("editor");
 
+    Lighting* l=Lighting::getInstance();
+    l->setActive(true);
+    l->shineAmbiant();
 
 
-
+    m_objects=Map::getInstance()->getObjects();
 
 
     m_video->getFade()->startFadeOut();
@@ -74,20 +99,32 @@ void Editor::play(string path)
                 break;
 
                 case SDL_MOUSEMOTION:
-                m_camera.onMouseMotion(event.motion);
+                if(interaction.appuye())
+                    m_camera.onMouseMotion(event.motion);
                 break;
 
                 case SDL_MOUSEBUTTONUP:
                 if(event.button.button==SDL_BUTTON_LEFT)
                 {
-                    Map::getInstance()->getObjects()->push_back(curObj);
+                    SDL_ShowCursor(SDL_ENABLE);
+                    SDL_WM_GrabInput(SDL_GRAB_OFF);
+                    if(justgrab)
+                        justgrab=false;
+                    else
+                    {
+                        //appuyer sur interface n shit
+                    }
+                    interaction.clickGauche(false,event.button.x,event.button.y);
+                    if(!interaction.grab() && interaction.clicked() && playLoop/* && !touchebouton*/)
+                        pick(event.button.x,event.button.y);
+                    /*Map::getInstance()->getObjects()->push_back(curObj);
                     Object* lastObj=curObj;
                     curObj=new Block();
                     curObj->setPos(lastObj->getPos());
                     curObj->setSize(lastObj->getSize());
                     curObj->setName(lastObj->getName());
                     curObj->ini();
-                    m_camera.setCible(curObj);
+                    m_camera.setCible(curObj);*/
                 }
                 if(event.button.button==SDL_BUTTON_RIGHT)
                 {
@@ -96,6 +133,22 @@ void Editor::play(string path)
                     m_camera.zoom(0.7);
                 else if(event.button.button==SDL_BUTTON_WHEELDOWN)
                     m_camera.zoom(-0.7);
+                break;
+                case SDL_MOUSEBUTTONDOWN:
+                if(1)
+                {
+                    bool surbutton=false;
+                    /*for(unsigned int i=0;i<interf_editor.size() && !surbutton;i++)
+                        if(interf_editor[i].click(event.button.x,event.button.y))
+                            surbutton=true;*/
+                    if(!surbutton)
+                    {
+                        interaction.clickGauche(true,event.button.x,event.button.y);
+                        SDL_ShowCursor(SDL_DISABLE);//pas de curseur
+                        SDL_WM_GrabInput(SDL_GRAB_ON);
+                        justgrab=true;
+                    }
+                }
                 break;
 
                 case SDL_KEYDOWN:
@@ -303,47 +356,15 @@ void Editor::play(string path)
 
         //update stuff
         updateTimes();
+        handleTracer();
+
+        interaction.update();
 
         Gsounds::getInstance()->update(m_camera.getPos().toLeft(),Vector3D(0,0,0),m_camera.getDir().toLeft(),Vector3D(0,0,1));
 
         m_video->update(ft);
 
-        //draw
-        m_video->beforeDraw();
-
-        m_camera.look();
-
-
-        //origin
-        glDisable(GL_TEXTURE_2D);
-        glColor4b(255,0,0,255);
-        glTranslated(0,0,0);
-        glBegin(GL_LINES);
-        glVertex3d(0,0,0);
-        glVertex3d(1,0,0);
-        glVertex3d(0,0,0);
-        glVertex3d(0,1,0);
-        glVertex3d(0,0,0);
-        glVertex3d(0,0,1);
-        glEnd();
-        glTranslated(0,0,0);
-        glEnable(GL_TEXTURE_2D);
-
-
-        Map::getInstance()->draw();
-
-        if(showCur)
-            curObj->draw();
-
-        //m_interface.draw();
-
-        //fading
-        m_video->matrixOrtho2D();
-        m_video->getFade()->draw();
-        m_video->matrixProjection();
-
-        m_video->afterDraw();
-
+        draw();
 
         SDL_Delay(10);
 
@@ -365,6 +386,240 @@ void Editor::play(string path)
 
     close();
 }
+
+void Editor::draw(bool toPick)
+{
+    //draw
+    m_video->beforeDraw();
+
+    m_camera.look();
+
+    if(!toPick)
+    {
+        Lighting::getInstance()->shineAmbiant();
+        Lighting::getInstance()->shineAll();
+        //origin
+        glDisable(GL_TEXTURE_2D);
+        glColor4b(255,0,0,255);
+        glTranslated(0,0,0);
+        glBegin(GL_LINES);
+        glVertex3d(0,0,0);
+        glVertex3d(1,0,0);
+        glVertex3d(0,0,0);
+        glVertex3d(0,1,0);
+        glVertex3d(0,0,0);
+        glVertex3d(0,0,1);
+        glEnd();
+        glTranslated(0,0,0);
+        glEnable(GL_TEXTURE_2D);
+
+    }
+
+    Map::getInstance()->draw();
+
+    if(!toPick)
+    {
+        if(showCur)
+            curObj->draw();
+
+        //m_interface.draw();
+        m_chat.draw();
+
+        //fading
+        m_video->matrixOrtho2D();
+        m_video->getFade()->draw();
+        m_video->matrixProjection();
+    }
+
+    m_video->afterDraw();
+
+}
+
+void Editor::processHits(GLint hits, GLuint buffer[])
+{
+    GLuint  names;
+    GLuint  *ptr;
+
+    std::cout << "hits = " << hits << std::endl;
+    ptr = (GLuint *)buffer;
+    for (int i = 0; i < hits; i++)
+    {
+        //cerr << buffer[i*4] << endl;
+        names = *ptr;
+        std::cout << " number of names for this hit = " << names << std::endl;
+        ptr++;
+        std::cout << "  z1 is " << (float) *ptr / 0x7ffffff;
+        ptr++;
+        std::cout << " z2 is " << (float) *ptr / 0x7ffffff << std::endl;
+        ptr++;
+        std::cout << "   NAMES ";
+        for (unsigned int j = 0; j < names; j++)
+        {
+            std::cout << *ptr << std::endl;
+            int number=*ptr;
+            printf("number:%d.",number);
+            ptr++;
+        }
+        std::cout << std::endl;
+    }
+    std::cout << "\n-----------------------------------------\n" << std::endl;
+
+}
+void Editor::pick(double x, double y)
+{
+    bool pickFace=false;
+
+    draw(true);
+    objSelected=0;
+    double mouse_x=x;
+    double mouse_y=y;
+    /*mouse_x=640/2;
+    mouse_y=480/2;*/
+	GLuint	buffer[2048];// Set Up A Selection Buffer
+	GLint	hits;// The Number Of Objects That We Selected
+
+	// The Size Of The Viewport. [0] Is <x>, [1] Is <y>, [2] Is <length>, [3] Is <width>
+	GLint	viewport[4];
+
+	// This Sets The Array <viewport> To The Size And Location Of The Screen Relative To The Window
+	glGetIntegerv(GL_VIEWPORT, viewport);
+	glSelectBuffer(2048, buffer);// Tell OpenGL To Use Our Array For Selection
+
+	// Puts OpenGL In Selection Mode. Nothing Will Be Drawn.  Object ID's and Extents Are Stored In The Buffer.
+	glRenderMode(GL_SELECT);
+    glInitNames();// Initializes The Name Stac
+	glPushName(0);// Push 0 (At Least One Entry) Onto The Stack
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+
+	// This Creates A Matrix That Will Zoom Up To A Small Portion Of The Screen, Where The Mouse Is.
+	gluPickMatrix((GLdouble) mouse_x, (GLdouble) (viewport[3]-mouse_y), 1.0f, 1.0f, viewport);
+
+	// Apply The Perspective Matrix
+	gluPerspective(70, (GLfloat) (viewport[2]-viewport[0])/(GLfloat) (viewport[3]-viewport[1]), 0.01, 1000);
+	glMatrixMode(GL_MODELVIEW);
+
+	if(pickFace==false)
+	{
+        for(unsigned int i=0;i<(*m_objects).size();i++)
+        {
+            glLoadName(i);
+            (*m_objects)[i]->draw();
+        }
+        glEnd();
+
+        glMatrixMode(GL_PROJECTION);
+        glPopMatrix();
+        glMatrixMode(GL_MODELVIEW);
+        hits=glRenderMode(GL_RENDER);// Switch To Render Mode, Find Out How Many
+        // Objects Were Drawn Where The Mouse Was
+        int	choose = buffer[3];// Make Our Selection The First Object
+        int depth = buffer[1];// Store How Far Away It Is
+        if (hits > 0)// If There Were More Than 0 Hits
+        {
+            processHits(hits,buffer);
+
+            for (int loop = 1; loop < hits; loop++)// Loop Through All The Detected Hits
+            {
+                // If This Object Is Closer To Us Than The One We Have Selected
+                if (buffer[loop*4+1] < GLuint(depth))
+                {
+                    choose = buffer[loop*4+3];// Select The Closer Object
+                    depth = buffer[loop*4+1];// Store How Far Away It Is
+                }
+            }
+            objSelected=choose;
+        }
+        else  objSelected=-1;
+        if(objSelected<0 || objSelected>=(int)(*m_objects).size())
+            objSelected=-1;
+        menuObj();
+	}
+	else
+	{
+	    int indexpicked=-1;
+	    int index=0;//0 1 2 3 4 5// 6 7 8 9 10 11//
+        for(unsigned int i=0;i<(*m_objects).size();i++)
+        {
+            if((*m_objects)[i]->getType()=="block")
+            {
+                glLoadName(index);
+                glPushMatrix();
+                glTranslated((*m_objects)[i]->getPos().X,(*m_objects)[i]->getPos().Y,(*m_objects)[i]->getPos().Z+(*m_objects)[i]->getSize().Z);
+                glRotated((*m_objects)[i]->getRot().X,1,0,0);
+                glRotated((*m_objects)[i]->getRot().Y,0,1,0);
+                glRotated((*m_objects)[i]->getRot().Z,0,0,1);
+                glBegin(GL_QUADS);
+                (*m_objects)[i]->action(100);
+                glEnd();
+                index++;
+                glLoadName(index);
+                glBegin(GL_QUADS);
+                (*m_objects)[i]->action(101);
+                glEnd();
+                index++;
+                glLoadName(index);
+                glBegin(GL_QUADS);
+                (*m_objects)[i]->action(102);
+                glEnd();
+                index++;
+                glLoadName(index);
+                glBegin(GL_QUADS);
+                (*m_objects)[i]->action(103);
+                glEnd();
+                index++;
+                glLoadName(index);
+                glBegin(GL_QUADS);
+                (*m_objects)[i]->action(104);
+                glEnd();
+                index++;
+                glLoadName(index);
+                glBegin(GL_QUADS);
+                (*m_objects)[i]->action(105);
+                glEnd();
+                index++;
+                glPopMatrix();
+            }
+            else
+                index+=6;
+
+        }
+        glEnd();
+
+        glMatrixMode(GL_PROJECTION);
+        glPopMatrix();
+        glMatrixMode(GL_MODELVIEW);
+        hits=glRenderMode(GL_RENDER);// Switch To Render Mode, Find Out How Many
+        // Objects Were Drawn Where The Mouse Was
+        int	choose = buffer[3];// Make Our Selection The First Object
+        int depth = buffer[1];// Store How Far Away It Is
+        if (hits > 0)// If There Were More Than 0 Hits
+        {
+            processHits(hits,buffer);
+
+            for (int loop = 1; loop < hits; loop++)// Loop Through All The Detected Hits
+            {
+                // If This Object Is Closer To Us Than The One We Have Selected
+                if (buffer[loop*4+1] < GLuint(depth))
+                {
+                    choose = buffer[loop*4+3];// Select The Closer Object
+                    depth = buffer[loop*4+1];// Store How Far Away It Is
+                }
+            }
+            indexpicked=choose;
+        }
+        else  indexpicked=-1;
+        /*cerr<<"indexpicked: "<<indexpicked;
+        if(indexpicked!=-1)
+        {
+            int idObj=floor(indexpicked/6);
+            (*m_objects)[idObj]->specific(NULL,40+indexpicked-idObj*6);
+            cerr<<"picked face from "<< (*m_objects)[idObj]->getType()<<", id: "<<(*m_objects)[idObj]->getId()<<endl;
+        }*/
+	}
+}
+
 
 void Editor::updateTimes()
 {

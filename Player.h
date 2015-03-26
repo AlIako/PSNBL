@@ -72,6 +72,8 @@ class Player: public Object
     vector<Spell*> m_spells;
 
     bool testMode;
+
+    bool m_inLava;
 };
 
 #endif // PLAYER_H_INCLUDED

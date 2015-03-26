@@ -7,8 +7,16 @@ class Block: public Object
     public:
     Block();
 
+    void action(int type, Object* o=NULL);
+
     virtual void ini();
     virtual void draw();
+    void drawRight();
+    void drawFront();
+    void drawLeft();
+    void drawBack();
+    void drawTop();
+    void drawBot();
 
     virtual string writeObj();
 

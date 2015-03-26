@@ -9,6 +9,8 @@
 #include "GTime.h"
 #include "Interface.h"
 #include "SpellRope.h"
+#include "Chat.h"
+#include "Interaction.h"
 
 using namespace std;
 
@@ -18,10 +20,19 @@ class Editor
     Editor();
 
     void ini(string path);
+    void draw(bool toPick=false);
     void play(string path);
     void updateTimes();
 
+    void handleTracer();
     void moveObj(Vector3D key);
+
+
+    void processHits(GLint hits, GLuint buffer[]);
+    void pick(double x, double y);
+
+    void menuObj();
+
 
     void close();
     ~Editor();
@@ -34,11 +45,17 @@ class Editor
 
     Video* m_video;
     Camera m_camera;
+    Chat m_chat;
+
+    std::vector<Object*>* m_objects;
+    int objSelected;
 
     GTime since_last_frame;
     double ft;//function time
 
+    bool justgrab;
     bool grabCursor;
+    Interaction interaction;
 
     int m_fps;
     GTime m_fpsTime;

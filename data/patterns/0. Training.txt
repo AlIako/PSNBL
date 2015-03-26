@@ -1,0 +1,16 @@
+@ noWalls!
+@ startpos: 2 3 37
+@ block: tx: 25.5 ty: 13 tz: 10.5 text: ../data/textures/metal2.jpg name: block
+@ block: z: 21 tx: 25.5 ty: 13 tz: 1 text: ../data/textures/metal_plate.jpg name: block
+@ block: y: 26 z: -23 tx: 25.5 ty: 13 tz: 11.5 text: ../data/textures/metal_plate.jpg name: block
+@ block: x: -26 y: 46 z: -4 tx: 1 ty: 59.5 tz: 31 text: ../data/textures/metal2.jpg name: block
+@ block: x: 26 y: 46 z: -4 tx: 1 ty: 59.5 tz: 31 text: ../data/textures/metal2.jpg name: block
+@ block: x: -16 y: 119 z: -4 tx: 9 ty: 54.5 tz: 31 text: ../data/textures/metal2.jpg name: block
+@ block: x: 16 y: 83 z: -4 tx: 9 ty: 18.5 tz: 31 text: ../data/textures/metal2.jpg name: block
+@ block: y: 52 z: -17 tx: 25.5 ty: 13 tz: 10 text: ../data/textures/metal2.jpg name: block
+@ block: y: 52 z: 3 tx: 25.5 ty: 13 tz: 1 text: ../data/textures/metal_plate.jpg name: block
+@ block: y: -14 z: 23 tx: 26 ty: 1 tz: 17.5 text: ../data/textures/metal2.jpg name: block
+@ block: x: 7 y: 69 z: 59 tx: 50 ty: 100 tz: 1 text: ../data/textures/metal3.jpg name: block
+@ lighter: x: 2 y: 3 z: 27 t: 1 name: lighter at: 0.001 r: 1 g: 1 b: 1
+@ block: x: 32 y: 104 z: -4 tx: 25 ty: 3 tz: 31.5 text: ../data/textures/bedrock.png name: block
+@ block: x: 21 y: 131 z: -4 tx: 34.5 ty: 3 tz: 31.5 text: ../data/textures/bedrock.png name: block

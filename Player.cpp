@@ -34,11 +34,14 @@ Player::Player()
     m_deathCause=0;
 
     testMode=false;
-    //testMode=true;
+    testMode=true;
+
+    m_inLava=false;
 }
 
 void Player::update(double functionTime)
 {
+    m_inLava=false;
     if(m_collided)
     {
         //m_jumping=false;
@@ -101,6 +104,7 @@ void Player::update(double functionTime)
             }
             else if(m_colliding[i]->getType()=="lava")
             {
+                m_inLava=true;
                 m_deathCause=1;//burn
 
                 //if deep enough, go back up
@@ -176,7 +180,7 @@ bool Player::jump()
 {
     if(m_life>0)
     {
-        if((m_onTopOf!=NULL && !m_jumping)/* || ropeHooked()*/ || testMode)
+        if((m_onTopOf!=NULL && !m_jumping) || m_inLava /* || ropeHooked()*/ || testMode)
         {
             m_jumping=true;
 

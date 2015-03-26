@@ -16,6 +16,7 @@ Object::Object()
     m_gravity=true;
     m_physical=false;
 
+    m_selected=false;
     m_transparency=false;
     m_block=true;
     m_destructible=false;
@@ -236,6 +237,48 @@ bool Object::onGround()
 
 
 
+void Object::drawBox()
+{
+    glDisable(GL_TEXTURE_2D);
+    Lighting::getInstance()->glDisableLighting();
+
+    glColor3ub(255,0,0);
+    glPushMatrix();
+    glTranslated(m_position.X,m_position.Y,m_position.Z+m_size.Z);
+    glBegin(GL_LINES);
+    glVertex3d(-m_size.X,-m_size.Y,-m_size.Z);
+    glVertex3d(m_size.X,-m_size.Y,-m_size.Z);
+    glVertex3d(-m_size.X,-m_size.Y,-m_size.Z);
+    glVertex3d(-m_size.X,m_size.Y,-m_size.Z);
+    glVertex3d(m_size.X,-m_size.Y,-m_size.Z);
+    glVertex3d(m_size.X,m_size.Y,-m_size.Z);
+    glVertex3d(-m_size.X,m_size.Y,-m_size.Z);
+    glVertex3d(m_size.X,m_size.Y,-m_size.Z);
+    glVertex3d(-m_size.X,-m_size.Y,m_size.Z);
+    glVertex3d(m_size.X,-m_size.Y,m_size.Z);
+    glVertex3d(-m_size.X,-m_size.Y,m_size.Z);
+    glVertex3d(-m_size.X,m_size.Y,m_size.Z);
+    glVertex3d(m_size.X,-m_size.Y,m_size.Z);
+    glVertex3d(m_size.X,m_size.Y,m_size.Z);
+    glVertex3d(-m_size.X,m_size.Y,m_size.Z);
+    glVertex3d(m_size.X,m_size.Y,m_size.Z);
+
+    glVertex3d(-m_size.X,-m_size.Y,-m_size.Z);
+    glVertex3d(-m_size.X,-m_size.Y,m_size.Z);
+    glVertex3d(-m_size.X,m_size.Y,-m_size.Z);
+    glVertex3d(-m_size.X,m_size.Y,m_size.Z);
+    glVertex3d(m_size.X,-m_size.Y,-m_size.Z);
+    glVertex3d(m_size.X,-m_size.Y,m_size.Z);
+    glVertex3d(m_size.X,m_size.Y,-m_size.Z);
+    glVertex3d(m_size.X,m_size.Y,m_size.Z);
+
+    glEnd();
+    glPopMatrix();
+    glColor3ub(255,255,255);
+    Lighting::getInstance()->glEnableLighting();
+    glEnable(GL_TEXTURE_2D);
+
+}
 
 string Object::writeObj()
 {

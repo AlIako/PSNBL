@@ -79,7 +79,7 @@ void Lava::update(double functionTime)
         if(Gsounds::getInstance()->getSound(bubbleSound)!=NULL)
         {
             Gsounds::getInstance()->getSound(bubbleSound)->setPos(
-                (Vector3D(myIntRand(0,floor(m_size.X*2)),myIntRand(0,floor(m_size.X*2)),-1)+
+                (Vector3D(myIntRand(0,floor(m_size.X*2)),myIntRand(0,floor(m_size.X*2)),-1)+m_position+
                  Vector3D(-m_size.X,-m_size.Y,m_size.Z*2)).toLeft());
 
             Gsounds::getInstance()->play(bubbleSound,1,30,100);

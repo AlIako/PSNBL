@@ -34,6 +34,7 @@ Tracer::Tracer()
     m_channels.push_back("fade");
     m_channels.push_back("warning");
     m_channels.push_back("light");
+    m_channels.push_back("editor");
     //m_channels.push_back("boss");
     //m_channels.push_back("debug");
 

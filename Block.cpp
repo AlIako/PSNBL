@@ -72,6 +72,9 @@ void Block::draw()
         const Vector3D m_taille=m_size;
         Lighting::getInstance()->glEnableLighting();
 
+        if(m_selected)
+            drawBox();
+
         glColor4ub(255,255,255,255);
 
         if(m_texture!=NULL)
@@ -160,6 +163,70 @@ void Block::draw()
     }
 }
 
+void Block::action(int type, Object* o)
+{
+    if(type==100)
+        drawRight();
+    else if(type==101)
+        drawFront();
+    else if(type==102)
+        drawLeft();
+    else if(type==103)
+        drawBack();
+    else if(type==104)
+        drawTop();
+    else if(type==105)
+        drawBot();
+}
+
+void Block::drawRight()
+{
+    glNormal3d(0.0,1.0,0.0);
+    glTexCoord2d(1,0);    glVertex3d(m_size.X,m_size.Y,m_size.Z);
+    glTexCoord2d(1,1);    glVertex3d(m_size.X,m_size.Y,-m_size.Z);
+    glTexCoord2d(0,1);    glVertex3d(-m_size.X,m_size.Y,-m_size.Z);
+    glTexCoord2d(0,0);    glVertex3d(-m_size.X,m_size.Y,m_size.Z);
+}
+void Block::drawFront()
+{
+    glNormal3d(1.0,0.0,0.0);
+    glTexCoord2d(1,0);    glVertex3d(m_size.X,-m_size.Y,m_size.Z);
+    glTexCoord2d(1,1);    glVertex3d(m_size.X,-m_size.Y,-m_size.Z);
+    glTexCoord2d(0,1);    glVertex3d(m_size.X,m_size.Y,-m_size.Z);
+    glTexCoord2d(0,0);    glVertex3d(m_size.X,m_size.Y,m_size.Z);
+}
+void Block::drawLeft()
+{
+    glNormal3d(0.0,-1.0,0.0);
+    glTexCoord2d(0,1);    glVertex3d(-m_size.X,-m_size.Y,m_size.Z);
+    glTexCoord2d(0,0);    glVertex3d(-m_size.X,-m_size.Y,-m_size.Z);
+    glTexCoord2d(1,0);    glVertex3d(m_size.X,-m_size.Y,-m_size.Z);
+    glTexCoord2d(1,1);    glVertex3d(m_size.X,-m_size.Y,m_size.Z);
+}
+void Block::drawBack()
+{
+    glNormal3d(-1.0,0.0,0.0);
+    glTexCoord2d(0,1);    glVertex3d(-m_size.X,m_size.Y,m_size.Z);
+    glTexCoord2d(0,0);    glVertex3d(-m_size.X,m_size.Y,-m_size.Z);
+    glTexCoord2d(1,0);    glVertex3d(-m_size.X,-m_size.Y,-m_size.Z);
+    glTexCoord2d(1,1);    glVertex3d(-m_size.X,-m_size.Y,m_size.Z);
+}
+void Block::drawTop()
+{
+    glNormal3d(0.0,0.0,1.0);
+    glTexCoord2d(0,1);    glVertex3d(m_size.X,m_size.Y,m_size.Z);
+    glTexCoord2d(0,0);    glVertex3d(-m_size.X,m_size.Y,m_size.Z);
+    glTexCoord2d(1,0);    glVertex3d(-m_size.X,-m_size.Y,m_size.Z);
+    glTexCoord2d(1,1);    glVertex3d(m_size.X,-m_size.Y,m_size.Z);
+}
+void Block::drawBot()
+{
+    glNormal3d(0.0,0.0,-1.0);
+    glTexCoord2d(0,1);    glVertex3d(m_size.X,m_size.Y,-m_size.Z);
+    glTexCoord2d(1,1);    glVertex3d(m_size.X,-m_size.Y,-m_size.Z);
+    glTexCoord2d(1,0);    glVertex3d(-m_size.X,-m_size.Y,-m_size.Z);
+    glTexCoord2d(0,0);    glVertex3d(-m_size.X,m_size.Y,-m_size.Z);
+}
 
 string Block::writeObj()
 {

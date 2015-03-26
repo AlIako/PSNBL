@@ -22,6 +22,7 @@ class Object
     virtual void ini();
     virtual void draw();
     virtual void drawBlur();
+    void drawBox();
 
     bool collision(Object* o);
 
@@ -80,6 +81,7 @@ class Object
     void setFT(int f){ft=f;}
     void setDeathCause(int d){m_deathCause=d;}
     void setActive(bool a){m_active=a;}
+    void select(bool s){m_selected=s;}
 
     //add
     void addVel(Vector3D v){m_velocity+=v;}
@@ -128,6 +130,7 @@ class Object
     double m_life;
     double m_lifeMax;
     bool m_active;
+    bool m_selected;
 
     double m_speed;
 
