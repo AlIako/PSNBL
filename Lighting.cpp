@@ -1,5 +1,5 @@
 #include "Lighting.h"
-
+#include "Tracer.h"
 
 Lighting* Lighting::m_instance = new Lighting();
 

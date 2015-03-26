@@ -31,6 +31,7 @@ class Object2D
         std::string getName() {return m_name;}
         Texte getText(){return m_text;}
         double getAlpha() {return m_alpha;}
+        Texture* getTexture(){return m_texture;}
 
     protected:
         Texture* m_texture;

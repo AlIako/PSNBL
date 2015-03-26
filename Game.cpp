@@ -76,7 +76,7 @@ void Game::ini()
     l->setActive(true);
     l->shineAmbiant();
 
-    for(int i=0;i<4-3;i++)
+    /*for(int i=0;i<4-3;i++)
     {
         l->addLight();
         l->setX("last",30*(pow(-1,i)));
@@ -87,7 +87,7 @@ void Game::ini()
         l->setG("last",153);
         l->setB("last",0);
         l->setAT("last",0.0001);
-    }
+    }*/
 
 
 
@@ -616,6 +616,8 @@ void Game::play(string path)
 
         Tracer::getInstance()->traceCerr("debug","6");
 
+
+        //interface
         Interface::getInstance()->draw();
         m_chat.draw();
 
@@ -627,6 +629,9 @@ void Game::play(string path)
         m_video->matrixOrtho2D();
         m_video->getFade()->draw();
         m_video->matrixProjection();
+
+        //interface warning
+        Interface::getInstance()->drawWarning();
 
 
         m_video->afterDraw();

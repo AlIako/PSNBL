@@ -488,6 +488,7 @@ void Map::loadPat(string path,double zOff)
                     delete m_objects[ind];
                     m_objects.pop_back();
                 }*/
+
             }
             else if(read_name=="highestZ")
             {

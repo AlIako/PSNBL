@@ -25,6 +25,8 @@ void Fogger::draw()
 
 void Fogger::action(int type, Object* o)
 {
+    m_life=0;
+
     Video::getInstance()->getFog()->setTarget(m_distStart,m_distEnd,m_r,m_g,m_b);
 }
 

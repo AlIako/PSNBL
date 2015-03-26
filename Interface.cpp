@@ -73,9 +73,6 @@ void Interface::draw()
         }
     }
 
-    //warning
-    if(m_warning.getAlpha()>0)
-        m_warning.draw();
 
     //boss
     if(m_targetBoss)
@@ -84,6 +81,12 @@ void Interface::draw()
     }
 }
 
+void Interface::drawWarning()
+{
+    //warning
+    if(m_warning.getAlpha()>0)
+        m_warning.draw();
+}
 void Interface::warning(string path, double speed, double timeStay)
 {
     m_warningSpeed=speed;
@@ -93,6 +96,10 @@ void Interface::warning(string path, double speed, double timeStay)
     m_warning.setAlpha(0);
     m_warning.setTexture(GTexture::getInstance()->addGetTexture(path));
     m_goWarning=true;
+}
+void Interface::linkocraftPresents()
+{
+    warning("../data/textures/interface/void_presents.png",0.02,3000);
 }
 
 void Interface::update(double functionTime)
@@ -111,7 +118,7 @@ void Interface::update(double functionTime)
         m_playerName.setTexte(oss.str());
     }
 
-    //warning lava
+    //warning
     time_since_warning.couler();
     double curAlpha=m_warning.getAlpha();
     if(m_goWarning && time_since_warning.timePast()<m_warningTime)
@@ -127,6 +134,19 @@ void Interface::update(double functionTime)
         if(m_warning.getAlpha()<0)
         {
             m_warning.setAlpha(0);
+
+            //if linkocraft presents, BIG TITLE comes next
+            if(m_warning.getTexture()->getChemin()=="../data/textures/interface/void_presents.png")
+            {
+                Video::getInstance()->getFade()->setR(0);
+                Video::getInstance()->getFade()->setG(0);
+                Video::getInstance()->getFade()->setB(0);
+                warning("../data/textures/interface/presents_hq.png",0.02,5000);
+            }
+            else if(m_warning.getTexture()->getChemin()=="../data/textures/interface/presents_hq.png")
+                warning("../data/textures/interface/void_title.png",0.02,3000);
+            else if(m_warning.getTexture()->getChemin()=="../data/textures/interface/void_title.png")
+                warning("../data/textures/interface/title_hq.png",0.02,7000);
         }
     }
 
@@ -194,6 +214,9 @@ void Interface::close()
 {
     m_target=NULL;
     m_targetBoss=NULL;
+
+    m_goWarning=false;
+    m_warning.setAlpha(0);
 }
 
 

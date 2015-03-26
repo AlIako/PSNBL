@@ -1,5 +1,5 @@
 @ noWalls!
-@ startpos: 0 0 17
+@ startpos: 0 0 20
 @ block: t: 1 text: ../data/textures/bedrock.png name: block
 @ block: z: -2 tx: 3 ty: 3 tz: 1 text: ../data/textures/bedrock.png name: block
 @ block: y: -2 z: -4 tx: 6.5 ty: 6.5 tz: 1 text: ../data/textures/bedrock.png name: block
@@ -38,6 +38,7 @@
 @ block: x: 61 y: 47 z: -26 tx: 34 ty: 33.5 tz: 4 text: ../data/textures/bedrock.png name: block
 @ block: x: 73 y: 58 z: -21 tx: 34 ty: 33.5 tz: 4 text: ../data/textures/bedrock.png name: block
 @ bonus: x: 48 y: 47 z: -13 t: 1 name: rope
+@ warninger: x: 48 y: 47 z: -13 t: 1 name: warninger warningtype: rope
 @ block: x: 56 y: 20 z: -17 t: 4 text: ../data/textures/bedrock.png name: rope
 @ block: x: 63 y: -28 z: -33 tx: 36.5 ty: 15.5 tz: 12.5 text: ../data/textures/bedrock.png name: block
 @ block: x: 15 y: -37 z: -24 tx: 36.5 ty: 15.5 tz: 12.5 text: ../data/textures/bedrock.png name: block
@@ -230,6 +231,12 @@
 @ block: x: 23 y: -21 z: -24 tx: 3.5 ty: 3.5 tz: 10 text: ../data/textures/bedrock.png name: block
 @ block: x: 56 y: -1 z: 14 tx: 3 ty: 3 tz: 3.5 text: ../data/textures/redrock.png name: block
 @ lava: x: 187 y: -128 z: -1899 tx: 38 ty: 49.5 tz: 2 text: ../data/textures/lava.png
-@ block: x: 187 y: -128 z: -2000 tx: 38 ty: 49.5 tz: 50 text: ../data/textures/redrock.png name: block
-@ fogger: x: 187 y: -128 z: -897 tx: 38 ty: 49.5 tz: 50 name: fogger diststart: 25 distend: 300 r: 1 g: 0.6 b: 0
-@ fader: x: 187 y: -128 z: -1880 tx: 38 ty: 49.5 tz: 50 name: fader r: 1 g: 0.7 b: 0
+@ block: x: 187 y: -128 z: -1924 tx: 38 ty: 49.5 tz: 50 text: ../data/textures/redrock.png visible: 0 name: block
+@ fogger: x: 187 y: -128 z: -897 tx: 38 ty: 49.5 tz: 50 name: fogger diststart: 25 distend: 300 r: 1 g: 0 b: 0
+@ fader: x: 187 y: -128 z: -1880 tx: 38 ty: 49.5 tz: 50 name: fader r: 1 g: 0.2 b: 0
+@ warninger: x: 187 y: -128 z: -1880 tx: 38 ty: 49.5 tz: 50 name: warninger warningtype: presents
+@ lighter: z: 5 t: 1 at: 0.1 r: 1 g: 1 b: 1
+@ lighter: x: 3 y: 70 z: -13 t: 1 name: lighter at: 0.01 r: 0.94 g: 0.6 b: 0
+@ lighter: x: 58 y: 15 z: 2 t: 1 name: lighter at: 0.005 r: 1 g: 1 b: 0
+@ lighter: x: 14 y: -70 z: 2 t: 1 name: lighter at: 0.001 r: 1 g: 0.2 b: 0
+@ lighter: x: 183 y: -100 z: 2 t: 1 name: lighter at: 0.001 r: 1 g: 0.2 b: 0

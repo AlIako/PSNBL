@@ -12,10 +12,12 @@ public:
 
     void ini();
     void draw();
+    void drawWarning();
     void drawScreenEffect(std::string path);
     void update(double functionTime);
 
     void warning(string path, double speed=0.1, double timeStay=3000);
+    void linkocraftPresents();
 
 
     void setTarget(Player* p) {m_target=p;}

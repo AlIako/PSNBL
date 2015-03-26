@@ -30,6 +30,8 @@ void Fader::draw()
 
 void Fader::action(int type, Object* o)
 {
+    m_life=0;
+
     Video::getInstance()->getFade()->setR(m_r*255);
     Video::getInstance()->getFade()->setG(m_g*255);
     Video::getInstance()->getFade()->setB(m_b*255);
@@ -126,7 +128,7 @@ void Fader::readObj(ifstream* fichier1)
             *fichier1 >> cur_read;
             m_texture=GTexture::getInstance()->addGetTexture(cur_read);
         }
-        else if(read_name_before=="fadein:")
+        else if(read_name_before=="fadein")
         {
             *fichier1 >> curInt;
             if(curInt==0)

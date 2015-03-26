@@ -275,6 +275,9 @@ string Object::writeObj()
     //texture
     if(m_texture!=NULL)
         oss<<" text: " << m_texture->getChemin();
+    //visible
+    if(!m_visible)
+        oss<<" visible: 0";
 
     return oss.str();
 }
@@ -345,6 +348,12 @@ void Object::readObj(ifstream* fichier1)
         {
             *fichier1 >> cur_read;
             m_texture=GTexture::getInstance()->addGetTexture(cur_read);
+        }
+        else if(read_name_before=="visible")
+        {
+            *fichier1 >> curInt;
+            if(curInt==0)
+                m_visible=false;
         }
 
         *fichier1 >> cur_read;

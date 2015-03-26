@@ -6,6 +6,8 @@
 #include "Lava.h"
 #include "Fogger.h"
 #include "Fader.h"
+#include "Warninger.h"
+#include "Lighter.h"
 
 
 bool addObjFromText(string txt, std::vector<Object*>* objects)
@@ -44,6 +46,16 @@ bool addObjFromText(string txt, std::vector<Object*>* objects)
     else if(txt=="fader")
     {
         objects->push_back(new Fader());
+        isObj=true;
+    }
+    else if(txt=="warninger")
+    {
+        objects->push_back(new Warninger());
+        isObj=true;
+    }
+    else if(txt=="lighter")
+    {
+        objects->push_back(new Lighter());
         isObj=true;
     }
     return isObj;

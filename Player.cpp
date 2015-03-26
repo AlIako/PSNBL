@@ -95,13 +95,9 @@ void Player::update(double functionTime)
             {
                 m_colliding[i]->action(0,this);//get damaged
             }
-            else if(m_colliding[i]->getType()=="fogger")
+            else if(m_colliding[i]->getType()=="fogger" || m_colliding[i]->getType()=="fader" || m_colliding[i]->getType()=="warninger")
             {
-                m_colliding[i]->action(0);//set target fog
-            }
-            else if(m_colliding[i]->getType()=="fader")
-            {
-                m_colliding[i]->action(0);//start fading
+                m_colliding[i]->action(0);
             }
             else if(m_colliding[i]->getType()=="lava")
             {
