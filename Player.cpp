@@ -34,7 +34,7 @@ Player::Player()
     m_deathCause=0;
 
     testMode=false;
-    testMode=true;
+    //testMode=true;
 
     m_inLava=false;
 }

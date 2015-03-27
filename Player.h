@@ -46,6 +46,7 @@ class Player: public Object
 
     //set
     void setGasing(bool g){m_gasing=g;}
+    void setTestMode(bool t){testMode=t;}
 
     //get
     bool getGasing() {return m_gasing;}

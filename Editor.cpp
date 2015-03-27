@@ -209,6 +209,7 @@ void Editor::play(string path)
                     curObj->setPos(lastObj->getPos());
                     curObj->setSize(lastObj->getSize());
                     curObj->setName(lastObj->getName());
+                    curObj->setTexture(lastObj->getTexture());
                     curObj->ini();
                     m_camera.setCible(curObj);
                 }

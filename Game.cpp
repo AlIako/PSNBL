@@ -170,6 +170,16 @@ void Game::handleCommands()
             m_chat.recieveMessage(tempChar,0,-2);
             delete tempChar;
         }
+        else if(c=="/noclip")
+        {
+            playerList[0]->setTestMode(true);
+            m_chat.recieveMessage("Noclip activated.",0,-2);
+        }
+        else if(c=="/noclipoff")
+        {
+            playerList[0]->setTestMode(false);
+            m_chat.recieveMessage("Noclip deactivated.",0,-2);
+        }
         else if(c=="/lava" || c=="/lavapos")
         {
             //command not found
