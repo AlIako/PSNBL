@@ -20,6 +20,7 @@ class Editor
     Editor();
 
     void ini(string path);
+    void iniInterf();
     void draw(bool toPick=false);
     void play(string path);
     void updateTimes();
@@ -58,7 +59,9 @@ class Editor
     GTime since_last_frame;
     double ft;//function time
 
+    vector<Button> interf_editor;
     vector<Button> buttons;
+    bool touchebouton;
     bool justgrab;
     bool grabCursor;
     Interaction interaction;

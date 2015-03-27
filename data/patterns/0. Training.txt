@@ -13,4 +13,4 @@
 @ block: x: 7 y: 69 z: 59 tx: 50 ty: 100 tz: 1 text: ../data/textures/metal3.jpg name: block
 @ lighter: x: 2 y: 3 z: 27 t: 1 name: lighter at: 0.001 r: 1 g: 1 b: 1
 @ block: x: 32 y: 104.5 z: -4 tx: 25 ty: 3 tz: 31.5 text: ../data/textures/bedrock.png name: block
-@ block: x: 21 y: 131 z: -4 tx: 34.5 ty: 3 tz: 31.5 text: ../data/textures/bedrock.png name: block
+@ block: x: 21 y: 131 z: -4 tx: 34.5 ty: 3 tz: 31.5 text: ../data/textures/metal2.jpg name: block

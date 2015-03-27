@@ -3,6 +3,48 @@
 
 
 
+void Editor::iniInterf()
+{
+    interf_editor.clear();
+    int ind=0;
+    interf_editor.push_back(Button());
+    ind=interf_editor.size()-1;
+    interf_editor[ind].addText("Texture");
+    interf_editor[ind].setName("Texture");
+    interf_editor[ind].setPos(Vector3D(0.1,0.9,0));
+    interf_editor[ind].ini();
+    interf_editor[ind].setTexture(NULL);
+    interf_editor[ind].centerText(false);
+
+    interf_editor.push_back(Button());
+    ind=interf_editor.size()-1;
+    interf_editor[ind].addText(curObj->getType());
+    interf_editor[ind].setName(curObj->getType());
+    interf_editor[ind].setPos(Vector3D(0.1,0.8,0));
+    //interf_editor[ind].m_texture=gtext->getTexture("data/textures/objs/"+lilian->getType()+".png");
+    interf_editor[ind].ini();
+    interf_editor[ind].setTexture(NULL);
+    interf_editor[ind].centerText(false);
+
+    interf_editor.push_back(Button());
+    ind=interf_editor.size()-1;
+    interf_editor[ind].addText("Quit");
+    interf_editor[ind].setName("Quit");
+    interf_editor[ind].setPos(Vector3D(0.05,0.05,0));
+    interf_editor[ind].ini();
+    interf_editor[ind].setTexture(NULL);
+    interf_editor[ind].centerText(false);
+
+    interf_editor.push_back(Button());
+    ind=interf_editor.size()-1;
+    interf_editor[ind].addText("Save");
+    interf_editor[ind].setName("Save");
+    interf_editor[ind].setPos(Vector3D(0.05,0.1,0));
+    interf_editor[ind].ini();
+    interf_editor[ind].setTexture(NULL);
+    interf_editor[ind].centerText(false);
+
+}
 
 
 void Editor::menuObj()
@@ -86,6 +128,7 @@ void Editor::menuObj()
                                             buttons[i].addAuTexte((*m_objects)[objSelected]->getTexture()->getChemin());
                                             buttons[i].ini();
                                             buttons[i].setTexture(NULL);
+                                            buttons[i].centerText(false);
                                         }
                                     }
                                 }

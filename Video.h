@@ -46,6 +46,8 @@ class Video
     double getWidth() { return m_largeur; }
     double getHeight() {return m_hauteur;}
 
+    int getFOV() {return m_fov;}
+
     ~Video();
 
 

@@ -1,4 +1,5 @@
 #include "Editor.h"
+#include "GameObjects.h"
 Editor::Editor()
 {
 }
@@ -31,6 +32,8 @@ void Editor::ini(string path)
     m_fpsTime.reset();
 
     grabCursor=true;
+    touchebouton=false;
+    justgrab=false;
 
     //video
     m_video=Video::getInstance();
@@ -42,6 +45,8 @@ void Editor::ini(string path)
     Tracer::getInstance()->enable();
     //sound
     Gsounds::getInstance()->loads();
+
+
 
     //chat
     m_chat.activate(m_video->getWidth(), m_video->getHeight(), "../data/fonts/arial.TTF");
@@ -59,6 +64,7 @@ void Editor::ini(string path)
     curObj->setPos(posCur);
     curObj->setSize(Vector3D(1,1,1));
 
+    iniInterf();
 
     m_camera.setCible(curObj);
     m_camera.setMode("editor");
@@ -104,22 +110,17 @@ void Editor::play(string path)
                 case SDL_MOUSEMOTION:
                 if(interaction.appuye())
                     m_camera.onMouseMotion(event.motion);
+                else
+                    for(unsigned int i=0;i<interf_editor.size();i++)
+                        interf_editor[i].updateCursor(Vector3D(event.button.x,event.button.y,0));
                 break;
 
                 case SDL_MOUSEBUTTONUP:
                 if(event.button.button==SDL_BUTTON_WHEELUP)
                 {
-                    //if(what=="une texture")
-                        yboutonstexture-=0.1;
-                    //for(unsigned int i=0;i<bout.size();i++)
-                    //    bout[i].bouger(0,-0.1);
                 }
                 else if(event.button.button==SDL_BUTTON_WHEELDOWN)
                 {
-                    //if(what=="une texture")
-                        yboutonstexture+=0.1;
-                    //for(unsigned int i=0;i<bout.size();i++)
-                    //    bout[i].bouger(0,0.1);
                 }
                 if(event.button.button==SDL_BUTTON_LEFT)
                 {
@@ -129,7 +130,72 @@ void Editor::play(string path)
                         justgrab=false;
                     else
                     {
-                        //appuyer sur interface n shit
+                        for(unsigned int i=0;i<interf_editor.size();i++)
+                        if(interf_editor[i].clic(Vector3D(event.button.x,event.button.y,0)))
+                        {
+                            touchebouton=true;
+                            if(interf_editor[i].getName().find("Save")!=string::npos)
+                            {
+                                Map::getInstance()->saveMap(m_path);
+                                Tracer::getInstance()->trace("editor","Map saved.");
+                            }
+                            else if(interf_editor[i].getName().find("Quit")!=string::npos)
+                                playLoop=false;
+                            else if(interf_editor[i].getName().find("Texture")!=string::npos)
+                            {
+                                string text_cur=choseFile("une texture","../data/textures",true,".jpg",".JPG",".png");
+                                if(text_cur!="../data/textures")
+                                {
+                                    curObj->setTexture(GTexture::getInstance()->getTexture(text_cur));
+                                }
+                                interf_editor[i].ini();
+                                interf_editor[i].setTexture(NULL);
+                                interf_editor[i].centerText(false);
+                                //interf_editor[i].m_texture=curObj->getTexture();
+                            }
+                            else if(interf_editor[i].getName().find(curObj->getType())!=string::npos)
+                            {
+                                string text_cur=choseFile("un objet","../data/textures/objs",false,".png",".PNG");
+                                if(text_cur!="../data/textures/objs")
+                                {
+                                    string setAName="";
+                                    Object* nextObj=NULL;
+                                    nextObj=getObjFromText(text_cur);
+                                    if(nextObj==NULL)
+                                    {
+                                        setAName=text_cur;
+                                        if(text_cur=="health" || text_cur=="nextphase" || text_cur=="rez" || text_cur=="rope")
+                                            text_cur="bonus";
+                                        if(text_cur=="noHookBlock" || text_cur=="jumpBlock")
+                                            text_cur="block";
+
+                                        nextObj=getObjFromText(text_cur);
+                                    }
+                                    if(nextObj!=NULL)
+                                    {
+                                        delete curObj;
+                                        curObj=nextObj;
+                                        if(setAName!="")
+                                            curObj->setName(setAName);
+                                        curObj->ini();
+                                        curObj->setPos(posCur);
+                                        curObj->setSize(Vector3D(1,1,1));
+
+                                        m_camera.setCible(curObj);
+
+
+                                        interf_editor[i].setText(curObj->getType());
+                                        interf_editor[i].setName(curObj->getType());
+                                        //interf_editor[i].m_texture=gtext->getTexture("data/textures/objs/"+curObj->getType()+".png");
+                                        interf_editor[i].ini();
+                                        interf_editor[i].setTexture(NULL);
+                                        interf_editor[i].centerText(false);
+                                    }
+                                }
+
+                                cerr << "objet " << text_cur << " chosen"<<endl;
+                            }
+                        }
                     }
                     interaction.clickGauche(false,event.button.x,event.button.y);
                     if(!interaction.grab() && interaction.clicked() && playLoop/* && !touchebouton*/)
@@ -155,9 +221,9 @@ void Editor::play(string path)
                 if(event.button.button==SDL_BUTTON_LEFT)
                 {
                     bool surbutton=false;
-                    /*for(unsigned int i=0;i<interf_editor.size() && !surbutton;i++)
-                        if(interf_editor[i].click(event.button.x,event.button.y))
-                            surbutton=true;*/
+                    for(unsigned int i=0;i<interf_editor.size() && !surbutton;i++)
+                        if(interf_editor[i].clic(Vector3D(event.button.x,event.button.y,0)))
+                            surbutton=true;
                     if(!surbutton)
                     {
                         interaction.clickGauche(true,event.button.x,event.button.y);
@@ -212,7 +278,6 @@ void Editor::play(string path)
                     fadingToLeave=true;
                     break;
                     case SDLK_RETURN:
-                        Map::getInstance()->saveMap(m_path);
                     break;
                     case SDLK_BACKSPACE:
                         Map::getInstance()->deleteLastObj();
@@ -230,67 +295,6 @@ void Editor::play(string path)
                     case SDLK_r:
                     if(1)//if I dont do that, compiler gives error... WTF?
                     {
-                        string curType=curObj->getType();
-                        string curName=curObj->getName();
-                        delete curObj;
-
-                        if(curType=="block" && curName=="block")
-                        {
-                            curObj=new Block();
-                            curObj->setName("noHookBlock");
-                        }
-                        else if(curType=="block" && curName=="noHookBlock")
-                        {
-                            curObj=new Lava();
-                            curObj->setName("Lava");
-                        }
-                        else if(curType=="lava" && curName=="Lava")
-                        {
-                            curObj=new Block();
-                            curObj->setName("jumpBlock");
-                        }
-                        else if(curType=="block" && curName=="jumpBlock")
-                        {
-                            curObj=new Flux();
-                            curObj->setName("flux");
-                        }
-                        else if(curType=="flux" && curName=="flux")
-                        {
-                            curObj=new BossButan();
-                            curObj->setName("bossbutan");
-                        }
-                        else if(curType=="boss" && curName=="bossbutan")
-                        {
-                            curObj=new Bonus();
-                            curObj->setName("rez");
-                        }
-                        else if(curType=="bonus" && curName=="rez")
-                        {
-                            curObj=new Bonus();
-                            curObj->setName("health");
-                        }
-                        else if(curType=="bonus" && curName=="health")
-                        {
-                            curObj=new Bonus();
-                            curObj->setName("rope");
-                        }
-                        else if(curType=="bonus" && curName=="rope")
-                        {
-                            curObj=new Bonus();
-                            curObj->setName("nextphase");
-                        }
-                        else if(curType=="bonus" && curName=="nextphase")
-                        {
-                            curObj=new Bonus();
-                            curObj->setName("startboss");
-                        }
-                        else
-                            curObj=new Block();
-                        curObj->ini();
-                        curObj->setPos(posCur);
-                        curObj->setSize(Vector3D(1,1,1));
-
-                        m_camera.setCible(curObj);
                     }
                     break;
                     case SDLK_LSHIFT:
@@ -382,6 +386,10 @@ void Editor::play(string path)
         m_video->update(ft);
 
         draw();
+
+        for(unsigned int i=0;i<interf_editor.size();i++)
+            interf_editor[i].draw();
+
         Video::getInstance()->afterDraw();
 
         SDL_Delay(10);
@@ -515,7 +523,7 @@ void Editor::pick(double x, double y)
 	gluPickMatrix((GLdouble) mouse_x, (GLdouble) (viewport[3]-mouse_y), 1.0f, 1.0f, viewport);
 
 	// Apply The Perspective Matrix
-	gluPerspective(70, (GLfloat) (viewport[2]-viewport[0])/(GLfloat) (viewport[3]-viewport[1]), 0.01, 1000);
+	gluPerspective(Video::getInstance()->getFOV(), (GLfloat) (viewport[2]-viewport[0])/(GLfloat) (viewport[3]-viewport[1]), 0.01, 1000);
 	glMatrixMode(GL_MODELVIEW);
 
 	if(pickFace==false)

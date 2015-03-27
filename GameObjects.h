@@ -3,6 +3,7 @@
 #include "Object.h"
 
 bool addObjFromText(string txt, std::vector<Object*>* objects);
+Object* getObjFromText(string txt);
 
 
 #endif // GAMEOBJECTS_H_INCLUDED

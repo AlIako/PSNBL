@@ -13,50 +13,34 @@
 bool addObjFromText(string txt, std::vector<Object*>* objects)
 {
     bool isObj=false;
-    if(txt=="block")
+    Object* willBeAdded=getObjFromText(txt);
+
+    if(willBeAdded!=NULL)
     {
-        objects->push_back(new Block());
         isObj=true;
-    }
-    else if(txt=="bonus")
-    {
-        objects->push_back(new Bonus());
-        isObj=true;
-    }
-    else if(txt=="flux")
-    {
-        objects->push_back(new Flux());
-        isObj=true;
-    }
-    else if(txt=="boss")
-    {
-        objects->push_back(new BossButan());
-        isObj=true;
-    }
-    else if(txt=="lava")
-    {
-        objects->push_back(new Lava());
-        isObj=true;
-    }
-    else if(txt=="fogger")
-    {
-        objects->push_back(new Fogger());
-        isObj=true;
-    }
-    else if(txt=="fader")
-    {
-        objects->push_back(new Fader());
-        isObj=true;
-    }
-    else if(txt=="warninger")
-    {
-        objects->push_back(new Warninger());
-        isObj=true;
-    }
-    else if(txt=="lighter")
-    {
-        objects->push_back(new Lighter());
-        isObj=true;
+        objects->push_back(willBeAdded);
     }
     return isObj;
+}
+Object* getObjFromText(string txt)
+{
+    if(txt=="block")
+        return new Block();
+    else if(txt=="bonus")
+        return new Bonus();
+    else if(txt=="flux")
+        return new Flux();
+    else if(txt=="boss")
+        return new BossButan();
+    else if(txt=="lava")
+        return new Lava();
+    else if(txt=="fogger")
+        return new Fogger();
+    else if(txt=="fader")
+        return new Fader();
+    else if(txt=="warninger")
+        return new Warninger();
+    else if(txt=="lighter")
+        return new Lighter();
+    return NULL;
 }
