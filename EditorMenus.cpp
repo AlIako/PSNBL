@@ -43,6 +43,8 @@ void Editor::menuObj()
                     playLoop=false;
                     break;
                     case SDL_MOUSEMOTION:
+                    for(unsigned int i=0;i<buttons.size();i++)
+                        buttons[i].updateCursor(Vector3D(event.button.x,event.button.y,0));
                     break;
                     case SDL_MOUSEBUTTONUP:
                     if(event.button.button==SDL_BUTTON_WHEELUP)
@@ -77,10 +79,15 @@ void Editor::menuObj()
                                 {
                                     string text_cur=choseFile("une texture","../data/textures",true,".jpg",".JPG",".png");
                                     if(text_cur!="../data/textures")
-                                        (*m_objects)[objSelected]->setTexture(GTexture::getInstance()->getTexture(text_cur));
-                                    buttons[i].addAuTexte((*m_objects)[objSelected]->getTexture()->getChemin());
-                                    buttons[i].ini();
-                                    buttons[i].setTexture(NULL);
+                                    {
+                                        (*m_objects)[objSelected]->setTexture(GTexture::getInstance()->addGetTexture(text_cur));
+                                        if((*m_objects)[objSelected]->getTexture())
+                                        {
+                                            buttons[i].addAuTexte((*m_objects)[objSelected]->getTexture()->getChemin());
+                                            buttons[i].ini();
+                                            buttons[i].setTexture(NULL);
+                                        }
+                                    }
                                 }
                                 /*else if(buttons[i].getTxt().find("mesh: ")!=string::npos)
                                 {
@@ -101,6 +108,7 @@ void Editor::menuObj()
                                     buttons[i].addAuTexte(text_cur);
                                     buttons[i].ini();
                                     buttons[i].setTexture(NULL);
+                                    buttons[i].centerText(false);
                                 }
                                 else if(buttons[i].getTxt()=="OK")
                                 {
@@ -110,6 +118,7 @@ void Editor::menuObj()
                                 {
                                     buttons[i].ini();
                                     buttons[i].setTexture(NULL);
+                                    buttons[i].centerText(false);
                                 }
                             }
                     }
@@ -203,9 +212,12 @@ string Editor::choseFile(string what,string c, bool fullname, string type1, stri
     int ind=0;
     bout.push_back(Button());
     ind=bout.size()-1;
-    bout[ind].setText("Choisir "+what+": ");
+    bout[ind].addText("Choisir "+what+": ");
+    bout[ind].setName("Choisir");
     bout[ind].setPos(Vector3D(-0.5,0.9,0));
     bout[ind].ini();
+    bout[ind].setTexture(NULL);
+    bout[ind].centerText(false);
 
     vector<string> texts;
     texts.clear();
@@ -239,18 +251,34 @@ string Editor::choseFile(string what,string c, bool fullname, string type1, stri
             gjbi=gjbi.substr(0,gjbi.size()-4);
             gjbi=gjbi.substr(c.size()+1,gjbi.size());
         }
-        bout[ind].setText(gjbi);
+        bout[ind].addText(gjbi);
+        bout[ind].setName(gjbi);
         GTexture::getInstance()->addTexture(texts[i]);
         bout[ind].setTexture(GTexture::getInstance()->getTexture(texts[i]));
         bout[ind].setPos(Vector3D(0.2,0.8-i/15.0,0));
         bout[ind].ini();
+        bout[ind].setTexture(NULL);
+        bout[ind].centerText(false);
         //bout[ind].colImage=true;
+
+        //preview
+        bout.push_back(Button());
+        ind=bout.size()-1;
+        bout[ind].setName(gjbi);
+        GTexture::getInstance()->addTexture(texts[i]);
+        bout[ind].setPos(Vector3D(0.1,0.8-i/15.0,0));
+        bout[ind].setSize(Vector3D(0.05,0.05,0));
+        bout[ind].ini();
+        bout[ind].setTexture(GTexture::getInstance()->getTexture(texts[i]));
     }
     bout.push_back(Button());
     ind=bout.size()-1;
-    bout[ind].setText("Retour");
+    bout[ind].addText("Retour");
+    bout[ind].setName("Retour");
     bout[ind].setPos(Vector3D(-0.5,0.8-texts.size()/15.0,0));
     bout[ind].ini();
+    bout[ind].setTexture(NULL);
+    bout[ind].centerText(false);
 
     if(what=="une texture")
         for(unsigned int i=0;i<bout.size();i++)
@@ -270,6 +298,10 @@ string Editor::choseFile(string what,string c, bool fullname, string type1, stri
                 case SDL_QUIT:
                 playLoop=false;
                 continuer=false;
+                break;
+                case SDL_MOUSEMOTION:
+                for(unsigned int i=0;i<bout.size();i++)
+                    bout[i].updateCursor(Vector3D(event.button.x,event.button.y,0));
                 break;
                 case SDL_MOUSEBUTTONUP:
                 if(event.button.button==SDL_BUTTON_WHEELUP)
@@ -291,9 +323,9 @@ string Editor::choseFile(string what,string c, bool fullname, string type1, stri
                     for(unsigned int i=0;i<bout.size();i++)
                         if(bout[i].clic(Vector3D(event.button.x,event.button.y,0)))
                         {
-                            if(bout[i].getTxt()!="Retour" && bout[i].getTxt()!="Choisir une texture: ")
-                                return bout[i].getTxt();
-                            else if(bout[i].getTxt()=="Retour") return c;
+                            if(bout[i].getName().find("Retour")==string::npos && bout[i].getName().find("Choisir une texture: ")==string::npos)
+                                return bout[i].getName();
+                            else if(bout[i].getName().find("Retour")!=string::npos) return c;
 
                         }
                 }
@@ -400,6 +432,10 @@ int Editor::entrerNombre(int erg)
                 playLoop=false;
                 cur_nombre=erg;
                 continuer=false;
+                break;
+                case SDL_MOUSEMOTION:
+                for(unsigned int i=0;i<bout.size();i++)
+                    bout[i].updateCursor(Vector3D(event.button.x,event.button.y,0));
                 break;
                 case SDL_MOUSEBUTTONUP:
                 if(event.button.button==SDL_BUTTON_LEFT)
@@ -567,29 +603,37 @@ Vector3D Editor::modifVector(Vector3D *v, string nom, double pas)
     bout.push_back(Button());
     ind=bout.size()-1;
     bout[ind].addText("Vecteur "+nom);
-    bout[ind].setPos(Vector3D(-0.5,0.7,0));
+    bout[ind].setName("Vector");
+    bout[ind].setPos(Vector3D(0.4,0.7,0));
     bout[ind].ini();
     bout[ind].setTexture(NULL);
+    bout[ind].centerText(false);
 
     bout.push_back(Button());
     ind=bout.size()-1;
     bout[ind].addText("X: ");
+    bout[ind].setName("X");
     bout[ind].addAuTexte(v->X);
-    bout[ind].setPos(Vector3D(-0.5,0.7,0));
+    bout[ind].setPos(Vector3D(0.4,0.6,0));
     bout[ind].ini();
     bout[ind].setTexture(NULL);
+    bout[ind].centerText(false);
     bout.push_back(Button());
     ind=bout.size()-1;
     bout[ind].addText("-");
-    bout[ind].setPos(Vector3D(-0.5,0.7,0));
+    bout[ind].setName("-");
+    bout[ind].setPos(Vector3D(0.5,0.6,0));
     bout[ind].ini();
     bout[ind].setTexture(NULL);
+    bout[ind].centerText(false);
     bout.push_back(Button());
     ind=bout.size()-1;
     bout[ind].addText("+");
-    bout[ind].setPos(Vector3D(-0.5,0.7,0));
+    bout[ind].setName("+");
+    bout[ind].setPos(Vector3D(0.52,0.6,0));
     bout[ind].ini();
     bout[ind].setTexture(NULL);
+    bout[ind].centerText(false);
 
 
 
@@ -597,78 +641,100 @@ Vector3D Editor::modifVector(Vector3D *v, string nom, double pas)
     bout.push_back(Button());
     ind=bout.size()-1;
     bout[ind].addText("Y: ");
+    bout[ind].setName("Y");
     bout[ind].addAuTexte(v->Y);
     bout[ind].setPos(Vector3D(0.4,0.55,0));
     bout[ind].ini();
     bout[ind].setTexture(NULL);
+    bout[ind].centerText(false);
     bout.push_back(Button());
     ind=bout.size()-1;
     bout[ind].addText("-");
+    bout[ind].setName("-");
     bout[ind].setPos(Vector3D(0.5,0.55,0));
     bout[ind].ini();
     bout[ind].setTexture(NULL);
+    bout[ind].centerText(false);
     bout.push_back(Button());
     ind=bout.size()-1;
     bout[ind].addText("+");
+    bout[ind].setName("+");
     bout[ind].setPos(Vector3D(0.52,0.55,0));
     bout[ind].ini();
     bout[ind].setTexture(NULL);
+    bout[ind].centerText(false);
 
 
     bout.push_back(Button());
     ind=bout.size()-1;
     bout[ind].addText("Z: ");
+    bout[ind].setName("Z");
     bout[ind].addAuTexte(v->Z);
     bout[ind].setPos(Vector3D(0.4,0.5,0));
     bout[ind].ini();
     bout[ind].setTexture(NULL);
+    bout[ind].centerText(false);
     bout.push_back(Button());
     ind=bout.size()-1;
     bout[ind].addText("-");
+    bout[ind].setName("-");
     bout[ind].setPos(Vector3D(0.5,0.5,0));
     bout[ind].ini();
     bout[ind].setTexture(NULL);
+    bout[ind].centerText(false);
     bout.push_back(Button());
     ind=bout.size()-1;
     bout[ind].addText("+");
+    bout[ind].setName("+");
     bout[ind].setPos(Vector3D(0.52,0.5,0));
     bout[ind].ini();
     bout[ind].setTexture(NULL);
+    bout[ind].centerText(false);
 
 
     bout.push_back(Button());
     ind=bout.size()-1;
     bout[ind].addText("pas: ");
+    bout[ind].setName("pas");
     bout[ind].addAuTexte(pas);
     bout[ind].setPos(Vector3D(0.4,0.45,0));
     bout[ind].ini();
     bout[ind].setTexture(NULL);
+    bout[ind].centerText(false);
     bout.push_back(Button());
     ind=bout.size()-1;
     bout[ind].addText("-");
+    bout[ind].setName("-");
     bout[ind].setPos(Vector3D(0.53,0.45,0));
     bout[ind].ini();
     bout[ind].setTexture(NULL);
+    bout[ind].centerText(false);
     bout.push_back(Button());
     ind=bout.size()-1;
     bout[ind].addText("+");
+    bout[ind].setName("+");
     bout[ind].setPos(Vector3D(0.55,0.45,0));
     bout[ind].ini();
     bout[ind].setTexture(NULL);
+    bout[ind].centerText(false);
 
 
     bout.push_back(Button());
     ind=bout.size()-1;
     bout[ind].addText("Ok");
+    bout[ind].setName("Ok");
     bout[ind].setPos(Vector3D(0.45,0.4,0));
     bout[ind].ini();
     bout[ind].setTexture(NULL);
+    bout[ind].centerText(false);
     bout.push_back(Button());
     ind=bout.size()-1;
     bout[ind].addText("Annuler");
+    bout[ind].setName("Annuler");
     bout[ind].setPos(Vector3D(0.5,0.4,0));
     bout[ind].ini();
     bout[ind].setTexture(NULL);
+    bout[ind].centerText(false);
 
     int tempsPrecedent=SDL_GetTicks(), tempsActuel=tempsPrecedent;
     SDL_Event event;
@@ -685,20 +751,25 @@ Vector3D Editor::modifVector(Vector3D *v, string nom, double pas)
                 *v=v_ini;
                 continuer=false;
                 break;
+                case SDL_MOUSEMOTION:
+                for(unsigned int i=0;i<bout.size();i++)
+                    bout[i].updateCursor(Vector3D(event.button.x,event.button.y,0));
+                break;
                 case SDL_MOUSEBUTTONUP:
                 if(event.button.button==SDL_BUTTON_LEFT)
                 {
                     for(unsigned int i=0;i<bout.size();i++)
                         if(bout[i].clic(Vector3D(event.button.x,event.button.y,0)))
                         {
-                            if(bout[i].getTxt()=="Annuler")
+                            Gsounds::getInstance()->play("../data/sounds/hover.mp3");
+                            if(bout[i].getTxt().find("Annuler")!=string::npos)
                             {
                                 *v=v_ini;
                                 return v_ini;
                             }
-                            else if(bout[i].getTxt()=="Ok")
+                            else if(bout[i].getTxt().find("Ok")!=string::npos)
                                 return *v;
-                            else if(bout[i].getTxt()=="+")
+                            else if(bout[i].getTxt().find("+")!=string::npos)
                             {
                                 if(bout[i].getPos().Y==0.6)
                                 {
@@ -729,7 +800,7 @@ Vector3D Editor::modifVector(Vector3D *v, string nom, double pas)
                                     bout[10].setTexture(NULL);
                                 }
                             }
-                            else if(bout[i].getTxt()=="-")
+                            else if(bout[i].getTxt().find("-")!=string::npos)
                             {
                                 if(bout[i].getPos().Y==0.6)
                                 {

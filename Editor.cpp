@@ -134,17 +134,17 @@ void Editor::play(string path)
                     interaction.clickGauche(false,event.button.x,event.button.y);
                     if(!interaction.grab() && interaction.clicked() && playLoop/* && !touchebouton*/)
                         pick(event.button.x,event.button.y);
-                    /*Map::getInstance()->getObjects()->push_back(curObj);
+                }
+                if(event.button.button==SDL_BUTTON_RIGHT)
+                {
+                    Map::getInstance()->getObjects()->push_back(curObj);
                     Object* lastObj=curObj;
                     curObj=new Block();
                     curObj->setPos(lastObj->getPos());
                     curObj->setSize(lastObj->getSize());
                     curObj->setName(lastObj->getName());
                     curObj->ini();
-                    m_camera.setCible(curObj);*/
-                }
-                if(event.button.button==SDL_BUTTON_RIGHT)
-                {
+                    m_camera.setCible(curObj);
                 }
                 else if(event.button.button==SDL_BUTTON_WHEELUP)
                     m_camera.zoom(0.7);
@@ -152,7 +152,7 @@ void Editor::play(string path)
                     m_camera.zoom(-0.7);
                 break;
                 case SDL_MOUSEBUTTONDOWN:
-                if(1)
+                if(event.button.button==SDL_BUTTON_LEFT)
                 {
                     bool surbutton=false;
                     /*for(unsigned int i=0;i<interf_editor.size() && !surbutton;i++)

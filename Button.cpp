@@ -21,6 +21,13 @@ void Button::ini()
     centerText(true);
 
     m_clicable=true;
+
+    //if size not set, use text size
+    if(m_size.X==0.1 && m_size.Y==0.1)
+    {
+        m_size=Vector3D(text.getText().getTextWidth()/Video::getInstance()->getWidth(),0.05,0);
+        m_shadow.setSize(m_size);
+    }
 }
 
 void Button::draw()
@@ -91,6 +98,12 @@ bool Button::clic(Vector3D pos)
     return false;
 }
 
+void Button::translate(double x,double y)
+{
+    m_position+=Vector3D(x,y,0);
+    m_shadow.setPos(m_position);
+    text.setPos(m_position+Vector3D(0,m_size.Y/4.0,0));
+}
 
 void Button::addText(string txt)
 {
@@ -118,7 +131,7 @@ void Button::addAuTexte(int v, bool delprec)
     /*if(delprec)
         textefinal=texte;*/
     stringstream ss;
-    ss << text.getText().getTexte() << v;
+    ss << m_name <<": "<< v;
     text.setText(ss.str());
 }
 void Button::addAuTexte(double v, bool delprec)
@@ -126,7 +139,7 @@ void Button::addAuTexte(double v, bool delprec)
     /*if(delprec)
         textefinal=texte;*/
     stringstream ss;
-    ss << text.getText().getTexte() << v;
+    ss << m_name <<": " << v;
     text.setText(ss.str());
 }
 void Button::addAuTexte(string v, bool delprec)
@@ -134,7 +147,7 @@ void Button::addAuTexte(string v, bool delprec)
     /*if(delprec)
         textefinal=texte;*/
     stringstream ss;
-    ss << text.getText().getTexte() << v;
+    ss << m_name <<": " << v;
     text.setText(ss.str());
 }
 void Button::addAuTexte(Vector3D v, bool delprec)
@@ -142,7 +155,7 @@ void Button::addAuTexte(Vector3D v, bool delprec)
     /*if(delprec)
         textefinal=texte;*/
     stringstream ss;
-    ss << text.getText().getTexte() << v.X << ", " << v.Y << ", " << v.Z;
+    ss << m_name <<": "  << v.X << ", " << v.Y << ", " << v.Z;
     text.setText(ss.str());
 }
 
@@ -150,8 +163,7 @@ void Button::applyChangesVariable(string s)
 {
     if(str_change!=NULL)
         *str_change=s;
-    addAuTexte(s);
-    ini();
+    text.setText(m_name+": "+s);
 }
 
 void Button::applyChangesVariable(double d)

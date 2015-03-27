@@ -23,6 +23,7 @@ class Button: public Object2D
         void setHover(bool h){m_hover=h;}
         void setSelectable(bool s){m_selectable=s;}
         void select(bool s);
+        void translate(double x, double y);
 
         bool getClicable(){return m_clicable;}
         bool isSelected(){return m_selected;}

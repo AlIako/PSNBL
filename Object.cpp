@@ -291,47 +291,58 @@ void Object::setButtons(vector<Button>* v,bool clear)
     (*v)[ind].setPos(Vector3D(-0.5,0.9,0));
     (*v)[ind].ini();
     (*v)[ind].setTexture(NULL);
+    (*v)[ind].centerText(false);
     v->push_back(Button());
     ind=v->size()-1;
     (*v)[ind].addText("position: ");
+    (*v)[ind].setName("position");
     (*v)[ind].needwhat="vector";
     (*v)[ind].addAuTexte(m_position);
     (*v)[ind].vec_change=&m_position;
     (*v)[ind].setPos(Vector3D(0.1,0.75,0));
     (*v)[ind].ini();
+    (*v)[ind].centerText(false);
     (*v)[ind].setTexture(NULL);
     v->push_back(Button());
     ind=v->size()-1;
     (*v)[ind].addText("taille: ");
+    (*v)[ind].setName("taille");
     (*v)[ind].needwhat="vector";
     (*v)[ind].addAuTexte(m_size);
     (*v)[ind].vec_change=&m_size;
     (*v)[ind].setPos(Vector3D(0.1,0.7,0));
     (*v)[ind].ini();
     (*v)[ind].setTexture(NULL);
+    (*v)[ind].centerText(false);
     v->push_back(Button());
     ind=v->size()-1;
     (*v)[ind].addText("physical: ");
+    (*v)[ind].setName("physical");
     (*v)[ind].addAuTexte(m_physical);
     (*v)[ind].setPos(Vector3D(0.1,0.65,0));
     (*v)[ind].ini();
     (*v)[ind].setTexture(NULL);
+    (*v)[ind].centerText(false);
     v->push_back(Button());
     ind=v->size()-1;
     (*v)[ind].addText("block: ");
+    (*v)[ind].setName("block");
     (*v)[ind].addAuTexte(m_block);
     (*v)[ind].setPos(Vector3D(0.1,0.55,0));
     (*v)[ind].ini();
     (*v)[ind].setTexture(NULL);
+    (*v)[ind].centerText(false);
     v->push_back(Button());
     ind=v->size()-1;
     (*v)[ind].addText("texture: ");
+    (*v)[ind].setName("texture");
     if(m_texture!=NULL)
         (*v)[ind].addAuTexte(m_texture->getChemin());
     else (*v)[ind].addAuTexte("N/A");
     (*v)[ind].setPos(Vector3D(0.1,0.5,0));
     (*v)[ind].ini();
     (*v)[ind].setTexture(NULL);
+    (*v)[ind].centerText(false);
     /*
     v->push_back(Bouton());
     ind=v->size()-1;
@@ -344,19 +355,23 @@ void Object::setButtons(vector<Button>* v,bool clear)
     v->push_back(Button());
     ind=v->size()-1;
     (*v)[ind].addText("rotation: ");
+    (*v)[ind].setName("rotation");
     (*v)[ind].needwhat="vector";
     (*v)[ind].vec_change=&m_rotation;
     (*v)[ind].addAuTexte(m_rotation);
     (*v)[ind].setPos(Vector3D(0.1,0.45,0));
     (*v)[ind].ini();
     (*v)[ind].setTexture(NULL);
+    (*v)[ind].centerText(false);
     v->push_back(Button());
     ind=v->size()-1;
     (*v)[ind].addText("visible: ");
+    (*v)[ind].setName("visible");
     (*v)[ind].addAuTexte(m_visible);
     (*v)[ind].setPos(Vector3D(0.1,0.4,0));
     (*v)[ind].ini();
     (*v)[ind].setTexture(NULL);
+    (*v)[ind].centerText(false);
 
 
     //mettre le bouton Ok en dessous des autres
@@ -371,6 +386,7 @@ void Object::setButtons(vector<Button>* v,bool clear)
     (*v)[ind].setPos(Vector3D(-0.5,m_miny-0.05,0));
     (*v)[ind].ini();
     (*v)[ind].setTexture(NULL);
+    (*v)[ind].centerText(false);
 }
 
 void Object::checkClicks(vector<Button>* v,unsigned int id)
