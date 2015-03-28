@@ -1,7 +1,6 @@
 #ifndef PLAYER_H_INCLUDED
 #define PLAYER_H_INCLUDED
 #include <cmath>
-#include "Character.h"
 #include "Rope.h"
 #include "SpellRope.h"
 #include "SpellJump.h"

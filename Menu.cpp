@@ -13,6 +13,7 @@
 Menu::Menu()
 {
     mapSelected="";
+    command="";
 }
 
 

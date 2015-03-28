@@ -8,6 +8,7 @@
 #include "Fader.h"
 #include "Warninger.h"
 #include "Lighter.h"
+#include "EndLevel.h"
 
 
 bool addObjFromText(string txt, std::vector<Object*>* objects)
@@ -42,5 +43,7 @@ Object* getObjFromText(string txt)
         return new Warninger();
     else if(txt=="lighter")
         return new Lighter();
+    else if(txt=="endlevel")
+        return new EndLevel();
     return NULL;
 }

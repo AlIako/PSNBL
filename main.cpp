@@ -28,25 +28,36 @@ int main ( int argc, char** argv )
 
     string nextCommand="play";
 
+
+    menu.ini();
+    menu.play();
+    nextCommand=menu.command;
+
     while(nextCommand!="quit")
     {
-        menu.ini();
-        menu.play();
-        nextCommand=menu.command;
-
         if(nextCommand.find("play")!=string::npos)
         {
             Game game;
+            game.command=nextCommand;
             //game.play();
             if(nextCommand.size()>5)
                 game.play(nextCommand.substr(5,nextCommand.size()));
             else
                 game.play();
+
+            nextCommand=game.command;
         }
         else if(nextCommand.find("editor")!=string::npos)
         {
             Editor Editor;
             Editor.play(nextCommand.substr(7,nextCommand.size()));
+            nextCommand="menu";
+        }
+        else if(nextCommand.find("menu")!=string::npos)
+        {
+            menu.ini();
+            menu.play();
+            nextCommand=menu.command;
         }
     }
 

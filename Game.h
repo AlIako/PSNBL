@@ -23,6 +23,10 @@ class Game
 
 
     void play(string path="");
+    void draw();
+    void endLevel();
+
+    bool checkEndLevel();
 
     void handleCommands();
     void handleTracer();
@@ -46,7 +50,8 @@ class Game
 
 
     void close();
-    ~Game();
+
+    string command;
 
     private:
     bool playLoop;
@@ -61,6 +66,7 @@ class Game
     GTime since_last_frame;
     double ft;//function time
 
+    SDL_Event event;
     bool grabCursor;
 
     std::string m_mode;//playing, death(spectate)
@@ -72,6 +78,7 @@ class Game
 
 
     bool alreadyDead;
+    bool levelEnded;
 
     string pathTest;
 };

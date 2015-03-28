@@ -43,9 +43,7 @@ void menuSingle(vector<Button>* b)
     struct dirent *lecture;
     std::string en_cours="";
 
-    string chardir="";
-
-        chardir="../data/levels/";
+    string chardir="../data/levels/";
 
     char* tempchemin=stringtochar(chardir);
     dir = opendir(tempchemin);
