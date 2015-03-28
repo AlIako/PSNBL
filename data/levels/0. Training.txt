@@ -93,4 +93,4 @@
 @ block: x: 115 y: 102 z: 46 tx: 3 ty: 1.5 tz: 1.5 text: ../data/textures/metal4.jpg name: block
 @ block: x: 5.5 y: 101.75 z: 46 tx: 1.5 ty: 8.75 tz: 1.5 text: ../data/textures/metal4.jpg name: block
 @ block: x: 3 y: -12 z: 46 tx: 31 ty: 1 tz: 1.5 text: ../data/textures/metal4.jpg name: block
-@ endlevel: x: 0.398689 y: 46.6512 z: 5 tx: 2 ty: 2 tz: 1 text: ../data/textures/carpet_red.jpg
+@ endlevel: x: 0.398689 y: 46.6512 z: 5 tx: 2 ty: 2 tz: .5

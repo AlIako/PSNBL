@@ -37,6 +37,8 @@ Player::Player()
     //testMode=true;
 
     m_inLava=false;
+
+    m_size.Z+=.5;
 }
 
 void Player::update(double functionTime)

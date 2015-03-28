@@ -97,7 +97,7 @@ void Menu::play()
                         }
                     }
                 }
-                if(event.button.button==SDL_BUTTON_RIGHT)
+                else if(event.button.button==SDL_BUTTON_RIGHT)
                 {
                     for(unsigned int i=0;i<m_buttons.size();i++)
                     {
@@ -107,6 +107,30 @@ void Menu::play()
                             break;
                         }
                     }
+                }
+                else if(event.button.button==SDL_BUTTON_WHEELUP)
+                {
+                    if(curMenu=="editor")
+                        for(unsigned int i=9;i<m_buttons.size();i++)
+                        {
+                            m_buttons[i].translate(0,-0.05);
+                            if(m_buttons[i].getPos().Y>0.4 || m_buttons[i].getPos().Y<0.1)
+                                m_buttons[i].setVisible(false);
+                            else
+                                m_buttons[i].setVisible(true);
+                        }
+                }
+                else if(event.button.button==SDL_BUTTON_WHEELDOWN)
+                {
+                    if(curMenu=="editor")
+                        for(unsigned int i=9;i<m_buttons.size();i++)
+                        {
+                            m_buttons[i].translate(0,0.05);
+                            if(m_buttons[i].getPos().Y>0.4 || m_buttons[i].getPos().Y<0.1)
+                                m_buttons[i].setVisible(false);
+                            else
+                                m_buttons[i].setVisible(true);
+                        }
                 }
                 break;
 
@@ -302,9 +326,16 @@ void Menu::clicOn(string name, bool leftClic)
     {
         mapSelected="";
         curMenu=name;
-        menuEditor(&m_buttons);
+        menuEditor(&m_buttons,"../data/"+Config::getInstance()->editorpath+"/");
     }
-    if(name.find("../data/patterns/")!=string::npos)
+    if(curMenu=="editor" && (name=="patterns" || name=="levels"))
+    {
+        mapSelected="";
+        Config::getInstance()->editorpath=name;
+        Config::getInstance()->save();
+        menuEditor(&m_buttons,"../data/"+Config::getInstance()->editorpath+"/");
+    }
+    if(name.find("../data/patterns/")!=string::npos || name.find("../data/levels/")!=string::npos)
     {
         if(leftClic)
         {
@@ -350,7 +381,7 @@ void Menu::clicOn(string name, bool leftClic)
 
                     mapSelected="";
 
-                    menuEditor(&m_buttons);
+                    menuEditor(&m_buttons,"../data/"+Config::getInstance()->editorpath+"/");
                 }
             }
         }

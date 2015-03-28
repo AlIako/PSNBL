@@ -28,12 +28,14 @@ class Object2D
         void setG(int g){m_g=g;}
         void setB(int b){m_b=b;}
         void setAlpha(double a){m_alpha=a;}
+        void setVisible(bool v){m_visible=v;}
 
         std::string getName() {return m_name;}
         Texte getText(){return m_text;}
         double getAlpha() {return m_alpha;}
         Texture* getTexture(){return m_texture;}
         Vector3D getPos() {return m_position;}
+        bool getVisible() {return m_visible;}
 
     protected:
         Texture* m_texture;
@@ -43,6 +45,7 @@ class Object2D
 
         std::string m_name;
 
+        bool m_visible;
 
         bool m_hasText;
         Texte m_text;

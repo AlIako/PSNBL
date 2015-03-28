@@ -24,6 +24,7 @@ Config::Config()
     fov=90;
     sound=false;
     music=false;
+    editorpath="patterns";
 }
 
 
@@ -42,6 +43,7 @@ void Config::save()
     fichier << "fov: "<< fov<<endl;
     fichier << "sound: "<< sound<<endl;
     fichier << "music: "<< music<<endl;
+    fichier << "editorpath: "<< editorpath<<endl;
 
     fichier.close();
 }
@@ -109,6 +111,10 @@ void Config::load()
                 if(cur_int)
                     music=true;
                 else music=false;
+            }
+            else if(read_name_before=="editorpath")
+            {
+                file >> editorpath;
             }
 
             file >> cur_read;

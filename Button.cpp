@@ -32,38 +32,42 @@ void Button::ini()
 
 void Button::draw()
 {
-    Object2D::draw();
-
-    if(m_clicable)
+    if(m_visible)
     {
-        if(m_selected)
+        Object2D::draw();
+
+        if(m_clicable)
         {
-            text.setR(200);
-            text.setG(50);
-            text.setB(20);
+            if(m_selected)
+            {
+                text.setR(200);
+                text.setG(50);
+                text.setB(20);
+            }
+            else if(m_hover)
+            {
+                m_shadow.draw();
+                text.setR(240);
+                text.setG(85);
+                text.setB(0);
+            }
         }
-        else if(m_hover)
+        if(!m_clicable || (!m_hover && !m_selected))
         {
-            m_shadow.draw();
             text.setR(240);
-            text.setG(85);
+            text.setG(182);
             text.setB(0);
         }
-    }
-    if(!m_clicable || (!m_hover && !m_selected))
-    {
-        text.setR(240);
-        text.setG(182);
-        text.setB(0);
-    }
 
-    text.draw();
+        text.draw();
+    }
 }
 
 void Button::select(bool s)
 {
-    if(m_selectable)
-        m_selected=s;
+    if(m_visible)
+        if(m_selectable)
+            m_selected=s;
 }
 
 void Button::update(double functionTime)
@@ -81,20 +85,23 @@ void Button::updateCursor(Vector3D pos)
 
 bool Button::clic(Vector3D pos)
 {
-    //cerr<<"clic on: "<<pos.X<<", "<<pos.Y<<endl;
+    if(m_visible)
+    {
+        //cerr<<"clic on: "<<pos.X<<", "<<pos.Y<<endl;
 
-    //origin clic sdl: top left
-    //origin sprite object2D: bot left
+        //origin clic sdl: top left
+        //origin sprite object2D: bot left
 
-    pos.Y=Video::getInstance()->getHeight()-pos.Y;
+        pos.Y=Video::getInstance()->getHeight()-pos.Y;
 
-    pos.X/=Video::getInstance()->getWidth();
-    pos.Y/=Video::getInstance()->getHeight();
-    //cerr<<"clic on: "<<pos.X<<", "<<pos.Y<<endl;
+        pos.X/=Video::getInstance()->getWidth();
+        pos.Y/=Video::getInstance()->getHeight();
+        //cerr<<"clic on: "<<pos.X<<", "<<pos.Y<<endl;
 
-    if(pos.X>m_position.X && pos.X<m_position.X+m_size.X &&
-       pos.Y>m_position.Y && pos.Y<m_position.Y+m_size.Y)
-            return true;
+        if(pos.X>m_position.X && pos.X<m_position.X+m_size.X &&
+           pos.Y>m_position.Y && pos.Y<m_position.Y+m_size.Y)
+                return true;
+    }
     return false;
 }
 

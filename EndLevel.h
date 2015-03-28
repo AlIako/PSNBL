@@ -13,6 +13,8 @@ class EndLevel: public Object
     virtual void action(int type, Object* o=NULL);
 
     protected:
+    Vector3D dirmov;
+    Vector3D txtcord;
 };
 
 

@@ -30,6 +30,8 @@ public:
     bool sound;
     bool music;
 
+    string editorpath;
+
 private:
     Config();
     static Config* m_instance;

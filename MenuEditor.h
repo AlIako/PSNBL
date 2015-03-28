@@ -3,7 +3,7 @@
 #include "Object2D.h"
 #include <vector>
 
-void menuEditor(vector<Button>* b)
+void menuEditor(vector<Button>* b, string path)
 {
     b->clear();
 
@@ -72,6 +72,25 @@ void menuEditor(vector<Button>* b)
     (*b)[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/button_small.png"));
 
 
+    ind=(*b).size();
+    b->push_back(Button());
+    (*b)[ind].setPos(Vector3D(0.2,0.5,0));
+    (*b)[ind].setSize(Vector3D(0.125,0.075,0));
+    (*b)[ind].setName("levels");
+    (*b)[ind].addText("levels");
+    (*b)[ind].ini();
+    (*b)[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/button_small.png"));
+
+    ind=(*b).size();
+    b->push_back(Button());
+    (*b)[ind].setPos(Vector3D(0.4,0.5,0));
+    (*b)[ind].setSize(Vector3D(0.125,0.075,0));
+    (*b)[ind].setName("patterns");
+    (*b)[ind].addText("patterns");
+    (*b)[ind].ini();
+    (*b)[ind].setTexture(GTexture::getInstance()->getTexture("../data/textures/interface/button_small.png"));
+
+
     vector<string> maps;
     vector<string> folders;
     maps.clear();
@@ -81,9 +100,7 @@ void menuEditor(vector<Button>* b)
     struct dirent *lecture;
     std::string en_cours="";
 
-    string chardir="";
-
-        chardir="../data/patterns/";
+    string chardir=path;
 
     char* tempchemin=stringtochar(chardir);
     dir = opendir(tempchemin);
@@ -113,7 +130,7 @@ void menuEditor(vector<Button>* b)
 
         ind=(*b).size();
         (*b).push_back(Button());
-        (*b)[ind].setPos(Vector3D(0.1,0.7-(i+folders.size())/20.0,0));
+        (*b)[ind].setPos(Vector3D(0.1,0.4-(i+folders.size())/20.0,0));
         (*b)[ind].setSize(Vector3D(0.5,0.05,0));
         (*b)[ind].addText(maps[i]);
         (*b)[ind].setName(maps[i]);
@@ -121,6 +138,13 @@ void menuEditor(vector<Button>* b)
         (*b)[ind].setSelectable(true);
         (*b)[ind].centerText(false);
         (*b)[ind].setTexture(NULL);
+    }
+    for(unsigned int i=9;i<(*b).size();i++)
+    {
+        if((*b)[i].getPos().Y>0.4 || (*b)[i].getPos().Y<0.1)
+            (*b)[i].setVisible(false);
+        else
+            (*b)[i].setVisible(true);
     }
 }
 
