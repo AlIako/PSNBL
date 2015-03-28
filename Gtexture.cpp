@@ -103,23 +103,23 @@ void GTexture::addTexture(string c)
 string GTexture::getSoundGround(string text,int num)
 {
     stringstream ss;
-    ss << "data/sounds/";
-    if(text=="data/textures/herbe.jpg" || text=="data/textures/herbe.JPG" || text=="data/textures/plank.jpg" ||
-       text=="data/textures/herbeterre.jpg" || text=="data/textures/terrefonce.jpg" || text=="data/textures/leaf1.jpg"
-        || text=="data/textures/carpet_red.jpg" || text=="data/textures/snow.jpg")
+    ss << "../data/sounds/";
+    if(text=="../data/textures/herbe.jpg" || text=="../data/textures/herbe.JPG" || text=="../data/textures/plank.jpg" ||
+       text=="../data/textures/herbeterre.jpg" || text=="../data/textures/terrefonce.jpg" || text=="../data/textures/leaf1.jpg"
+        || text=="../data/textures/carpet_red.jpg" || text=="../data/textures/snow.jpg")
         ss << "walkdirt";
-    else if(text=="data/textures/floor.jpg" || text=="data/textures/ecorce.jpg" ||
-        text=="data/textures/souche.jpg" || text=="data/textures/caisse.jpg" || text=="data/textures/wood2.jpg" ||
-        text=="data/textures/wood.jpg" || text=="data/textures/crate.jpg"  ||
-        text=="data/textures/ecorce2.jpg" || text=="data/textures/ecorce3.jpg" ||
-        text=="data/textures/wood_plank2r.png" || text=="data/textures/wood_plank2.png" ||
-        text=="data/textures/wood_plank3r.png" || text=="data/textures/wood_plank3.png")
+    else if(text=="../data/textures/floor.jpg" || text=="../data/textures/ecorce.jpg" ||
+        text=="../data/textures/souche.jpg" || text=="../data/textures/caisse.jpg" || text=="../data/textures/wood2.jpg" ||
+        text=="../data/textures/wood.jpg" || text=="../data/textures/crate.jpg"  ||
+        text=="../data/textures/ecorce2.jpg" || text=="../data/textures/ecorce3.jpg" ||
+        text=="../data/textures/wood_plank2r.png" || text=="../data/textures/wood_plank2.png" ||
+        text=="../data/textures/wood_plank3r.png" || text=="../data/textures/wood_plank3.png")
         ss << "walkwood";
-    else if(text=="data/textures/metal.jpg" || text=="data/textures/metal2.jpg" ||
-        text=="data/textures/metal2.tga" || text=="data/textures/metal3.jpg" ||
-        text=="data/textures/metal4.jpg" || text=="data/textures/grille.png" || text=="data/textures/black_metal.jpg"
-         || text=="data/textures/danger2.jpg" || text=="data/textures/danger3.jpg" || text=="data/textures/metal_plate.jpg"
-          || text=="data/textures/metal_symbol.png")
+    else if(text=="../data/textures/metal.jpg" || text=="../data/textures/metal2.jpg" ||
+        text=="../data/textures/metal2.tga" || text=="../data/textures/metal3.jpg" ||
+        text=="../data/textures/metal4.jpg" || text=="../data/textures/grille.png" || text=="../data/textures/black_metal.jpg"
+         || text=="../data/textures/danger2.jpg" || text=="../data/textures/danger3.jpg" || text=="../data/textures/metal_plate.jpg"
+          || text=="../data/textures/metal.png")
         ss << "walkmetal";
     else if(text=="walkwater")
         ss << "walkwater";

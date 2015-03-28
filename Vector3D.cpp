@@ -163,6 +163,7 @@ void Vector3D::write(std::string nom)
 //transforme coordonées en "left-handed"
 Vector3D Vector3D::toLeft()
 {
+    return Vector3D(X,Y,Z);
     return Vector3D(X,Z,Y);
 }
 //2D vector

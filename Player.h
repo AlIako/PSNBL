@@ -26,6 +26,8 @@ class Player: public Object
 
     virtual void applyGravity();
 
+    void playGroundSound();
+
 
     bool jump();
 
@@ -64,6 +66,8 @@ class Player: public Object
     bool m_pressed[5];
 
     Rope* m_rope;
+
+    GTime sound_step;
 
     double m_maxspeed;
 

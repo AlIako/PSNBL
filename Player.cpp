@@ -41,6 +41,11 @@ Player::Player()
 
 void Player::update(double functionTime)
 {
+    bool wasInAir=false;
+    if(m_onTopOf==NULL)
+        wasInAir=true;
+
+
     m_inLava=false;
     if(m_collided)
     {
@@ -154,6 +159,9 @@ void Player::update(double functionTime)
         if(m_jumping)
             Tracer::getInstance()->trace("jump","rdy to jump again");
         m_jumping=false;
+
+        if(wasInAir)
+            playGroundSound();
     }
 
 }
@@ -196,6 +204,11 @@ bool Player::jump()
             //unlinkRope();
 
             Tracer::getInstance()->trace("player","jump");
+
+            int soundRand=myIntRand(1,2);
+            stringstream ss;
+            ss<<"../data/sounds/jump"<<soundRand<<".wav";
+            Gsounds::getInstance()->play(ss.str());
 
             return true;
         }
@@ -364,6 +377,11 @@ void Player::move()
         m_movementVelocity.Y/=1.1;
         m_velocity.X/=1.1;
         m_velocity.Y/=1.1;
+
+        if(m_movementVelocity.length()>0.005)
+        {
+            playGroundSound();
+        }
     }
     else//movement in the air
     {
@@ -395,6 +413,20 @@ void Player::move()
 
             m_velocity.X/=1.01;
             m_velocity.Y/=1.01;
+        }
+    }
+}
+
+void Player::playGroundSound()
+{
+    if(m_onTopOf!=NULL)
+    {
+        sound_step.couler();
+        if(sound_step.ecouler(500))
+        {
+            sound_step.reset();
+            int soundRand=myIntRand(1,2);
+            Gsounds::getInstance()->play(GTexture::getInstance()->getSoundGround(m_onTopOf->getTexture()->getChemin(),soundRand));
         }
     }
 }

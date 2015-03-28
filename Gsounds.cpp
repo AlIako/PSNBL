@@ -110,6 +110,26 @@ void Gsounds::loads()
     addSound("../data/sounds/fire.mp3");
     addSound("../data/sounds/metal_impact.mp3");
 
+    addSound("../data/sounds/walkdirt1.wav");
+    addSound("../data/sounds/walkdirt2.wav");
+    addSound("../data/sounds/walkdirt3.wav");
+    addSound("../data/sounds/walkdirt4.wav");
+
+    addSound("../data/sounds/walkwood1.wav");
+    addSound("../data/sounds/walkwood2.wav");
+
+    addSound("../data/sounds/walkrock1.wav");
+    addSound("../data/sounds/walkrock2.wav");
+
+    addSound("../data/sounds/walkmetal1.wav");
+    addSound("../data/sounds/walkmetal2.wav");
+
+    addSound("../data/sounds/walkwater1.wav");
+    addSound("../data/sounds/walkwater2.wav");
+
+    addSound("../data/sounds/jump1.wav");
+    addSound("../data/sounds/jump2.wav");
+
     addSound("../data/sounds/hover.mp3");
 }
 
