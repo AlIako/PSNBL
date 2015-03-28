@@ -83,6 +83,7 @@ void Editor::menuObj()
                     case SDL_QUIT:
                     continuer=false;
                     playLoop=false;
+                    command="quit";
                     break;
                     case SDL_MOUSEMOTION:
                     for(unsigned int i=0;i<buttons.size();i++)
@@ -341,6 +342,7 @@ string Editor::choseFile(string what,string c, bool fullname, string type1, stri
                 case SDL_QUIT:
                 playLoop=false;
                 continuer=false;
+                command="quit";
                 break;
                 case SDL_MOUSEMOTION:
                 for(unsigned int i=0;i<bout.size();i++)
@@ -475,6 +477,7 @@ int Editor::entrerNombre(int erg)
                 playLoop=false;
                 cur_nombre=erg;
                 continuer=false;
+                command="quit";
                 break;
                 case SDL_MOUSEMOTION:
                 for(unsigned int i=0;i<bout.size();i++)
@@ -793,6 +796,7 @@ Vector3D Editor::modifVector(Vector3D *v, string nom, double pas)
                 //para="quitter";
                 *v=v_ini;
                 continuer=false;
+                command="quit";
                 break;
                 case SDL_MOUSEMOTION:
                 for(unsigned int i=0;i<bout.size();i++)

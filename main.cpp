@@ -49,9 +49,9 @@ int main ( int argc, char** argv )
         }
         else if(nextCommand.find("editor")!=string::npos)
         {
-            Editor Editor;
-            Editor.play(nextCommand.substr(7,nextCommand.size()));
-            nextCommand="menu";
+            Editor editor;
+            editor.play(nextCommand.substr(7,nextCommand.size()));
+            nextCommand=editor.command;
         }
         else if(nextCommand.find("menu")!=string::npos)
         {

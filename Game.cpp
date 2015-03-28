@@ -124,7 +124,8 @@ void Game::play(string path)
             {
                 case SDL_QUIT:
                 fadingToLeave=true;
-                command="menu";
+                playLoop=false;
+                command="quit";
                 break;
 
                 case SDL_MOUSEMOTION:

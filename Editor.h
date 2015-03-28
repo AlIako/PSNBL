@@ -43,6 +43,8 @@ class Editor
     void close();
     ~Editor();
 
+    string command;
+
     private:
     string m_path;
 

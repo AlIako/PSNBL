@@ -76,6 +76,8 @@ void Menu::play()
             {
                 case SDL_QUIT:
                 fadingToLeave=true;
+                playLoop=false;
+                command="quit";
                 break;
 
                 case SDL_MOUSEMOTION:
@@ -684,6 +686,8 @@ string Menu::inputString(string txt,string msg,bool onlyInt)
             {
                 case SDL_QUIT:
                 loop = false;
+                playLoop=false;
+                command="quit";
                 fadingToLeave=true;
                 txt=savetxt;
                 break;
@@ -908,6 +912,8 @@ bool Menu::messageSure()
                 case SDL_QUIT:
                 loop = false;
                 fadingToLeave=true;
+                playLoop=false;
+                command="quit";
                 break;
 
                 case SDL_MOUSEMOTION:
@@ -1055,6 +1061,8 @@ void Menu::messageError(string msg)
                 case SDL_QUIT:
                 loop = false;
                 fadingToLeave=true;
+                playLoop=false;
+                command="quit";
                 break;
 
                 case SDL_MOUSEMOTION:

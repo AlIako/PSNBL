@@ -2,6 +2,7 @@
 #include "GameObjects.h"
 Editor::Editor()
 {
+    command="menu";
 }
 
 void Editor::handleTracer()
@@ -105,6 +106,8 @@ void Editor::play(string path)
             {
                 case SDL_QUIT:
                 fadingToLeave=true;
+                playLoop=false;
+                command="quit";
                 break;
 
                 case SDL_MOUSEMOTION:
@@ -557,6 +560,7 @@ void Editor::pick(double x, double y)
                 }
             }
             objSelected=choose;
+            //cerr<<"depth: "<<depth<<endl;
         }
         else  objSelected=-1;
         if(objSelected<0 || objSelected>=(int)(*m_objects).size())

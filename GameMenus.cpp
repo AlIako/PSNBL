@@ -93,6 +93,7 @@ void Game::endLevel()
                     case SDL_QUIT:
                         playLoop=false;
                         menuLoop=false;
+                        command="quit";
                     break;
 
                     case SDL_MOUSEMOTION:
